@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+        version="2.0">
+    <persistence-unit name="com.msxt.jpa" transaction-type="JTA">
+    	<!--provider>org.hibernate.ejb.HibernatePersistence</provider-->
+    	<jta-data-source>java:jboss/datasources/MSXTDS</jta-data-source>
+    	<shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+    	<properties>
+	      <property name="dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+	      <!--          
+	      <property name="hibernate.connection.driver_class" value="org.gjt.mm.mysql.Driver"/>  
+          <property name="hibernate.connection.username" value="root"/>  
+          <property name="hibernate.connection.password" value="root"/>  
+          <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/MSDB?useUnicode=true&amp;characterEncoding=UTF-8"/>
+          <property name="hibernate.hbm2ddl.auto" value="create-drop"/>  
+		  -->
+          <property name="hibernate.max_fetch_depth" value="3"/>  
+          <property name="hibernate.jdbc.fetch_size" value="20"/>  
+          <property name="hibernate.jdbc.batch_size" value="10"/>  
+          <property name="hibernate.show_sql" value="true"/>  
+          <property name="hibernate.format_sql" value="true"/> 
+	    </properties>
+    </persistence-unit>
+</persistence>

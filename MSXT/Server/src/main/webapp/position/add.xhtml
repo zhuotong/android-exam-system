@@ -1,0 +1,48 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:s="http://jboss.org/seam/faces"
+                xmlns:p="http://java.sun.com/jsf/composite/components/property"
+                template="/WEB-INF/layout/template.xhtml">
+
+    <ui:param name="pageClass" value="home"/>
+
+    <ui:define name="content">
+
+        <div class="section">
+            <h1>Create Position</h1>
+        </div>
+
+        <div class="section">
+
+            <div class="errors">
+                <h:messages id="messages" globalOnly="true"/>
+            </div>
+
+            <h:form id="regForm" prependId="false">
+                <fieldset>
+                	<h:panelGrid columns="1">
+	                    <p:input id="name" label="Position Name">
+	                        <h:inputText id="input" value="#{newPosition.name}" required="true" binding="#{positionCreator.positionNameInput}"/>
+	                    </p:input>
+	                    <p:input id="nextPostion" label="Next position">                                        
+		                    <h:selectOneMenu id="nextPostionId" value="#{positionCreator.nextPostionId}">
+		                     	<f:selectItem itemValue="#{null}" itemLabel="Select..." noSelectionOption="true"/>
+		                        <f:selectItems value="#{positionCreator.existingPositions}" var="ep" itemLabel="#{ep.name}" itemValue="#{ep.id}"/>
+	                    	</h:selectOneMenu>
+                    	</p:input>
+					</h:panelGrid>
+                    <div class="buttonBox">
+                        <h:commandButton id="create" value="Create" action="#{positionCreator.create}"/>
+                        &nbsp;
+                        <h:button id="cancel" value="Cancel" outcome="/position/search.xhtml"/>
+                    </div>
+                </fieldset>
+            </h:form>
+            
+        </div>
+    </ui:define>
+</ui:composition>

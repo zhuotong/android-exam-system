@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.msxt</groupId>
+	<artifactId>msxt</artifactId>
+	<name>面试系统</name>
+	<version>1.0</version>
+	<packaging>pom</packaging>
+	
+	<issueManagement>
+		<system>Cvstrac</system>
+		<url>http://${cvs.host}/cgi-bin/cvstrac</url>
+	</issueManagement>
+	
+	<dependencyManagement>
+      <dependencies>
+         <dependency>
+	     <groupId>org.jboss.seam</groupId>
+	       <artifactId>seam-bom</artifactId>
+	       <version>${seam.version}</version>
+	       <scope>import</scope>
+	       <type>pom</type>
+	    </dependency>
+       </dependencies>
+    </dependencyManagement>
+   
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>${maven.compile.source}</source>
+					<target>${maven.compile.target}</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.0</version>
+				<configuration>
+					<preparationGoals>clean verify</preparationGoals>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<skip>true</skip>
+					<workingDirectory>
+						target/test-classes
+					</workingDirectory>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-scm-plugin</artifactId>
+				<version>1.5</version>
+				<configuration>
+				<username>wujie</username>
+				<password>wujie</password>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<properties>
+		<maven.compile.source>1.6</maven.compile.source>
+		<maven.compile.target>1.6</maven.compile.target>
+		<seam.version>3.1.0.Final</seam.version>
+	</properties>
+
+	<scm>
+		<connection>
+			scm:cvs:pserver:wujie:wujie@${cvs.host}:/${cvs.repo}:CSP/
+		</connection>
+		<developerConnection>
+			scm:cvs:pserver:wujie:wujie@${cvs.host}:/${cvs.repo}:CSP/
+		</developerConnection>
+		<url>
+			http://${cvs.host}/cgi-bin/viewvc.cgi/CSP/${project.artifactId}/
+		</url>
+	</scm>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-changes-plugin</artifactId>
+				<configuration>
+					<xmlPath>xdocs/changes.xml</xmlPath>
+				</configuration>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>changes-report</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
+
+	<mailingLists>
+		<mailingList>
+			<name>${project.name} Dev List</name>
+		</mailingList>
+
+		<mailingList>
+			<name>${project.name} User List</name>
+		</mailingList>
+	</mailingLists>
+
+	<modules>
+		<module>Model</module>
+		<module>Server</module>
+        <module>SwingClient</module>
+    </modules>
+    
+    <profiles>
+      <profile>
+         <id>jboss-public-repository</id>
+         <activation>
+            <property>
+               <name>jboss-public-repository</name>
+               <value>!false</value>
+            </property>
+         </activation>
+         <repositories>
+            <repository>
+               <id>jboss-public-repository-group</id>
+               <name>JBoss Public Maven Repository Group</name>
+               <url>http://repository.jboss.org/nexus/content/groups/public</url>
+               <releases>
+                  <enabled>true</enabled>
+                  <updatePolicy>never</updatePolicy>
+               </releases>
+               <snapshots>
+                  <enabled>false</enabled>
+                  <updatePolicy>never</updatePolicy>
+               </snapshots>
+            </repository>
+         </repositories>
+         <pluginRepositories>
+            <pluginRepository>
+               <id>jboss-public-repository-group</id>
+               <name>JBoss Public Maven Repository Group</name>
+               <url>http://repository.jboss.org/nexus/content/groups/public</url>
+               <releases>
+                  <enabled>true</enabled>
+                  <updatePolicy>never</updatePolicy>
+               </releases>
+               <snapshots>
+                  <enabled>false</enabled>
+                  <updatePolicy>never</updatePolicy>
+               </snapshots>
+            </pluginRepository>
+         </pluginRepositories>
+      </profile>
+   </profiles>
+</project>
