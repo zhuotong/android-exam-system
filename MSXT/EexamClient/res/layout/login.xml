@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:id="@+id/layout1"
+	android:background="@drawable/bg_color_login" android:orientation="vertical">
+	
+	<!-- header -->
+    <include
+        android:id="@+id/baseHeader"
+        layout="@layout/base_header" 
+        android:layout_gravity="top"/>
+        
+    <ImageView 
+        android:layout_width="wrap_content" 
+	    android:id="@+id/imageView1"
+		android:layout_height="wrap_content" 
+		android:src="@drawable/eexams"
+		android:layout_gravity="center_horizontal"
+		android:layout_marginTop="10dp"
+		android:layout_marginBottom="10dp">
+	</ImageView>
+	"
+	<TableLayout android:id="@+id/tableLayout1"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" 
+		android:padding="1dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:layout_marginTop="20dp">
+
+		<TableRow android:id="@+id/tableRow1" 
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/style_login_id_tr">
+			<TextView 
+			    android:text="@string/msg_tv_id"
+			    android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
+				android:layout_weight="1"
+				android:textColor="#000000"
+				android:textSize="18sp"
+				android:layout_marginLeft="4dp"/>
+			<EditText    
+			    android:id="@+id/idEt"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_weight="2"
+				android:hint="Input ID">"
+			</EditText>		
+		</TableRow>
+				
+		<TableRow android:id="@+id/tableRow2" 
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/style_login_password_tr"
+			android:layout_marginTop="1dp">
+			<TextView 
+			    android:text="@string/msg_tv_password"
+			    android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
+				android:layout_weight="1"
+				android:textColor="#000000"
+				android:textSize="18sp"
+				android:layout_marginLeft="4dp"/>
+			<EditText    
+			    android:id="@+id/passwordET"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:hint="Input Password"
+				android:layout_weight="2">
+			</EditText>		
+		</TableRow>
+
+	</TableLayout>
+
+	<!-- Login Button -->
+	<TableRow android:id="@+id/tableRow3" 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="10dp"
+		android:layout_marginLeft="20dp"
+		android:layout_marginRight="20dp">
+		
+		<Button android:text="@string/msg_btn_login" 
+		    android:id="@+id/loginBtn"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:background="@drawable/btn_sys">
+		</Button>
+	</TableRow>
+
+
+    <!-- footer -->
+<!--     <include
+        android:id="@+id/loginFooter"
+        layout="@layout/login_footer" 
+        android:layout_gravity="bottom"/> -->
+"
+</LinearLayout>
+
