@@ -52,7 +52,7 @@
 
         <h:panelGroup id="searchResults">
             <div class="section">
-                <h:outputText id="noHotelsMsg" value="No Question Type Found" rendered="#{empty questions}"/>
+                <h:outputText id="noHotelsMsg" value="No Question Found" rendered="#{empty questions}"/>
                 <h:form id="questionSelectionForm">
                     <h:dataTable id="questions" value="#{questionSearcher.questions}" var="_question" rendered="#{not empty questions}" columnClasses=",,,,action">
                         <h:column id="nameCol">
