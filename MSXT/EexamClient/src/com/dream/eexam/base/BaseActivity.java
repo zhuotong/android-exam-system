@@ -1,6 +1,8 @@
 package com.dream.eexam.base;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
@@ -58,6 +60,14 @@ public class BaseActivity extends Activity {
 	protected void onStop() {
 		Log.i(LOG_TAG,"onStop()...");
 		super.onStop();
+	}
+	
+	public void ShowDialog(String msg) {
+		new AlertDialog.Builder(this).setTitle("Note").setMessage(msg)
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+					}
+		}).show();
 	}
 
 }

@@ -5,5 +5,8 @@
     <string name="msg_tv_id">ID:</string>
     <string name="msg_tv_password">Password:</string>
     
+    <string name="msg_et_id_hint">Input ID</string>
+    <string name="msg_et_password_hint">Input Password</string>
+    
     <string name="msg_btn_login">Login</string>
 </resources>

@@ -18,5 +18,8 @@
                   android:launchMode="singleTask">
         </activity> 
 
+     	<activity android:name="com.dream.eexam.paper.MultiChoices"
+                  android:launchMode="singleTask">
+        </activity> 
     </application>
 </manifest>

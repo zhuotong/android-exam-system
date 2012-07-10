@@ -46,7 +46,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_weight="2"
-				android:hint="Input ID">"
+				android:hint="@string/msg_et_id_hint">
 			</EditText>		
 		</TableRow>
 				
@@ -67,7 +67,7 @@
 			    android:id="@+id/passwordET"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:hint="Input Password"
+				android:hint="@string/msg_et_password_hint"
 				android:layout_weight="2">
 			</EditText>		
 		</TableRow>

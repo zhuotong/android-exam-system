@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dream.eexam.model.Paper;
+import com.dream.eexam.paper.MultiChoices;
+
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,8 +35,8 @@ public class PapersActivity extends BaseActivity{
         
         mContext = this;
         
-        for(int i=1;i<10;i++){
-        	papers.add(new Paper(i));
+        for(int i=1;i<20;i++){
+        	papers.add(new Paper(i+1));
         }
         
 		mGridView = (GridView) findViewById(R.id.gridview);
@@ -50,6 +53,8 @@ public class PapersActivity extends BaseActivity{
 			Log.i(LOG_TAG,"onItemClick");
 			Log.i(LOG_TAG,"arg2="+arg2);
 			Log.i(LOG_TAG,"arg3="+arg3);
+			
+
 			
 		}
 	}
@@ -102,6 +107,11 @@ public class PapersActivity extends BaseActivity{
             holder.paperBtn.setOnClickListener(new Button.OnClickListener() {
     			public void onClick(View v) {
     				sendAnswertoServer(p);
+    				
+    				//go to question 1
+    				Intent intent = new Intent();
+    				intent.setClass( mContext, MultiChoices.class);
+    				startActivity(intent);
     			}
     		});
             
