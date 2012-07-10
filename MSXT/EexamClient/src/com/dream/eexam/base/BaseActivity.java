@@ -1,5 +1,7 @@
 package com.dream.eexam.base;
 
+import com.dream.exam.util.ActivityStackControlUtil;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -21,6 +23,7 @@ public class BaseActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		Log.i(LOG_TAG,"onCreate()...");
 		super.onCreate(savedInstanceState);
+		ActivityStackControlUtil.add(this);
 		
 		//hide title bar
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);

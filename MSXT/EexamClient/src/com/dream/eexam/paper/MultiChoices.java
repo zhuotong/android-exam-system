@@ -3,7 +3,6 @@ package com.dream.eexam.paper;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
