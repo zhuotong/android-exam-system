@@ -7,13 +7,35 @@
                 xmlns:s="http://jboss.org/seam/faces"
                 xmlns:p="http://java.sun.com/jsf/composite/components/property"
                 template="/WEB-INF/layout/template.xhtml">
-
+	<ui:define name="head">
+        <script type="text/javascript">
+            function typeChanged( type ) {
+            	var option = type.options[type.selectedIndex];
+                if( option.label == "Choice" )
+                	document.getElementById("choiceItem").style.display="";
+                else
+                	document.getElementById("choiceItem").style.display="none";
+            }
+            
+            function addChoiceItem(){
+            	var choiceItemsTable = document.getElementById('choiceItemsTable');
+            	choiceItemsTable.innerHTML= choiceItemsTable.innerHTML
+            	                           + '<tr><td width="20%"><input type="text"/></td><td><input type="text" width="60%"/></td><td width="20%"><input type="button" value="Delete" onclick="deleteChoiceItem(this);"/></td></tr>';
+            }
+            
+            function deleteChoiceItem( btn ){
+            	var tr = btn.parentElement.parentElement.parentElement;
+            	var choiceItemsTable = document.getElementById('choiceItemsTable');
+            	choiceItemsTable.removeChild(tr);
+            }
+        </script>
+    </ui:define>
     <ui:param name="pageClass" value="home"/>
 
     <ui:define name="content">
 
         <div class="section">
-            <h1>Create Question Type</h1>
+            <h1>Create Question</h1>
         </div>
 
         <div class="section">
@@ -24,28 +46,49 @@
 
             <h:form id="regForm" prependId="false">
                 <fieldset>
-                	<h:panelGrid columns="1">
-	                    <p:input id="name" label="Question Type Name">
-	                        <h:inputText id="input" value="#{newQuestionType.name}" required="true" binding="#{questionTypeCreator.questionTypeNameInput}"/>
-	                    </p:input>
-	                     <p:input id="rendener" label="Rendener">
-	                        <h:inputText id="input" value="#{newQuestionType.rendener}"/>
-	                    </p:input>
-	                    <p:input id="nextPostion" label="Parent Type">                                        
-		                    <h:selectOneMenu id="parentId" value="#{questionTypeCreator.parentTypeId}">
-		                     	<f:selectItem itemValue="#{null}" itemLabel="Select..." noSelectionOption="true"/>
-		                        <f:selectItems value="#{questionTypeCreator.existingQuestionTypes}" var="ep" itemLabel="#{ep.name}" itemValue="#{ep.id}"/>
-	                    	</h:selectOneMenu>
-                    	</p:input>
-					</h:panelGrid>
+                	<div>
+                	<table>
+                		<tr>
+                			<td>Type</td>
+                			<td>                                  
+			                    <h:selectOneMenu id="typeId" value="#{questionCreator.typeId}" onchange="typeChanged(this);">
+			                     	<f:selectItem itemValue="#{null}" itemLabel="Select..." noSelectionOption="true"/>
+			                        <f:selectItems value="#{questionTypeCreator.existingQuestionTypes}" var="ep" itemLabel="#{ep.name}" itemValue="#{ep.id}"/>
+		                    	</h:selectOneMenu>
+                			</td>
+                		</tr>
+                		<tr>
+                			<td>Question Name</td>
+                			<td>
+                				<h:inputText id="inputName" value="#{newQuestion.name}" required="true"/>
+                			</td>
+                		</tr>
+                		<tr>
+                			<td>Title</td>
+                			<td><h:inputTextarea id="inputTitle" value="#{newQuestion.content}" required="true"/></td>
+                		</tr>
+                		<tr>
+                			<td>Right Answer</td>
+                			<td><h:inputTextarea value="#{newQuestion.rightAnswer}" required="true"/></td>
+                		</tr>
+                	</table>
+                	</div>
+                	<div id="choiceItem" style="display: none">
+                	<table id="choiceItemsTable">
+                		<tr>
+                			<td>Label</td>
+                			<td>Content</td>
+                			<td><input type="button" value="Add" onclick="addChoiceItem();"/></td>
+                		</tr>
+                	</table>	
+                	</div>
                     <div class="buttonBox">
-                        <h:commandButton id="create" value="Create" action="#{questionTypeCreator.create}"/>
+                        <h:commandButton id="create" value="Create" action="#{questionCreator.create}"/>
                         &nbsp;
-                        <h:button id="cancel" value="Cancel" outcome="/question/type/search.xhtml"/>
+                        <h:button id="cancel" value="Cancel" outcome="/question/search.xhtml"/>
                     </div>
                 </fieldset>
             </h:form>
-            
         </div>
     </ui:define>
 </ui:composition>
