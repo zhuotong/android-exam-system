@@ -19,7 +19,7 @@ body {
     line-height: 1.25em;
     color: #362F2D;
     position: relative;
-    width: 760px;
+    width: 1000px;
     height: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -71,31 +71,31 @@ fieldset {
 
 #header {
     float: left;
-    width: 900px;
+    width: 1000px;
     height: 46px;
     background: url(../img/hdr.bg.gif) 0 0 repeat-x;
 }
 
 #container {
     float: left;
-    width: 900px;
-    background: url(../img/hdr.bar.jpg) 0 0 repeat-x;
+    width: 1000px;
+    /*background: url(../img/hdr.bar.jpg) 0 0 repeat-x;*/
 }
 
 #sidebar {
     float: left;
-    width: 190px;
-    margin-top: 96px;
+    width: 150px;
+    margin-top: 10px;
     padding: 20px 10px 0 10px;
-    background: url(../img/sdb.bg.gif) 0 0 no-repeat;
+    /*background: url(../img/sdb.bg.gif) 0 0 no-repeat;*/
 }
 
 #content {
     float: left;
-    width: 548px;
-    margin-top: 75px;
+    width: 830px;
+    margin-top: 10px;
     padding-top: 5px;
-    background: #FFFFFF url(../img/cnt.bg.gif) 0 0 repeat-x;
+    /*background: #FFFFFF url(../img/cnt.bg.gif) 0 0 repeat-x;*/
 }
 
 #footer {
@@ -105,7 +105,7 @@ fieldset {
     padding: 20px;
     border-top: 1px solid #C3BBB6;
     background-color: #FFFFFF;
-    width: 860px;
+    width: 1000px;
     text-align: right;
 }
 
@@ -224,7 +224,7 @@ input[type=submit], input[type=button] {
 ----------------------------------------------- */
 #content .section {
     float: left;
-    width: 600px;
+    width: 780px;
     padding: 15px 15px 0 15px;
 }
 
@@ -330,7 +330,7 @@ td.action {
 }
 
 /* Homepage Modifications
------------------------------------------------ */
+----------------------------------------------- 
 body.home #container {
     background: url(../img/hdr.ad.jpg) 0 0 repeat-x;
 }
@@ -342,7 +342,7 @@ body.home #sidebar {
 body.home #content {
     margin-top: 183px;
 }
-
+*/
 /* Extras
 ----------------------------------------------- */
 #javax_faces_developmentstage_messages {
