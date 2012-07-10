@@ -12,7 +12,7 @@
         <title>#{bundles.messages.template_title}</title>
         <link rel="shortcut icon" href="#{request.contextPath}/favicon.ico"/>
 
-        <h:outputStylesheet library="css" name="booking.css"/>
+        <h:outputStylesheet library="css" name="screen.css"/>
         <ui:insert name="head"/>
     </h:head>
     <h:body styleClass="#{empty pageClass ? 'page' : 'home'}">
@@ -49,7 +49,6 @@
             </div>
             <div id="container">
                 <div id="sidebar">
-                     <h:form id="menuForm2">
 				         <h:panelGroup rendered="#{identity.loggedIn}">   
 				             <pretty:link mappingId="account">#{bundles.messages.template_linkAccount}</pretty:link><br/>
 				             <pretty:link mappingId="logout">#{bundles.messages.template_linkLogout}</pretty:link><br/>
@@ -60,7 +59,6 @@
 				             <pretty:link mappingId="interview">#{bundles.messages.menu_interview}</pretty:link><br/>
 				             <pretty:link mappingId="examination">#{bundles.messages.menu_examination}</pretty:link><br/>
 				         </h:panelGroup>          
-          			</h:form>
                 </div>
                 <div id="content">
                     <ui:insert name="content"/>
