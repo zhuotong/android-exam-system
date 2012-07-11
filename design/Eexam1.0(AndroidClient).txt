@@ -1,0 +1,57 @@
+Introduce:
+Eexam is Multi-Platform exam system£¬terminals are inlude PC web, PC client,Mobile Phone,Tablet
+
+
+Version1.0 (Main target is for Enterprise Exam before interview)
+------------------------------
+include 2 terminals
+1 Android Phone
+2 Java Swing on PC
+
+Page 1£º Login
+Page 2£º Choose Exam Paper, start test
+Page 3:  Exam 
+(Type 1: Single Choice Question)
+(Type 2: Multi Choice Question)
+
+Page 4: End Page or display Score
+
+------------------------------
+Page 1
+1 Input Login ID
+2 Input Password
+3 Click Login Button
+
+------------------------------
+Page 2
+1 Display applied position, eg(Java Engineer)
+2 Choose Exam Paper
+3 Start Exam
+
+------------------------------
+Page 3
+1 Display question and answer choices
+2 Choose 1 or more answers, submit and go to next question
+(Display time left, question index)
+discuss: for time limit, limit by one question or one paper?
+discuss: for question index, display index of total or index exam part?
+discuss: each exam include serveral parts,classify by content?
+discuss: tester make serveral questions to pending?
+discuss: need hint of question type(Multi or single)
+------------------------------
+Page 4
+1 Display question and answer choices
+2 Choose 1 answer, submit and go to next question
+same with page 3
+
+------------------------------
+Page 5
+1 Display end message or exam score
+A full score
+B tester's score
+C time cosume
+
+
+
+
+ 
