@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.RadioButton;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,9 +24,8 @@ import com.dream.eexam.base.BaseActivity;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.Choice;
 
-public class MultiChoices extends BaseActivity {
+public class SingleChoices extends BaseActivity {
 
-	
 	//Question Header
 	private TextView questionIndex = null;
 	
@@ -37,7 +36,6 @@ public class MultiChoices extends BaseActivity {
 	
 	//LinearLayout listFooter
 	private Button preBtn;
-	private Button nextBtn;
 	
 	List<Choice> choices = new ArrayList<Choice>();
 	
@@ -49,22 +47,25 @@ public class MultiChoices extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.paper_multi_choices);
+        setContentView(R.layout.paper_single_choices);
         mContext = getApplicationContext();
         
         //hard code data
-    	choices.add(new Choice(1, "goto"));
-    	choices.add(new Choice(2, "malloc"));
-    	choices.add(new Choice(3, "extends"));
-    	choices.add(new Choice(4, "FALSE"));
- 
+    	choices.add(new Choice(1, "Asia"));
+    	choices.add(new Choice(2, "Africa"));
+    	choices.add(new Choice(3, "North America"));
+    	choices.add(new Choice(4, "South America"));
+    	choices.add(new Choice(5, "Europe"));
+    	choices.add(new Choice(6, "Oceania"));
+    	choices.add(new Choice(7, "Others"));
+        
         //set question index
         questionIndex = (TextView)findViewById(R.id.questionIndex);
-        questionIndex.setText("1 of 10");
+        questionIndex.setText("2 of 10");
         
         //set question text
         questionTV = (TextView)findViewById(R.id.questionTV);
-        questionTV.setText("Q1:Which of the following are Java keywords?");
+        questionTV.setText("Q2:Where are you from?");
         questionTV.setTextColor(Color.BLACK);
         
         //set List
@@ -75,7 +76,7 @@ public class MultiChoices extends BaseActivity {
         	@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int arg2,
 					long arg3) {
-        		CheckBox cb = (CheckBox)view.findViewById(R.id.list_select);
+        		RadioButton cb = (RadioButton)view.findViewById(R.id.list_select);
         		cb.setChecked(!cb.isChecked());
 			}      	
         });
@@ -84,31 +85,9 @@ public class MultiChoices extends BaseActivity {
         preBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-//				preBtn.setBackgroundResource(R.drawable.btn_sys);
-//				listItemID.clear();
-//				for(int i=0;i<adapter.mChecked.size();i++){
-//					if(adapter.mChecked.get(i)){
-//						Choice choice = adapter.choices.get(i);
-//						listItemID.add(Integer.valueOf(choice.getId()));
-//					}
-//				}
-//				if(listItemID.size()==0){
-//					ShowDialog("At lease choose one item!");
-//				}else{
-//					if(preBtn.isEnabled()){
-//
-//					}
-//				}
-			}
-		});
-        
-        nextBtn = (Button)findViewById(R.id.nextBtn);
-        nextBtn.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
 				//go to question 1
 				Intent intent = new Intent();
-				intent.setClass( mContext, SingleChoices.class);
+				intent.setClass( mContext, MultiChoices.class);
 				startActivity(intent);
 			}
 		});
@@ -155,23 +134,23 @@ public class MultiChoices extends BaseActivity {
 				Log.i(LOG_TAG,"position1 = "+position);
 				
 				LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				view = mInflater.inflate(R.layout.paper_multi_choices_item, null);
+				view = mInflater.inflate(R.layout.paper_single_choices_item, null);
 				holder = new ViewHolder();
 				
 				//set 3 component 
-				holder.selected = (CheckBox)view.findViewById(R.id.list_select);
-				holder.index = (TextView)view.findViewById(R.id.list_index);
-				holder.choiceDesc = (TextView)view.findViewById(R.id.list_choiceDesc);
+				holder.radioButton = (RadioButton)view.findViewById(R.id.radioButton);
+				holder.index = (TextView)view.findViewById(R.id.index);
+				holder.choiceDesc = (TextView)view.findViewById(R.id.choiceDesc);
 				
 				final int p = position;
 				map.put(position, view);
 				
-				holder.selected.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+				holder.radioButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView,
 							boolean isChecked) {
 						
-						CheckBox cb = (CheckBox)buttonView;
+						RadioButton cb = (RadioButton)buttonView;
 						mChecked.set(p, cb.isChecked());
 					}
 				});
@@ -184,7 +163,7 @@ public class MultiChoices extends BaseActivity {
 			}
 			
 			Choice choice = choices.get(position);
-			holder.selected.setChecked(mChecked.get(position));
+			holder.radioButton.setChecked(mChecked.get(position));
 			holder.index.setText(String.valueOf(choice.getId()));
 			holder.choiceDesc.setText(choice.getChoiceDesc());
 			
@@ -194,7 +173,7 @@ public class MultiChoices extends BaseActivity {
     }
     
     static class ViewHolder{
-    	CheckBox selected;
+    	RadioButton radioButton;
     	TextView index;
     	TextView choiceDesc;
     }

@@ -2,6 +2,12 @@
 <resources>
     <string name="app_name">EexamClient</string>
     
+    <string name="msg_header_tv_home">Home</string>
+    
+    <string name="msg_header_tv_time_left">Time Left</string>
+    <!-- <string name="msg_header_tv_que_id">1 of 10</string> -->
+    <string name="msg_header_tv_progress">Answers</string>
+    
     <string name="msg_tv_id">ID:</string>
     <string name="msg_tv_password">Password:</string>
     
@@ -9,4 +15,8 @@
     <string name="msg_et_password_hint">Input Password</string>
     
     <string name="msg_btn_login">Login</string>
+    
+    <string name="msg_btn_pre">Previous</string>
+    <string name="msg_btn_next">Next</string>
+    
 </resources>

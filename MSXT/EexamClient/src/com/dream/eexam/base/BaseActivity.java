@@ -1,6 +1,6 @@
 package com.dream.eexam.base;
 
-import com.dream.exam.util.ActivityStackControlUtil;
+import com.dream.eexam.util.ActivityStackControlUtil;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -21,8 +21,8 @@ public class BaseActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.i(LOG_TAG,"onCreate()...");
 		super.onCreate(savedInstanceState);
+		Log.i(LOG_TAG,"onCreate()...");
 		ActivityStackControlUtil.add(this);
 		
 		//hide title bar
