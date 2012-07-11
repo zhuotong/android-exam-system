@@ -26,9 +26,6 @@ import com.dream.eexam.model.Choice;
 
 public class SingleChoices extends BaseActivity {
 
-	//Question Header
-	private TextView questionIndex = null;
-	
 	private TextView questionTV = null;
 	
 	//LinearLayout listLayout
@@ -59,9 +56,6 @@ public class SingleChoices extends BaseActivity {
     	choices.add(new Choice(6, "Oceania"));
     	choices.add(new Choice(7, "Others"));
         
-        //set question index
-        questionIndex = (TextView)findViewById(R.id.questionIndex);
-        questionIndex.setText("2 of 10");
         
         //set question text
         questionTV = (TextView)findViewById(R.id.questionTV);

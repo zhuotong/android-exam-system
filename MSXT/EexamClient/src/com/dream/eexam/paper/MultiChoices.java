@@ -21,14 +21,15 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.dream.eexam.base.BaseActivity;
+import com.dream.eexam.base.QuestionsAll;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.Choice;
 
 public class MultiChoices extends BaseActivity {
 
-	
-	//Question Header
-	private TextView questionIndex = null;
+	//set question sub header
+	private TextView currentTV = null;
+	private TextView allTV = null;
 	
 	private TextView questionTV = null;
 	
@@ -57,10 +58,30 @@ public class MultiChoices extends BaseActivity {
     	choices.add(new Choice(2, "malloc"));
     	choices.add(new Choice(3, "extends"));
     	choices.add(new Choice(4, "FALSE"));
- 
-        //set question index
-        questionIndex = (TextView)findViewById(R.id.questionIndex);
-        questionIndex.setText("1 of 10");
+
+        //set question text
+    	currentTV = (TextView)findViewById(R.id.header_tv_current);
+    	currentTV.setBackgroundColor(Color.parseColor("#4428FF"));
+    	currentTV.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//go to question 1
+				Intent intent = new Intent();
+				intent.setClass( mContext, MultiChoices.class);
+				startActivity(intent);
+			}
+		});
+        //set question text
+    	allTV = (TextView)findViewById(R.id.header_tv_all);
+    	allTV.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//go to question 1
+				Intent intent = new Intent();
+				intent.setClass( mContext, QuestionsAll.class);
+				startActivity(intent);
+			}
+		});
         
         //set question text
         questionTV = (TextView)findViewById(R.id.questionTV);

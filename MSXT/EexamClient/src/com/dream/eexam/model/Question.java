@@ -16,6 +16,10 @@ public class Question {
 	public void setQuestionDesc(String questionDesc) {
 		this.questionDesc = questionDesc;
 	}
-	
+	public Question(Integer id, String questionDesc) {
+		super();
+		this.id = id;
+		this.questionDesc = questionDesc;
+	}
 	
 }

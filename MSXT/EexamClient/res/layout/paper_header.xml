@@ -8,17 +8,19 @@
          android:layout_height="fill_parent">
          
 	 <TextView
-        android:text="@string/msg_header_tv_time_left"
+	    android:id="@+id/header_tv_current"
+        android:text="@string/msg_header_tv_current"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_gravity="center_vertical|center_horizontal"
         android:gravity="center_vertical|center_horizontal"
         android:layout_weight="1"
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:background="@drawable/bg_color_paper_header_text_view"/>
      <TextView
-        android:id="@+id/questionIndex"
+        android:id="@+id/header_tv_all"
+        android:text="@string/msg_header_tv_all"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1" 
@@ -26,10 +28,11 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:gravity="center_vertical|center_horizontal"
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:background="@drawable/bg_color_paper_header_text_view"/>
      <TextView
-        android:text="@string/msg_header_tv_progress"
+        android:id="@+id/header_tv_waiting"
+        android:text="@string/msg_header_tv_waiting"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1" 
@@ -37,7 +40,7 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:gravity="center_vertical|center_horizontal"
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:background="@drawable/bg_color_paper_header_text_view"/>
 		            
     </TableRow>
