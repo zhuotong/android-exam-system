@@ -62,7 +62,7 @@ public class QuestionSearcher extends PageableSearcher {
 	public void doSearch() {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<Question> cquery = builder.createQuery(Question.class);
-		if( searchCriteria.getPositionId()!=null ) {
+		if( searchCriteria.getPositionId()!=null && searchCriteria.getPositionId().length()>0 ) {
 	        Root<PositionQuestion> rp = cquery.from(PositionQuestion.class);
 	        Path<Question> qp = rp.get(PositionQuestion_.question);
 	        
@@ -82,7 +82,7 @@ public class QuestionSearcher extends PageableSearcher {
 	        Predicate p1 = builder.or(
 					builder.like( builder.lower( qp.get(Question_.name) ), searchCriteria.getSearchPattern() ),
 					builder.like( builder.lower( qp.get(Question_.content) ), searchCriteria.getSearchPattern() ) );	        
-	        if( searchCriteria.getQuestionTypeId()!=null ) {
+	        if( searchCriteria.getQuestionTypeId()!=null && searchCriteria.getQuestionTypeId().length()>0 ) {
 	        	Predicate p3 = builder.equal( qp.get(Question_.questionType).get(QuestionType_.id), searchCriteria.getQuestionTypeId() );
 	        	cquery.select( qp ).where( p1, p3);
 	        } else {
