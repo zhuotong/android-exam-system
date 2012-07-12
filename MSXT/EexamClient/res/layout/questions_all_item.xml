@@ -4,19 +4,33 @@
   android:layout_width="fill_parent"
   android:layout_height="fill_parent">
 
-	  <TextView
-	     android:id="@+id/list.index"
-	     android:layout_width="wrap_content"
-	     android:layout_height="wrap_content"
-	     android:textSize="20sp"
-	     android:textColor="#FFFFFF"
-	     android:layout_weight="1"/>
-	  <TextView
-	     android:id="@+id/list.questionDesc"
-	     android:layout_width="wrap_content"
-	     android:layout_height="wrap_content"
-	     android:layout_marginLeft="3dp"
-	     android:textSize="20sp"
-	     android:textColor="#FFFFFF"
-	     android:layout_weight="4"/>
+    <TableLayout android:layout_width="fill_parent"
+	        android:layout_height="wrap_content">
+	     <TableRow
+	        android:id="@+id/tr1" 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content">
+		 	 <TextView
+			     android:id="@+id/list.questionDesc"
+			     android:layout_width="fill_parent"
+			     android:layout_height="wrap_content"
+			     android:layout_marginLeft="3dp"
+			     android:textSize="18sp"
+			     android:textColor="#FFFFFF"/>       
+	    </TableRow>
+	    
+	    <TableRow
+	        android:id="@+id/tr2"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content">
+	  	  <TextView
+		     android:id="@+id/list.answerDesc"
+		     android:layout_width="fill_parent"
+		     android:layout_height="wrap_content"
+		     android:layout_marginLeft="18dp"
+		     android:textSize="10sp"
+		     android:textColor="#EFDD86"/>        
+	    </TableRow>       
+    </TableLayout>
+
 </LinearLayout>

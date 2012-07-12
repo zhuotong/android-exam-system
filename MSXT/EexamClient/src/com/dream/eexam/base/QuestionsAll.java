@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import com.dream.eexam.base.BaseActivity;
 import com.dream.eexam.base.R;
-import com.dream.eexam.model.Question;
+import com.dream.eexam.model.Answer;
 import com.dream.eexam.paper.MultiChoices;
 
 public class QuestionsAll extends BaseActivity {
@@ -26,11 +26,12 @@ public class QuestionsAll extends BaseActivity {
 	//set question sub header
 	private TextView currentTV = null;
 	private TextView allTV = null;
+	private TextView waitTV = null;
 	
 	//LinearLayout listLayout
 	ListView listView;
 	
-	List<Question> questions = new ArrayList<Question>();
+	List<Answer> answers = new ArrayList<Answer>();
 	Context mContext;
 	MyListAdapter adapter;
 	
@@ -41,17 +42,17 @@ public class QuestionsAll extends BaseActivity {
         mContext = getApplicationContext();
         
         //hard code data
-        questions.add(new Question(1, "Which of the following are Java..."));
-        questions.add(new Question(2, "Which of the following are Java..."));
-        questions.add(new Question(3, "Which of the following are Java..."));
-        questions.add(new Question(4, "Which of the following are Java..."));
-        questions.add(new Question(5, "Which of the following are Java..."));
-        questions.add(new Question(6, "Which of the following are Java..."));
-        questions.add(new Question(7, "Which of the following are Java..."));
-        questions.add(new Question(8, "Which of the following are Java..."));
-        questions.add(new Question(9, "Which of the following are Java..."));
-        questions.add(new Question(10, "Which of the following are Java..."));
-
+        answers.add(new Answer(1, 1,"A,B"));
+        answers.add(new Answer(2, 2,"A"));
+        answers.add(new Answer(3, 3,"C,D"));
+        answers.add(new Answer(4, 4,"A,C,D"));
+        answers.add(new Answer(5, 5,"B"));
+        answers.add(new Answer(6, 6,"D,E"));
+        answers.add(new Answer(7, 7,"E"));
+        answers.add(new Answer(8, 8,"A,B,E"));
+        answers.add(new Answer(9, 9,"C"));
+        answers.add(new Answer(10, 10,"D"));
+        
         //set question text
     	currentTV = (TextView)findViewById(R.id.header_tv_current);
     	currentTV.setOnClickListener(new View.OnClickListener() {
@@ -75,11 +76,23 @@ public class QuestionsAll extends BaseActivity {
 				startActivity(intent);
 			}
 		});
+    	
+        //set question text
+    	waitTV = (TextView)findViewById(R.id.header_tv_waiting);
+    	waitTV.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//go to question 1
+				Intent intent = new Intent();
+				intent.setClass( mContext, QuestionsWaiting.class);
+				startActivity(intent);
+			}
+		});  
         
         
         //set List
         listView = (ListView)findViewById(R.id.questionsAll);
-        adapter = new MyListAdapter(questions);
+        adapter = new MyListAdapter(answers);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new OnItemClickListener(){
         	@Override
@@ -91,22 +104,22 @@ public class QuestionsAll extends BaseActivity {
     }
     
     class MyListAdapter extends BaseAdapter{
-    	List<Question> questions = new ArrayList<Question>();
+    	List<Answer> answers = new ArrayList<Answer>();
     	
 		HashMap<Integer,View> map = new HashMap<Integer,View>(); 
     	
-    	public MyListAdapter(List<Question> questions){
-    		this.questions = questions;
+    	public MyListAdapter(List<Answer> answers){
+    		this.answers = answers;
     	}
 
 		@Override
 		public int getCount() {
-			return questions.size();
+			return answers.size();
 		}
 
 		@Override
 		public Object getItem(int position) {
-			return questions.get(position);
+			return answers.get(position);
 		}
 
 		@Override
@@ -127,10 +140,11 @@ public class QuestionsAll extends BaseActivity {
 				holder = new ViewHolder();
 				
 				//set 3 component 
-				holder.index = (TextView)view.findViewById(R.id.list_index);
+//				holder.index = (TextView)view.findViewById(R.id.list_index);
 				holder.questionDesc = (TextView)view.findViewById(R.id.list_questionDesc);
+				holder.answerDesc = (TextView)view.findViewById(R.id.list_answerDesc);
 				
-				final int p = position;
+//				final int p = position;
 				map.put(position, view);
 				
 				view.setTag(holder);
@@ -140,9 +154,10 @@ public class QuestionsAll extends BaseActivity {
 				holder = (ViewHolder)view.getTag();
 			}
 			
-			Question question = questions.get(position);
-			holder.index.setText(String.valueOf(question.getId()));
-			holder.questionDesc.setText(question.getQuestionDesc());
+			Answer answer = answers.get(position);
+//			holder.index.setText(String.valueOf(answer.getId()));
+			holder.questionDesc.setText(answer.getQuestionId()+" Q:");
+			holder.answerDesc.setText("A:("+answer.getChoiceIdsString()+")");
 			
 			return view;
 		}
@@ -150,8 +165,9 @@ public class QuestionsAll extends BaseActivity {
     }
 
     static class ViewHolder{
-    	TextView index;
+//    	TextView index;
     	TextView questionDesc;
+    	TextView answerDesc;
     }
  
 }
