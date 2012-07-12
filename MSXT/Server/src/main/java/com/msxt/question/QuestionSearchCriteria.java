@@ -1,6 +1,5 @@
 package com.msxt.question;
 
-
 import com.msxt.common.FoggySearchCriteria;
 
 public class QuestionSearchCriteria extends FoggySearchCriteria {
