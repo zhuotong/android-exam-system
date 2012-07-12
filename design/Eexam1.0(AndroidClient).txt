@@ -51,6 +51,9 @@ A full score
 B tester's score
 C time cosume
 
+discuss: if client crashed or server crashed,solution?
+
+
 
 
 
