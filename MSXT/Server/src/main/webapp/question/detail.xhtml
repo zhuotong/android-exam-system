@@ -11,26 +11,33 @@
     <ui:define name="metadata">
         <f:metadata>
             <f:viewParam name="id" value="#{id}"/>
-            <s:viewAction action="#{positionAgent.selectPosition(id)}"/>
+            <s:viewAction action="#{questionAgent.selectQuestion(id)}"/>
         </f:metadata>
     </ui:define>
 
     <ui:define name="content">
 
         <div class="section">
-            <h1>Position Details</h1>
+            <h1>Question Details</h1>
         </div>
 
         <div class="section">
             <div>
             	<h:panelGrid columns="2">
-            		<h:outputLabel value="Position Name"/><h:outputText value="${selectedPosition.name}"/>
-            		<h:outputLabel value="Next Position Name"/><h:outputText value="${selectedPosition.nextPosition.name}"/>
+            		<h:outputLabel value="Type"/><h:outputText value="${questionAgent.selectedQuestion.questionType.name}"/>
+            		<h:outputLabel value="Name"/><h:outputText value="${questionAgent.selectedQuestion.name}"/>
+            		<h:outputLabel value="Title"/><h:outputText value="${questionAgent.selectedQuestion.content}" escape="true"/>
+            		<h:outputLabel value="Choice Items" rendered="#{not empty questionAgent.choiceItems}"/>
+            		<h:dataTable id="questions" value="#{questionAgent.choiceItems}" var="_citem" border="0">
+                        <h:column>
+                            <h:outputText value="${_citem.labelName}"/>.&nbps;<h:outputText value="${_citem.content}"/>
+                        </h:column>
+                    </h:dataTable>
             	</h:panelGrid>
             </div>
             <div class="buttonBox">
                 <h:form id="actions">
-                	<h:button id="cancel" value="Return" outcome="/position/search.xhtml"/>
+                	<h:button id="cancel" value="Return" outcome="/question/search.xhtml"/>
                 </h:form>
             </div>
 

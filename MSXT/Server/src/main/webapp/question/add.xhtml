@@ -9,18 +9,19 @@
                 template="/WEB-INF/layout/template.xhtml">
 	<ui:define name="head">
         <script type="text/javascript">
+      		//<![CDATA[
             function typeChanged( type ) {
             	var option = type.options[type.selectedIndex];
-                if( option.label == "Choice" )
-                	document.getElementById("choiceItem").style.display="";
-                else
-                	document.getElementById("choiceItem").style.display="none";
+                if( option.label == 'Choice' )
+                	document.getElementById('choiceItem').style.display='';
+            	else 
+                	document.getElementById('choiceItem').style.display='none';
             }
             
             function addChoiceItem(){
             	var choiceItemsTable = document.getElementById('choiceItemsTable');
             	choiceItemsTable.innerHTML= choiceItemsTable.innerHTML
-            	                           + '<tr><td width="20%"><input type="text"/></td><td><input type="text" width="60%"/></td><td width="20%"><input type="button" value="Delete" onclick="deleteChoiceItem(this);"/></td></tr>';
+            	                           + '<tr><td width="20%"><input name="clabel" type="text"/></td><td width="60%"><input name="citem" type="text"/></td><td width="20%"><input type="button" value="Delete" onclick="deleteChoiceItem(this);"/></td></tr>';
             }
             
             function deleteChoiceItem( btn ){
@@ -28,8 +29,49 @@
             	var choiceItemsTable = document.getElementById('choiceItemsTable');
             	choiceItemsTable.removeChild(tr);
             }
+            
+            function setChoiceItems(){
+            	var type  = document.getElementById( 'typeId' );
+            	var option = type.options[type.selectedIndex];
+                if( option.label == 'Choice' ) {
+					var clabels = document.getElementsByName('clabel');
+					var citems = document.getElementsByName('citem');
+					if( clabels.length==0 ) {
+						alert('Please add choice item!!!');
+						return false;
+					} else {
+						var clabelsValue = '';
+						var citemsValue = '';	
+						for( var i=0; i < clabels.length; i++ ) {
+							if( clabels[i].value=='' ) {
+								alert('Please set choice label!!!');
+								return false;
+							}	
+							
+							if( citems[i].value=='' ) {
+								alert('Please set choice item!!!');
+								return false;
+							}
+							
+							
+							if( i==0 ) {
+								clabelsValue = clabels[i].value; 
+								citemsValue = citems[i].value;
+							} else {
+								clabelsValue = clabelsValue + '|#|' + clabels[i].value;
+								citemsValue = citemsValue + '|#|' + citems[i].value;
+							}
+						}	
+					}
+					document.getElementById('inputChoiceLabels').value=clabelsValue;
+					document.getElementById('inputChoiceItems').value=citemsValue;
+                }
+                return true;
+            }
+          	//]]>
         </script>
     </ui:define>
+    
     <ui:param name="pageClass" value="home"/>
 
     <ui:define name="content">
@@ -44,7 +86,7 @@
                 <h:messages id="messages" globalOnly="true"/>
             </div>
 
-            <h:form id="regForm" prependId="false">
+            <h:form id="regForm" prependId="false" onsubmit="return setChoiceItems();">
                 <fieldset>
                 	<div>
                 	<table>
@@ -74,6 +116,8 @@
                 	</table>
                 	</div>
                 	<div id="choiceItem" style="display: none">
+                	<h:inputHidden id="inputChoiceLabels" value="#{questionCreator.choiceLabels}"/>
+                	<h:inputHidden id="inputChoiceItems" value="#{questionCreator.choiceItems}"/>
                 	<table id="choiceItemsTable">
                 		<tr>
                 			<td>Label</td>

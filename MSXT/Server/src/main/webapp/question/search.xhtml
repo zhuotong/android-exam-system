@@ -4,21 +4,8 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-                template="/WEB-INF/layout/template.xhtml">
-    <ui:define name="head">
-        <script type="text/javascript">
-            function controlSpinner(behavior) {
-                if (behavior.status == 'begin') {
-                    document.getElementById('spinner').style.display = 'inline';
-                } else if (behavior.status == 'complete') {
-                    document.getElementById('spinner').style.display = 'none';
-                }
-            }
-        </script>
-    </ui:define>
-	
+                template="/WEB-INF/layout/template.xhtml">	
     <ui:define name="content">
-
         <div class="section">
          <span class="errors">
             <h:messages id="messages" globalOnly="true"/>
@@ -26,26 +13,21 @@
          <h:form id="searchForm" prependId="false">
              <fieldset>
                  Question Type:
-                 <h:selectOneMenu id="questionTypeInput" value="#{questionSearcher.searchCriteria.questionTypeId}">
+                 <h:selectOneMenu value="#{questionSearcher.searchCriteria.questionTypeId}">
                   	<f:selectItem itemValue="#{null}" itemLabel="Select..." noSelectionOption="true"/>
                     <f:selectItems value="#{questionTypeCreator.existingQuestionTypes}" var="ep" itemLabel="#{ep.name}" itemValue="#{ep.id}"/>
                  </h:selectOneMenu>
                  Position:
-               	 <h:selectOneMenu id="positionInput" value="#{questionSearcher.searchCriteria.positionId}">
+               	 <h:selectOneMenu value="#{questionSearcher.searchCriteria.positionId}">
                    	<f:selectItem itemValue="#{null}" itemLabel="Select..." noSelectionOption="true"/>
                     <f:selectItems value="#{positionCreator.existingPositions}" var="ep" itemLabel="#{ep.name}" itemValue="#{ep.id}"/>
                  </h:selectOneMenu>	
                  
-                 <h:inputText id="query" value="#{questionTypeSearcher.searchCriteria.query}" style="width: 165px;" autocomplete="off">
-                     <f:ajax event="keyup" listener="#{questionTypeSearcher.find}" render=":searchResults" onevent="controlSpinner"/>
-                 </h:inputText>
+                 <h:inputText id="query" value="#{questionSearcher.searchCriteria.query}" style="width: 165px;" autocomplete="off"/>
                  &nbsp;
-                 <h:commandButton id="searchButtion" value="Search" action="#{questionTypeSearcher.find}">
-                     <f:ajax render=":searchResults" onevent="controlSpinner"/>
-                 </h:commandButton>
+                 <h:commandButton id="searchButtion" value="Search" action="#{questionSearcher.find}"/>
                  &nbsp;
                  <h:commandButton id="addButtion" value="Add" action="add"/>
-                 <span id="activity"><h:graphicImage id="spinner" value="/img/spinner.gif" style="display: none;"/></span>
              </fieldset>
          </h:form>
         </div>
@@ -59,19 +41,20 @@
                             <f:facet id="nameFct" name="header">Name</f:facet>
                             #{_question.name}
                         </h:column>
-                        <h:column id="contentCol">
-                            <f:facet id="addrFct" name="header">Rendener</f:facet>
-                            #{_question.content}
-                        </h:column>
                         <h:column id="typeCol">
-                            <f:facet id="addrFct" name="header">Parent Type</f:facet>
+                            <f:facet id="addrFct" name="header">Type</f:facet>
                             #{_question.questionType.name}
                         </h:column>
                         <h:column id="actCol">
                             <f:facet id="actFct" name="header">Action</f:facet>
-                            <h:link id="view" value="View" outcome="/question/type/detail" style="white-space: nowrap;">
+                            <h:link value="View" outcome="/question/detail" style="white-space: nowrap;">
                                 <f:param name="id" value="#{_question.id}"/>
                             </h:link>
+                             &nbsp;
+                            <h:link value="Edit" outcome="/question/edit" style="white-space: nowrap;">
+                                <f:param name="id" value="#{_question.id}"/>
+                            </h:link>
+                             &nbsp;
                      		<h:commandButton id="delete" value="Delete" action="#{questionTypeAgent.deleteQuestionType(_question.id)}"/>
                         </h:column>
                     </h:dataTable>
