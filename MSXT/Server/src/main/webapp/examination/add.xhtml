@@ -1,0 +1,71 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:s="http://jboss.org/seam/faces"
+                xmlns:p="http://java.sun.com/jsf/composite/components/property"
+                template="/WEB-INF/layout/template.xhtml">
+	<ui:define name="head">
+        <script type="text/javascript">
+      		//<![CDATA[
+      			function addCatalog(){
+      				var cdiv = document.getElementById('catalogs');
+      				var ctable = document.createElement('table');
+      				ctable.innerHTML = 	'<tr>' + 
+						        		'	<td width="20%">Catalog Name</td>' +
+						        		'	<td width="80%"><input type="button" value="Delete" onclick="deleteCatalog(this);" align="right"/></td>' +
+						        		'</tr>' +
+						        		'<tr>' +
+						        		'	<td width="20%">Catalog Description</td>' +
+						        		'	<td width="80%"></td>' +
+						        		'</tr>' +
+						        		'<tr>' +
+						        		'	<td width="20%">Question</td>' +
+						        		'	<td width="80%"></td>' +
+						        		'</tr>';
+      				cdiv.appendChild( ctable );
+      			}
+      			
+      			function deleteCatalog( ct ){
+      				var cdiv = document.getElementById('catalogs');
+      				cdiv.removeChild( ct.parentElement.parentElement.parentElement.parentElement );
+      			}
+          	//]]>
+        </script>
+    </ui:define>
+    
+    <ui:define name="content">
+
+        <div class="section">
+            <h1>Create Examination</h1>
+        </div>
+
+        <div class="section">
+
+            <div class="errors">
+                <h:messages id="messages" globalOnly="true"/>
+            </div>
+
+            <h:form id="regForm" prependId="false" onsubmit="return setChoiceItems();">
+                <fieldset>
+                	<table>
+                		<tr>
+                			<td width="20%">Position</td>
+                			<td width="60%"></td>
+                			<td width="20%"><input type="button" value="Add Catalog" onclick="addCatalog();" align="right"/></td>
+                		</tr>	
+	                </table>	
+                	<div id="catalogs">
+                	</div>
+                </fieldset>
+                <div class="buttonBox">
+                    <h:commandButton id="create" value="Create" action="#{examCreator.create}"/>
+                    &nbsp;
+                    <h:button id="cancel" value="Cancel" outcome="/examination/search.xhtml"/>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
