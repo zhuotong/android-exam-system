@@ -6,11 +6,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Version;
 
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
+@Table(name="question_choice_item")
 public class QuestionChoiceItem {
 	@Id
 	@Column(name="ID")
@@ -31,7 +33,7 @@ public class QuestionChoiceItem {
 	@Column(name="content")
 	private String content;
 	
-	@Column(name="index")
+	@Column(name="idx")
 	private int index;
 	
 	public String getId() {
