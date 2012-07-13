@@ -1,131 +1,78 @@
 package com.dream.eexam.base;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.dream.eexam.model.Paper;
 import com.dream.eexam.paper.MultiChoices;
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.GridView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Spinner;
 import android.widget.TextView;
 
-public class PapersActivity extends BaseActivity{
-	private static final String LOG_TAG = "PapersActivity";
+public class PapersActivity extends BaseActivity {
+	private static final String LOG_TAG = "SessionsDemoVote";
 	
-	MyAdapter myAdapter;
-	private Context mContext;  
-    private GridView mGridView; 
-    private List<Paper> papers = new ArrayList<Paper>();
-    
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.papers);
-        
-        mContext = this;
-        
-        for(int i=1;i<20;i++){
-        	papers.add(new Paper(i+1));
-        }
-        
-		mGridView = (GridView) findViewById(R.id.gridview);
-		myAdapter = new MyAdapter();
-		mGridView.setAdapter(myAdapter);  
-		mGridView.setOnItemClickListener(new ItemClickListener());
-    }
-    
-	class ItemClickListener implements OnItemClickListener {
-		public void onItemClick(AdapterView<?> arg0,// The AdapterView where the // click happened
-				View arg1,// The view within the AdapterView that was clicked
-				int arg2,// The position of the view in the adapter
-				long arg3){// The row id of the item that was clicked
-			Log.i(LOG_TAG,"onItemClick");
-			Log.i(LOG_TAG,"arg2="+arg2);
-			Log.i(LOG_TAG,"arg3="+arg3);
-			
+	private TextView spinnerText = null;
+	private TextView spinnerText2 = null;
+	private TextView spinnerText3 = null;
+	
+	private String[] exams = {"SCJP1","SCJP2","SCJP2","SCJP3","SCJP4"};
+	private Spinner spinner;
+	private ArrayAdapter<String> adapter;
+	
+	private Button startBtn;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		Log.i(LOG_TAG,"onCreate()...");
+		
+		setContentView(R.layout.papers);
+		
+		spinnerText = (TextView) this.findViewById(R.id.spinnerText);
+		spinnerText.setText("You applied job title:");
+		
+		spinnerText2 = (TextView) this.findViewById(R.id.spinnerText2);
+		spinnerText2.setText("Java Software Engineer");
+		
+		spinnerText3 = (TextView) this.findViewById(R.id.spinnerText3);
+		spinnerText3.setText("Choose 1 from below paper list:");
+		
+		spinner = (Spinner) findViewById(R.id.Spinner01);
+		
+		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,exams);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner.setAdapter(adapter);
+		spinner.setOnItemSelectedListener(new SpinnerSelectedListener());
+		spinner.setVisibility(View.VISIBLE);
+		
+		startBtn = (Button) findViewById(R.id.startBtn);
+		startBtn.setText("Start");
+		startBtn.setOnClickListener(new Button.OnClickListener() {
+			public void onClick(View v) {
+				
+				//go to question 1
+				Intent intent = new Intent();
+				intent.setClass( getBaseContext(), MultiChoices.class);
+				startActivity(intent);
+			}			
+		});
+		
+	}
+	
+	
+	class SpinnerSelectedListener implements OnItemSelectedListener{
+		public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
+				long arg3) {
+//			selectedSession = demoSessions[arg2];
 
-			
+		}
+		public void onNothingSelected(AdapterView<?> arg0) {
 		}
 	}
-    
-    //define MayAdapter
-    class MyAdapter extends BaseAdapter{  
-        private LayoutInflater mInflater;  
-          
-        public MyAdapter(){  
-            mInflater = LayoutInflater.from(mContext);  
-        }  
-  
-        @Override  
-        public int getCount() {  
-            // TODO Auto-generated method stub  
-            return papers.size();  
-        }  
-  
-        @Override  
-        public Object getItem(int arg0) {  
-            // TODO Auto-generated method stub  
-            return papers.get(arg0);  
-        }  
-  
-        @Override  
-        public long getItemId(int arg0) {  
-            // TODO Auto-generated method stub  
-            return arg0;  
-        }  
-  
-        @Override  
-        public View getView(int position, View convertView, ViewGroup parent) {  
-        	Log.i(LOG_TAG,"getView()..."+" position="+position);
-        	
-        	ViewHold holder;  
-            if (convertView == null){  
-                holder = new ViewHold();  
-                convertView = mInflater.inflate(R.layout.papers_item, null);  
-                holder.paperBtn = (Button) convertView.findViewById(R.id.paperBtn); 
-                holder.paperTV = (TextView) convertView.findViewById(R.id.paperTV);  
-                convertView.setTag(holder);  
-            }else {  
-                holder = (ViewHold) convertView.getTag();  
-            }  
-            
-//            holder.paperBtn.setText("Paper "+position);  
-            holder.paperTV.setText("Paper "+position);
-            
-            final int p = position;
-            holder.paperBtn.setOnClickListener(new Button.OnClickListener() {
-    			public void onClick(View v) {
-    				sendAnswertoServer(p);
-    				
-    				//go to question 1
-    				Intent intent = new Intent();
-    				intent.setClass( mContext, MultiChoices.class);
-    				startActivity(intent);
-    			}
-    		});
-            
-            return convertView;  
-        }  
-          
-    }  
-      
-    class ViewHold{  
-    	Button paperBtn;  
-    	TextView paperTV; 
-    } 
-
-    public void sendAnswertoServer(Integer answerIndex){
-
-    }
+	
 }

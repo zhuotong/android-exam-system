@@ -25,6 +25,7 @@ import com.dream.eexam.base.QuestionsAll;
 import com.dream.eexam.base.QuestionsWaiting;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.Choice;
+import com.dream.eexam.model.Question;
 
 public class SingleChoices extends BaseActivity {
 
@@ -41,6 +42,7 @@ public class SingleChoices extends BaseActivity {
 	//LinearLayout listFooter
 	private Button preBtn;
 	
+	private Question question;
 	List<Choice> choices = new ArrayList<Choice>();
 	
 	Context mContext;
@@ -53,6 +55,14 @@ public class SingleChoices extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.paper_single_choices);
         mContext = getApplicationContext();
+        
+        //hard code data
+        List<Choice> choices = new ArrayList<Choice>();
+    	choices.add(new Choice("A", "22"));
+    	choices.add(new Choice("B", "78"));
+    	choices.add(new Choice("C", "1"));
+    	choices.add(new Choice("D", "100"));
+        question = new Question(1,0, "What is the result? ",choices);
         
         //set question text
     	currentTV = (TextView)findViewById(R.id.header_tv_current);
@@ -90,21 +100,9 @@ public class SingleChoices extends BaseActivity {
 			}
 		});
     	
-        //hard code data
-    	choices.add(new Choice(1, "Asia"));
-    	choices.add(new Choice(2, "Africa"));
-    	choices.add(new Choice(3, "North America"));
-    	choices.add(new Choice(4, "South America"));
-    	choices.add(new Choice(5, "Europe"));
-    	choices.add(new Choice(6, "Oceania"));
-    	choices.add(new Choice(7, "Others"));
-    	
-    	
-        
-        
         //set question text
         questionTV = (TextView)findViewById(R.id.questionTV);
-        questionTV.setText("Q2:Where are you from?");
+        questionTV.setText(question.getQuestionDesc());
         questionTV.setTextColor(Color.BLACK);
         
         //set List
@@ -203,7 +201,7 @@ public class SingleChoices extends BaseActivity {
 			
 			Choice choice = choices.get(position);
 			holder.radioButton.setChecked(mChecked.get(position));
-			holder.index.setText(String.valueOf(choice.getId()));
+			holder.index.setText(String.valueOf(choice.getChoiceIndex()));
 			holder.choiceDesc.setText(choice.getChoiceDesc());
 			
 			return view;

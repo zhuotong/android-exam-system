@@ -1,15 +1,16 @@
 package com.dream.eexam.model;
 
 public class Choice {
-	private Integer id;
+	private String choiceIndex;
 	private String choiceDesc;
 	
-	public Integer getId() {
-		return id;
+	public String getChoiceIndex() {
+		return choiceIndex;
 	}
-	public void setId(Integer id) {
-		this.id = id;
+	public void setChoiceIndex(String choiceIndex) {
+		this.choiceIndex = choiceIndex;
 	}
+	
 	public String getChoiceDesc() {
 		return choiceDesc;
 	}
@@ -17,12 +18,10 @@ public class Choice {
 		this.choiceDesc = choiceDesc;
 	}
 	
-	public Choice(Integer id, String choiceDesc) {
+	public Choice(String choiceIndex, String choiceDesc) {
 		super();
-		this.id = id;
+		this.choiceIndex = choiceIndex;
 		this.choiceDesc = choiceDesc;
-	}
-	
-	
+	}	
 	
 }

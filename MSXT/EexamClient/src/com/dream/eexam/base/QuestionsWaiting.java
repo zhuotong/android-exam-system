@@ -45,11 +45,6 @@ public class QuestionsWaiting extends BaseActivity {
         answers.add(new Answer(3, 3,"C,D"));
         answers.add(new Answer(4, 4,"A,C,D"));
         answers.add(new Answer(5, 5,"B"));
-        answers.add(new Answer(6, 6,"D,E"));
-        answers.add(new Answer(7, 7,"E"));
-        answers.add(new Answer(8, 8,"A,B,E"));
-        answers.add(new Answer(9, 9,"C"));
-        answers.add(new Answer(10, 10,"D"));
         
         //set question text
     	currentTV = (TextView)findViewById(R.id.header_tv_current);
@@ -94,7 +89,14 @@ public class QuestionsWaiting extends BaseActivity {
         	@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int arg2,
 					long arg3) {
-
+        		
+				//go to question 1
+				Intent intent = new Intent();
+				//if question type is 0
+//				intent.setClass( mContext, SingleChoices.class);
+				
+				//if question type is 1
+				intent.setClass( mContext, MultiChoices.class);
 			}      	
         });
     }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paper>
+	<question id="1" type="1" name="which of the following are java keywords">
+		<choice id="A">goto</choice>
+		<choice id="B">malloc</choice>
+		<choice id="C">extends</choice>
+		<choice id="D">false</choice>
+	</question>
+	
+	<question id="2" type="1" name="How to calculate cosine 42 degree?">
+		<choice id="A">12</choice>
+		<choice id="B">12</choice>
+		<choice id="C">AD</choice>
+		<choice id="D">BC</choice>
+	</question>
+	
+	<question id="3" type="0" name="Which two statements are reserved words in Java?">
+		<choice id="A">a</choice>
+		<choice id="B">b</choice>
+		<choice id="C">c</choice>
+		<choice id="D">d</choice>
+	</question>
+	
+	<question id="4" type="0" name="Which are valid identifiers?">
+		<choice id="A">a</choice>
+		<choice id="B">b</choice>
+		<choice id="C">c</choice>
+		<choice id="D">d</choice>
+	</question>
+	
+	<question id="5" type="0" name="True or False,Readers have methods that can read and return floats and doubles?">
+		<choice id="A">a</choice>
+		<choice id="B">b</choice>
+		<choice id="C">c</choice>
+		<choice id="D">d</choice>
+	</question>
+</paper>

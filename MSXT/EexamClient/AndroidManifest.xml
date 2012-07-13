@@ -20,10 +20,6 @@
      	<activity android:name=".PapersActivity"
                   android:launchMode="singleTask">
         </activity>
-        
-        <activity android:name=".SessionsDemoVote"
-                  android:launchMode="singleTask">
-        </activity>  
 
      	<activity android:name="com.dream.eexam.paper.MultiChoices"
                   android:launchMode="singleTask">

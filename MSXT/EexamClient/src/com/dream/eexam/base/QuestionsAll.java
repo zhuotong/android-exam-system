@@ -19,6 +19,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.dream.eexam.base.BaseActivity;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.Answer;
+import com.dream.eexam.model.Question;
 import com.dream.eexam.paper.MultiChoices;
 
 public class QuestionsAll extends BaseActivity {
@@ -31,6 +32,8 @@ public class QuestionsAll extends BaseActivity {
 	//LinearLayout listLayout
 	ListView listView;
 	
+	Integer queCount = 0;
+	List<Question> questions = new ArrayList<Question>();
 	List<Answer> answers = new ArrayList<Answer>();
 	Context mContext;
 	MyListAdapter adapter;
@@ -40,18 +43,22 @@ public class QuestionsAll extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.questions_all);
         mContext = getApplicationContext();
+
+        //hard code data
+        questions.add(new Question(1,1,"Which of the following are Java keywords?"));
+        questions.add(new Question(2,1, "How to calculate cosine 42 degree?"));
+        questions.add(new Question(3,0,"Which two statements are reserved words in Java? (Choose Two)"));
+        questions.add(new Question(4,1, "Which are valid identifiers?"));
+        questions.add(new Question(5,1, "True or False: Readers have methods that can read and return floats and doubles?"));
         
+        queCount = questions.size();
+
         //hard code data
         answers.add(new Answer(1, 1,"A,B"));
         answers.add(new Answer(2, 2,"A"));
         answers.add(new Answer(3, 3,"C,D"));
         answers.add(new Answer(4, 4,"A,C,D"));
         answers.add(new Answer(5, 5,"B"));
-        answers.add(new Answer(6, 6,"D,E"));
-        answers.add(new Answer(7, 7,"E"));
-        answers.add(new Answer(8, 8,"A,B,E"));
-        answers.add(new Answer(9, 9,"C"));
-        answers.add(new Answer(10, 10,"D"));
         
         //set question text
     	currentTV = (TextView)findViewById(R.id.header_tv_current);
@@ -64,9 +71,12 @@ public class QuestionsAll extends BaseActivity {
 				startActivity(intent);
 			}
 		});
+    	
+    	
         //set question text
     	allTV = (TextView)findViewById(R.id.header_tv_all);
     	allTV.setBackgroundColor(Color.parseColor("#4428FF"));
+    	allTV.setText("All("+ String.valueOf(queCount) + ")");
     	allTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -79,6 +89,7 @@ public class QuestionsAll extends BaseActivity {
     	
         //set question text
     	waitTV = (TextView)findViewById(R.id.header_tv_waiting);
+    	waitTV.setText("Waiting("+ String.valueOf(queCount) + ")");
     	waitTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -98,7 +109,15 @@ public class QuestionsAll extends BaseActivity {
         	@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int arg2,
 					long arg3) {
-
+				//go to question 1
+				Intent intent = new Intent();
+				//if question type is 0
+//				intent.setClass( mContext, SingleChoices.class);
+				
+				//if question type is 1
+				intent.setClass( mContext, MultiChoices.class);
+				
+				startActivity(intent);
 			}      	
         });
     }

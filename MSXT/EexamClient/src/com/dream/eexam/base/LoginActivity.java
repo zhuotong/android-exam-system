@@ -23,7 +23,7 @@ public class LoginActivity extends BaseActivity {
 		loginBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = new Intent();
-				intent.setClass( getBaseContext(), SessionsDemoVote.class);
+				intent.setClass( getBaseContext(), PapersActivity.class);
 				startActivity(intent);
 			}			
 		});

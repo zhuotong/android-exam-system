@@ -25,6 +25,7 @@ import com.dream.eexam.base.QuestionsAll;
 import com.dream.eexam.base.QuestionsWaiting;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.Choice;
+import com.dream.eexam.model.Question;
 
 public class MultiChoices extends BaseActivity {
 
@@ -42,7 +43,7 @@ public class MultiChoices extends BaseActivity {
 	private Button preBtn;
 	private Button nextBtn;
 	
-	List<Choice> choices = new ArrayList<Choice>();
+	private Question question;
 	
 	Context mContext;
 	MyListAdapter adapter;
@@ -54,12 +55,14 @@ public class MultiChoices extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.paper_multi_choices);
         mContext = getApplicationContext();
-        
+
         //hard code data
-    	choices.add(new Choice(1, "goto"));
-    	choices.add(new Choice(2, "malloc"));
-    	choices.add(new Choice(3, "extends"));
-    	choices.add(new Choice(4, "FALSE"));
+        List<Choice> choices = new ArrayList<Choice>();
+    	choices.add(new Choice("A", "goto"));
+    	choices.add(new Choice("B", "malloc"));
+    	choices.add(new Choice("C", "extends"));
+    	choices.add(new Choice("D", "FALSE"));
+        question = new Question(1,1, "Which of the following are Java keywords?",choices);
 
         //set question text
     	currentTV = (TextView)findViewById(R.id.header_tv_current);
@@ -99,7 +102,7 @@ public class MultiChoices extends BaseActivity {
         
         //set question text
         questionTV = (TextView)findViewById(R.id.questionTV);
-        questionTV.setText("Q1:Which of the following are Java keywords?");
+        questionTV.setText(question.getQuestionDesc());
         questionTV.setTextColor(Color.BLACK);
         
         //set List
@@ -220,7 +223,7 @@ public class MultiChoices extends BaseActivity {
 			
 			Choice choice = choices.get(position);
 			holder.selected.setChecked(mChecked.get(position));
-			holder.index.setText(String.valueOf(choice.getId()));
+			holder.index.setText(choice.getChoiceIndex());
 			holder.choiceDesc.setText(choice.getChoiceDesc());
 			
 			return view;
