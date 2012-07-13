@@ -26,7 +26,7 @@ CREATE  TABLE IF NOT EXISTS `MSDB`.`question` (
   `version` INT NULL ,
   `question_type_id` VARCHAR(32) NULL ,
   `name` VARCHAR(50) NULL ,
-  `content` VARCHAR(255) NULL ,
+  `content` VARCHAR(2000) NULL ,
   `right_answer` VARCHAR(255) NULL COMMENT '答案' ,
   PRIMARY KEY (`ID`) )
 ENGINE = InnoDB, 
@@ -72,8 +72,8 @@ CREATE  TABLE IF NOT EXISTS `MSDB`.`question_choice_item` (
   `version` INT NULL ,
   `question_id` VARCHAR(32) NULL ,
   `label_name` VARCHAR(10) NULL ,
-  `content` VARCHAR(100) NULL ,
-  `index` INT NULL ,
+  `content` VARCHAR(255) NULL ,
+  `idx` INT NULL ,
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB, 
 CHARACTER SET utf8,
