@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,7 @@ import com.dream.eexam.base.QuestionsWaiting;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.Choice;
 import com.dream.eexam.model.Question;
+import com.dream.eexam.model.QuestionProgress;
 
 public class SingleChoices extends BaseActivity {
 
@@ -49,25 +51,14 @@ public class SingleChoices extends BaseActivity {
 	MyListAdapter adapter;
 	List<Integer> listItemID = new ArrayList<Integer>();
 
-	
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.paper_single_choices);
-        mContext = getApplicationContext();
-        
-        //hard code data
-        List<Choice> choices = new ArrayList<Choice>();
-    	choices.add(new Choice("A", "22"));
-    	choices.add(new Choice("B", "78"));
-    	choices.add(new Choice("C", "1"));
-    	choices.add(new Choice("D", "100"));
-        question = new Question(1,0, "What is the result? ",choices);
-        
-        //set question text
+	SharedPreferences sharedPreferences;
+	public void setSubHeader(){
+		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
+		QuestionProgress qp = getQuestionProgress(sharedPreferences);
+		   //set question text
     	currentTV = (TextView)findViewById(R.id.header_tv_current);
     	currentTV.setBackgroundColor(Color.parseColor("#4428FF"));
-    	currentTV.setText("Current(2)");
+    	currentTV.setText(String.valueOf(qp.getCurrentQueIndex()));
     	currentTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -77,8 +68,9 @@ public class SingleChoices extends BaseActivity {
 				startActivity(intent);
 			}
 		});
-        //set question text
+    	//set question text
     	allTV = (TextView)findViewById(R.id.header_tv_all);
+    	allTV.setText(String.valueOf(qp.getQuesCount()));
     	allTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -90,6 +82,7 @@ public class SingleChoices extends BaseActivity {
 		});
         //set question text
     	waitTV = (TextView)findViewById(R.id.header_tv_waiting);
+    	waitTV.setText(String.valueOf(qp.getWaitingQueIdsList().size()));
     	waitTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -98,7 +91,24 @@ public class SingleChoices extends BaseActivity {
 				intent.setClass( mContext, QuestionsWaiting.class);
 				startActivity(intent);
 			}
-		});
+		});  
+	}
+	
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.paper_single_choices);
+        mContext = getApplicationContext();
+        
+        setSubHeader();
+        
+        //hard code data
+        List<Choice> choices = new ArrayList<Choice>();
+    	choices.add(new Choice("A", "22"));
+    	choices.add(new Choice("B", "78"));
+    	choices.add(new Choice("C", "1"));
+    	choices.add(new Choice("D", "100"));
+        question = new Question(1,0, "What is the result? ",choices);
     	
         //set question text
         questionTV = (TextView)findViewById(R.id.questionTV);

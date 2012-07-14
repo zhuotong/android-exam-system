@@ -3,8 +3,12 @@ package com.dream.eexam.paper;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +30,7 @@ import com.dream.eexam.base.QuestionsWaiting;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.Choice;
 import com.dream.eexam.model.Question;
+import com.dream.eexam.model.QuestionProgress;
 
 public class MultiChoices extends BaseActivity {
 
@@ -47,27 +52,19 @@ public class MultiChoices extends BaseActivity {
 	
 	Context mContext;
 	MyListAdapter adapter;
-	List<Integer> listItemID = new ArrayList<Integer>();
-
+	List<String> listItemID = new ArrayList<String>();
 	
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.paper_multi_choices);
-        mContext = getApplicationContext();
+	SharedPreferences sharedPreferences;
+	QuestionProgress qp ;
 
-        //hard code data
-        List<Choice> choices = new ArrayList<Choice>();
-    	choices.add(new Choice("A", "goto"));
-    	choices.add(new Choice("B", "malloc"));
-    	choices.add(new Choice("C", "extends"));
-    	choices.add(new Choice("D", "FALSE"));
-        question = new Question(1,1, "Which of the following are Java keywords?",choices);
-
-        //set question text
+	public void setSubHeader(){
+		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
+		qp = getQuestionProgress(sharedPreferences);
+		
+		   //set question text
     	currentTV = (TextView)findViewById(R.id.header_tv_current);
     	currentTV.setBackgroundColor(Color.parseColor("#4428FF"));
-    	currentTV.setText("Current(1)");
+    	currentTV.setText(String.valueOf(qp.getCurrentQueIndex()));
     	currentTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -77,8 +74,10 @@ public class MultiChoices extends BaseActivity {
 				startActivity(intent);
 			}
 		});
-        //set question text
+        
+    	//set question text
     	allTV = (TextView)findViewById(R.id.header_tv_all);
+    	allTV.setText(String.valueOf(qp.getQuesCount()));
     	allTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -88,8 +87,10 @@ public class MultiChoices extends BaseActivity {
 				startActivity(intent);
 			}
 		});
+    	
         //set question text
     	waitTV = (TextView)findViewById(R.id.header_tv_waiting);
+    	waitTV.setText(String.valueOf(qp.getWaitingQueIdsList().size()));
     	waitTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -100,11 +101,31 @@ public class MultiChoices extends BaseActivity {
 			}
 		});  
         
+	
+	}
+	
+	
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.paper_multi_choices);
+        mContext = getApplicationContext();
+
+        setSubHeader();
+        
+        //hard code data
+        List<Choice> choices = new ArrayList<Choice>();
+    	choices.add(new Choice("A", "goto"));
+    	choices.add(new Choice("B", "malloc"));
+    	choices.add(new Choice("C", "extends"));
+    	choices.add(new Choice("D", "FALSE"));
+        question = new Question(1,1, "Which of the following are Java keywords?",choices);
+        
         //set question text
         questionTV = (TextView)findViewById(R.id.questionTV);
         questionTV.setText(question.getQuestionDesc());
-        questionTV.setTextColor(Color.BLACK);
-        
+        questionTV.setTextColor(Color.BLACK);	
+
         //set List
         listView = (ListView)findViewById(R.id.lvChoices);
         adapter = new MyListAdapter(choices);
@@ -144,10 +165,50 @@ public class MultiChoices extends BaseActivity {
         nextBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//go to question 1
-				Intent intent = new Intent();
-				intent.setClass( mContext, SingleChoices.class);
-				startActivity(intent);
+				listItemID.clear();
+				for(int i=0;i<adapter.mChecked.size();i++){
+					if(adapter.mChecked.get(i)){
+						Choice choice = adapter.choices.get(i);
+						listItemID.add(choice.getChoiceIndex());
+					}
+				}
+				
+				if(listItemID.size()==0){
+					AlertDialog.Builder builder = new AlertDialog.Builder(MultiChoices.this);
+					builder.setMessage("Answer this question late?")
+							.setCancelable(false)
+							.setPositiveButton("Yes",
+									new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog,int id) {
+											//save data
+											int currentQueIndex = qp.getCurrentQueIndex().intValue();
+											qp.setCurrentQueIndex(currentQueIndex+1);
+											saveQuestionProgress(sharedPreferences,qp);
+											
+											//go to question 1
+											Intent intent = new Intent();
+											intent.setClass( mContext, SingleChoices.class);
+											startActivity(intent);
+										}
+									})
+							.setNegativeButton("Cancel",
+									new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog,int id) {
+											dialog.cancel();
+										}
+									});
+					builder.show();
+				}else{
+					//save data
+					qp.setCurrentQueIndex(qp.getCurrentQueIndex().intValue()+1);
+					saveQuestionProgress(sharedPreferences,qp);
+					
+					//go to question 1
+					Intent intent = new Intent();
+					intent.setClass( mContext, SingleChoices.class);
+					startActivity(intent);					
+				}
+
 			}
 		});
     

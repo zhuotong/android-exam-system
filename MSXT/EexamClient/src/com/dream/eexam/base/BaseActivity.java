@@ -1,10 +1,12 @@
 package com.dream.eexam.base;
 
+import com.dream.eexam.model.QuestionProgress;
 import com.dream.eexam.util.ActivityStackControlUtil;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
@@ -71,6 +73,47 @@ public class BaseActivity extends Activity {
 					public void onClick(DialogInterface dialog, int which) {
 					}
 		}).show();
+	}
+
+	/**
+	 * 
+	 * @param sharedPreferences
+	 * @return
+	 */
+	public QuestionProgress getQuestionProgress(SharedPreferences sharedPreferences){
+		
+		Integer currentQueIndex = sharedPreferences.getInt("currentQueIndex", 0);
+		Integer quesCount = sharedPreferences.getInt("quesCount", 0);
+		String completedQueIdsString = sharedPreferences.getString("completedQueIdsString", null);
+		
+		return new QuestionProgress(currentQueIndex,quesCount,completedQueIdsString);
+
+	}
+
+	/**
+	 * 
+	 * @param sharedPreferences
+	 * @param qp
+	 */
+	public void saveQuestionProgress(SharedPreferences sharedPreferences,QuestionProgress qp){
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		
+		Integer currentQueIndex = qp.getCurrentQueIndex();
+		if(currentQueIndex!=null){
+			editor.putInt("currentQueIndex", currentQueIndex);  
+		}
+
+		Integer quesCount = qp.getQuesCount();
+		if(currentQueIndex!=null){
+			editor.putInt("quesCount", quesCount);  
+		}
+		
+		String completedQueIdsString = qp.getCompletedQueIdsString();
+		if(currentQueIndex!=null){
+			editor.putString("completedQueIdsString", completedQueIdsString);  
+		}
+		
+		editor.commit();
 	}
 
 }

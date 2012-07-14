@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.dream.eexam.base.BaseActivity;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.Answer;
+import com.dream.eexam.model.QuestionProgress;
 import com.dream.eexam.paper.MultiChoices;
 
 public class QuestionsWaiting extends BaseActivity {
@@ -35,19 +37,14 @@ public class QuestionsWaiting extends BaseActivity {
 	Context mContext;
 	MyListAdapter adapter;
 	
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.questions_waiting);
-        mContext = getApplicationContext();
-        
-        //hard code data
-        answers.add(new Answer(3, 3,"C,D"));
-        answers.add(new Answer(4, 4,"A,C,D"));
-        answers.add(new Answer(5, 5,"B"));
-        
-        //set question text
+	SharedPreferences sharedPreferences;
+	public void setSubHeader(){
+		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
+		QuestionProgress qp = getQuestionProgress(sharedPreferences);
+		   //set question text
     	currentTV = (TextView)findViewById(R.id.header_tv_current);
+    	currentTV.setBackgroundColor(Color.parseColor("#4428FF"));
+    	currentTV.setText(String.valueOf(qp.getCurrentQueIndex()));
     	currentTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -57,8 +54,9 @@ public class QuestionsWaiting extends BaseActivity {
 				startActivity(intent);
 			}
 		});
-        //set question text
+    	//set question text
     	allTV = (TextView)findViewById(R.id.header_tv_all);
+    	allTV.setText(String.valueOf(qp.getQuesCount()));
     	allTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -70,7 +68,7 @@ public class QuestionsWaiting extends BaseActivity {
 		});
         //set question text
     	waitTV = (TextView)findViewById(R.id.header_tv_waiting);
-    	waitTV.setBackgroundColor(Color.parseColor("#4428FF"));
+    	waitTV.setText(String.valueOf(qp.getWaitingQueIdsList().size()));
     	waitTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -79,7 +77,21 @@ public class QuestionsWaiting extends BaseActivity {
 				intent.setClass( mContext, QuestionsWaiting.class);
 				startActivity(intent);
 			}
-		});       
+		});  
+	}
+	
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.questions_waiting);
+        mContext = getApplicationContext();
+        
+        setSubHeader();
+        
+        //hard code data
+        answers.add(new Answer(3, 3,"C,D"));
+        answers.add(new Answer(4, 4,"A,C,D"));
+        answers.add(new Answer(5, 5,"B"));
         
         //set List
         listView = (ListView)findViewById(R.id.questionsWaitingLV);

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.dream.eexam.base.BaseActivity;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.Answer;
 import com.dream.eexam.model.Question;
+import com.dream.eexam.model.QuestionProgress;
 import com.dream.eexam.paper.MultiChoices;
 
 public class QuestionsAll extends BaseActivity {
@@ -38,12 +40,57 @@ public class QuestionsAll extends BaseActivity {
 	Context mContext;
 	MyListAdapter adapter;
 	
+	SharedPreferences sharedPreferences;
+	public void setSubHeader(){
+		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
+		QuestionProgress qp = getQuestionProgress(sharedPreferences);
+		   //set question text
+    	currentTV = (TextView)findViewById(R.id.header_tv_current);
+    	currentTV.setBackgroundColor(Color.parseColor("#4428FF"));
+    	currentTV.setText(String.valueOf(qp.getCurrentQueIndex()));
+    	currentTV.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//go to question 1
+				Intent intent = new Intent();
+				intent.setClass( mContext, MultiChoices.class);
+				startActivity(intent);
+			}
+		});
+    	//set question text
+    	allTV = (TextView)findViewById(R.id.header_tv_all);
+    	allTV.setText(String.valueOf(qp.getQuesCount()));
+    	allTV.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//go to question 1
+				Intent intent = new Intent();
+				intent.setClass( mContext, QuestionsAll.class);
+				startActivity(intent);
+			}
+		});
+        //set question text
+    	waitTV = (TextView)findViewById(R.id.header_tv_waiting);
+    	waitTV.setText(String.valueOf(qp.getWaitingQueIdsList().size()));
+    	waitTV.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//go to question 1
+				Intent intent = new Intent();
+				intent.setClass( mContext, QuestionsWaiting.class);
+				startActivity(intent);
+			}
+		});  
+	}
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.questions_all);
         mContext = getApplicationContext();
 
+        setSubHeader();
+        
         //hard code data
         questions.add(new Question(1,1,"Which of the following are Java keywords?"));
         questions.add(new Question(2,1, "How to calculate cosine 42 degree?"));
@@ -58,48 +105,7 @@ public class QuestionsAll extends BaseActivity {
         answers.add(new Answer(2, 2,"A"));
         answers.add(new Answer(3, 3,"C,D"));
         answers.add(new Answer(4, 4,"A,C,D"));
-        answers.add(new Answer(5, 5,"B"));
-        
-        //set question text
-    	currentTV = (TextView)findViewById(R.id.header_tv_current);
-    	currentTV.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//go to question 1
-				Intent intent = new Intent();
-				intent.setClass( mContext, MultiChoices.class);
-				startActivity(intent);
-			}
-		});
-    	
-    	
-        //set question text
-    	allTV = (TextView)findViewById(R.id.header_tv_all);
-    	allTV.setBackgroundColor(Color.parseColor("#4428FF"));
-    	allTV.setText("All("+ String.valueOf(queCount) + ")");
-    	allTV.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//go to question 1
-				Intent intent = new Intent();
-				intent.setClass( mContext, QuestionsAll.class);
-				startActivity(intent);
-			}
-		});
-    	
-        //set question text
-    	waitTV = (TextView)findViewById(R.id.header_tv_waiting);
-    	waitTV.setText("Waiting("+ String.valueOf(queCount) + ")");
-    	waitTV.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//go to question 1
-				Intent intent = new Intent();
-				intent.setClass( mContext, QuestionsWaiting.class);
-				startActivity(intent);
-			}
-		});  
-        
+        answers.add(new Answer(5, 5,"B"));  
         
         //set List
         listView = (ListView)findViewById(R.id.questionsAll);

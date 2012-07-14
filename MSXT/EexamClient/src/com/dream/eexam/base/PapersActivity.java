@@ -1,7 +1,9 @@
 package com.dream.eexam.base;
 
+import com.dream.eexam.model.QuestionProgress;
 import com.dream.eexam.paper.MultiChoices;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +26,7 @@ public class PapersActivity extends BaseActivity {
 	private ArrayAdapter<String> adapter;
 	
 	private Button startBtn;
+	private SharedPreferences sharedPreferences;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +53,21 @@ public class PapersActivity extends BaseActivity {
 		spinner.setOnItemSelectedListener(new SpinnerSelectedListener());
 		spinner.setVisibility(View.VISIBLE);
 		
+		
+		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE); 
+		
 		startBtn = (Button) findViewById(R.id.startBtn);
 		startBtn.setText("Start");
 		startBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
+				
+				//load paper
+				
+				//save data
+				QuestionProgress qp = new QuestionProgress();
+				qp.setCurrentQueIndex(1);
+				qp.setQuesCount(10);
+				saveQuestionProgress(sharedPreferences,qp);
 				
 				//go to question 1
 				Intent intent = new Intent();
@@ -61,15 +75,12 @@ public class PapersActivity extends BaseActivity {
 				startActivity(intent);
 			}			
 		});
-		
 	}
-	
 	
 	class SpinnerSelectedListener implements OnItemSelectedListener{
 		public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
 //			selectedSession = demoSessions[arg2];
-
 		}
 		public void onNothingSelected(AdapterView<?> arg0) {
 		}
