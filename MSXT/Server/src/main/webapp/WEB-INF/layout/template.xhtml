@@ -11,7 +11,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>#{bundles.messages.template_title}</title>
         <link rel="shortcut icon" href="#{request.contextPath}/favicon.ico"/>
-
         <h:outputStylesheet library="css" name="screen.css"/>
         <ui:insert name="head"/>
     </h:head>
@@ -51,7 +50,6 @@
                 <div id="sidebar">
 				         <h:panelGroup rendered="#{identity.loggedIn}">   
 				             <pretty:link mappingId="account">#{bundles.messages.template_linkAccount}</pretty:link><br/>
-				             <pretty:link mappingId="logout">#{bundles.messages.template_linkLogout}</pretty:link><br/>
 				             <pretty:link mappingId="position">#{bundles.messages.menu_position}</pretty:link><br/>
 				             <pretty:link mappingId="question_type">#{bundles.messages.menu_question_type}</pretty:link><br/>
 				             <pretty:link mappingId="question">#{bundles.messages.menu_question}</pretty:link><br/>

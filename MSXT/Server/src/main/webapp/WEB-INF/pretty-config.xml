@@ -70,4 +70,10 @@
         <pattern value="/question/search"></pattern>
         <view-id>/question/search.xhtml</view-id>
     </url-mapping>
+    
+    <url-mapping id="examination">
+        <pattern value="/examination/search"></pattern>
+        <view-id>/examination/search.xhtml</view-id>
+    </url-mapping>
+    
 </pretty-config>
