@@ -11,27 +11,33 @@
         <script type="text/javascript">
       		//<![CDATA[
       			function addCatalog(){
-      				var cdiv = document.getElementById('catalogs');
+      				var ccdiv = document.createElement('div');
+      				ccdiv.appendChild( document.createElement('br') );
       				var ctable = document.createElement('table');
       				ctable.innerHTML = 	'<tr>' + 
 						        		'	<td width="20%">Catalog Name</td>' +
-						        		'	<td width="80%"><input type="button" value="Delete" onclick="deleteCatalog(this);" align="right"/></td>' +
+						        		'	<td width="80%"><input type="text" name="catalogName"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Delete" onclick="deleteCatalog(this);" align="right"/></td>' +
 						        		'</tr>' +
 						        		'<tr>' +
 						        		'	<td width="20%">Catalog Description</td>' +
-						        		'	<td width="80%"></td>' +
+						        		'	<td width="80%"><textarea name="catalogDesc" cols="50" rows="4"></textarea></td>' +
 						        		'</tr>' +
 						        		'<tr>' +
 						        		'	<td width="20%">Question</td>' +
-						        		'	<td width="80%"></td>' +
+						        		'	<td width="80%" align="right"><input type="button" value="Select Question" onclick="selectQuestion(this);"</td>' +
 						        		'</tr>';
-      				cdiv.appendChild( ctable );
+					ccdiv.appendChild( ctable );
+					document.getElementById('catalogs').appendChild( ccdiv );
       			}
       			
-      			function deleteCatalog( ct ){
+      			function deleteCatalog( ct ) {
       				var cdiv = document.getElementById('catalogs');
-      				cdiv.removeChild( ct.parentElement.parentElement.parentElement.parentElement );
+      				cdiv.removeChild( ct.parentElement.parentElement.parentElement.parentElement.parentElement );
       			}
+      			
+      			function selectQuestion( ct ) {
+      			  window.open("../question/SelectQuestion.xhtml?positionId=#{examCreator.positionId}","selectQuestion","height=300,width=500,toolbar=no,menubar=no,scrollbars=yes");  
+      			} 
           	//]]>
         </script>
     </ui:define>
@@ -39,7 +45,7 @@
     <ui:define name="content">
 
         <div class="section">
-            <h1>Create Examination</h1>
+            <h1>Create Examination - Create Catalog</h1>
         </div>
 
         <div class="section">
@@ -53,10 +59,10 @@
                 	<table>
                 		<tr>
                 			<td width="20%">Position</td>
-                			<td width="60%"></td>
+                			<td width="60%">${examCreator.selectedPosition.name}<h:inputHidden value="#{examCreator.positionId}"/> </td>
                 			<td width="20%"><input type="button" value="Add Catalog" onclick="addCatalog();" align="right"/></td>
                 		</tr>	
-	                </table>	
+	                </table>
                 	<div id="catalogs">
                 	</div>
                 </fieldset>
