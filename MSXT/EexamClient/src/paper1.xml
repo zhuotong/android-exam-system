@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paper>
-	<question id="1" type="1" name="which of the following are java keywords">
-		<choice id="A">goto</choice>
-		<choice id="B">malloc</choice>
-		<choice id="C">extends</choice>
-		<choice id="D">false</choice>
-	</question>
-	
-	<question id="2" type="1" name="How to calculate cosine 42 degree?">
-		<choice id="A">12</choice>
-		<choice id="B">12</choice>
-		<choice id="C">AD</choice>
-		<choice id="D">BC</choice>
-	</question>
-	
-	<question id="3" type="0" name="Which two statements are reserved words in Java?">
-		<choice id="A">a</choice>
-		<choice id="B">b</choice>
-		<choice id="C">c</choice>
-		<choice id="D">d</choice>
-	</question>
-	
-	<question id="4" type="0" name="Which are valid identifiers?">
-		<choice id="A">a</choice>
-		<choice id="B">b</choice>
-		<choice id="C">c</choice>
-		<choice id="D">d</choice>
-	</question>
-	
-	<question id="5" type="0" name="True or False,Readers have methods that can read and return floats and doubles?">
-		<choice id="A">a</choice>
-		<choice id="B">b</choice>
-		<choice id="C">c</choice>
-		<choice id="D">d</choice>
-	</question>
+<desc><![CDATA[Java Engineer]]></desc>
+<!-- minutes(-1 mean no time limit)-->
+<time>60</time>
+<catalogs>
+	<catalog idx="1">
+		<desc><![CDATA[J2SE]]></desc>
+		<questions>
+			<question idx="1">
+			<type>Choice:S</type>
+		    <name><![CDATA[which of the following are java keywords]]></name>
+				<choice>
+					<index>1</index>
+					<label>A</label>
+					<content>goto</content>
+			    </choice>
+			    <choice>
+					<index>2</index>
+					<label>B</label>
+					<content>malloc</content>
+			    </choice>
+			    <choice>
+					<index>3</index>
+					<label>C</label>
+					<content>extends</content>
+			    </choice>
+			    <choice>
+					<index>4</index>
+					<label>D</label>
+					<content>false</content>
+			    </choice>
+			</question>	
+		</questions>
+	</catalog>	
+</catalogs>
 </paper>
