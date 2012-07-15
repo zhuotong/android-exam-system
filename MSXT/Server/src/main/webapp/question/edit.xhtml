@@ -13,25 +13,33 @@
             <s:viewAction action="#{questionAgent.selectQuestion(id)}"/>
         </f:metadata>
     </ui:define>
+    
 	<ui:define name="head">
         <script type="text/javascript">
       		//<![CDATA[
             function addChoiceItem(){
             	var choiceItemsTable = document.getElementById('choiceItemsTable');
-            	choiceItemsTable.innerHTML= choiceItemsTable.innerHTML
-            	                           + '<tr><td width="20%"><input name="clabel" type="text"/></td><td width="60%"><input name="citem" type="text"/></td><td width="20%"><input type="button" value="Delete" onclick="deleteChoiceItem(this);"/></td></tr>';
+            	var nr = choiceItemsTable.insertRow( choiceItemsTable.rows.length );
+            	var lc = nr.insertCell(0);
+            	lc.width = '5%';
+            	lc.innerHTML= '<input name="clabel" type="text" size="2"/>';
+            	var cc = nr.insertCell(1);
+            	cc.width = '85%';
+            	cc.innerHTML = '<input name="citem" type="text" size="65"/>';
+            	var bc = nr.insertCell(2);
+            	bc.width = '10%';
+            	bc.innerHTML = '<input type="button" value="Delete" onclick="deleteChoiceItem(this);"/>';
             }
             
             function deleteChoiceItem( btn ){
-            	var tr = btn.parentElement.parentElement.parentElement;
+            	var tr = btn.parentElement.parentElement;
             	var choiceItemsTable = document.getElementById('choiceItemsTable');
-            	choiceItemsTable.removeChild(tr);
+            	choiceItemsTable.children[0].removeChild(tr);
             }
             
             function setChoiceItems(){
-            	var type  = document.getElementById( 'typeId' );
-            	var option = type.options[type.selectedIndex];
-                if( option.label == 'Choice' ) {
+            	var type  = '${questionAgent.selectedQuestion.questionType.name}';
+                if( type == 'Choice' ) {
 					var clabels = document.getElementsByName('clabel');
 					var citems = document.getElementsByName('citem');
 					if( clabels.length==0 ) {
@@ -60,84 +68,82 @@
 							}
 						}	
 					}
-					document.getElementById('inputChoiceLabels').value=clabelsValue;
-					document.getElementById('inputChoiceItems').value=citemsValue;
+					document.getElementById('editedChoiceLabels').value=clabelsValue;
+					document.getElementById('editedChoiceContents').value=citemsValue;
                 }
                 return true;
             }
           	//]]>
         </script>
     </ui:define>
-    
-    <ui:param name="pageClass" value="home"/>
 
     <ui:define name="content">
         <div class="section">
             <h1>Edit Question</h1>
         </div>
         <div class="section">
-            <div class="errors">
-                <h:messages id="messages" globalOnly="true"/>
-            </div>
-
-            <h:form onsubmit="return setChoiceItems();">
-                <fieldset>
-                	<div>
-	                	<table>
-	                		<tr>
-	                			<td>Type</td>
-	                			<td>                                  
-				                    <h:outputText value="${questionAgent.selectedQuestion.questionType.name}"/>
-	                			</td>
-	                		</tr>
-	                		<tr>
-	                			<td>Position</td>
-	                			<td>        
-	                				<h:selectManyListbox value="questionAgent.positionIds" >
-	                   					<f:selectItems value="#{positionCreator.existingPositions}" var="ep" itemLabel="#{ep.name}" itemValue="#{ep.id}"/>
-	                				</h:selectManyListbox>                          
-	                			</td>
-	                		</tr>
-	                		<tr>
-	                			<td>Question Name</td>
-	                			<td>
-	                				<h:outputText value="${questionAgent.selectedQuestion.name}"/>
-	                			</td>
-	                		</tr>
-	                		<tr>
-	                			<td>Title</td>
-	                			<td><h:inputTextarea id="inputTitle" value="#{questionAgent.selectedQuestion.content}" required="true" cols="60" rows="10"/></td>
-	                		</tr>
-	                		<tr>
-	                			<td>Right Answer</td>
-	                			<td><h:inputTextarea value="#{questionAgent.selectedQuestion.rightAnswer}" required="true" cols="60" rows="2"/></td>
-	                		</tr>
-	                	</table>
-                	</div>
-                	<div id="choiceItem">
-                	<h:inputHidden id="inputChoiceLabels" value="#{questionAgent.choiceLabels}"/>
-                	<h:inputHidden id="inputChoiceItems" value="#{questionAgent.choiceContents}"/>
-                	<table id="choiceItemsTable">
-                		<tr>
-                			<td>Label</td>
-                			<td>Content</td>
-                			<td><input type="button" value="Add" onclick="addChoiceItem();"/></td>
-                		</tr>
-                		<ui:repeat var="citem" value="#{questionAgent.choiceItems}">
-                		<tr>
-                			<td width="20%"><input name="clabel" type="text" value="#{citem.labelName}"/></td>
-                			<td width="60%"><input name="citem" type="text" value="#{citem.content}"/></td>
-                			<td width="20%"><input type="button" value="Delete" onclick="deleteChoiceItem(this);"/></td>
-                		</tr>
-                		</ui:repeat>
-                	</table>	
-                	</div>
-                    <div class="buttonBox">
-                        <h:commandButton id="create" value="Create" action="#{questionAgent.save}"/>
-                        &nbsp;
-                        <h:button id="cancel" value="Cancel" outcome="/question/search.xhtml"/>
-                    </div>
-                </fieldset>
+        	<div class="errors">
+	            <h:messages id="messages" globalOnly="true"/>
+	        </div>
+	        <h:form id="editQuestionForm" prependId="false" onsubmit="return setChoiceItems();">
+            <fieldset>
+            	<div>
+             	<table>
+             		<tr>
+             			<td>Type</td>
+             			<td>                                  
+                    	<h:outputText value="${questionAgent.selectedQuestion.questionType.name}"/>
+             			</td>
+             		</tr>
+             		<tr>
+             			<td>Position</td>
+             			<td>        
+             				<h:selectManyListbox value="#{questionAgent.positionIds}" >
+                					<f:selectItems value="#{positionCreator.existingPositions}" var="ep" itemLabel="#{ep.name}" itemValue="#{ep.id}"/>
+             				</h:selectManyListbox>                          
+             			</td>
+             		</tr>
+             		<tr>
+             			<td>Question Name</td>
+             			<td>
+             				<h:outputText value="${questionAgent.selectedQuestion.name}"/>
+             			</td>
+             		</tr>
+             		<tr>
+             			<td>Title</td>
+             			<td><h:inputTextarea id="inputTitle" value="#{questionAgent.selectedQuestion.content}" required="true" cols="60" rows="10"/></td>
+             		</tr>
+             		<tr>
+             			<td>Right Answer</td>
+             			<td><h:inputTextarea value="#{questionAgent.selectedQuestion.rightAnswer}" required="true" cols="60" rows="1"/></td>
+             		</tr>
+             	</table>
+            	</div>
+            	<h:inputHidden value="#{questionAgent.selectedQuestion.id}"/>
+                <h:inputHidden id="editedChoiceLabels" value="#{questionAgent.choiceLabels}"/>
+                <h:inputHidden id="editedChoiceContents" value="#{questionAgent.choiceContents}"/>
+            	<div id="choiceItem">
+             	<table id="choiceItemsTable">
+             		<tr>
+             			<td>Label</td>
+             			<td>Content</td>
+             			<td><input type="button" value="Add" onclick="addChoiceItem();"/></td>
+             		</tr>
+             		<ui:repeat var="citem" value="#{questionAgent.choiceItems}">
+             		<tr>
+             			<td width="5%"><input name="clabel" type="text" value="#{citem.labelName}" size="2"/></td>
+             			<td width="85%"><input name="citem" type="text" value="#{citem.content}" size="65"/></td>
+             			<td width="10%"><input type="button" value="Delete" onclick="deleteChoiceItem(this);"/></td>
+             		</tr>
+             		</ui:repeat>
+             	</table>	
+            	</div>
+                <div class="buttonBox">
+                    <h:commandButton id="create" value="Create" action="#{questionAgent.save}"/>
+                    &nbsp;
+                    <h:button id="cancel" value="Cancel" outcome="/question/search.xhtml"/>
+                </div>
+            </fieldset>
             </h:form>
         </div>
     </ui:define>

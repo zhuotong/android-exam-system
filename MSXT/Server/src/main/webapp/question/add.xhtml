@@ -20,14 +20,22 @@
             
             function addChoiceItem(){
             	var choiceItemsTable = document.getElementById('choiceItemsTable');
-            	choiceItemsTable.innerHTML= choiceItemsTable.innerHTML
-            	                           + '<tr><td width="20%"><input name="clabel" type="text"/></td><td width="60%"><input name="citem" type="text"/></td><td width="20%"><input type="button" value="Delete" onclick="deleteChoiceItem(this);"/></td></tr>';
+            	var nr = choiceItemsTable.insertRow( choiceItemsTable.rows.length );
+            	var lc = nr.insertCell(0);
+            	lc.width = '5%';
+            	lc.innerHTML= '<input name="clabel" type="text" size="2"/>';
+            	var cc = nr.insertCell(1);
+            	cc.width = '85%';
+            	cc.innerHTML = '<input name="citem" type="text" size="65"/>';
+            	var bc = nr.insertCell(2);
+            	bc.width = '10%';
+            	bc.innerHTML = '<input type="button" value="Delete" onclick="deleteChoiceItem(this);"/>';
             }
             
             function deleteChoiceItem( btn ){
-            	var tr = btn.parentElement.parentElement.parentElement;
+            	var tr = btn.parentElement.parentElement;
             	var choiceItemsTable = document.getElementById('choiceItemsTable');
-            	choiceItemsTable.removeChild(tr);
+            	choiceItemsTable.children[0].removeChild(tr);
             }
             
             function setChoiceItems(){
@@ -120,9 +128,9 @@
                 	<h:inputHidden id="inputChoiceItems" value="#{questionCreator.choiceItems}"/>
                 	<table id="choiceItemsTable">
                 		<tr>
-                			<td>Label</td>
-                			<td>Content</td>
-                			<td><input type="button" value="Add" onclick="addChoiceItem();"/></td>
+                			<td width="5%">Label</td>
+                			<td width="85%">Content</td>
+                			<td width="10%"><input type="button" value="Add" onclick="addChoiceItem();"/></td>
                 		</tr>
                 	</table>	
                 	</div>
