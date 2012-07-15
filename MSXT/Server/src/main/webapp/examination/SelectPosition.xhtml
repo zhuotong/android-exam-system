@@ -1,0 +1,44 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:s="http://jboss.org/seam/faces"
+                xmlns:p="http://java.sun.com/jsf/composite/components/property"
+                template="/WEB-INF/layout/template.xhtml">    
+    <ui:define name="content">
+
+        <div class="section">
+            <h1>Create Examination - Select Position</h1>
+        </div>
+
+        <div class="section">
+
+            <div class="errors">
+                <h:messages id="messages" globalOnly="true"/>
+            </div>
+
+            <h:form id="regForm" prependId="false" onsubmit="return setChoiceItems();">
+                <fieldset>
+                	<table>
+                		<tr>
+                			<td width="20%">Position</td>
+                			<td width="60%">
+			                 <h:selectOneMenu value="#{examCreator.positionId}">
+			                   	<f:selectItem itemValue="#{null}" itemLabel="Select..." noSelectionOption="true"/>
+			                    <f:selectItems value="#{positionCreator.existingPositions}" var="ep" itemLabel="#{ep.name}" itemValue="#{ep.id}"/>
+			                 </h:selectOneMenu>	
+			                </td>
+                		</tr>	
+	                </table>	
+                </fieldset>
+                <div class="buttonBox">
+                    <h:commandButton id="next" value="Next" action="add.xhtml"/>
+                    &nbsp;
+                    <h:button id="cancel" value="Cancel" outcome="/examination/search.xhtml"/>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
