@@ -37,7 +37,6 @@ public class QuestionCreator {
 	}
 	 
 	public String create() {
-		
 		QuestionType type = em.find( QuestionType.class, typeId);
 		newQuestion.setQuestionType( type );
 		em.persist( newQuestion );

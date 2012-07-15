@@ -22,6 +22,7 @@ import org.jboss.solder.logging.Logger;
 
 import com.msxt.common.FoggySearchCriteria;
 import com.msxt.common.PageableSearcher;
+import com.msxt.model.Position;
 import com.msxt.model.PositionQuestion;
 import com.msxt.model.PositionQuestion_;
 import com.msxt.model.Position_;
@@ -57,7 +58,15 @@ public class QuestionSearcher extends PageableSearcher {
 	public FoggySearchCriteria getSearchCriteria() {
 		return searchCriteria;
 	}
-
+	
+	public void selectPositionId( String positionId ) {
+		searchCriteria.setPositionId( positionId );
+	}
+	
+	public Position getSelectedPosition(){
+		return em.find( Position.class, searchCriteria.getPositionId() );
+	}
+	
 	@Override
 	public void doSearch() {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
@@ -71,7 +80,7 @@ public class QuestionSearcher extends PageableSearcher {
 					builder.like( builder.lower( qp.get(Question_.content) ), searchCriteria.getSearchPattern() ) );
 	        Predicate p2 = builder.equal( rp.get(PositionQuestion_.position).get(Position_.id), searchCriteria.getPositionId());
 	        
-	        if( searchCriteria.getQuestionTypeId()!=null ) {
+	        if( searchCriteria.getQuestionTypeId()!=null && searchCriteria.getQuestionTypeId().length()>0 ) {
 	        	Predicate p3 = builder.equal( qp.get(Question_.questionType).get(QuestionType_.id), searchCriteria.getQuestionTypeId() );
 	        	cquery.select( qp ).where( p1, p2, p3);
 	        } else {

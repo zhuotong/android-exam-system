@@ -1,6 +1,5 @@
 package com.msxt.question;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.RequestScoped;
@@ -13,6 +12,7 @@ import javax.persistence.criteria.Root;
 
 import com.msxt.model.Position;
 import com.msxt.model.PositionQuestion;
+import com.msxt.model.PositionQuestion_;
 import com.msxt.model.Question;
 import com.msxt.model.QuestionChoiceItem;
 import com.msxt.model.QuestionChoiceItem_;
@@ -29,23 +29,44 @@ public class QuestionAgent {
 	
 	private String choiceLabels;
 	private String choiceContents;
-	private List<String> positionIds = new ArrayList<String>();
+	private String[] positionIds;
 	
 	public void selectQuestion(final String id) {
 		selectedQuestion = em.find(Question.class, id);
 		if( selectedQuestion.getQuestionType().getName().equalsIgnoreCase("choice") ) {
 			selectChoiceItems();
 		}
+		selectPositions();
     }
 
 	public String save(){
 		Question q = em.find( Question.class, selectedQuestion.getId() );
+		em.createQuery("delete PositionQuestion pq where pq.question=:q").setParameter("q", q).executeUpdate();
 		for( String pid : positionIds ) {
 			Position p = em.find( Position.class, pid );
 			PositionQuestion pq = new PositionQuestion();
 			pq.setPosition( p );
 			pq.setQuestion( q );
 			em.persist( pq );
+		}
+		q.setContent( selectedQuestion.getContent() );
+		q.setRightAnswer( selectedQuestion.getRightAnswer() );
+		em.persist( q );
+		
+		if( q.getQuestionType().getName().equalsIgnoreCase("choice") ) {
+			em.createQuery("delete QuestionChoiceItem item where item.question=:q").setParameter("q", q).executeUpdate();
+			String[] cls = choiceLabels.split("\\|#\\|");
+			String[] cis = choiceContents.split("\\|#\\|");
+			for( int i=0; i<cls.length; i++ ) {
+				if( cls[i]!=null && cls[i].length()>0 ) {
+					QuestionChoiceItem ci = new QuestionChoiceItem();
+					ci.setLabelName( cls[i].trim() );
+					ci.setContent( cis[i] );
+					ci.setIndex( i+1 );
+					ci.setQuestion( q );
+					em.persist( ci );
+				}
+			}
 		}
 		return "search";
 	}
@@ -58,7 +79,7 @@ public class QuestionAgent {
 		return qciList;
 	}
 	
-	private  void selectChoiceItems(){
+	private void selectChoiceItems(){
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<QuestionChoiceItem> cq = cb.createQuery(QuestionChoiceItem.class);
 		Root<QuestionChoiceItem> rp = cq.from( QuestionChoiceItem.class );
@@ -66,7 +87,20 @@ public class QuestionAgent {
 		
 		qciList = em.createQuery( cq ).getResultList();
 	}
-
+	
+	private void selectPositions(){
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		
+		CriteriaQuery<Position> cq = cb.createQuery( Position.class );
+		Root<PositionQuestion> root = cq.from( PositionQuestion.class );
+		cq.select( root.get(PositionQuestion_.position) ).where( cb.equal( root.get(PositionQuestion_.question), selectedQuestion) );
+		
+		List<Position> r = em.createQuery( cq ).getResultList();
+		positionIds = new String[r.size()];
+		for( int i=0; i<r.size(); i++ )
+			positionIds[i] = r.get(i).getId();
+	}
+	
 	public String getChoiceLabels() {
 		return choiceLabels;
 	}
@@ -83,11 +117,11 @@ public class QuestionAgent {
 		this.choiceContents = choiceContents;
 	}
 
-	public List<String> getPositionIds() {
+	public String[] getPositionIds() {
 		return positionIds;
 	}
 
-	public void setPositionIds(List<String> positionIds) {
+	public void setPositionIds(String[] positionIds) {
 		this.positionIds = positionIds;
 	}
 	
