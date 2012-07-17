@@ -10,6 +10,7 @@
 	<ui:define name="head">
         <script type="text/javascript">
       		//<![CDATA[
+      		    var catalogIndex = 0;
       			function addCatalog(){
       				var ccdiv = document.createElement('div');
       				ccdiv.appendChild( document.createElement('br') );
@@ -24,7 +25,7 @@
 						        		'</tr>' +
 						        		'<tr>' +
 						        		'	<td width="20%">Question</td>' +
-						        		'	<td width="80%" align="right"><input type="button" value="Select Question" onclick="selectQuestion(this);"</td>' +
+						        		'	<td width="80%" align="right"><input type="button" value="Select Question" onclick="openSelectQuestionWin(this);"/><div id="catalogQuestions_'+(catalogIndex++)+'"><table></table></div></td>' +
 						        		'</tr>';
 					ccdiv.appendChild( ctable );
 					document.getElementById('catalogs').appendChild( ccdiv );
@@ -35,9 +36,105 @@
       				cdiv.removeChild( ct.parentElement.parentElement.parentElement.parentElement.parentElement );
       			}
       			
-      			function selectQuestion( ct ) {
-      			  window.open("../question/SelectQuestion.xhtml?positionId=#{examCreator.positionId}","selectQuestion","height=300,width=500,toolbar=no,menubar=no,scrollbars=yes");  
+      			function openSelectQuestionWin( ct ) {
+      				window.open("../question/SelectQuestion.xhtml?positionId=#{examCreator.positionId}&cqId="+ct.nextSibling.id,"selectQuestion_"+ct.nextSibling.id,"height=400,width=600,toolbar=no,menubar=no,scrollbars=yes");  
       			} 
+      			
+      			function addQuestion2Catalog(questionId, name, type, cqId){
+      				var eq = document.getElementById(questionId);
+      				if( eq!=null ) {
+      					return false;
+      				}
+      				var chTable = document.getElementById( cqId ).children[0];
+      				var nr = chTable.insertRow( chTable.rows.length );
+                	nr.insertCell(0).innerHTML = name;
+                	nr.insertCell(1).innerHTML = type;
+                	nr.insertCell(2).innerHTML = '<input type="text" name="'+cqId+'_score"/>';
+                	nr.insertCell(3).innerHTML = '<input type="button" value="View" onclick="viewQuestion(this)"/>&nbsp;&nbsp;<input type="button" value="Delete" onclick="deleteQuestion(this)"/><input type="hidden" name="'+cqId+'_question_id" id="'+questionId+'" value="'+questionId+'"/>';
+                	return true;
+      			}
+      			
+      			function deleteQuestion( dqButton ) {
+      				var tr = dqButton.parentElement.parentElement;
+      				tr.parentElement.removeChild(tr);
+      			}
+      			
+      			function viewQuestion( vqButton ) {
+      				var id = vqButton.parentElement.children[2].value;
+      				window.open("../question/View.xhtml?id="+id, id, "height=400,width=600,toolbar=no,menubar=no,scrollbars=yes");  
+      			}
+      			
+      			function isNotNumber( value ) {
+      				if( value==null || value=='' )
+      					return true;
+      				else
+      					return isNaN(value);
+      			}
+      			
+      			function onSubmitForm(){
+      				if( document.getElementById('examName').value=='' ) {
+      					alert("Please Set Name");	
+      					return false;
+      				}
+      				
+      				if( isNotNumber( document.getElementById('examTime').value ) ) {
+      					alert("Please Set Time");	
+      					return false;
+      				}
+      				
+      				return setCatalogs();
+      			}
+      			
+      			function setCatalogs(){
+      				var xml = ['<catalogs>'];
+      				var catalogs = document.getElementById('catalogs');
+      				if( catalogs.children.length==0 ) {
+      					alert( 'Please Add Catalogs' );
+      					return false;
+      				} else {
+      					var catalogNames = document.getElementsByName('catalogName');
+      					var catalogDescs = document.getElementsByName('catalogDesc');
+      					for( var i=0; i< catalogs.children.length; i++ ){
+      						xml.push('<catalog>')
+      						var catalogName = catalogNames[i].value;
+      						if( catalogName == '' ) {
+      							alert( 'Please Set Catalog Name' );
+      							return false;
+      						}
+      						xml.push( '<name>' + catalogName + '</name>');
+      						var catalogDesc = catalogDescs[i].value;
+      						if( catalogDesc == '' ) {
+      							alert( 'Please Set Catalog Description' );
+      							return false;
+      						}
+      						xml.push( '<desc>' + catalogDesc + '</desc>');
+      						xml.push( '<questions>' );
+      						var qids = document.getElementsByName( 'catalogQuestions_' + i + '_question_id' );
+      						var qscores = document.getElementsByName( 'catalogQuestions_' + i + '_score' );
+      						if( qids.length==0 ) {
+      							alert( 'Please Select Questions!!!' )
+      							return false;
+      						}
+      						for( var j=0; j<qids.length; j++ ) {
+      							if( isNotNumber(qscores[j].value) ) {
+      								alert( 'Please Set Question Score!!!' )
+      								return false;
+      							}
+      							xml.push( '<question>' );
+      							xml.push( '<id>' + qids[j].value + '</id>' );
+      							xml.push( '<score>' + qscores[j].value + '</score>' );
+      							xml.push( '</question>' );
+      						}
+      						xml.push( '</questions>' );
+      						xml.push('</catalog>')
+      					}
+      				}
+      				xml.push('</catalogs>')
+      				
+      				var value = xml.join('\n');
+      				alert(value);
+      				document.getElementById('catalogsXML').value = value;
+      			}
           	//]]>
         </script>
     </ui:define>
@@ -54,7 +151,7 @@
                 <h:messages id="messages" globalOnly="true"/>
             </div>
 
-            <h:form id="regForm" prependId="false" onsubmit="return setChoiceItems();">
+            <h:form id="regForm" prependId="false" onsubmit="return onSubmitForm();">
                 <fieldset>
                 	<table>
                 		<tr>
@@ -62,7 +159,26 @@
                 			<td width="60%">${examCreator.selectedPosition.name}<h:inputHidden value="#{examCreator.positionId}"/> </td>
                 			<td width="20%"><input type="button" value="Add Catalog" onclick="addCatalog();" align="right"/></td>
                 		</tr>	
+                		<tr>
+                			<td width="20%">Name</td>
+                			<td width="80%" colspan="2">
+                				<h:inputText id="examName" value="#{examCreator.newExam.name}" required="true"/>
+                				<div class="errors">                  
+		                    		<h:message for="examName"/>
+		                    	</div>
+                			</td>
+                		</tr>
+                		<tr>
+                			<td width="20%">Time</td>
+                			<td width="80%" colspan="2">
+                				<h:inputText id="examTime" value="#{examCreator.newExam.time}" required="true"/>Minutes
+                				<div class="errors">                  
+		                    		<h:message for="examTime"/>
+		                    	</div>
+		                    </td>
+                		</tr>
 	                </table>
+	                <h:inputHidden id="catalogsXML" value="#{examCreator.catalogsXML}"/>
                 	<div id="catalogs">
                 	</div>
                 </fieldset>

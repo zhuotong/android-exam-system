@@ -62,8 +62,8 @@ public class ExamSearcher extends PageableSearcher{
 	        Predicate p2 = builder.equal( rp.get(Examination_.position).get(Position_.id), searchCriteria.getPositionId());
 	        cquery.select( rp ).where( p1, p2);
 		} else {
-			Predicate p2 = builder.equal( rp.get(Examination_.position).get(Position_.id), searchCriteria.getPositionId());
-	        cquery.select( rp ).where( p2);     
+			Predicate p1 = builder.like( builder.lower( rp.get(Examination_.name) ), searchCriteria.getSearchPattern() );
+	        cquery.select( rp ).where( p1);     
 		}
 		
 		List<Examination> results = em.createQuery(cquery).setMaxResults(searchCriteria.getFetchSize())
@@ -75,6 +75,13 @@ public class ExamSearcher extends PageableSearcher{
         	exams = new ArrayList<Examination>( results.subList(0,  searchCriteria.getPageSize() ) );
         } else {
         	exams = results;
+        }
+        for( Examination e : exams ) {
+    		Object result = em.createQuery("select COUNT(ie) from InterviewExamination ie where ie.exam=:exam").setParameter("exam", e).getSingleResult();
+    		if( (Long)result>0 )
+    			e.setOnUsed( true );
+    		else
+    			e.setOnUsed( false );
         }
         log.info(messageBuilder.get().text("Found {0} examination(s) matching search term [ {1} ] (limit {2})")
                 .textParams(exams.size(), searchCriteria.getQuery(), searchCriteria.getPageSize()).build().getText());

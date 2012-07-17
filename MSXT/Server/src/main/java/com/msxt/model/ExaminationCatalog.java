@@ -10,11 +10,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Version;
 
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
+@Table(name="examination_catalog")
 public class ExaminationCatalog {
 	@Id
 	@Column(name="ID")
@@ -35,7 +37,7 @@ public class ExaminationCatalog {
 	@Column(name="description")
 	private String description;
 	
-	@Column(name="index")
+	@Column(name="idx")
 	private int index;
 	
 	@OneToMany(mappedBy = "catalog", cascade = CascadeType.REMOVE)

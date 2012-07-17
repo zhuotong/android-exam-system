@@ -11,13 +11,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name="examination")
-public class Examination {
+public class Examination {	
 	@Id
 	@Column(name="ID")
 	@GenericGenerator(name="uuidGG",strategy="uuid")
@@ -38,8 +39,11 @@ public class Examination {
 	private String name;
 	
 	@Column(name="time")
-	private int time;
-	 
+	private int time = 45;
+	
+	@Transient
+	private boolean onUsed = false;
+	
 	public String getId() {
 		return id;
 	}
@@ -75,5 +79,11 @@ public class Examination {
 	}
 	public Integer getVersion() {
 		return version;
-	} 
+	}
+	public boolean isOnUsed() {
+		return onUsed;
+	}
+	public void setOnUsed(boolean onUsed) {
+		this.onUsed = onUsed;
+	}
 }

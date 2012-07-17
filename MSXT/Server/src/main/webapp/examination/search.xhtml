@@ -46,11 +46,15 @@
                                 <f:param name="id" value="#{_exam.id}"/>
                             </h:link>
                              &nbsp;
-                            <h:link value="Edit" outcome="/examination/edit" style="white-space: nowrap;">
+                            <h:link value="Copy" outcome="/examination/edit" style="white-space: nowrap;" rendered="#{_exam.isOnUsed}">
                                 <f:param name="id" value="#{_exam.id}"/>
                             </h:link>
                              &nbsp;
-                     		<h:commandButton id="delete" value="Delete" action="#{questionTypeAgent.deleteQuestionType(_question.id)}"/>
+                            <h:link value="Edit" outcome="/examination/edit" style="white-space: nowrap;" rendered="#{not _exam.isOnUsed}">
+                                <f:param name="id" value="#{_exam.id}"/>
+                            </h:link>
+                             &nbsp;
+                     		<h:commandButton id="delete" value="Delete" action="#{questionTypeAgent.deleteQuestionType(_question.id)}" rendered="#{not _exam.isOnUsed}"/>
                         </h:column>
                     </h:dataTable>
                 </h:form>

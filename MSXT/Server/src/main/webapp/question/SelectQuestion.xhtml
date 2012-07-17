@@ -6,6 +6,7 @@
       xmlns:h="http://java.sun.com/jsf/html">
     <f:metadata>
     	<f:viewParam name="positionId" value="#{positionId}"/>
+    	<f:viewParam name="cqId" value="#{cqId}"/>
         <s:viewAction action="#{questionSearcher.selectPositionId(positionId)}"/>
     </f:metadata>
     <h:head>
@@ -13,6 +14,37 @@
         <title>#{bundles.messages.template_title}</title>
         <link rel="shortcut icon" href="#{request.contextPath}/favicon.ico"/>
         <h:outputStylesheet library="css" name="screen.css"/>
+        <script type="text/javascript">
+      		//<![CDATA[
+      		    var cqId = '#{cqId}';
+      			function selectQuestions(){
+      				var cbs = document.getElementsByName('selectCheckBox');
+      				if( cbs.length==0 ) {
+      					alert('Please Query Questions!!!');
+      				} else {
+      					var selectOne = false;
+      					for( var i=0; i<cbs.length; i++) {
+      						var cb = cbs[i];
+     						if( cb.checked ) {
+     							selectOne = true;
+     							var tr = cb.parentElement.parentElement;
+     							var name = tr.children[1].innerHTML;
+     							var type = tr.children[2].innerHTML
+     							var r = window.opener.addQuestion2Catalog(cb.value, name, type, cqId);
+     							if( !r )
+     								alert( name + "already exist! will be ingore!");
+     						} 
+      					}
+      					if( !selectOne )
+      						alert( "Please select one question!" );
+      				}
+      			}
+      			
+      			function openViewWin(){
+      				window.open("#", "VQ_"+cqId, "height=400,width=600,toolbar=no,menubar=no,scrollbars=yes"); 
+      			}
+          	//]]>
+        </script>
     </h:head>
     <h:body>
         <div class="section">
@@ -28,18 +60,22 @@
                  </h:selectOneMenu>
                  Position: <input type="text" value="${questionSearcher.selectedPosition.name}" readonly="readonly"/>
                  <h:inputHidden value="#{questionSearcher.searchCriteria.positionId}"/>
-                 
+                 <br/>
                  <h:inputText id="query" value="#{questionSearcher.searchCriteria.query}" style="width: 165px;" autocomplete="off"/>
                  &nbsp;
                  <h:commandButton id="searchButtion" value="Search" action="#{questionSearcher.find}"/>
                  &nbsp;
                  <h:commandButton id="addButtion" value="Auto Select" action="add"/>
+                 &nbsp;
+                 <input type="button" value="Select" onclick="selectQuestions();"/>
+                 &nbsp;
+                 <input type="button" value="Close" onclick="window.close();"/>
              </fieldset>
          </h:form>
         </div>
 
         <h:panelGroup id="searchResults">
-            <div class="section">
+            <div>
                 <h:outputText id="noHotelsMsg" value="No Question Found" rendered="#{empty questions}"/>
                 <h:form id="questionSelectionForm">
                     <h:dataTable id="questions" value="#{questionSearcher.questions}" var="_question" rendered="#{not empty questions}" columnClasses=",,,,action">
@@ -57,7 +93,7 @@
                         </h:column>
                         <h:column id="actCol">
                             <f:facet id="actFct" name="header">Action</f:facet>
-                            <h:link value="View" outcome="/question/detail" style="white-space: nowrap;">
+                            <h:link value="View" outcome="/question/View.xhtml" target="VQ_#{cqId}" style="white-space: nowrap;" onclick="openViewWin();">
                                 <f:param name="id" value="#{_question.id}"/>
                             </h:link>
                         </h:column>
