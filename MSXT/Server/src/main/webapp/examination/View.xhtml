@@ -1,0 +1,65 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:s="http://jboss.org/seam/faces"
+                xmlns:p="http://java.sun.com/jsf/composite/components/property"
+                template="/WEB-INF/layout/template.xhtml">
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="id" value="#{id}"/>
+            <s:viewAction action="#{examAgent.selectExamination4View(id)}"/>
+        </f:metadata>
+    </ui:define>
+ 
+    <ui:define name="content">
+        <div class="section">
+            <h1>View Examination</h1>
+        </div>
+        <div class="section">
+            <h:form id="editExamForm" prependId="false" onsubmit="return onSubmitForm();">
+                <fieldset>
+                	<table>
+                		<tr>
+                			<td width="20%">Position</td>
+                			<td width="80%">${examAgent.selectedExam.position.name}</td>
+                		</tr>	
+                		<tr>
+                			<td width="20%">Name</td>
+                			<td width="80%">
+                				${examAgent.selectedExam.name}
+                			</td>
+                		</tr>
+                		<tr>
+                			<td width="20%">Time</td>
+                			<td width="80%">
+                				${examAgent.selectedExam.time} Minutes
+		                    </td>
+                		</tr>
+	                </table>
+                	<div id="catalogs">
+                		<ui:repeat var="catalog" value="${examAgent.selectedExam.catalogs}" varStatus="vs">
+                		<br/>
+                		<div>
+                			<h1>${vs.index + 1}.&nbsp; ${catalog.name}</h1>
+                			<p>&nbsp;&nbsp;&nbsp;&nbsp;${catalog.description}</p>
+               				<ui:repeat var="cq" value="${catalog.questions}" varStatus="qvs">
+            					<p>${vs.index+1}.${qvs.index+1}.&nbsp;<h:outputText value="${cq.question.content}" escape="false"/></p>
+				        		<ui:repeat var="ci" value="${cq.question.choiceItems}">
+				        			${ci.labelName}.&nbsp;${ci.content}<br/>
+				        		</ui:repeat>
+				        		<br/>
+				        	</ui:repeat>
+                		</div>
+                		</ui:repeat>
+                	</div>
+                </fieldset>
+                <div class="buttonBox">
+                    <h:button id="cancel" value="Return" outcome="/examination/search.xhtml"/>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

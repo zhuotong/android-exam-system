@@ -139,7 +139,6 @@
       				xml.push('</catalogs>')
       				
       				var value = xml.join('\n');
-      				alert(value);
       				document.getElementById('catalogsXML').value = value;
       			}
           	//]]>
@@ -169,6 +168,7 @@
                 		<tr>
                 			<td width="20%">Name</td>
                 			<td width="80%" colspan="2">
+                				<h:inputHidden value="#{examAgent.selectedExam.id}"/>
                 				<h:inputText id="examName" value="#{examAgent.selectedExam.name}" required="true"/>
                 				<div class="errors">                  
 		                    		<h:message for="examName"/>
@@ -231,7 +231,7 @@
                 	</div>
                 </fieldset>
                 <div class="buttonBox">
-                    <h:commandButton id="create" value="Create" action="#{examCreator.create}"/>
+                    <h:commandButton id="save" value="Save" action="#{examAgent.save}"/>
                     &nbsp;
                     <h:button id="cancel" value="Cancel" outcome="/examination/search.xhtml"/>
                 </div>
