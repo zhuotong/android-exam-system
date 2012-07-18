@@ -1,11 +1,15 @@
 package com.msxt.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -35,6 +39,9 @@ public class Question {
 	
 	@Column(name="right_answer")
 	private String rightAnswer;
+	
+	@OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
+	private List<QuestionChoiceItem> choiceItems;
 	
 	public String getId() {
 		return id;
@@ -71,5 +78,11 @@ public class Question {
 	}
 	public Integer getVersion() {
 		return version;
+	}
+	public List<QuestionChoiceItem> getChoiceItems() {
+		return choiceItems;
+	}
+	public void setChoiceItems(List<QuestionChoiceItem> choiceItems) {
+		this.choiceItems = choiceItems;
 	}
 }

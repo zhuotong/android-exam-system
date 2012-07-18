@@ -1,5 +1,6 @@
 package com.msxt.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -40,7 +41,7 @@ public class ExaminationCatalog {
 	@Column(name="idx")
 	private int index;
 	
-	@OneToMany(mappedBy = "catalog", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "catalog", cascade = {CascadeType.ALL,CascadeType.REMOVE})
 	private List<ExaminationQuestion> questions;
 	
 	public String getId() {
@@ -75,6 +76,8 @@ public class ExaminationCatalog {
 	}
 	
 	public List<ExaminationQuestion> getQuestions() {
+		if( questions==null )
+			questions = new ArrayList<ExaminationQuestion>();
 		return questions;
 	}
 	public void setQuestions(List<ExaminationQuestion> questions) {

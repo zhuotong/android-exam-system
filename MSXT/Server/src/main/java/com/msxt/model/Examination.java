@@ -32,7 +32,7 @@ public class Examination {
 	@JoinColumn(name="position_id")
 	private Position position;
 	
-	@OneToMany(mappedBy = "exam", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "exam", cascade = {CascadeType.ALL, CascadeType.REMOVE})
 	private List<ExaminationCatalog> catalogs;
 	
 	@Column(name="name")
