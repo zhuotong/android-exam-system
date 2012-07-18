@@ -41,7 +41,7 @@ public class QuestionSearcher extends PageableSearcher {
     private EntityManager em;
     
     @Inject
-    QuestionSearchCriteria searchCriteria;
+    private QuestionSearchCriteria searchCriteria;
     
     @Inject
     private Instance<TemplateMessage> messageBuilder;

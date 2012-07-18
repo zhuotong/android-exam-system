@@ -44,7 +44,7 @@
       			}
       			
       			function openSelectQuestionWin( ct ) {
-      				window.open("../question/SelectQuestion.xhtml?positionId=#{examCreator.positionId}&cqId="+ct.nextSibling.id,"selectQuestion_"+ct.nextSibling.id,"height=400,width=600,toolbar=no,menubar=no,scrollbars=yes");  
+      				window.open("../question/SelectQuestion.xhtml?positionId=#{examAgent.selectedExam.position.id}&cqId="+ct.nextElementSibling.id,"selectQuestion_"+ct.nextSibling.id,"height=400,width=600,toolbar=no,menubar=no,scrollbars=yes");  
       			} 
       			
       			function addQuestion2Catalog(questionId, name, type, cqId){
