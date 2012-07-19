@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paper>
+<desc><![CDATA[Java Engineer]]></desc>
+<!-- minutes(-1 mean no time limit)-->
+<time>60</time>
+<catalogs>
+	<catalog idx="1">
+		<desc><![CDATA[J2SE]]></desc>
+		<questions>
+			<question idx="1">
+			<type>Choice:S</type>
+		    <name><![CDATA[which of the following are java keywords]]></name>
+				<choice>
+					<index>1</index>
+					<label>A</label>
+					<content>goto</content>
+			    </choice>
+			    <choice>
+					<index>2</index>
+					<label>B</label>
+					<content>malloc</content>
+			    </choice>
+			    <choice>
+					<index>3</index>
+					<label>C</label>
+					<content>extends</content>
+			    </choice>
+			    <choice>
+					<index>4</index>
+					<label>D</label>
+					<content>false</content>
+			    </choice>
+			</question>	
+		</questions>
+	</catalog>	
+</catalogs>
+</paper>

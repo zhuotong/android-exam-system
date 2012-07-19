@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<login>
+	<validate>true</validate>
+	<papers>
+		<paper idx="1">
+		    <id>100001</id>
+			<desc>SCJP1</desc>
+		</paper>
+		<paper idx="2">
+			<id>100002</id>
+			<desc>SCJP2</desc>
+		</paper>
+		<paper idx="3">
+		    <id>100003</id>
+			<desc>SCJP3</desc>
+		</paper>	
+	</papers>
+</login>
