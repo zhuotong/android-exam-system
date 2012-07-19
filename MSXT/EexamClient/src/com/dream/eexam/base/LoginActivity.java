@@ -1,9 +1,13 @@
 package com.dream.eexam.base;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import com.dream.eexam.util.SystemConfig;
+
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +23,9 @@ public class LoginActivity extends BaseActivity {
 	private EditText passwordET = null;
 	private Button loginBtn = null;
 	
-	MyTask myTask;
+	private String requestURL = null;
+	private StringBuffer responseText = new StringBuffer();
+//	MyTask myTask;
 	
 	
 	/** Called when the activity is first created. */
@@ -42,92 +48,124 @@ public class LoginActivity extends BaseActivity {
         public void onClick(View v) {  
 
         	//show waiting Dialog
-        	myTask = new MyTask();
-        	myTask.execute("");
+//        	myTask = new MyTask();
+//        	myTask.execute("");
         	
         	//login server
-			String idEtText = idEt.getText().toString();
-			String passwordETText = passwordET.getText().toString();
-			boolean result = login(idEtText,passwordETText);
-			if(result){
-				myTask.cancel(true);
-				finish();
-				Intent intent = new Intent();
-				intent.setClass( getBaseContext(), PapersActivity.class);
-				startActivity(intent);
-			}
+        	
+        	requestURL = SystemConfig.getInstance().getPropertyValue("Server_URL");
+        	new DownloadXmlTask().execute(requestURL);
+        	
+
+        	
+//			String idEtText = idEt.getText().toString();
+//			String passwordETText = passwordET.getText().toString();
+//			boolean result = login(idEtText,passwordETText);
+//			if(result){
+//				myTask.cancel(true);
+//				finish();
+//				Intent intent = new Intent();
+//				intent.setClass( getBaseContext(), PapersActivity.class);
+//				startActivity(intent);
+//			}
 
         }  
     };
+ 
     
-    /**
-     * 
-     * @param username
-     * @param password
-     */
-    public boolean login(String username,String password){
-    	boolean result = false;
-		String urlStr="http://192.168.240.148:8080/";
-//		String query = "username="+username+"&password="+password;
-//		urlStr+=query;
-		try{
-			URL url =new URL(urlStr);
-			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-			conn.setConnectTimeout(5 * 1000);
-			conn.connect();
-			if (conn.getResponseCode() == 200) {
-				result = true;
-			}
-			conn.disconnect();
-		}catch(Exception e){
-//			ShowDialog(e.getMessage());
+    private boolean loadXmlFromNetwork(String urlString){
+    	Log.i(LOG_TAG,"loadXmlFromNetwork...");
+    	Log.i(LOG_TAG,"urlString:"+urlString);
+    	boolean isSuccess = false;
+    	InputStream stream = null;
+        try {
+            stream = downloadUrl(urlString);
+            if (stream != null){
+            	isSuccess = true;
+            	responseText.append(inputStream2String(stream));
+            	Log.i(LOG_TAG,"response_Text:" + responseText);
+            	stream.close();
+            }
+        } catch (IOException e) {
+        	Log.i(LOG_TAG,"IOException:" + e.getMessage());
+        	
+		} finally {
+
+        }
+		return isSuccess;
+    }
+    
+	public static String inputStream2String(InputStream is) throws IOException {
+		Log.i(LOG_TAG,"inputStream2String...");
+		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		int i = -1;
+		while ((i = is.read()) != -1) {
+			baos.write(i);
+//			Log.i(LOG_TAG,String.valueOf(i));
 		}
-		return result;
+		
+		return baos.toString();
 	}
     
-    /**
-     * 
-     * @author qtang
-     *
-     */
-    private class MyTask extends AsyncTask<String, Integer, String> {
-    	ProgressDialog progressDialog;  
+    private InputStream downloadUrl(String urlString){
+        HttpURLConnection conn;
+        InputStream stream = null;
+		try {
+			URL url = new URL(urlString);
+			conn = (HttpURLConnection) url.openConnection();
+	        conn.setReadTimeout(10000 /* milliseconds */);
+	        conn.setConnectTimeout(15000 /* milliseconds */);
+	        conn.setRequestMethod("GET");
+	        conn.setDoInput(true);
+	        
+	        // Starts the query
+	        conn.connect();
+	        stream = conn.getInputStream();
+		} catch (IOException e) {
+			Log.i(LOG_TAG,"IOException:" + e.getMessage());
+		}
+
+        return stream;
+    }
+    
+    private class DownloadXmlTask extends AsyncTask<String, Void, String> {
+
+    	ProgressDialog progressDialog;
+    	
     	@Override
     	protected void onPreExecute() {
-    		Log.i(LOG_TAG, "onPreExecute()");
-    		progressDialog = ProgressDialog.show(LoginActivity.this, null, "Login to server,please wait...", true, false); 
+    		Log.i(LOG_TAG, "onPreExecute() called");
+    		progressDialog = ProgressDialog.show(LoginActivity.this, null, "Login to server...", true, false); 
     	}
-		@Override
-		protected String doInBackground(String... params) {
-			Log.i(LOG_TAG, "doInBackground(Params... params) called");
-			try {
-				Thread.sleep(10000);  
-				return new String("");
-			} catch (Exception e) {
-				Log.e(LOG_TAG, e.getMessage());
-			}
-			return null;
-		}
-		@Override
-    	protected void onProgressUpdate(Integer... progresses) {
-			Log.i(LOG_TAG, "onProgressUpdate(Progress... progresses) called");
-    	}
-		
-		@Override
-		protected void onPostExecute(String result) {
-			Log.i(LOG_TAG, "onPostExecute(String result) called");
-			if(progressDialog.isShowing()){
-				progressDialog.dismiss();
-				ShowDialog("Fail to login Server!");
-			}
-		}
-		@Override
-		protected void onCancelled() {
-			Log.i(LOG_TAG, "onCancelled() called");
-			if(progressDialog.isShowing()){
-				progressDialog.dismiss();
-			}
-		}
+    	
+        @Override
+        protected String doInBackground(String... urls) {
+             loadXmlFromNetwork(urls[0]);
+             
+/*             if(!isSuccess){
+            	 progressDialog.dismiss();
+            	 this.cancel(true);
+             }*/
+             return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+//            setContentView(R.layout.main);
+            // Displays the HTML string in the UI via a WebView
+//            WebView myWebView = (WebView) findViewById(R.id.webview);
+//            myWebView.loadData(result, "text/html", null);
+        	progressDialog.dismiss();
+        	
+        	if(responseText!=null&&responseText.length()>100){
+        		ShowDialog(responseText.substring(0,100));
+        	}else{
+        		ShowDialog("No return data!");
+        	}
+        	
+        	
+        }
     }
     
     @Override
