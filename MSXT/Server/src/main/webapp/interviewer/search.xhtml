@@ -4,7 +4,14 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:s="http://jboss.org/seam/faces"
                 template="/WEB-INF/layout/template.xhtml">
+    <ui:define name="metadata">
+        <f:metadata>
+            <s:viewAction action="#{interviewerSearcher.doSearch}"/>
+        </f:metadata>
+    </ui:define>
+                
     <ui:define name="head">
         <script type="text/javascript">
             function controlSpinner(behavior) {
@@ -18,10 +25,8 @@
     </ui:define>
 	
     <ui:define name="content">
-		<div class="section">
-            <h1>Interviewer Search</h1>
-        </div>
         <div class="section">
+         <h1>Interviewer Search</h1>
          <span class="errors">
             <h:messages id="messages" globalOnly="true"/>
          </span>
@@ -67,9 +72,11 @@
                             <h:link id="view" value="View" outcome="/interviewer/view" style="white-space: nowrap;">
                                 <f:param name="id" value="#{_interviewer.id}"/>
                             </h:link>
+                            &nbsp;
                             <h:link id="edit" value="Edit" outcome="/interviewer/edit" style="white-space: nowrap;">
                                 <f:param name="id" value="#{_interviewer.id}"/>
                             </h:link>
+                            &nbsp;
                      		<h:commandButton id="delete" value="Delete" action="#{questionTypeAgent.deleteQuestionType(_interviewer.id)}"/>
                         </h:column>
                     </h:dataTable>

@@ -13,7 +13,7 @@
     <ui:define name="content">
 
         <div class="section">
-            <h1>Create Question Type</h1>
+            <h1>Create Interviewer</h1>
         </div>
 
         <div class="section">
@@ -24,24 +24,42 @@
 
             <h:form id="regForm" prependId="false">
                 <fieldset>
-                	<h:panelGrid columns="1">
-	                    <p:input id="name" label="Question Type Name">
-	                        <h:inputText id="input" value="#{newQuestionType.name}" required="true" binding="#{questionTypeCreator.questionTypeNameInput}"/>
-	                    </p:input>
-	                     <p:input id="rendener" label="Rendener">
-	                        <h:inputText id="input" value="#{newQuestionType.rendener}"/>
-	                    </p:input>
-	                    <p:input id="nextPostion" label="Parent Type">                                        
-		                    <h:selectOneMenu id="parentId" value="#{questionTypeCreator.parentTypeId}">
-		                     	<f:selectItem itemValue="#{null}" itemLabel="Select..." noSelectionOption="true"/>
-		                        <f:selectItems value="#{questionTypeCreator.existingQuestionTypes}" var="ep" itemLabel="#{ep.name}" itemValue="#{ep.id}"/>
-	                    	</h:selectOneMenu>
-                    	</p:input>
-					</h:panelGrid>
+                	<div>
+	                	<table>
+	                		<tr>
+	                			<td align="left">
+		                			<p:input label="Name" >
+			                        	<h:inputText value="#{interviewerCreator.newInterview.name}" required="true"/>
+			                        </p:input>
+		                        </td>
+	                		</tr>
+	                		<tr>
+	                			<td align="left">
+		                			<p:input label="ID Code">
+				                        <h:inputText value="#{interviewerCreator.newInterview.idCode}" required="true"/>
+				                    </p:input>
+	                			</td>
+	                		</tr>
+	                		<tr>
+	                			<td align="left">
+		                			<p:input label="Phone">
+				                        <h:inputText value="#{interviewerCreator.newInterview.phone}" required="true"/>
+				                    </p:input>
+	                			</td>
+	                		</tr>
+	                		<tr>
+	                			<td align="left">
+		                			<p:input label="Age">
+				                        <h:inputText value="#{interviewerCreator.newInterview.age}"/>
+				                    </p:input>
+	                			</td>
+	                		</tr>
+	                	</table>
+                	</div>
                     <div class="buttonBox">
-                        <h:commandButton id="create" value="Create" action="#{questionTypeCreator.create}"/>
+                        <h:commandButton id="create" value="Create" action="#{interviewerCreator.create}"/>
                         &nbsp;
-                        <h:button id="cancel" value="Cancel" outcome="/question/type/search.xhtml"/>
+                        <h:button id="cancel" value="Cancel" outcome="/interviewer/search.xhtml"/>
                     </div>
                 </fieldset>
             </h:form>

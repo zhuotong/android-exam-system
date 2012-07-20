@@ -31,7 +31,7 @@ public class Interviewer {
 	private String phone;
 	
 	@Column(name="age")
-	private int age;
+	private Integer age;
 	
 	public String getId() {
 		return id;
@@ -57,10 +57,10 @@ public class Interviewer {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public int getAge() {
+	public Integer getAge() {
 		return age;
 	}
-	public void setAge(int age) {
+	public void setAge(Integer age) {
 		this.age = age;
 	}
 	public void setVersion(Integer version) {
