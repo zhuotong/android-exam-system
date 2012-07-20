@@ -10,7 +10,7 @@
 	       android:id="@+id/baseHeader"
 	       layout="@layout/base_header" /> 
 
-   <include
+    <include
        	   android:id="@+id/paperHeader"
            layout="@layout/paper_header" />
     	       
@@ -19,7 +19,6 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
 	    android:layout_margin="1dip">
-	
 		<RelativeLayout 
 			android:id="@+id/listHeader"
 			android:layout_alignParentTop="true"
@@ -36,7 +35,6 @@
 						android:background="@drawable/tv_layout_question"
 						android:textSize="15sp"/>			
 		</RelativeLayout>
-	
 	 	<RelativeLayout 
 		    android:id="@+id/listFooter"
 			android:layout_width="fill_parent"
@@ -62,7 +60,6 @@
 		    </TableRow>
 
 		</RelativeLayout>		   
-		
 		<ListView
 	     	android:id="@+id/lvChoices"
 	     	android:layout_width="fill_parent"
@@ -73,6 +70,6 @@
 	  		android:layout_marginRight="2dp"
 	  		android:background="#000000"
 	  		/>
-		
-</RelativeLayout>
+	</RelativeLayout>
+	
 </LinearLayout>

@@ -1,19 +1,29 @@
 package com.dream.eexam.model;
 
 public class Paper {
-	private Integer id;
-
-	public Paper(Integer id) {
-		super();
-		this.id = id;
+	private String index;
+	private String id;
+	private String desc;
+	
+	public String getIndex() {
+		return index;
 	}
-
-	public Integer getId() {
+	public void setIndex(String index) {
+		this.index = index;
+	}
+	public String getId() {
 		return id;
 	}
-
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
+	public String getDesc() {
+		return desc;
+	}
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+
+	
 	
 }

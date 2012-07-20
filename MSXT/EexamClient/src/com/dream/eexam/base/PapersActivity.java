@@ -1,7 +1,15 @@
 package com.dream.eexam.base;
 
+import java.io.InputStream;
+import java.util.Iterator;
+import java.util.List;
+
+import com.dream.eexam.model.Paper;
 import com.dream.eexam.model.QuestionProgress;
 import com.dream.eexam.paper.MultiChoices;
+import com.dream.eexam.util.XMLParseUtil;
+
+import android.R.integer;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -21,7 +29,9 @@ public class PapersActivity extends BaseActivity {
 	private TextView spinnerText2 = null;
 	private TextView spinnerText3 = null;
 	
-	private String[] exams = {"SCJP1","SCJP2","SCJP2","SCJP3","SCJP4"};
+//	private String[] exams = {"SCJP1","SCJP2","SCJP2","SCJP3","SCJP4"};
+	private String[] papers = null;
+	
 	private Spinner spinner;
 	private ArrayAdapter<String> adapter;
 	
@@ -36,6 +46,21 @@ public class PapersActivity extends BaseActivity {
 		
 		setContentView(R.layout.papers);
 		
+		//load paper List
+	    InputStream inputStream =  PapersActivity.class.getClassLoader().getResourceAsStream("sample_login_success.xml");
+		List<Paper> paperList = null;
+		try {
+			paperList = XMLParseUtil.readPaperListXmlByPull(inputStream);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if(paperList!=null&&paperList.size()>0){
+			papers = new String[paperList.size()];
+			for(int i=0;i<paperList.size();i++){
+				papers[i] = paperList.get(i).getDesc();
+			}
+		}
+		
 		spinnerText = (TextView) this.findViewById(R.id.spinnerText);
 		spinnerText.setText("You applied job title:");
 		
@@ -47,12 +72,11 @@ public class PapersActivity extends BaseActivity {
 		
 		spinner = (Spinner) findViewById(R.id.Spinner01);
 		
-		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,exams);
+		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,papers);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
 		spinner.setOnItemSelectedListener(new SpinnerSelectedListener());
 		spinner.setVisibility(View.VISIBLE);
-		
 		
 		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE); 
 		

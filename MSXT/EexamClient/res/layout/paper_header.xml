@@ -6,17 +6,29 @@
     <TableRow
          android:layout_width="fill_parent"
          android:layout_height="fill_parent">
-         
-	 <TextView
-	    android:id="@+id/header_tv_current"
-        android:text="@string/msg_header_tv_current"
+
+    <TextView
+	    android:id="@+id/header_tv_catalogs"
+        android:text="@string/msg_header_tv_catalogs"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_gravity="center_vertical|center_horizontal"
         android:gravity="center_vertical|center_horizontal"
         android:layout_weight="1"
         android:textColor="#FFFFFF"
-        android:textSize="18sp"
+        android:textSize="16sp"
+        android:background="@drawable/bg_color_paper_header_text_view"/>
+	 <TextView
+	    android:id="@+id/header_tv_current"
+        android:text="@string/msg_header_tv_current"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="0.5dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_weight="1"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
         android:background="@drawable/bg_color_paper_header_text_view"/>
      <TextView
         android:id="@+id/header_tv_all"
@@ -28,7 +40,7 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:gravity="center_vertical|center_horizontal"
         android:textColor="#FFFFFF"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:background="@drawable/bg_color_paper_header_text_view"/>
      <TextView
         android:id="@+id/header_tv_waiting"
@@ -40,7 +52,7 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:gravity="center_vertical|center_horizontal"
         android:textColor="#FFFFFF"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:background="@drawable/bg_color_paper_header_text_view"/>
 		            
     </TableRow>

@@ -8,6 +8,7 @@ import java.net.URL;
 import com.dream.eexam.util.SystemConfig;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -64,9 +65,9 @@ public class LoginActivity extends BaseActivity {
 //			if(result){
 //				myTask.cancel(true);
 //				finish();
-//				Intent intent = new Intent();
-//				intent.setClass( getBaseContext(), PapersActivity.class);
-//				startActivity(intent);
+				Intent intent = new Intent();
+				intent.setClass( getBaseContext(), PapersActivity.class);
+				startActivity(intent);
 //			}
 
         }  

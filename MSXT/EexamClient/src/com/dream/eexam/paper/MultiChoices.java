@@ -35,6 +35,7 @@ import com.dream.eexam.model.QuestionProgress;
 public class MultiChoices extends BaseActivity {
 
 	//set question sub header
+	private TextView catalogsTV = null;
 	private TextView currentTV = null;
 	private TextView allTV = null;
 	private TextView waitTV = null;
@@ -60,11 +61,23 @@ public class MultiChoices extends BaseActivity {
 	public void setSubHeader(){
 		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
 		qp = getQuestionProgress(sharedPreferences);
-		
-		   //set question text
+
+		//set question text
+		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
+//		catalogsTV.setText(String.valueOf(qp.getCurrentQueIndex()));
+		catalogsTV.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showWindow(v);
+				if(pressedItemIndex!=-1){
+					catalogsTV.setText(groups.get(pressedItemIndex));
+				}
+			}
+		});
+
+		//set question text
     	currentTV = (TextView)findViewById(R.id.header_tv_current);
-    	currentTV.setBackgroundColor(Color.parseColor("#4428FF"));
-    	currentTV.setText(String.valueOf(qp.getCurrentQueIndex()));
+    	currentTV.setText("Q "+String.valueOf(qp.getCurrentQueIndex()));
     	currentTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -77,7 +90,7 @@ public class MultiChoices extends BaseActivity {
         
     	//set question text
     	allTV = (TextView)findViewById(R.id.header_tv_all);
-    	allTV.setText(String.valueOf(qp.getQuesCount()));
+    	allTV.setText("All " +String.valueOf(qp.getQuesCount()));
     	allTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -90,7 +103,7 @@ public class MultiChoices extends BaseActivity {
     	
         //set question text
     	waitTV = (TextView)findViewById(R.id.header_tv_waiting);
-    	waitTV.setText(String.valueOf(qp.getWaitingQueIdsList().size()));
+    	waitTV.setText("Wait "+ String.valueOf(qp.getWaitingQueIdsList().size()));
     	waitTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
