@@ -133,7 +133,7 @@ CREATE  TABLE IF NOT EXISTS `MSDB`.`examination_catalog` (
   `exam_id` VARCHAR(32) NULL COMMENT '试卷ID' ,
   `name` VARCHAR(50) NULL COMMENT '名称' ,
   `description` VARCHAR(100) NULL COMMENT '描述' ,
-  `index` INT NULL COMMENT '顺序' ,
+  `idx` INT NULL COMMENT '顺序' ,
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB, 
 CHARACTER SET utf8,
@@ -148,7 +148,7 @@ CREATE  TABLE IF NOT EXISTS `MSDB`.`examination_question` (
   `version` INT NULL ,
   `catalog_id` VARCHAR(32) NULL COMMENT '试卷栏目ID' ,
   `question_id` VARCHAR(32) NULL COMMENT '题目ID' ,
-  `index` INT NULL COMMENT '在栏目中的位置' ,
+  `idx` INT NULL COMMENT '在栏目中的位置' ,
   `score` INT NULL COMMENT '分数' ,
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB, 
