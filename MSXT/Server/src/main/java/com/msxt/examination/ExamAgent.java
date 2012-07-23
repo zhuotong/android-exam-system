@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.bean.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,6 +23,9 @@ public class ExamAgent {
 	
 	@EJB
 	private CatalogParser cp;
+	
+	@Inject
+	private ExamSearcher searcher;
 	
 	private Examination selectedExam = new Examination();
 	
@@ -42,6 +46,12 @@ public class ExamAgent {
 		//Load lazy data
 		for( ExaminationCatalog ec : selectedExam.getCatalogs() )
 			ec.getQuestions().get(0).getQuestion();
+	}
+	
+	public void selectExamination4Copy(String id){
+		selectExamination(id);
+		em.detach( selectedExam );
+		selectedExam.setName( "Copy of " + selectedExam.getName() );
 	}
 	
 	public void selectExamination4View(String id){
@@ -79,9 +89,29 @@ public class ExamAgent {
 		}
 		em.persist( se );
 		
+		searcher.doSearch();
 		return "search";
 	}
 	
+	public String copy() throws XMLStreamException {
+		Examination src = em.find( Examination.class, selectedExam.getId() );
+		selectedExam.setPosition( src.getPosition() );	
+		List<ExaminationCatalog> ecs = cp.parse( catalogsXML );
+		for( ExaminationCatalog ec : ecs ) {
+			ec.setExam( selectedExam );
+			selectedExam.getCatalogs().add( ec );
+		}
+		em.persist( selectedExam );
+		
+		searcher.doSearch();
+		return "search";
+	}
+	
+	public void delete( String id ) {
+		Examination exam = em.find( Examination.class, id );
+		em.remove( exam );
+		searcher.doSearch();
+	}
 	public Examination getSelectedExam() {
 		return selectedExam;
 	}

@@ -42,19 +42,20 @@
                         </h:column>
                         <h:column id="actCol">
                             <f:facet id="actFct" name="header">Action</f:facet>
-                            <h:link value="View" outcome="/examination/View" style="white-space: nowrap;">
+                            <h:button value="View" outcome="/examination/View" style="white-space: nowrap;">
                                 <f:param name="id" value="#{_exam.id}"/>
-                            </h:link>
-                             &nbsp;
-                            <h:link value="Copy" outcome="/examination/copy" style="white-space: nowrap;" rendered="#{_exam.isOnUsed}">
+                            </h:button>
+                            &nbsp;
+                            <h:button value="Copy" outcome="/examination/copy" style="white-space: nowrap;" rendered="#{_exam.isOnUsed}">
                                 <f:param name="id" value="#{_exam.id}"/>
-                            </h:link>
-                             &nbsp;
-                            <h:link value="Edit" outcome="/examination/edit" style="white-space: nowrap;" rendered="#{not _exam.isOnUsed}">
+                            </h:button>
+                            &nbsp;
+                            <h:button value="Edit" outcome="/examination/edit" style="white-space: nowrap;" rendered="#{not _exam.isOnUsed}">
                                 <f:param name="id" value="#{_exam.id}"/>
-                            </h:link>
-                             &nbsp;
-                     		<h:commandButton id="delete" value="Delete" action="#{questionTypeAgent.deleteQuestionType(_question.id)}" rendered="#{not _exam.isOnUsed}"/>
+                            </h:button>
+                            &nbsp;
+                     		<h:commandButton id="delete" value="Delete" action="#{examAgent.delete(_exam.id)}" rendered="#{not _exam.isOnUsed}">
+                     		</h:commandButton>
                         </h:column>
                     </h:dataTable>
                 </h:form>

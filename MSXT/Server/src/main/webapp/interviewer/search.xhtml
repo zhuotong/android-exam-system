@@ -77,6 +77,10 @@
                                 <f:param name="id" value="#{_interviewer.id}"/>
                             </h:link>
                             &nbsp;
+                            <h:link id="addInterview" value="Add Interview" outcome="/interview/add" style="white-space: nowrap;">
+                                <f:param name="interviewerID" value="#{_interviewer.id}"/>
+                            </h:link>
+                            &nbsp;
                      		<h:commandButton id="delete" value="Delete" action="#{questionTypeAgent.deleteQuestionType(_interviewer.id)}"/>
                         </h:column>
                     </h:dataTable>

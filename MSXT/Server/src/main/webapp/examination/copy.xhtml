@@ -10,7 +10,7 @@
     <ui:define name="metadata">
         <f:metadata>
             <f:viewParam name="id" value="#{id}"/>
-            <s:viewAction action="#{examAgent.selectExamination(id)}"/>
+            <s:viewAction action="#{examAgent.selectExamination4Copy(id)}"/>
         </f:metadata>
     </ui:define>
     
@@ -148,7 +148,7 @@
     <ui:define name="content">
 
         <div class="section">
-            <h1>Edit Examination</h1>
+            <h1>Copy Examination</h1>
         </div>
 
         <div class="section">
@@ -231,7 +231,7 @@
                 	</div>
                 </fieldset>
                 <div class="buttonBox">
-                    <h:commandButton id="save" value="Save" action="#{examAgent.save}"/>
+                    <h:commandButton id="save" value="Save" action="#{examAgent.copy}"/>
                     &nbsp;
                     <h:button id="cancel" value="Cancel" outcome="/examination/search.xhtml"/>
                 </div>

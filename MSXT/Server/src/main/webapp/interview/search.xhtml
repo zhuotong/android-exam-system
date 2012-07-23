@@ -73,15 +73,15 @@
                         </h:column>
                         <h:column id="actCol">
                             <f:facet id="actFct" name="header">Action</f:facet>
-                            <h:link id="view" value="View" outcome="/interviewer/view" style="white-space: nowrap;">
+                            <h:button id="view" value="View" outcome="/interview/view" style="white-space: nowrap;">
                                 <f:param name="id" value="#{_interview.id}"/>
-                            </h:link>
+                            </h:button>
                             &nbsp;
-                            <h:link id="edit" value="Edit" outcome="/interviewer/edit" style="white-space: nowrap;">
+                            <h:button id="edit" value="Edit" outcome="/interview/edit" style="white-space: nowrap;">
                                 <f:param name="id" value="#{_interview.id}"/>
-                            </h:link>
+                            </h:button>
                             &nbsp;
-                     		<h:commandButton id="delete" value="Delete" action="#{questionTypeAgent.deleteQuestionType(_interviewer.id)}"/>
+                     		<h:commandButton id="delete" value="Delete" action="#{interviewAgent.delete(_interview.id)}"/>
                         </h:column>
                     </h:dataTable>
                 </h:form>

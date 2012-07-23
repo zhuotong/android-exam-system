@@ -1,5 +1,6 @@
 package com.msxt.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -69,6 +70,8 @@ public class Examination {
 		this.time = time;
 	}
 	public List<ExaminationCatalog> getCatalogs() {
+		if( catalogs==null )
+			catalogs = new ArrayList<ExaminationCatalog>();
 		return catalogs;
 	}
 	public void setCatalogs(List<ExaminationCatalog> catalogs) {
