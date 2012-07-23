@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<paper>
-<desc><![CDATA[Java Engineer]]></desc>
+<examination>
+<name>Java Engineer</name>
 <!-- minutes(-1 mean no time limit)-->
 <time>60</time>
 <catalogs>
@@ -9,6 +9,7 @@
 		<questions>
 			<question idx="1">
 			<type>Choice:S</type>
+			<score>3</score>
 		    <name><![CDATA[which of the following are java keywords]]></name>
 				<choice>
 					<index>1</index>
@@ -34,4 +35,4 @@
 		</questions>
 	</catalog>	
 </catalogs>
-</paper>
+</examination>
