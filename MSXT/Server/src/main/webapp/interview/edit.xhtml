@@ -1,0 +1,70 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:s="http://jboss.org/seam/faces"
+                xmlns:p="http://java.sun.com/jsf/composite/components/property"
+                template="/WEB-INF/layout/template.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="id" value="#{id}"/>
+            <s:viewAction action="#{interviewerAgent.selectInterviewer(id)}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="content">
+
+        <div class="section">
+            <h1>Edit Interviewer</h1>
+        </div>
+
+        <div class="section">
+        	<h:form id="regForm" prependId="false">
+                <fieldset>
+		            <div>
+		            	<table>
+		                		<tr>
+		                			<td align="left">
+		                				<h:inputHidden value="#{interviewerAgent.selectedInterviewer.id}"/>
+			                			<p:input label="Name" >
+				                        	<h:inputText value="#{interviewerAgent.selectedInterviewer.name}" required="true"/>
+				                        </p:input>
+			                        </td>
+		                		</tr>
+		                		<tr>
+		                			<td align="left">
+			                			<p:input label="ID Code">
+					                        <h:inputText value="#{interviewerAgent.selectedInterviewer.idCode}" required="true"/>
+					                    </p:input>
+		                			</td>
+		                		</tr>
+		                		<tr>
+		                			<td align="left">
+			                			<p:input label="Phone">
+					                        <h:inputText value="#{interviewerAgent.selectedInterviewer.phone}" required="true"/>
+					                    </p:input>
+		                			</td>
+		                		</tr>
+		                		<tr>
+		                			<td align="left">
+			                			<p:input label="Age">
+					                        <h:inputText value="#{interviewerAgent.selectedInterviewer.age}"/>
+					                    </p:input>
+		                			</td>
+		                		</tr>
+		                	</table>
+		            </div>
+		            <div class="buttonBox">
+		                <h:commandButton id="save" value="save" action="#{interviewerAgent.save}"/>
+                        &nbsp;
+                        <h:button id="cancel" value="Cancel" outcome="/interviewer/search.xhtml"/>
+		            </div>
+	 			</fieldset>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

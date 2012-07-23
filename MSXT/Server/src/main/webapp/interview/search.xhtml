@@ -1,0 +1,102 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:s="http://jboss.org/seam/faces"
+                template="/WEB-INF/layout/template.xhtml">
+    <ui:define name="metadata">
+        <f:metadata>
+            <s:viewAction action="#{interviewSearcher.doSearch}"/>
+        </f:metadata>
+    </ui:define>
+                
+    <ui:define name="head">
+        <script type="text/javascript">
+            function controlSpinner(behavior) {
+                if (behavior.status == 'begin') {
+                    document.getElementById('spinner').style.display = 'inline';
+                } else if (behavior.status == 'complete') {
+                    document.getElementById('spinner').style.display = 'none';
+                }
+            }
+        </script>
+    </ui:define>
+	
+    <ui:define name="content">
+        <div class="section">
+         <h1>Interview Search</h1>
+         <span class="errors">
+            <h:messages id="messages" globalOnly="true"/>
+         </span>
+         <h:form id="searchForm" prependId="false">
+             <fieldset>
+             	 Position:
+               	 <h:selectOneMenu value="#{interviewSearcher.searchCriteria.positionId}">
+                   	<f:selectItem itemValue="#{null}" itemLabel="Select..." noSelectionOption="true"/>
+                    <f:selectItems value="#{positionCreator.existingPositions}" var="ep" itemLabel="#{ep.name}" itemValue="#{ep.id}"/>
+                 </h:selectOneMenu>	
+                 &nbsp;
+                 <h:inputText value="#{interviewSearcher.searchCriteria.startBegin}">
+                     <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
+                 </h:inputText>
+                 &nbsp;
+                 <h:inputText value="#{interviewSearcher.searchCriteria.startEnd}">
+                     <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
+                 </h:inputText>
+                 &nbsp;
+                 Interviewer ID
+                 <h:inputText value="#{interviewSearcher.searchCriteria.query}" style="width: 100px;" autocomplete="off"/>
+                 &nbsp;
+                 <h:commandButton id="searchButtion" value="Search" action="#{interviewSearcher.find}"/>
+             </fieldset>
+         </h:form>
+        </div>
+
+        <h:panelGroup id="searchResults">
+            <div class="section">
+                <h:outputText id="noHotelsMsg" value="No Interviewer Found" rendered="#{empty interviewSearcher.interviews}"/>
+                <h:form id="interviewSelectionForm">
+                    <h:dataTable id="interview" value="#{interviewSearcher.interviews}" var="_interview" rendered="#{not empty interviewSearcher.interviews}" columnClasses=",,,action">
+                        <h:column>
+                            <f:facet name="header">Name</f:facet>
+                            #{_interview.interviewer.name}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Apply Position</f:facet>
+                            #{_interview.applyPosition.name}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Date</f:facet>
+                            #{_interview.start}
+                        </h:column>
+                        <h:column id="actCol">
+                            <f:facet id="actFct" name="header">Action</f:facet>
+                            <h:link id="view" value="View" outcome="/interviewer/view" style="white-space: nowrap;">
+                                <f:param name="id" value="#{_interview.id}"/>
+                            </h:link>
+                            &nbsp;
+                            <h:link id="edit" value="Edit" outcome="/interviewer/edit" style="white-space: nowrap;">
+                                <f:param name="id" value="#{_interview.id}"/>
+                            </h:link>
+                            &nbsp;
+                     		<h:commandButton id="delete" value="Delete" action="#{questionTypeAgent.deleteQuestionType(_interviewer.id)}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:form>
+                <h:form id="paginationForm">
+                    <h:commandButton id="previousResults" value="Previous page" action="#{interviewSearcher.previousPage}"
+                                     rendered="#{interviewSearcher.previousPageAvailable}">
+                        <f:ajax render=":searchResults" onevent="controlSpinner"/>
+                    </h:commandButton>
+                    &nbsp;
+                    <h:commandButton id="moreResults" value="More results" action="#{interviewerSearch.nextPage}"
+                                     rendered="#{interviewSearcher.nextPageAvailable}">
+                        <f:ajax render=":searchResults" onevent="controlSpinner"/>
+                    </h:commandButton>
+                </h:form>
+            </div>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,142 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:s="http://jboss.org/seam/faces"
+                xmlns:p="http://java.sun.com/jsf/composite/components/property"
+                template="/WEB-INF/layout/template.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="interviewerID" value="#{interviewerID}"/>
+            <s:viewAction action="#{interviewCreator.selectInterviewer(interviewerID)}"/>
+        </f:metadata>
+    </ui:define>
+	
+	<ui:define name="head">
+        <script type="text/javascript">
+      		//<![CDATA[
+      			function openSelectExaminationWin() {
+      				var apid = document.getElementById('applyPositionId').value;
+      				if( apid=='' ) 
+      					alert( 'Please select position first!!!' );
+      				else	
+      					window.open("../examination/select_examination.xhtml?positionId="+apid,"select_examination","height=400,width=600,toolbar=no,menubar=no,scrollbars=yes");  
+      			} 
+      			
+      			function addExaminations(examId, name, position){
+      				var eq = document.getElementById(examId);
+      				if( eq!=null ) {
+      					return false;
+      				}
+      				var chTable = document.getElementById( 'exams' ).children[0];
+      				var nr = chTable.insertRow( chTable.rows.length );
+                	nr.insertCell(0).innerHTML = name;
+                	nr.insertCell(1).innerHTML = position;
+                	nr.insertCell(2).innerHTML = '<input type="button" value="View" onclick="viewExam(this)"/>&nbsp;&nbsp;<input type="button" value="Delete" onclick="deleteExam(this)"/><input type="hidden" name="exam_id" id="'+examId+'" value="'+examId+'"/>';
+                	return true;
+      			}
+      			
+      			function deleteExam( dqButton ) {
+      				var tr = dqButton.parentElement.parentElement;
+      				tr.parentElement.removeChild(tr);
+      			}
+      			
+      			function viewExam( vqButton ) {
+      				var id = vqButton.parentElement.children[2].value;
+      				window.open("../examination/View.xhtml?id="+id, id, "height=400,width=600,toolbar=no,menubar=no,scrollbars=yes");  
+      			}
+      			
+      			function onSubmitForm(){
+      				var exams = document.getElementsByName('exam_id');
+      				if( exams.length==0 ) {
+      					alert('Please select examinations');
+      					return false;
+      				} else {
+      					var ap = document.getElementById('applyPositionId');
+      					var apLabel = ap.options[ap.selectedIndex].label;
+      					var examIds = [];
+      					for( var i=0; i<exams.length; i++ ) {
+      						var exam = exams[i];
+      						var tr = exam.parentElement.parentElement;
+      						if( tr.children[1].innerHTML != apLabel ) {
+      							alert( tr.children[0].innerHTML + 'is not belong ' + apLabel + '! Please remove it!');
+      	      					return false;
+      						} else {
+      							examIds.push( exam.value );
+      						}	
+      					}
+      					document.getElementById( 'examinationIds' ).value = examIds.join('|#|');
+      				}
+    				return true;
+      			}
+          	//]]>
+        </script>
+    </ui:define>
+    <ui:define name="content">
+
+        <div class="section">
+            <h1>Create Interview</h1>
+        </div>
+
+        <div class="section">
+
+            <div class="errors">
+                <h:messages id="messages" globalOnly="true"/>
+            </div>
+
+            <h:form id="regForm" prependId="false" onsubmit="return onSubmitForm();">
+                <fieldset>
+                	<div>
+	                	<table>
+	                		<tr>
+	                			<td align="right">Interviewer:</td>
+		                        <td>${interviewCreator.selectedInterviewer.name}<h:inputHidden value="#{interviewCreator.selectedInterviewer.id}"/></td>
+	                		</tr>
+	                		<tr>
+	                			<td align="right">Position:</td>
+	                			<td>
+						            <h:selectOneMenu id="applyPositionId" value="#{interviewCreator.applyPositionId}">
+					                   <f:selectItem itemValue="#{null}" itemLabel="Select..." noSelectionOption="true"/>
+					                   <f:selectItems value="#{positionCreator.existingPositions}" var="ep" itemLabel="#{ep.name}" itemValue="#{ep.id}"/>
+					                </h:selectOneMenu>	
+                 				</td>
+	                		</tr>
+	                		<tr>
+	                			<td align="right">Login Name:</td>
+	                			<td><h:inputText value="#{interviewCreator.newInterview.loginName}"/></td>
+	                		</tr>
+	                		<tr>
+	                			<td align="right">Login Password:</td>
+	                			<td><h:inputText value="#{interviewCreator.newInterview.loginPassword}"/></td>
+	                		</tr>
+	                		<tr>
+	                			<td align="right">Date:</td>
+	                			<td>
+		                			<h:inputText value="#{interviewCreator.newInterview.start}">
+					                    <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
+					                </h:inputText> 
+                 				</td>
+	                		</tr>
+	                		<tr>
+	                			<td align="right">Examination:</td>
+	                			<td align="right">
+	                				<h:inputHidden id="examinationIds" value="#{interviewCreator.examinationIds}"/>
+	                				<input type="button" value="Select Examination" onclick="openSelectExaminationWin();"/>
+	                				<div id="exams"><table></table></div>
+	                			</td>
+	                		</tr>
+	                	</table>
+                	</div>
+                    <div class="buttonBox">
+                        <h:commandButton id="create" value="Create" action="#{interviewCreator.create}"/>
+                        &nbsp;
+                        <h:button id="cancel" value="Cancel" outcome="/interviewer/search.xhtml"/>
+                    </div>
+                </fieldset>
+            </h:form> 
+        </div>
+    </ui:define>
+</ui:composition>
