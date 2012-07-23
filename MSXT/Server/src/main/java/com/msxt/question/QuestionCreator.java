@@ -2,12 +2,9 @@ package com.msxt.question;
 
 import javax.enterprise.inject.Produces;
 import javax.faces.bean.RequestScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
-import org.jboss.seam.international.status.Messages;
 
 import com.msxt.model.Question;
 import com.msxt.model.QuestionChoiceItem;
@@ -18,9 +15,6 @@ import com.msxt.model.QuestionType;
 public class QuestionCreator {
 	@PersistenceContext
 	private EntityManager em;
-	
-	@Inject
-	private Messages messages;
 	 
 	private final Question newQuestion = new Question();
 	 
