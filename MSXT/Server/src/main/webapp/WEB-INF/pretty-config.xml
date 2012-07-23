@@ -81,4 +81,9 @@
         <view-id>/interviewer/search.xhtml</view-id>
     </url-mapping>
     
+    <url-mapping id="interview">
+        <pattern value="/interview/search"></pattern>
+        <view-id>/interview/search.xhtml</view-id>
+    </url-mapping>
+    
 </pretty-config>
