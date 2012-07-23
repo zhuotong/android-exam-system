@@ -22,6 +22,7 @@ import com.msxt.common.FoggySearchCriteria;
 import com.msxt.common.PageableSearcher;
 import com.msxt.model.Examination;
 import com.msxt.model.Examination_;
+import com.msxt.model.Position;
 import com.msxt.model.Position_;
 
 @Stateful
@@ -86,5 +87,13 @@ public class ExamSearcher extends PageableSearcher{
         log.info(messageBuilder.get().text("Found {0} examination(s) matching search term [ {1} ] (limit {2})")
                 .textParams(exams.size(), searchCriteria.getQuery(), searchCriteria.getPageSize()).build().getText());
 		
+	}
+	
+	public Position getSelectedPosition(){
+		return em.find( Position.class, searchCriteria.getPositionId() );
+	}
+	
+	public void selectPositionId( String positionId ) {
+		searchCriteria.setPositionId( positionId );
 	}
 }
