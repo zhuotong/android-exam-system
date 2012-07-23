@@ -4,21 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
-	private Integer id;
-	private Integer questionType;//0 is single, 1 is multi
+	private Integer index;
+	private String questionType;//0 is single, 1 is multi
 	private String questionDesc;
 	private List<Choice> choices = new ArrayList<Choice>();
 	
-	public Integer getId() {
-		return id;
+	public Integer getIndex() {
+		return index;
 	}
-	public void setId(Integer id) {
-		this.id = id;
+	public void setIndex(Integer index) {
+		this.index = index;
 	}
-	public Integer getQuestionType() {
+	
+	public String getQuestionType() {
 		return questionType;
 	}
-	public void setQuestionType(Integer questionType) {
+	public void setQuestionType(String questionType) {
 		this.questionType = questionType;
 	}
 	public String getQuestionDesc() {
@@ -36,14 +37,18 @@ public class Question {
 		this.choices = choices;
 	}
 	
-	public Question(Integer id, Integer questionType, String questionDesc) {
+	public Question() {
+		super();
+	}
+	
+	public Question(Integer id, String questionType, String questionDesc) {
 		super();
 		this.id = id;
 		this.questionType = questionType;
 		this.questionDesc = questionDesc;
 	}
 	
-	public Question(Integer id, Integer questionType, String questionDesc,
+	public Question(Integer id, String questionType, String questionDesc,
 			List<Choice> choices) {
 		super();
 		this.id = id;

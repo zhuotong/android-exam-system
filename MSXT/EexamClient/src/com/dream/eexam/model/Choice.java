@@ -4,6 +4,9 @@ public class Choice {
 	private String choiceIndex;
 	private String choiceDesc;
 	
+	private String choiceLabel;
+	private String choiceContent;
+	
 	public String getChoiceIndex() {
 		return choiceIndex;
 	}
@@ -18,6 +21,21 @@ public class Choice {
 		this.choiceDesc = choiceDesc;
 	}
 	
+	public String getChoiceLabel() {
+		return choiceLabel;
+	}
+	public void setChoiceLabel(String choiceLabel) {
+		this.choiceLabel = choiceLabel;
+	}
+	public String getChoiceContent() {
+		return choiceContent;
+	}
+	public void setChoiceContent(String choiceContent) {
+		this.choiceContent = choiceContent;
+	}
+	public Choice() {
+		super();
+	}
 	public Choice(String choiceIndex, String choiceDesc) {
 		super();
 		this.choiceIndex = choiceIndex;

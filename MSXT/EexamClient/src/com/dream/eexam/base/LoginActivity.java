@@ -48,28 +48,17 @@ public class LoginActivity extends BaseActivity {
         @Override  
         public void onClick(View v) {  
 
-        	//show waiting Dialog
-//        	myTask = new MyTask();
-//        	myTask.execute("");
-        	
-        	//login server
-        	String id = idEt.getText().toString();
-        	String password = passwordET.getText().toString();
-        	
-        	responseText.setLength(0);
-        	requestURL = SystemConfig.getInstance().getPropertyValue("Server_URL")+"/msxt/runinterview/loginAction/login?loginName="+id+"&loginPassword="+password;
-        	new DownloadXmlTask().execute(requestURL);
-        	
-//			String idEtText = idEt.getText().toString();
-//			String passwordETText = passwordET.getText().toString();
-//			boolean result = login(idEtText,passwordETText);
-//			if(result){
-//				myTask.cancel(true);
-//				finish();
-				Intent intent = new Intent();
-				intent.setClass( getBaseContext(), PapersActivity.class);
-				startActivity(intent);
-//			}
+//        	//login server
+//        	String id = idEt.getText().toString();
+//        	String password = passwordET.getText().toString();
+//        	
+//        	responseText.setLength(0);
+//        	requestURL = SystemConfig.getInstance().getPropertyValue("Server_URL")+"/msxt/runinterview/loginAction/login?loginName="+id+"&loginPassword="+password;
+//        	new DownloadXmlTask().execute(requestURL);
+
+			Intent intent = new Intent();
+			intent.setClass( getBaseContext(), PapersActivity.class);
+			startActivity(intent);
 
         }  
     };

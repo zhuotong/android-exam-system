@@ -6,7 +6,7 @@
 	<papers>
 		<paper index="1">
 		    <id>100001</id>
-			<name>SCJP1</name>
+			<desc>SCJP1</desc>
 		</paper>
 		<paper index="2">
 			<id>100002</id>

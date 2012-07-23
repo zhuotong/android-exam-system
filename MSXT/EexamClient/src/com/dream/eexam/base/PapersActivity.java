@@ -1,15 +1,11 @@
 package com.dream.eexam.base;
 
 import java.io.InputStream;
-import java.util.Iterator;
 import java.util.List;
-
 import com.dream.eexam.model.Paper;
 import com.dream.eexam.model.QuestionProgress;
 import com.dream.eexam.paper.MultiChoices;
 import com.dream.eexam.util.XMLParseUtil;
-
-import android.R.integer;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;

@@ -5,30 +5,43 @@
 <time>60</time>
 <catalogs>
 	<catalog idx="1">
-		<desc><![CDATA[J2SE]]></desc>
+		<desc><![CDATA[Multi Select]]></desc>
 		<questions>
 			<question idx="1">
-			<type>Choice:S</type>
-		    <name><![CDATA[which of the following are java keywords]]></name>
+				<type>Choice:M</type>
+			    <name><![CDATA[which of the following are java keywords]]></name>
 				<choice>
-					<index>1</index>
-					<label>A</label>
-					<content>goto</content>
+					<index>1</index><label>A</label><content>goto</content>
 			    </choice>
 			    <choice>
-					<index>2</index>
-					<label>B</label>
-					<content>malloc</content>
+					<index>2</index><label>B</label><content>malloc</content>
 			    </choice>
 			    <choice>
-					<index>3</index>
-					<label>C</label>
-					<content>extends</content>
+					<index>3</index><label>C</label><content>extends</content>
 			    </choice>
 			    <choice>
-					<index>4</index>
-					<label>D</label>
-					<content>false</content>
+					<index>4</index><label>D</label><content>false</content>
+			    </choice>
+			</question>	
+		</questions>
+	</catalog>
+	<catalog idx="2">
+		<desc><![CDATA[Singe Select]]></desc>
+		<questions>
+			<question idx="1">
+				<type>Choice:S</type>
+			    <name><![CDATA[which of the following are java keywords]]></name>
+				<choice>
+					<index>1</index><label>A</label><content>goto</content>
+			    </choice>
+			    <choice>
+					<index>2</index><label>B</label><content>malloc</content>
+			    </choice>
+			    <choice>
+					<index>3</index><label>C</label><content>extends</content>
+			    </choice>
+			    <choice>
+					<index>4</index><label>D</label><content>false</content>
 			    </choice>
 			</question>	
 		</questions>

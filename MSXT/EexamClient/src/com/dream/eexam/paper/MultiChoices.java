@@ -235,9 +235,7 @@ public class MultiChoices extends BaseActivity {
     	
     	public MyListAdapter(List<Choice> choices){
 //    		choices = new ArrayList<Choice>();
-    		
     		this.choices = choices;
-    		
     		for(int i=0;i<choices.size();i++){
     			mChecked.add(false);
     		}
