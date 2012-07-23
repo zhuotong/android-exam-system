@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.TemporalType;
 import javax.persistence.Temporal;
 import javax.persistence.Version;
@@ -19,6 +20,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 
 @Entity
+@Table(name="interview")
 public class Interview {
 	@Id
 	@Column(name="ID")
@@ -155,5 +157,9 @@ public class Interview {
 
 	public Integer getVersion() {
 		return version;
+	}
+	
+	public static enum STATUS{
+		WAITING, DOING, FINISH, ABSENT
 	}
 }
