@@ -53,11 +53,12 @@ public class LoginActivity extends BaseActivity {
 //        	myTask.execute("");
         	
         	//login server
+        	String id = idEt.getText().toString();
+        	String password = passwordET.getText().toString();
         	
-        	requestURL = SystemConfig.getInstance().getPropertyValue("Server_URL");
+        	responseText.setLength(0);
+        	requestURL = SystemConfig.getInstance().getPropertyValue("Server_URL")+"/msxt/runinterview/loginAction/login?loginName="+id+"&loginPassword="+password;
         	new DownloadXmlTask().execute(requestURL);
-        	
-
         	
 //			String idEtText = idEt.getText().toString();
 //			String passwordETText = passwordET.getText().toString();
@@ -159,8 +160,8 @@ public class LoginActivity extends BaseActivity {
 //            myWebView.loadData(result, "text/html", null);
         	progressDialog.dismiss();
         	
-        	if(responseText!=null&&responseText.length()>100){
-        		ShowDialog(responseText.substring(0,100));
+        	if(responseText!=null){
+        		ShowDialog(responseText.toString());
         	}else{
         		ShowDialog("No return data!");
         	}
