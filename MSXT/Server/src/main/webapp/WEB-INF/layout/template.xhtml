@@ -23,7 +23,7 @@
                 <h:form id="menuForm">
                     <div id="status">
                         <h:outputText value="(#{currentUser.name})" rendered="#{identity.loggedIn}" styleClass="user"/>
-                        #{' '}
+   						&nbsp;	                     
                         <pretty:link mappingId="home">#{bundles.messages.template_linkHome}</pretty:link>
                         #{' | '}
                         <h:link id="search" outcome="/search.xhtml" value="#{bundles.messages.template_linkHotels}"/>
