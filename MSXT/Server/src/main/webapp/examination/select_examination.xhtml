@@ -1,0 +1,117 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:s="http://jboss.org/seam/faces"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <f:metadata>
+    	<f:viewParam name="positionId" value="#{positionId}"/>
+        <s:viewAction action="#{examSearcher.selectPositionId(positionId)}"/>
+    </f:metadata>
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>#{bundles.messages.template_title}</title>
+        <link rel="shortcut icon" href="#{request.contextPath}/favicon.ico"/>
+        <h:outputStylesheet library="css" name="screen.css"/>
+        <script type="text/javascript">
+      		//<![CDATA[
+      			function selectExams(){
+      				var cbs = document.getElementsByName('selectCheckBox');
+      				if( cbs.length==0 ) {
+      					alert('Please Query Examinations!!!');
+      				} else {
+      					var selectOne = false;
+      					for( var i=0; i<cbs.length; i++) {
+      						var cb = cbs[i];
+     						if( cb.checked ) {
+     							selectOne = true;
+     							var tr = cb.parentElement.parentElement;
+     							var name = tr.children[1].innerHTML.trim();
+     							var posistion = tr.children[2].innerHTML.trim();
+     							var r = window.opener.addExaminations(cb.value, name, posistion);
+     							if( !r )
+     								alert( name + "already exist! will be ingore!");
+     						} 
+      					}
+      					if( !selectOne )
+      						alert( "Please select one examination!" );
+      				}
+      			}
+      			
+      			function openViewWin(){
+      				window.open("#", "VE", "height=400,width=600,toolbar=no,menubar=no,scrollbars=yes"); 
+      			}
+      			
+      			String.prototype.trim = function() { 
+      				return this.replace(/(^[\s/n]*)|([\s/n]*$)/g, ""); 
+      			} 
+      			String.prototype.ltrim = function() { 
+      				return this.replace(/(^[\s/n]*)/g, ""); 
+      			} 
+      			String.prototype.rtrim = function() { 
+      				return this.replace(/([\s/n]*$)/g, ""); 
+      			} 
+          	//]]>
+        </script>
+    </h:head>
+    <h:body>
+        <div class="section">
+         <span class="errors">
+            <h:messages id="messages" globalOnly="true"/>
+         </span>
+         <h:form id="searchForm" prependId="false">
+             <fieldset>
+                 Position: <input type="text" value="${examSearcher.selectedPosition.name}" readonly="readonly"/>
+                 <h:inputHidden value="#{examSearcher.searchCriteria.positionId}"/>
+                 <br/>
+                 <h:inputText id="query" value="#{examSearcher.searchCriteria.query}" style="width: 120px;" autocomplete="off"/>
+                 &nbsp;
+                 <h:commandButton id="searchButtion" value="Search" action="#{examSearcher.find}"/>
+                 &nbsp;
+                 <input type="button" value="Select" onclick="selectExams();"/>
+                 &nbsp;
+                 <input type="button" value="Close" onclick="window.close();"/>
+             </fieldset>
+         </h:form>
+        </div>
+
+        <h:panelGroup id="searchResults">
+            <div>
+                <h:outputText id="noHotelsMsg" value="No Examination Found" rendered="#{empty examSearcher.exams}"/>
+                <h:form id="questionSelectionForm">
+                    <h:dataTable id="exam" value="#{examSearcher.exams}" var="_exam" rendered="#{not empty examSearcher.exams}" columnClasses=",,,action">
+                        <h:column>
+                        	 <f:facet name="header">Select</f:facet>
+                        	 <input type="checkbox" name="selectCheckBox" value="#{_exam.id}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Name</f:facet>
+                            #{_exam.name}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Type</f:facet>
+                           #{_exam.position.name}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Action</f:facet>
+                            <h:link value="View" outcome="/examination/View" target="VE" style="white-space: nowrap;" onclick="openViewWin();">
+                                <f:param name="id" value="#{_exam.id}"/>
+                            </h:link>
+                        </h:column>
+                    </h:dataTable>
+                </h:form>
+                <h:form id="paginationForm">
+                    <h:commandButton id="previousResults" value="Previous page" action="#{examSearcher.previousPage}"
+                                     rendered="#{examSearcher.previousPageAvailable}">
+                        <f:ajax render=":searchResults" onevent="controlSpinner"/>
+                    </h:commandButton>
+                    &nbsp;
+                    <h:commandButton id="moreResults" value="Next page" action="#{examSearcher.nextPage}"
+                                     rendered="#{examSearcher.nextPageAvailable}">
+                        <f:ajax render=":searchResults" onevent="controlSpinner"/>
+                    </h:commandButton>
+                </h:form>
+            </div>
+        </h:panelGroup>
+    </h:body>  
+</html>
