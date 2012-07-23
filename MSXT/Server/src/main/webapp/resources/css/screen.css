@@ -19,7 +19,7 @@ body {
     line-height: 1.25em;
     color: #362F2D;
     position: relative;
-    width: 1000px;
+    width: 1020px;
     height: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -71,14 +71,14 @@ fieldset {
 
 #header {
     float: left;
-    width: 1000px;
+    width: 100%;
     height: 46px;
     background: url(../img/hdr.bg.gif) 0 0 repeat-x;
 }
 
 #container {
     float: left;
-    width: 1000px;
+    width: 100%;
     /*background: url(../img/hdr.bar.jpg) 0 0 repeat-x;*/
 }
 
@@ -100,7 +100,6 @@ fieldset {
 
 #footer {
     clear: both;
-    margin-top: 40px;
     float: left;
     padding: 20px;
     border-top: 1px solid #C3BBB6;
