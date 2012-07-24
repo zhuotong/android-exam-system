@@ -1,5 +1,6 @@
 package com.dream.eexam.paper;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,12 +23,14 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.dream.eexam.base.BaseActivity;
+import com.dream.eexam.base.PapersActivity;
 import com.dream.eexam.base.QuestionsAll;
 import com.dream.eexam.base.QuestionsWaiting;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.Choice;
 import com.dream.eexam.model.Question;
 import com.dream.eexam.model.QuestionProgress;
+import com.dream.eexam.util.XMLParseUtil;
 
 public class SingleChoices extends BaseActivity {
 
@@ -102,13 +105,13 @@ public class SingleChoices extends BaseActivity {
         
         setSubHeader();
         
-        //hard code data
-        List<Choice> choices = new ArrayList<Choice>();
-    	choices.add(new Choice("A", "22"));
-    	choices.add(new Choice("B", "78"));
-    	choices.add(new Choice("C", "1"));
-    	choices.add(new Choice("D", "100"));
-        question = new Question(1,0, "What is the result? ",choices);
+        InputStream inputStream =  PapersActivity.class.getClassLoader().getResourceAsStream("sample_paper.xml");
+        try {
+			question = XMLParseUtil.readQuestionByPull(inputStream, 1, 1);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	
         //set question text
         questionTV = (TextView)findViewById(R.id.questionTV);

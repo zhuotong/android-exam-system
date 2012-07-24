@@ -41,17 +41,17 @@ public class Question {
 		super();
 	}
 	
-	public Question(Integer id, String questionType, String questionDesc) {
+	public Question(Integer index, String questionType, String questionDesc) {
 		super();
-		this.id = id;
+		this.index = index;
 		this.questionType = questionType;
 		this.questionDesc = questionDesc;
 	}
 	
-	public Question(Integer id, String questionType, String questionDesc,
+	public Question(Integer index, String questionType, String questionDesc,
 			List<Choice> choices) {
 		super();
-		this.id = id;
+		this.index = index;
 		this.questionType = questionType;
 		this.questionDesc = questionDesc;
 		this.choices = choices;

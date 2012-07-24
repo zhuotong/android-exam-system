@@ -92,11 +92,11 @@ public class QuestionsAll extends BaseActivity {
         setSubHeader();
         
         //hard code data
-        questions.add(new Question(1,1,"Which of the following are Java keywords?"));
-        questions.add(new Question(2,1, "How to calculate cosine 42 degree?"));
-        questions.add(new Question(3,0,"Which two statements are reserved words in Java? (Choose Two)"));
-        questions.add(new Question(4,1, "Which are valid identifiers?"));
-        questions.add(new Question(5,1, "True or False: Readers have methods that can read and return floats and doubles?"));
+        questions.add(new Question(1,"Choice:M","Which of the following are Java keywords?"));
+        questions.add(new Question(2,"Choice:S", "How to calculate cosine 42 degree?"));
+        questions.add(new Question(3,"Choice:M","Which two statements are reserved words in Java? (Choose Two)"));
+        questions.add(new Question(4,"Choice:S", "Which are valid identifiers?"));
+        questions.add(new Question(5,"Choice:M", "True or False: Readers have methods that can read and return floats and doubles?"));
         
         queCount = questions.size();
 

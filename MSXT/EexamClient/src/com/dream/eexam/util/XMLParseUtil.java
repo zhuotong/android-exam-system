@@ -64,39 +64,52 @@ public class XMLParseUtil {
 		xmlpull.setInput(inputStream, "utf-8");
 		int eventCode = xmlpull.getEventType();
 
-		boolean isFound = false;
+		boolean isFoundCatalog = false;
+		boolean isFoundQuestion = false;
+		boolean stopRead = false;
 		Question question = null;
 		List<Choice> choicesList = new ArrayList<Choice>();
 		Choice choice = null;
-		while (eventCode != XmlPullParser.END_DOCUMENT && (isFound == false)) {
+		while (eventCode != XmlPullParser.END_DOCUMENT && !stopRead ) {
 			switch (eventCode) {
 				case XmlPullParser.START_DOCUMENT: {
 					break;
 				}
 				case XmlPullParser.START_TAG: {
-					if ("question".equals(xmlpull.getName())) {
-						question = new Question();
-						question.setIndex(Integer.valueOf(xmlpull.getAttributeValue(0)));
+					if ("catalog".equals(xmlpull.getName())) {
+						String cIndex = xmlpull.getAttributeValue(0);
+						if(Integer.valueOf(cIndex) == catalogIndex){
+							isFoundCatalog = true;
+						}
 						break;
-					}else if (question != null) {
+					}
+					if(isFoundCatalog && "question".equals(xmlpull.getName())){
+						String qIndex = xmlpull.getAttributeValue(0);
+						if(Integer.valueOf(qIndex) == questionIndex){
+							isFoundQuestion = true;
+							question = new Question();
+							question.setIndex(Integer.valueOf(qIndex));
+						}
+						break;
+					}
+					if (isFoundQuestion && question != null) {
 						if (("name".equals(xmlpull.getName()))) {
 							question.setQuestionDesc(xmlpull.nextText());
 						} else if ("type".equals(xmlpull.getName())) {
 							question.setQuestionType(xmlpull.nextText());
 						}
-						break;
-					}
-					
-					if ("choice".equals(xmlpull.getName())) {
-						choice = new Choice();
-						break;
-					}else if (choice != null) {
-						if (("index".equals(xmlpull.getName()))) {
-							choice.setChoiceIndex(xmlpull.nextText());
-						}else if (("label".equals(xmlpull.getName()))) {
-							choice.setChoiceLabel(xmlpull.nextText());
-						}else if (("content".equals(xmlpull.getName()))) {
-							choice.setChoiceContent(xmlpull.nextText());
+						
+						if ("choice".equals(xmlpull.getName())) {
+							choice = new Choice();
+						}else if (choice != null) {
+							if (("index".equals(xmlpull.getName()))) {
+								choice.setChoiceIndex(xmlpull.nextText());
+							}else if (("label".equals(xmlpull.getName()))) {
+								choice.setChoiceLabel(xmlpull.nextText());
+							}else if (("content".equals(xmlpull.getName()))) {
+								choice.setChoiceContent(xmlpull.nextText());
+							}
+							break;
 						}
 						break;
 					}
@@ -105,7 +118,8 @@ public class XMLParseUtil {
 					if ("choice".equals(xmlpull.getName()) && choice != null) {
 						choicesList.add(choice);
 					}else if ("question".equals(xmlpull.getName()) && question != null) {
-						isFound = true;
+						question.setChoices(choicesList);
+						stopRead = true;
 					}
 					break;
 				}
@@ -113,7 +127,6 @@ public class XMLParseUtil {
 			eventCode = xmlpull.next();
 		}
 		
-		question.setChoices(choicesList);
 		return question;
 	}
 	

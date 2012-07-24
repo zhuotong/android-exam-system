@@ -1,5 +1,6 @@
 package com.dream.eexam.paper;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,12 +26,14 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.dream.eexam.base.BaseActivity;
+import com.dream.eexam.base.PapersActivity;
 import com.dream.eexam.base.QuestionsAll;
 import com.dream.eexam.base.QuestionsWaiting;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.Choice;
 import com.dream.eexam.model.Question;
 import com.dream.eexam.model.QuestionProgress;
+import com.dream.eexam.util.XMLParseUtil;
 
 public class MultiChoices extends BaseActivity {
 
@@ -126,13 +129,13 @@ public class MultiChoices extends BaseActivity {
 
         setSubHeader();
         
-        //hard code data
-        List<Choice> choices = new ArrayList<Choice>();
-    	choices.add(new Choice("A", "goto"));
-    	choices.add(new Choice("B", "malloc"));
-    	choices.add(new Choice("C", "extends"));
-    	choices.add(new Choice("D", "FALSE"));
-        question = new Question(1,1, "Which of the following are Java keywords?",choices);
+        InputStream inputStream =  PapersActivity.class.getClassLoader().getResourceAsStream("sample_paper.xml");
+        try {
+			question = XMLParseUtil.readQuestionByPull(inputStream, 1, 1);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
         //set question text
         questionTV = (TextView)findViewById(R.id.questionTV);
@@ -141,7 +144,7 @@ public class MultiChoices extends BaseActivity {
 
         //set List
         listView = (ListView)findViewById(R.id.lvChoices);
-        adapter = new MyListAdapter(choices);
+        adapter = new MyListAdapter(question.getChoices());
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new OnItemClickListener(){
         	@Override
@@ -295,8 +298,8 @@ public class MultiChoices extends BaseActivity {
 			
 			Choice choice = choices.get(position);
 			holder.selected.setChecked(mChecked.get(position));
-			holder.index.setText(choice.getChoiceIndex());
-			holder.choiceDesc.setText(choice.getChoiceDesc());
+			holder.index.setText(choice.getChoiceLabel());
+			holder.choiceDesc.setText(choice.getChoiceContent());
 			
 			return view;
 		}
