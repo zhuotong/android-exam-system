@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>GW-Calendar</title>
+<meta name="author" content="Leegorous" />
+<meta name="keywords" content="Calendar Controller" />
+<meta name="description" content="Calendar Controller" />
+<link href="resource/gw_calendar.css" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<script language="javascript" type="text/javascript" src="resource/gw_calendar_resources.js"></script>
+<script language="javascript" type="text/javascript" src="resource/gw_calendar.js"></script>
+<div id="ErrorMsg">This is the Calendar Modular. Please access it in right way.</div>
+<div id="MainContent">
+	<div id="CUtil">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr><td><a id="qToday"></a></td>
+    <td><a id="qYesterday"></a></td>
+    <td><a id="qTomorrow"></a></td></tr>
+	</table>
+    </div>
+	<div id="CHeader">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr><td class="harrow"><a id="lastMonth" title="Previous month">Previous month</a></td>
+        <td class="hselect">
+        	<div id="Years"></div>
+            <div id="yearSelector">
+                <input id="yearEditor" type="text" maxlength="4" />
+                <div id="yearTuner">
+                    <a id="nextYear" title="Next year">Next year</a><a id="lastYear" title="Previous year">Previous year</a>
+                </div>
+            </div>
+        </td>
+        <td class="hselect">
+        <div id="Months"></div>
+        <div id="monthSelector"><select id="monthEditor"></select></div>
+        </td>
+        <td class="harrow"><a id="nextMonth" title="Next month">Next month</a></td></tr>
+    </table>
+    </div>
+    <div id="CBody">
+    <table id="DateGrid" width="100%" border="0" cellspacing="0" cellpadding="0">
+      <thead><tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></thead>
+      <tbody>
+      <tr style="display:none;"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody>
+    </table>
+    </div>
+</div>
+ </body>
+</html>

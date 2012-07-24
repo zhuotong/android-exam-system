@@ -16,6 +16,7 @@ import javax.xml.stream.XMLStreamException;
 import org.jboss.seam.international.status.Messages;
 import org.jboss.seam.international.status.builder.BundleKey;
 
+import com.msxt.model.Interview;
 import com.msxt.model.Interviewer;
 import com.msxt.model.Interviewer_;
 
@@ -49,6 +50,18 @@ public class InterviewAgent {
 
 			return "search?faces-redirect=true";
 		} else {
+			return null;
+		}
+	}
+	
+	public String delete(String id) {
+		Interview iv = em.find( Interview.class, id );
+		if( iv.getStatus().equals( Interview.STATUS.WAITING.name() ) ) {
+			em.remove( iv );
+			messages.error( new BundleKey("messages", "msxt_interview_interview_deleted") );
+			return "search?faces-redirect=true";
+		} else {
+			messages.error( new BundleKey("messages", "msxt_interview_interview_started") );
 			return null;
 		}
 	}

@@ -72,6 +72,11 @@
       				}
     				return true;
       			}
+      			
+      			window.onload = function() {
+      				var st = $("startTime");
+                	Calendar.create(st);
+                }
           	//]]>
         </script>
     </ui:define>
@@ -115,7 +120,7 @@
 	                		<tr>
 	                			<td align="right">Date:</td>
 	                			<td>
-		                			<h:inputText value="#{interviewCreator.newInterview.start}">
+		                			<h:inputText id="startTime" value="#{interviewCreator.newInterview.start}">
 					                    <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
 					                </h:inputText> 
                  				</td>

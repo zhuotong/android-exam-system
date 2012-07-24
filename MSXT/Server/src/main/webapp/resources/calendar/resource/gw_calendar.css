@@ -1,0 +1,146 @@
+﻿body {
+	background:#FFFFFF;
+	width:100%;
+	height:100%;
+	margin:0;
+	padding:0;
+	overflow:hidden;
+}
+body, td, th {
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:12px;
+	line-height:20px;
+}
+#ErrorMsg {
+	display:none;
+}
+#MainContent {
+	width:134px;
+	height:174px;
+	padding:2px;
+	border:#C5C5C5 solid 1px;
+}
+#CUtil {
+	width:134px;
+	height:20px;
+	border-bottom:#6699FF solid 2px;
+}
+#CUtil table {
+	table-layout:auto;
+}
+#CUtil td {
+	width:33%;
+	text-align:center;
+	white-space:nowrap;
+}
+#CUtil a {
+	color:#000000;
+	text-decoration:none;
+}
+#CHeader {
+	width:134px;
+	height:22px;
+	background:#C9ECF8;
+}
+#CHeader td {
+	background:#C9ECF8;
+}
+#CHeader td.harrow {
+	width:13%;
+}
+#CHeader td.hselect {
+	width:37%;
+}
+#CHeader a {
+	color:#000000;
+	padding:2px;
+	text-decoration:none;
+}
+#CHeader div{
+	text-align:center;
+}
+#CHeader a {
+	display:block;
+	width:90%;
+	height:18px;
+	text-indent:-9999px;
+}
+#lastMonth, #nextMonth {
+	cursor:pointer;
+}
+.lastMonth {
+	background:url(h_arrow_left.gif) no-repeat center 2px;
+}
+.lastMonth_over {
+	background:url(h_arrow_left.gif) no-repeat center -16px;
+}
+.nextMonth {
+	background:url(h_arrow_right.gif) no-repeat center 2px;
+}
+.nextMonth_over {
+	background:url(h_arrow_right.gif) no-repeat center -16px;
+}
+#Years, #Months {
+	width:45px;
+}
+#yearSelector, #monthSelector {
+	display:none;
+}
+#yearSelector {
+	float:left;
+	width:100%;
+}
+#yearSelector input {
+	width:2.4em;
+	float:left;
+	padding:0;
+	margin:0;
+}
+#yearTuner {
+	float:left;
+	width:12px;
+	padding:2px 0;
+}
+#yearTuner a {
+	display:block;
+	width:100%;
+	height:7px;
+	margin:1px 0 0 0;
+	padding:0;
+	overflow:hidden;
+	text-indent:-9999px;
+	cursor:pointer;
+}
+.nextYear {background:url(tuner.gif) no-repeat;}
+.nextYear_over {background:url(tuner.gif) no-repeat 0 -8px;}
+.nextYear_down {background:url(tuner.gif) no-repeat 0 -16px;}
+.lastYear {background:url(tuner.gif) no-repeat 0 -32px;}
+.lastYear_over {background:url(tuner.gif) no-repeat 0 -40px;}
+.lastYear_down {background:url(tuner.gif) no-repeat 0 -48px;}
+#monthSelector select {
+	width:3.5em;
+}
+#CBody {
+	width:134px;
+}
+#DataGrid {
+	overflow:hidden;
+}
+#DateGrid tr th{
+	width:14%;
+	color:#999999;
+	line-height:19px;
+	border-bottom:#CCCCCC solid 1px;
+}
+#DateGrid td{
+	font-size:11px;
+	line-height:18px;
+	text-align:center;
+}
+.curDate {
+	display:block;
+	background:#FFFF99;
+	width:16px;
+	line-height:16px;
+	border:#FF9900 solid 1px;
+}

@@ -6,11 +6,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Version;
 
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
+@Table(name="examination_question_answer")
 public class ExaminationQuestionAnswer {
 	@Id
 	@Column(name="ID")

@@ -1,12 +1,16 @@
 package com.msxt.interview;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.jboss.seam.international.status.Messages;
 
@@ -15,7 +19,9 @@ import com.msxt.common.Constants;
 import com.msxt.model.Examination;
 import com.msxt.model.Interview;
 import com.msxt.model.InterviewExamination;
+import com.msxt.model.Interview_;
 import com.msxt.model.Interviewer;
+import com.msxt.model.Interviewer_;
 import com.msxt.model.Position;
 
 @Named
@@ -65,7 +71,7 @@ public class InterviewCreator {
 	}
 
 	public String create() {
-        if (verifyIdCodeIsAvailable()) {	
+        if (verifyLoginNameIsAvailable()) {	
         	selectedInterviewer = em.find( Interviewer.class, selectedInterviewer.getId() );
         	newInterview.setInterviewer( selectedInterviewer );
         	
@@ -94,7 +100,31 @@ public class InterviewCreator {
         }
     }
 	
-	private boolean verifyIdCodeIsAvailable() {
-        return true;
+	private boolean verifyLoginNameIsAvailable() {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Interview> cq = cb.createQuery( Interview.class ); 
+		
+		Root<Interview> pathRoot = cq.from( Interview.class );
+		cq.select( pathRoot ).where( cb.equal( pathRoot.get( Interview_.loginName), newInterview.getLoginName() ),
+				                     cb.notEqual( pathRoot.get( Interview_.interviewer ).get( Interviewer_.id), selectedInterviewer.getId() ) );
+		
+		List<Interview> result = em.createQuery( cq ).getResultList();
+		if( result.size()>0 ) {
+			messages.error( new DefaultBundleKey("msxt_interview_login_name_exist") ).params( newInterview.getLoginName() );
+			return false;
+		}
+		
+		cq.where( cb.equal( pathRoot.get( Interview_.interviewer ).get( Interviewer_.id), selectedInterviewer.getId() ),
+				  cb.equal( pathRoot.get( Interview_.start ), newInterview.getStart() ) );
+		
+		result = em.createQuery( cq ).getResultList();
+		if( result.size()>0 ) {
+			messages.error( new DefaultBundleKey("msxt_interview_exist") ).params( newInterview.getStart() );
+			return false;
+		}
+		
+		return true;
     }
+	
+	
 }

@@ -21,12 +21,17 @@
                     document.getElementById('spinner').style.display = 'none';
                 }
             }
+            
+            window.onload = function() {
+            	Calendar.create($("startBegin"));
+            	Calendar.create($("startEnd"));
+            }
         </script>
     </ui:define>
 	
     <ui:define name="content">
         <div class="section">
-         <h1>Interview Search</h1>
+         <h1>Interview Management</h1>
          <span class="errors">
             <h:messages id="messages" globalOnly="true"/>
          </span>
@@ -38,11 +43,13 @@
                     <f:selectItems value="#{positionCreator.existingPositions}" var="ep" itemLabel="#{ep.name}" itemValue="#{ep.id}"/>
                  </h:selectOneMenu>	
                  &nbsp;
-                 <h:inputText value="#{interviewSearcher.searchCriteria.startBegin}">
+                 Interview Time Begin:
+                 <h:inputText id="startBegin" value="#{interviewSearcher.searchCriteria.startBegin}" style="width: 100px;">
                      <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
                  </h:inputText>
                  &nbsp;
-                 <h:inputText value="#{interviewSearcher.searchCriteria.startEnd}">
+                 Interview Time End:
+                 <h:inputText id="startEnd" value="#{interviewSearcher.searchCriteria.startEnd}" style="width: 100px;">
                      <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
                  </h:inputText>
                  &nbsp;
@@ -56,7 +63,7 @@
 
         <h:panelGroup id="searchResults">
             <div class="section">
-                <h:outputText id="noHotelsMsg" value="No Interviewer Found" rendered="#{empty interviewSearcher.interviews}"/>
+                <h:outputText id="noHotelsMsg" value="No Interview Found" rendered="#{empty interviewSearcher.interviews}"/>
                 <h:form id="interviewSelectionForm">
                     <h:dataTable id="interview" value="#{interviewSearcher.interviews}" var="_interview" rendered="#{not empty interviewSearcher.interviews}" columnClasses=",,,action">
                         <h:column>
@@ -91,7 +98,7 @@
                         <f:ajax render=":searchResults" onevent="controlSpinner"/>
                     </h:commandButton>
                     &nbsp;
-                    <h:commandButton id="moreResults" value="More results" action="#{interviewerSearch.nextPage}"
+                    <h:commandButton id="moreResults" value="Next Page" action="#{interviewerSearch.nextPage}"
                                      rendered="#{interviewSearcher.nextPageAvailable}">
                         <f:ajax render=":searchResults" onevent="controlSpinner"/>
                     </h:commandButton>

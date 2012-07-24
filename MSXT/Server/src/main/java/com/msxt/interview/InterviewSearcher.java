@@ -69,10 +69,10 @@ public class InterviewSearcher extends PageableSearcher {
         	pl.add( cb.like( root.get(Interview_.interviewer).get( Interviewer_.idCode) , searchCriteria.getSearchPattern() ) );
         
         if( searchCriteria.getStartBegin() !=null ) 
-        	pl.add( new ComparisonPredicate( (CriteriaBuilderImpl)cb, ComparisonOperator.GREATER_THAN, root.get(Interview_.start), searchCriteria.getStartBegin() ) );
+        	pl.add( new ComparisonPredicate( (CriteriaBuilderImpl)cb, ComparisonOperator.GREATER_THAN_OR_EQUAL, root.get(Interview_.start), searchCriteria.getStartBegin() ) );
         
         if( searchCriteria.getStartEnd() !=null )
-        	pl.add( new ComparisonPredicate( (CriteriaBuilderImpl)cb, ComparisonOperator.LESS_THAN, root.get(Interview_.start), searchCriteria.getStartEnd() ) );
+        	pl.add( new ComparisonPredicate( (CriteriaBuilderImpl)cb, ComparisonOperator.LESS_THAN_OR_EQUAL, root.get(Interview_.start), searchCriteria.getStartEnd() ) );
         
         if( searchCriteria.getPositionId()!=null && !searchCriteria.getPositionId().isEmpty() ) 
         	pl.add( cb.equal( root.get(Interview_.applyPosition).get(Position_.id), searchCriteria.getPositionId() ) );
