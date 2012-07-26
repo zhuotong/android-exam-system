@@ -71,6 +71,7 @@ public class XMLParseUtil {
 
 		boolean isFoundCatalog = false;
 		boolean isFoundQuestion = false;
+		
 		boolean stopRead = false;
 		Question question = null;
 		List<Choice> choicesList = new ArrayList<Choice>();
@@ -102,11 +103,9 @@ public class XMLParseUtil {
 							question.setQuestionDesc(xmlpull.nextText());
 						} else if ("type".equals(xmlpull.getName())) {
 							question.setQuestionType(xmlpull.nextText());
-						}
-						
-						if ("choice".equals(xmlpull.getName())) {
+						} else if ("choice".equals(xmlpull.getName())) {
 							choice = new Choice();
-						}else if (choice != null) {
+						} else if (choice != null) {
 							if (("index".equals(xmlpull.getName()))) {
 								choice.setChoiceIndex(Integer.valueOf(xmlpull.nextText()));
 							}else if (("label".equals(xmlpull.getName()))) {
@@ -212,5 +211,46 @@ public class XMLParseUtil {
 		}
 		
 		return paperBean;
+	}
+
+	public static String readQuestionType(InputStream inputStream,Integer catalogIndex,Integer questionIndex) throws Exception{
+		
+		XmlPullParser xmlpull = Xml.newPullParser();
+		xmlpull.setInput(inputStream, "utf-8");
+		int eventCode = xmlpull.getEventType();
+
+		boolean isFoundCatalog = false;
+		boolean isFoundQuestion = false;
+		String questiontype = null;
+		
+		while (eventCode != XmlPullParser.END_DOCUMENT && questiontype!=null ) {
+			switch (eventCode) {
+				case XmlPullParser.START_DOCUMENT: {
+					break;
+				}
+				case XmlPullParser.START_TAG: {
+					if("catalog".equals(xmlpull.getName())){
+						String qIndex = xmlpull.getAttributeValue(0);
+						if(Integer.valueOf(qIndex) == catalogIndex){
+							isFoundCatalog = true;
+						}
+					}else if("question".equals(xmlpull.getName())&& isFoundCatalog){
+						String qIndex = xmlpull.getAttributeValue(0);
+						if(Integer.valueOf(qIndex) == questionIndex){
+							isFoundQuestion = true;
+						}
+					}else if("type".equals(xmlpull.getName()) && isFoundQuestion){
+						questiontype = xmlpull.nextText();
+					}
+					break;
+				}
+				case XmlPullParser.END_TAG: {
+					break;
+				}
+			}
+			eventCode = xmlpull.next();
+		}
+		
+		return questiontype;
 	}
 }

@@ -29,15 +29,17 @@ import com.dream.eexam.base.PapersActivity;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.Choice;
 import com.dream.eexam.model.Question;
-import com.dream.eexam.model.QuestionProgress;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.XMLParseUtil;
 
 public class SingleChoices extends BaseQuestion {
 
+	//set exam header
+	private TextView remainingTime = null;
+	
 	//set question sub header
+	private TextView catalogsTV = null;
 	private TextView currentTV = null;
-	private TextView allTV = null;
 	private TextView waitTV = null;
 	
 	private TextView questionTV = null;
@@ -58,13 +60,29 @@ public class SingleChoices extends BaseQuestion {
 	StringBuffer answerString = new StringBuffer();
 
 	SharedPreferences sharedPreferences;
-	public void setSubHeader(){
-		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
-		QuestionProgress qp = getQuestionProgress(sharedPreferences);
-		   //set question text
+	public void setHeader(){
+//		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
+//		QuestionProgress qp = getQuestionProgress(sharedPreferences);
+		
+		//set question text
+		remainingTime = (TextView)findViewById(R.id.remainingTime);
+		remainingTime.setText("Time Remaining: "+String.valueOf(paperBean.getTime())+" mins");
+		
+		//set question text
+		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
+		catalogsTV.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showWindow(v);
+				if(pressedItemIndex!=-1){
+					catalogsTV.setText(groups.get(pressedItemIndex));
+				}
+			}
+		});
+
+		//set question text
     	currentTV = (TextView)findViewById(R.id.header_tv_current);
-    	currentTV.setBackgroundColor(Color.parseColor("#4428FF"));
-    	currentTV.setText(String.valueOf(qp.getCurrentQueIndex()));
+    	currentTV.setText("Q "+String.valueOf(currentQuestionIndex));
     	currentTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -75,22 +93,10 @@ public class SingleChoices extends BaseQuestion {
 			}
 		});
     	
-/*    	//set question text
-    	allTV = (TextView)findViewById(R.id.header_tv_all);
-    	allTV.setText(String.valueOf(qp.getQuesCount()));
-    	allTV.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//go to question 1
-				Intent intent = new Intent();
-				intent.setClass( mContext, QuestionsAll.class);
-				startActivity(intent);
-			}
-		});*/
     	
         //set question text
     	waitTV = (TextView)findViewById(R.id.header_tv_waiting);
-    	waitTV.setText(String.valueOf(qp.getWaitingQueIdsList().size()));
+//    	waitTV.setText(String.valueOf(qp.getWaitingQueIdsList().size()));
     	waitTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -108,17 +114,9 @@ public class SingleChoices extends BaseQuestion {
         setContentView(R.layout.paper_single_choices);
         mContext = getApplicationContext();
         
-        setSubHeader();
-        
-		//get demoSessionStr and save to string array
-		Bundle bundle = this.getIntent().getExtras();
-		String cqIndex  = bundle.getString("currentQuestionIndex");
-		if(cqIndex!=null){
-			currentQuestionIndex = Integer.valueOf(cqIndex);
-			saveCurrentQuestionIndex(Integer.valueOf(cqIndex));
-		}
+        setHeader();
 		
-        InputStream inputStream =  PapersActivity.class.getClassLoader().getResourceAsStream("sample_paper.xml");
+//        InputStream inputStream =  PapersActivity.class.getClassLoader().getResourceAsStream("sample_paper.xml");
         try {
 			question = XMLParseUtil.readQuestion(inputStream, 1, currentQuestionIndex);
 		} catch (Exception e) {
@@ -148,7 +146,8 @@ public class SingleChoices extends BaseQuestion {
         preBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				relocationQuestion(-1);
+				direction = -1;
+				relocationQuestion();
 			}
 		});
         
@@ -156,14 +155,15 @@ public class SingleChoices extends BaseQuestion {
         nextBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				relocationQuestion(1);
+				direction = 1;
+				relocationQuestion();
 			}
 		});
     
     }
     
     //save answer if not empty 
-    public void relocationQuestion(final Integer direction){
+    public void relocationQuestion(){
     	listItemID.clear();
 		
 		//get selection
@@ -182,7 +182,7 @@ public class SingleChoices extends BaseQuestion {
 						.setPositiveButton("Yes",
 								new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog,int id) {
-										gotoNewQuestion(direction);
+										gotoNewQuestion();
 									}
 								})
 						.setNegativeButton("Cancel",
@@ -199,13 +199,13 @@ public class SingleChoices extends BaseQuestion {
 		    	dbUtil.createSystemConfig(String.valueOf(question.getIndex()), answerString.toString());
 		    	dbUtil.close();
 				
-		    	gotoNewQuestion(direction);
+		    	gotoNewQuestion();
 			}
 		}
     }
     
     //go to next or previous question
-    public void gotoNewQuestion(Integer direction){
+    public void gotoNewQuestion(){
     	//get first question in paper
 		InputStream inputStream =  MultiChoices.class.getClassLoader().getResourceAsStream("sample_paper.xml");
 		Question question = null;

@@ -19,12 +19,6 @@
         android:textSize="16sp"
         android:background="@drawable/bg_color_paper_header_text_view"/>
 
-    <ProgressBar
-        android:id="@+id/progressBar1"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
 	 <TextView
 	    android:id="@+id/header_tv_current"
         android:text="@string/msg_header_tv_current"

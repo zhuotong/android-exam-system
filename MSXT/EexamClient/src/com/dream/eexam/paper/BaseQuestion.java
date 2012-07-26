@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -14,27 +15,42 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
-
 import com.dream.eexam.base.BaseActivity;
 import com.dream.eexam.base.GroupAdapter;
-import com.dream.eexam.base.PapersActivity;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.CatalogBean;
 import com.dream.eexam.model.PaperBean;
 import com.dream.eexam.util.XMLParseUtil;
 
 public class BaseQuestion extends BaseActivity{
-
+	protected InputStream inputStream;
 	protected PaperBean paperBean;
+	protected Integer currentCatalogIndex;
 	protected Integer currentQuestionIndex;
+	protected Integer direction = 0;
+	
+	protected TextView catalogsTV = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		
-        InputStream inputStream =  BaseQuestion.class.getClassLoader().getResourceAsStream("sample_paper.xml");
+		//get demoSessionStr and save to string array
+		Bundle bundle = this.getIntent().getExtras();
+		String ccIndex  = bundle.getString("ccIndex");
+		String cqIndex  = bundle.getString("cqIndex");
+		if(ccIndex!=null){
+			currentCatalogIndex = Integer.valueOf(ccIndex);
+		}
+		if(cqIndex!=null){
+			currentQuestionIndex = Integer.valueOf(cqIndex);
+		}
+		saveccIndexcqIndex(Integer.valueOf(cqIndex),Integer.valueOf(cqIndex));
+		
+        inputStream =  BaseQuestion.class.getClassLoader().getResourceAsStream("sample_paper.xml");
         try {
         	paperBean = XMLParseUtil.readPaperBean(inputStream);
         	cataLogList = paperBean.getCatalogBeans();
@@ -94,19 +110,15 @@ public class BaseQuestion extends BaseActivity{
 			popupView = layoutInflater.inflate(R.layout.group_list, null);
 			lv_group = (ListView) popupView.findViewById(R.id.lvGroup);
 			groups = new ArrayList<String>();
-//			groups.add("Catalog 1");
-//			groups.add("Catalog 2");
-//			groups.add("Catalog 3");
-//			groups.add("Catalog 4");	
 			
 			for(CatalogBean bean: cataLogList){
-				groups.add(bean.getDesc());
+				groups.add(bean.getDesc()+"("+bean.getQuestions().size()+")");
 			}
 			
 			Log.i(LOG_TAG, "pressedItemIndex:"+pressedItemIndex);
 			GroupAdapter groupAdapter = new GroupAdapter(this, groups);
 			lv_group.setAdapter(groupAdapter);
-			popupWindow = new PopupWindow(popupView,150, 400);
+			popupWindow = new PopupWindow(popupView,150, 500);
 		}else{
 			popupWindow.dismiss();
 		}
@@ -114,7 +126,7 @@ public class BaseQuestion extends BaseActivity{
 		popupWindow.setFocusable(true);
 		popupWindow.setOutsideTouchable(true);//window will dismiss once touch out of it
 		popupWindow.setBackgroundDrawable(new BitmapDrawable());//window will dismiss once click back 
-		WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+//		WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
 //		int xPos = windowManager.getDefaultDisplay().getWidth() / 3 ;
 //		Log.i(LOG_TAG, "xPos:" + xPos);
 
@@ -135,9 +147,26 @@ public class BaseQuestion extends BaseActivity{
 				if (popupWindow != null) {
 					popupWindow.dismiss();
 				}
-//				priorityList.setText("Priority "+String.valueOf(position+1));
-//				changePriority(position);
-//				Log.i(LOG_TAG, "onItemClick() END");
+				catalogsTV.setText(groups.get(position));
+				String questionType = null;
+				try {
+					 questionType = XMLParseUtil.readQuestionType(inputStream,(position+1), 1);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				Intent intent = new Intent();
+				intent.putExtra("ccIndex", String.valueOf(getccIndex()));
+				intent.putExtra("cqIndex", String.valueOf(getcqIndex()));
+				if("Choice:M".equals(questionType)){
+					intent.setClass( getBaseContext(), MultiChoices.class);
+				}else if("Choice:S".equals(questionType)){
+					intent.setClass( getBaseContext(), SingleChoices.class);
+				}
+				finish();
+				startActivity(intent);
+				
 			}
 		});
 	}

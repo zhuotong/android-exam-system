@@ -116,27 +116,41 @@ public class BaseActivity extends Activity {
 	 * get question index you last view 
 	 * @return
 	 */
-	public Integer getCurrentQuestionIndex(){
-		Integer cqIndex = sharedPreferences.getInt("cqIndex", 0);
-		if(cqIndex!=null&&cqIndex>0){
-			Log.i(LOG_TAG,"getCurrentQuestionIndex()...cqIndex="+String.valueOf(cqIndex));
-			return cqIndex;
+	public Integer getccIndex(){
+		Integer ccIndex = sharedPreferences.getInt("ccIndex", 0);
+		if(ccIndex!=null&&ccIndex>0){
+			Log.i(LOG_TAG,"getccIndex()...ccIndex="+String.valueOf(ccIndex));
+			return ccIndex;
 		}else{
-			Log.i(LOG_TAG,"getCurrentQuestionIndex()...cqIndex not saved");
+			Log.i(LOG_TAG,"getccIndex()...ccIndex not saved");
 			return 1;
 		}
+	}
+	
+	public Integer getcqIndex(){
+		Integer cqIndex = sharedPreferences.getInt("cqIndex", 0);
+		if(cqIndex!=null&&cqIndex>0){
+			Log.i(LOG_TAG,"getcqIndex()...cqIndex="+String.valueOf(cqIndex));
+			return cqIndex;
+		}else{
+			Log.i(LOG_TAG,"getcqIndex()...cqIndex not saved");
+			return 1;
+		}		
 	}
 	
 	/**
 	 * save question index you current view 
 	 * @param cqIndex
 	 */
-	public void saveCurrentQuestionIndex(Integer cqIndex){
+	public void saveccIndexcqIndex(Integer ccIndex,Integer cqIndex){
 		SharedPreferences.Editor editor = sharedPreferences.edit();
-		editor.putInt("cqIndex", cqIndex);  
+		editor.putInt("ccIndex", ccIndex);  
+		editor.putInt("cqIndex", cqIndex); 
 		editor.commit();
 		
-		Log.i(LOG_TAG,"saveCurrentQuestionIndex()...cqIndex="+String.valueOf(cqIndex));
+		Log.i(LOG_TAG,"saveccIndexcqIndex()...");
+		Log.i(LOG_TAG,"ccIndex="+String.valueOf(ccIndex));
+		Log.i(LOG_TAG,"cqIndex="+String.valueOf(cqIndex));
 	}
 
 

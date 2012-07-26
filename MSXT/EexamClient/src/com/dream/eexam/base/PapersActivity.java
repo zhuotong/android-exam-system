@@ -83,14 +83,6 @@ public class PapersActivity extends BaseActivity {
 		startBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				
-				//load paper
-				
-				//save data
-//				QuestionProgress qp = new QuestionProgress();
-//				qp.setCurrentQueIndex(1);
-//				qp.setQuesCount(10);
-//				saveQuestionProgress(sharedPreferences,qp);
-				
 				//todo download paper
 				
 				//get first question in paper
@@ -101,20 +93,17 @@ public class PapersActivity extends BaseActivity {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				
+
+				//move question
+				Intent intent = new Intent();
+				intent.putExtra("ccIndex", String.valueOf(getccIndex()));
+				intent.putExtra("cqIndex", String.valueOf(getcqIndex()));
 				if("Choice:M".equals(question.getQuestionType())){
-					//go to question 1
-					Intent intent = new Intent();
-					intent.putExtra("currentQuestionIndex", getCurrentQuestionIndex());
 					intent.setClass( getBaseContext(), MultiChoices.class);
-					startActivity(intent);
 				}else if("Choice:S".equals(question.getQuestionType())){
-					//go to question 1
-					Intent intent = new Intent();
-					intent.putExtra("currentQuestionIndex", getCurrentQuestionIndex());
 					intent.setClass( getBaseContext(), SingleChoices.class);
-					startActivity(intent);
 				}
+				startActivity(intent);
 				
 			}			
 		});
