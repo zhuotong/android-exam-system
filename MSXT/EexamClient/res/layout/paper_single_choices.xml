@@ -8,7 +8,7 @@
 
     <include
 	       android:id="@+id/baseHeader"
-	       layout="@layout/base_header" /> 
+	       layout="@layout/exam_header" /> 
 
    <include
        	   android:id="@+id/paperHeader"

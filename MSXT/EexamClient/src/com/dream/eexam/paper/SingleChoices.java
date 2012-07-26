@@ -4,7 +4,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -22,17 +25,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import com.dream.eexam.base.BaseActivity;
 import com.dream.eexam.base.PapersActivity;
-import com.dream.eexam.base.QuestionsAll;
-import com.dream.eexam.base.QuestionsWaiting;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.Choice;
 import com.dream.eexam.model.Question;
 import com.dream.eexam.model.QuestionProgress;
+import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.XMLParseUtil;
 
-public class SingleChoices extends BaseActivity {
+public class SingleChoices extends BaseQuestion {
 
 	//set question sub header
 	private TextView currentTV = null;
@@ -46,13 +47,15 @@ public class SingleChoices extends BaseActivity {
 	
 	//LinearLayout listFooter
 	private Button preBtn;
+	private Button nextBtn;
 	
 	private Question question;
 	List<Choice> choices = new ArrayList<Choice>();
 	
 	Context mContext;
 	MyListAdapter adapter;
-	List<Integer> listItemID = new ArrayList<Integer>();
+	List<String> listItemID = new ArrayList<String>();
+	StringBuffer answerString = new StringBuffer();
 
 	SharedPreferences sharedPreferences;
 	public void setSubHeader(){
@@ -71,7 +74,8 @@ public class SingleChoices extends BaseActivity {
 				startActivity(intent);
 			}
 		});
-    	//set question text
+    	
+/*    	//set question text
     	allTV = (TextView)findViewById(R.id.header_tv_all);
     	allTV.setText(String.valueOf(qp.getQuesCount()));
     	allTV.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +86,8 @@ public class SingleChoices extends BaseActivity {
 				intent.setClass( mContext, QuestionsAll.class);
 				startActivity(intent);
 			}
-		});
+		});*/
+    	
         //set question text
     	waitTV = (TextView)findViewById(R.id.header_tv_waiting);
     	waitTV.setText(String.valueOf(qp.getWaitingQueIdsList().size()));
@@ -90,9 +95,9 @@ public class SingleChoices extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				//go to question 1
-				Intent intent = new Intent();
-				intent.setClass( mContext, QuestionsWaiting.class);
-				startActivity(intent);
+//				Intent intent = new Intent();
+//				intent.setClass( mContext, QuestionsWaiting.class);
+//				startActivity(intent);
 			}
 		});  
 	}
@@ -105,9 +110,17 @@ public class SingleChoices extends BaseActivity {
         
         setSubHeader();
         
+		//get demoSessionStr and save to string array
+		Bundle bundle = this.getIntent().getExtras();
+		String cqIndex  = bundle.getString("currentQuestionIndex");
+		if(cqIndex!=null){
+			currentQuestionIndex = Integer.valueOf(cqIndex);
+			saveCurrentQuestionIndex(Integer.valueOf(cqIndex));
+		}
+		
         InputStream inputStream =  PapersActivity.class.getClassLoader().getResourceAsStream("sample_paper.xml");
         try {
-			question = XMLParseUtil.readQuestionByPull(inputStream, 1, 1);
+			question = XMLParseUtil.readQuestion(inputStream, 1, currentQuestionIndex);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -120,7 +133,7 @@ public class SingleChoices extends BaseActivity {
         
         //set List
         listView = (ListView)findViewById(R.id.lvChoices);
-        adapter = new MyListAdapter(choices);
+        adapter = new MyListAdapter(question.getChoices());
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new OnItemClickListener(){
         	@Override
@@ -135,13 +148,87 @@ public class SingleChoices extends BaseActivity {
         preBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//go to question 1
-				Intent intent = new Intent();
-				intent.setClass( mContext, MultiChoices.class);
-				startActivity(intent);
+				relocationQuestion(-1);
+			}
+		});
+        
+        nextBtn = (Button)findViewById(R.id.nextBtn);
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				relocationQuestion(1);
 			}
 		});
     
+    }
+    
+    //save answer if not empty 
+    public void relocationQuestion(final Integer direction){
+    	listItemID.clear();
+		
+		//get selection
+		for (int i = 0; i < adapter.mChecked.size(); i++) {
+			if (adapter.mChecked.get(i)) {
+				Choice choice = adapter.choices.get(i);
+				listItemID.add(String.valueOf(choice.getChoiceIndex()));
+				answerString.append(String.valueOf(choice.getChoiceIndex()));
+				answerString.append(",");
+			}
+
+			if (listItemID.size() == 0) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(SingleChoices.this);
+				builder.setMessage("Answer this question late?")
+						.setCancelable(false)
+						.setPositiveButton("Yes",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,int id) {
+										gotoNewQuestion(direction);
+									}
+								})
+						.setNegativeButton("Cancel",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,int id) {
+										dialog.cancel();
+									}
+								});
+				builder.show();
+			} else {
+				// save data
+		    	DatabaseUtil dbUtil = new DatabaseUtil(this);
+		    	dbUtil.open();
+		    	dbUtil.createSystemConfig(String.valueOf(question.getIndex()), answerString.toString());
+		    	dbUtil.close();
+				
+		    	gotoNewQuestion(direction);
+			}
+		}
+    }
+    
+    //go to next or previous question
+    public void gotoNewQuestion(Integer direction){
+    	//get first question in paper
+		InputStream inputStream =  MultiChoices.class.getClassLoader().getResourceAsStream("sample_paper.xml");
+		Question question = null;
+        try {
+              question = XMLParseUtil.readQuestion(inputStream,1,currentQuestionIndex+direction);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if(question!=null){
+			if("Choice:M".equals(question.getQuestionType())){
+				//go to question 1
+				Intent intent = new Intent();
+				intent.setClass( getBaseContext(), MultiChoices.class);
+				startActivity(intent);
+			}else if("Choice:S".equals(question.getQuestionType())){
+				//go to question 1
+				Intent intent = new Intent();
+				intent.setClass( getBaseContext(), SingleChoices.class);
+				startActivity(intent);
+			}
+		}else{
+			ShowDialog("Can not get question!");
+		}
     }
     
     class MyListAdapter extends BaseAdapter{

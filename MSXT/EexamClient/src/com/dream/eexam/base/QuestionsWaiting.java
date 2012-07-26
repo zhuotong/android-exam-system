@@ -54,7 +54,7 @@ public class QuestionsWaiting extends BaseActivity {
 				startActivity(intent);
 			}
 		});
-    	//set question text
+/*    	//set question text
     	allTV = (TextView)findViewById(R.id.header_tv_all);
     	allTV.setText(String.valueOf(qp.getQuesCount()));
     	allTV.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +65,7 @@ public class QuestionsWaiting extends BaseActivity {
 				intent.setClass( mContext, QuestionsAll.class);
 				startActivity(intent);
 			}
-		});
+		});*/
         //set question text
     	waitTV = (TextView)findViewById(R.id.header_tv_waiting);
     	waitTV.setText(String.valueOf(qp.getWaitingQueIdsList().size()));

@@ -57,7 +57,7 @@ public class QuestionsAll extends BaseActivity {
 				startActivity(intent);
 			}
 		});
-    	//set question text
+/*    	//set question text
     	allTV = (TextView)findViewById(R.id.header_tv_all);
     	allTV.setText(String.valueOf(qp.getQuesCount()));
     	allTV.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +68,7 @@ public class QuestionsAll extends BaseActivity {
 				intent.setClass( mContext, QuestionsAll.class);
 				startActivity(intent);
 			}
-		});
+		});*/
         //set question text
     	waitTV = (TextView)findViewById(R.id.header_tv_waiting);
     	waitTV.setText(String.valueOf(qp.getWaitingQueIdsList().size()));
@@ -90,22 +90,6 @@ public class QuestionsAll extends BaseActivity {
         mContext = getApplicationContext();
 
         setSubHeader();
-        
-        //hard code data
-        questions.add(new Question(1,"Choice:M","Which of the following are Java keywords?"));
-        questions.add(new Question(2,"Choice:S", "How to calculate cosine 42 degree?"));
-        questions.add(new Question(3,"Choice:M","Which two statements are reserved words in Java? (Choose Two)"));
-        questions.add(new Question(4,"Choice:S", "Which are valid identifiers?"));
-        questions.add(new Question(5,"Choice:M", "True or False: Readers have methods that can read and return floats and doubles?"));
-        
-        queCount = questions.size();
-
-        //hard code data
-        answers.add(new Answer(1, 1,"A,B"));
-        answers.add(new Answer(2, 2,"A"));
-        answers.add(new Answer(3, 3,"C,D"));
-        answers.add(new Answer(4, 4,"A,C,D"));
-        answers.add(new Answer(5, 5,"B"));  
         
         //set List
         listView = (ListView)findViewById(R.id.questionsAll);

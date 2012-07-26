@@ -3,8 +3,10 @@ package com.dream.eexam.base;
 import java.io.InputStream;
 import java.util.List;
 import com.dream.eexam.model.Paper;
+import com.dream.eexam.model.Question;
 import com.dream.eexam.model.QuestionProgress;
 import com.dream.eexam.paper.MultiChoices;
+import com.dream.eexam.paper.SingleChoices;
 import com.dream.eexam.util.XMLParseUtil;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -84,15 +86,36 @@ public class PapersActivity extends BaseActivity {
 				//load paper
 				
 				//save data
-				QuestionProgress qp = new QuestionProgress();
-				qp.setCurrentQueIndex(1);
-				qp.setQuesCount(10);
-				saveQuestionProgress(sharedPreferences,qp);
+//				QuestionProgress qp = new QuestionProgress();
+//				qp.setCurrentQueIndex(1);
+//				qp.setQuesCount(10);
+//				saveQuestionProgress(sharedPreferences,qp);
 				
-				//go to question 1
-				Intent intent = new Intent();
-				intent.setClass( getBaseContext(), MultiChoices.class);
-				startActivity(intent);
+				//todo download paper
+				
+				//get first question in paper
+				InputStream inputStream =  PapersActivity.class.getClassLoader().getResourceAsStream("sample_paper.xml");
+				Question question = null;
+		        try {
+		              question = XMLParseUtil.readQuestion(inputStream,1,1);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				if("Choice:M".equals(question.getQuestionType())){
+					//go to question 1
+					Intent intent = new Intent();
+					intent.putExtra("currentQuestionIndex", getCurrentQuestionIndex());
+					intent.setClass( getBaseContext(), MultiChoices.class);
+					startActivity(intent);
+				}else if("Choice:S".equals(question.getQuestionType())){
+					//go to question 1
+					Intent intent = new Intent();
+					intent.putExtra("currentQuestionIndex", getCurrentQuestionIndex());
+					intent.setClass( getBaseContext(), SingleChoices.class);
+					startActivity(intent);
+				}
+				
 			}			
 		});
 	}

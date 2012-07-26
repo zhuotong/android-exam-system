@@ -5,7 +5,7 @@
 <time>60</time>
 <catalogs>
 	<catalog idx="1">
-		<desc><![CDATA[Multi Select]]></desc>
+		<catalogdesc><![CDATA[Multi Select]]></catalogdesc>
 		<questions>
 			<question idx="1">
 				<type>Choice:M</type>
@@ -31,10 +31,34 @@
 					<content>false</content>
 			    </choice>
 			</question>	
+			<question idx="2">
+				<type>Choice:M</type>
+			    <name><![CDATA[What is the proper way of defining a class named Key so that it cannot be subclassed? ]]></name>
+				<choice>
+					<index>1</index>
+					<label>A</label>
+					<content>class Key</content>
+			    </choice>
+			    <choice>
+					<index>2</index>
+					<label>B</label>
+					<content>abstract final class Key</content>
+			    </choice>
+			    <choice>
+					<index>3</index>
+					<label>C</label>
+					<content>class Key</content>
+			    </choice>
+			    <choice>
+					<index>4</index>
+					<label>D</label>
+					<content>final class Key</content>
+			    </choice>
+			</question>
 		</questions>
 	</catalog>
 	<catalog idx="2">
-		<desc><![CDATA[Singe Select]]></desc>
+		<catalogdesc><![CDATA[Singe Select]]></catalogdesc>
 		<questions>
 			<question idx="1">
 				<type>Choice:S</type>
@@ -59,7 +83,45 @@
 					<label>D</label>
 					<content>false</content>
 			    </choice>
-			</question>	
+			</question>
+		   <question idx="2">
+				<type>Choice:S</type>
+			    <name>
+			    <![CDATA[How can you change the break statement below so that it breaks out of both the 
+					inner and middle loops and continues with the next iteration of the outer loop? 
+					outer: for (int x = 0; x < 3; x++) { 
+					middle: for (int y = 0; y < 3; y++) { 
+					inner: for (int z = 0; z < 3; z++) { 
+					  if (arr(x, y, z) == targetValue) 
+					    break; 
+					  } } } ]]>
+  				</name>
+				<choice>
+					<index>1</index>
+					<label>A</label>
+					<content>break inner</content>
+			    </choice>
+			    <choice>
+					<index>2</index>
+					<label>B</label>
+					<content>break middle</content>
+			    </choice>
+			    <choice>
+					<index>3</index>
+					<label>C</label>
+					<content>break outer</content>
+			    </choice>
+			    <choice>
+					<index>4</index>
+					<label>D</label>
+					<content>continue</content>
+			    </choice>
+   			    <choice>
+					<index>5</index>
+					<label>E</label>
+					<content>continue middle</content>
+			    </choice>
+			</question>		
 		</questions>
 	</catalog>	
 </catalogs>

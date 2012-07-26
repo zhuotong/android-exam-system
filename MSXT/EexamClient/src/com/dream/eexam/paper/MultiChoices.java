@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+import com.dream.eexam.base.R;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,22 +25,22 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import com.dream.eexam.base.BaseActivity;
 import com.dream.eexam.base.PapersActivity;
-import com.dream.eexam.base.QuestionsAll;
-import com.dream.eexam.base.QuestionsWaiting;
-import com.dream.eexam.base.R;
 import com.dream.eexam.model.Choice;
 import com.dream.eexam.model.Question;
 import com.dream.eexam.model.QuestionProgress;
+import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.XMLParseUtil;
 
-public class MultiChoices extends BaseActivity {
+public class MultiChoices extends BaseQuestion {
 
+	//set exam header
+	private TextView remainingTime = null;
+	
 	//set question sub header
 	private TextView catalogsTV = null;
 	private TextView currentTV = null;
-	private TextView allTV = null;
+//	private TextView allTV = null;
 	private TextView waitTV = null;
 	
 	private TextView questionTV = null;
@@ -57,13 +57,19 @@ public class MultiChoices extends BaseActivity {
 	Context mContext;
 	MyListAdapter adapter;
 	List<String> listItemID = new ArrayList<String>();
+	StringBuffer answerString = new StringBuffer();
 	
-	SharedPreferences sharedPreferences;
-	QuestionProgress qp ;
+//	SharedPreferences sharedPreferences;
+//	QuestionProgress qp ;
 
-	public void setSubHeader(){
-		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
-		qp = getQuestionProgress(sharedPreferences);
+	public void setHeader(){
+		
+		//set question text
+		remainingTime = (TextView)findViewById(R.id.remainingTime);
+		remainingTime.setText(String.valueOf(paperBean.getTime())+" mins");
+		
+//		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
+//		qp = getQuestionProgress(sharedPreferences);
 
 		//set question text
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
@@ -80,7 +86,7 @@ public class MultiChoices extends BaseActivity {
 
 		//set question text
     	currentTV = (TextView)findViewById(R.id.header_tv_current);
-    	currentTV.setText("Q "+String.valueOf(qp.getCurrentQueIndex()));
+    	currentTV.setText("Q "+String.valueOf(currentQuestionIndex));
     	currentTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -92,7 +98,7 @@ public class MultiChoices extends BaseActivity {
 		});
         
     	//set question text
-    	allTV = (TextView)findViewById(R.id.header_tv_all);
+/*    	allTV = (TextView)findViewById(R.id.header_tv_all);
     	allTV.setText("All " +String.valueOf(qp.getQuesCount()));
     	allTV.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -102,18 +108,18 @@ public class MultiChoices extends BaseActivity {
 				intent.setClass( mContext, QuestionsAll.class);
 				startActivity(intent);
 			}
-		});
+		});*/
     	
         //set question text
     	waitTV = (TextView)findViewById(R.id.header_tv_waiting);
-    	waitTV.setText("Wait "+ String.valueOf(qp.getWaitingQueIdsList().size()));
+//    	waitTV.setText("Wait "+ String.valueOf(qp.getWaitingQueIdsList().size()));
     	waitTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				//go to question 1
-				Intent intent = new Intent();
-				intent.setClass( mContext, QuestionsWaiting.class);
-				startActivity(intent);
+//				Intent intent = new Intent();
+//				intent.setClass( mContext, QuestionsWaiting.class);
+//				startActivity(intent);
 			}
 		});  
         
@@ -127,11 +133,19 @@ public class MultiChoices extends BaseActivity {
         setContentView(R.layout.paper_multi_choices);
         mContext = getApplicationContext();
 
-        setSubHeader();
+        setHeader();
+        
+		//get demoSessionStr and save to string array
+		Bundle bundle = this.getIntent().getExtras();
+		String cqIndex  = bundle.getString("currentQuestionIndex");
+		if(cqIndex!=null){
+			currentQuestionIndex = Integer.valueOf(cqIndex);
+			saveCurrentQuestionIndex(Integer.valueOf(cqIndex));
+		}
         
         InputStream inputStream =  PapersActivity.class.getClassLoader().getResourceAsStream("sample_paper.xml");
         try {
-			question = XMLParseUtil.readQuestionByPull(inputStream, 1, 1);
+			question = XMLParseUtil.readQuestion(inputStream, 1, currentQuestionIndex);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -159,21 +173,7 @@ public class MultiChoices extends BaseActivity {
         preBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-//				preBtn.setBackgroundResource(R.drawable.btn_sys);
-//				listItemID.clear();
-//				for(int i=0;i<adapter.mChecked.size();i++){
-//					if(adapter.mChecked.get(i)){
-//						Choice choice = adapter.choices.get(i);
-//						listItemID.add(Integer.valueOf(choice.getId()));
-//					}
-//				}
-//				if(listItemID.size()==0){
-//					ShowDialog("At lease choose one item!");
-//				}else{
-//					if(preBtn.isEnabled()){
-//
-//					}
-//				}
+				relocationQuestion(-1);
 			}
 		});
         
@@ -181,54 +181,81 @@ public class MultiChoices extends BaseActivity {
         nextBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				listItemID.clear();
-				for(int i=0;i<adapter.mChecked.size();i++){
-					if(adapter.mChecked.get(i)){
-						Choice choice = adapter.choices.get(i);
-						listItemID.add(choice.getChoiceIndex());
-					}
-				}
-				
-				if(listItemID.size()==0){
-					AlertDialog.Builder builder = new AlertDialog.Builder(MultiChoices.this);
-					builder.setMessage("Answer this question late?")
-							.setCancelable(false)
-							.setPositiveButton("Yes",
-									new DialogInterface.OnClickListener() {
-										public void onClick(DialogInterface dialog,int id) {
-											//save data
-											int currentQueIndex = qp.getCurrentQueIndex().intValue();
-											qp.setCurrentQueIndex(currentQueIndex+1);
-											saveQuestionProgress(sharedPreferences,qp);
-											
-											//go to question 1
-											Intent intent = new Intent();
-											intent.setClass( mContext, SingleChoices.class);
-											startActivity(intent);
-										}
-									})
-							.setNegativeButton("Cancel",
-									new DialogInterface.OnClickListener() {
-										public void onClick(DialogInterface dialog,int id) {
-											dialog.cancel();
-										}
-									});
-					builder.show();
-				}else{
-					//save data
-					qp.setCurrentQueIndex(qp.getCurrentQueIndex().intValue()+1);
-					saveQuestionProgress(sharedPreferences,qp);
-					
-					//go to question 1
-					Intent intent = new Intent();
-					intent.setClass( mContext, SingleChoices.class);
-					startActivity(intent);					
-				}
-
+				relocationQuestion(1);
 			}
 		});
     
     }
+    
+    //save answer if not empty 
+    public void relocationQuestion(final Integer direction){
+    	listItemID.clear();
+		
+		//get selection
+		for (int i = 0; i < adapter.mChecked.size(); i++) {
+			if (adapter.mChecked.get(i)) {
+				Choice choice = adapter.choices.get(i);
+				listItemID.add(String.valueOf(choice.getChoiceIndex()));
+				answerString.append(String.valueOf(choice.getChoiceIndex()));
+				answerString.append(",");
+			}
+
+			if (listItemID.size() == 0) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(MultiChoices.this);
+				builder.setMessage("Answer this question late?")
+						.setCancelable(false)
+						.setPositiveButton("Yes",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,int id) {
+										gotoNewQuestion(direction);
+									}
+								})
+						.setNegativeButton("Cancel",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,int id) {
+										dialog.cancel();
+									}
+								});
+				builder.show();
+			} else {
+				// save data
+		    	DatabaseUtil dbUtil = new DatabaseUtil(this);
+		    	dbUtil.open();
+		    	dbUtil.createSystemConfig(String.valueOf(question.getIndex()), answerString.toString());
+		    	dbUtil.close();
+				
+		    	gotoNewQuestion(direction);
+			}
+		}
+    }
+    
+    //go to next or previous question
+    public void gotoNewQuestion(Integer direction){
+    	//get first question in paper
+		InputStream inputStream =  MultiChoices.class.getClassLoader().getResourceAsStream("sample_paper.xml");
+		Question question = null;
+        try {
+              question = XMLParseUtil.readQuestion(inputStream,1,currentQuestionIndex+direction);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if(question!=null){
+			if("Choice:M".equals(question.getQuestionType())){
+				//go to question 1
+				Intent intent = new Intent();
+				intent.setClass( getBaseContext(), MultiChoices.class);
+				startActivity(intent);
+			}else if("Choice:S".equals(question.getQuestionType())){
+				//go to question 1
+				Intent intent = new Intent();
+				intent.setClass( getBaseContext(), SingleChoices.class);
+				startActivity(intent);
+			}
+		}else{
+			ShowDialog("Can not get question!");
+		}
+    }
+    
     
     class MyListAdapter extends BaseAdapter{
     	List<Boolean> mChecked = new ArrayList<Boolean>();
