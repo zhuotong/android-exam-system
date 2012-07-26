@@ -11,29 +11,29 @@
     <ui:define name="metadata">
         <f:metadata>
             <f:viewParam name="id" value="#{id}"/>
-            <s:viewAction action="#{positionAgent.selectPosition(id)}"/>
+            <s:viewAction action="#{questionTypeAgent.selectQuestionType(id)}"/>
         </f:metadata>
     </ui:define>
 
     <ui:define name="content">
 
         <div class="section">
-            <h1>Position Details</h1>
+            <h1>Position Type Details</h1>
         </div>
 
         <div class="section">
             <div>
             	<h:panelGrid columns="2">
-            		<h:outputLabel value="Position Name"/><h:outputText value="${selectedPosition.name}"/>
-            		<h:outputLabel value="Next Position Name"/><h:outputText value="${selectedPosition.nextPosition.name}"/>
-            	</h:panelGrid>
+            		<h:outputLabel value="Question Type Name"/><h:outputText value="${selectedQuestionType.name}"/>
+            		<h:outputLabel value="Rendener"/><h:outputText value="${selectedQuestionType.rendener}"/>
+            		<h:outputLabel value="Parent Type"/><h:outputText value="${selectedQuestionType.parent.name}"/>
+				</h:panelGrid>
             </div>
             <div class="buttonBox">
                 <h:form id="actions">
-                	<h:button id="cancel" value="Return" outcome="/position/search.xhtml"/>
+                	<h:button id="cancel" value="Return" outcome="/question/type/search.xhtml"/>
                 </h:form>
             </div>
-
         </div>
 
     </ui:define>

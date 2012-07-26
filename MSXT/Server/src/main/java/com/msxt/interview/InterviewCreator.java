@@ -21,7 +21,6 @@ import com.msxt.model.Interview;
 import com.msxt.model.InterviewExamination;
 import com.msxt.model.Interview_;
 import com.msxt.model.Interviewer;
-import com.msxt.model.Interviewer_;
 import com.msxt.model.Position;
 
 @Named
@@ -105,21 +104,11 @@ public class InterviewCreator {
 		CriteriaQuery<Interview> cq = cb.createQuery( Interview.class ); 
 		
 		Root<Interview> pathRoot = cq.from( Interview.class );
-		cq.select( pathRoot ).where( cb.equal( pathRoot.get( Interview_.loginName), newInterview.getLoginName() ),
-				                     cb.notEqual( pathRoot.get( Interview_.interviewer ).get( Interviewer_.id), selectedInterviewer.getId() ) );
+		cq.select( pathRoot ).where( cb.equal( pathRoot.get( Interview_.loginName), newInterview.getLoginName() ) );
 		
 		List<Interview> result = em.createQuery( cq ).getResultList();
 		if( result.size()>0 ) {
 			messages.error( new DefaultBundleKey("msxt_interview_login_name_exist") ).params( newInterview.getLoginName() );
-			return false;
-		}
-		
-		cq.where( cb.equal( pathRoot.get( Interview_.interviewer ).get( Interviewer_.id), selectedInterviewer.getId() ),
-				  cb.equal( pathRoot.get( Interview_.start ), newInterview.getStart() ) );
-		
-		result = em.createQuery( cq ).getResultList();
-		if( result.size()>0 ) {
-			messages.error( new DefaultBundleKey("msxt_interview_exist") ).params( newInterview.getStart() );
 			return false;
 		}
 		

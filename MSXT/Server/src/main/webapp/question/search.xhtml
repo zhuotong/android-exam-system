@@ -4,7 +4,13 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:s="http://jboss.org/seam/faces"
                 template="/WEB-INF/layout/template.xhtml">	
+    <f:metadata>
+		<s:viewAction action="#{questionSearcher.selectTypeId(param.typeId)}" if="#{! empty param.typeId}"/>
+	    <s:viewAction action="#{questionSearcher.doSearch}"/>
+	</f:metadata>
+	
     <ui:define name="content">
         <div class="section">
          <h1>Question Management</h1>
@@ -48,13 +54,13 @@
                         </h:column>
                         <h:column id="actCol">
                             <f:facet id="actFct" name="header">Action</f:facet>
-                            <h:link value="View" outcome="/question/detail" style="white-space: nowrap;">
+                            <h:button value="View" outcome="/question/detail" style="white-space: nowrap;">
                                 <f:param name="id" value="#{_question.id}"/>
-                            </h:link>
+                            </h:button>
                              &nbsp;
-                            <h:link value="Edit" outcome="/question/edit" style="white-space: nowrap;">
+                            <h:button value="Edit" outcome="/question/edit" style="white-space: nowrap;">
                                 <f:param name="id" value="#{_question.id}"/>
-                            </h:link>
+                            </h:button>
                              &nbsp;
                      		<h:commandButton id="delete" value="Delete" action="#{questionTypeAgent.deleteQuestionType(_question.id)}"/>
                         </h:column>
@@ -66,7 +72,7 @@
                         <f:ajax render=":searchResults" onevent="controlSpinner"/>
                     </h:commandButton>
                     &nbsp;
-                    <h:commandButton id="moreResults" value="More results" action="#{questionSearcher.nextPage}"
+                    <h:commandButton id="moreResults" value="Next Page" action="#{questionSearcher.nextPage}"
                                      rendered="#{questionSearcher.nextPageAvailable}">
                         <f:ajax render=":searchResults" onevent="controlSpinner"/>
                     </h:commandButton>

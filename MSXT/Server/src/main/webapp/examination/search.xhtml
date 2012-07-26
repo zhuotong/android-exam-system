@@ -4,7 +4,12 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-                template="/WEB-INF/layout/template.xhtml">	
+                xmlns:s="http://jboss.org/seam/faces"
+                template="/WEB-INF/layout/template.xhtml">
+    <f:metadata>  	
+    	<s:viewAction action="#{examSearcher.selectPositionId(param.positionId)}" if="#{! empty param.positionId}"/>
+    	<s:viewAction action="#{examSearcher.doSearch}"/>
+    </f:metadata>
     <ui:define name="content">
         <div class="section">
          <h1>Examination Management</h1>

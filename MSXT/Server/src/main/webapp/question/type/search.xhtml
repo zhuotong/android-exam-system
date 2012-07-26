@@ -33,8 +33,7 @@
                  <h:commandButton id="searchButtion" value="Search" action="#{questionTypeSearcher.find}">
                      <f:ajax render=":searchResults" onevent="controlSpinner"/>
                  </h:commandButton>
-                 &nbsp;
-                 <h:commandButton id="addButtion" value="Add" action="add"/>
+                 <h:commandButton id="addButtion" value="Add" action="add" rendered="false"/>
                  <span id="activity"><h:graphicImage id="spinner" value="/img/spinner.gif" style="display: none;"/></span>
              </fieldset>
          </h:form>
@@ -59,10 +58,14 @@
                         </h:column>
                         <h:column id="actCol">
                             <f:facet id="actFct" name="header">Action</f:facet>
-                            <h:link id="view" value="View" outcome="/question/type/detail" style="white-space: nowrap;">
+                            <h:button value="View" outcome="/question/type/detail" style="white-space: nowrap;">
                                 <f:param name="id" value="#{_type.id}"/>
-                            </h:link>
-                     		<h:commandButton id="delete" value="Delete" action="#{questionTypeAgent.deleteQuestionType(_type.id)}"/>
+                            </h:button>
+                            &nbsp;
+                            <h:button value="Question" outcome="/question/search" style="white-space: nowrap;">
+                                <f:param name="typeId" value="#{_type.id}"/>
+                            </h:button>
+                     		<h:commandButton id="delete" value="Delete" action="#{questionTypeAgent.deleteQuestionType(_type.id)}" rendered="false"/>
                         </h:column>
                     </h:dataTable>
                 </h:form>

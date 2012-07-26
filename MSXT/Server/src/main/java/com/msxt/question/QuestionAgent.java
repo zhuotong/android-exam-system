@@ -33,7 +33,8 @@ public class QuestionAgent {
 	
 	public void selectQuestion(final String id) {
 		selectedQuestion = em.find(Question.class, id);
-		if( selectedQuestion.getQuestionType().getName().equalsIgnoreCase("choice") ) {
+		String typeId = selectedQuestion.getQuestionType().getId();
+		if( typeId.equals("1") || typeId.equals("2") ) {
 			selectChoiceItems();
 		}
 		selectPositions();

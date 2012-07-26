@@ -109,5 +109,8 @@ public class InterviewSearcher extends PageableSearcher {
 	public List<Interview> getInterviews() {
 		return interviews;
 	}
-
+	
+	public void selectPositionId( String positionId ) {
+		searchCriteria.setPositionId( positionId );
+	}
 }

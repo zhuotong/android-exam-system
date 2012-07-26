@@ -113,5 +113,8 @@ public class QuestionSearcher extends PageableSearcher {
                 .textParams(questions.size(), searchCriteria.getQuery(), searchCriteria.getPageSize()).build().getText());
 		
 	}
-
+	
+	public void selectTypeId( String typeId ) {
+		searchCriteria.setQuestionTypeId( typeId );
+	}
 }

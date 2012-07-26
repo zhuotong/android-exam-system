@@ -6,12 +6,11 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:s="http://jboss.org/seam/faces"
                 template="/WEB-INF/layout/template.xhtml">
-    <ui:define name="metadata">
-        <f:metadata>
-            <s:viewAction action="#{interviewSearcher.doSearch}"/>
-        </f:metadata>
-    </ui:define>
-                
+	<f:metadata>
+		<s:viewAction action="#{interviewSearcher.selectPositionId(param.positionId)}" if="#{! empty param.positionId}"/>
+	    <s:viewAction action="#{interviewSearcher.doSearch}"/>
+	</f:metadata>
+
     <ui:define name="head">
         <script type="text/javascript">
             function controlSpinner(behavior) {

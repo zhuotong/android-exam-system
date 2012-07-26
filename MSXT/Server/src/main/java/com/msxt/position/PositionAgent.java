@@ -19,6 +19,8 @@ import org.jboss.seam.faces.context.conversation.Begin;
 import org.jboss.seam.international.status.Messages;
 
 import com.msxt.booking.i18n.DefaultBundleKey;
+import com.msxt.model.Examination;
+import com.msxt.model.Examination_;
 import com.msxt.model.Position;
 import com.msxt.model.Position_;
 
@@ -50,12 +52,22 @@ public class PositionAgent {
     	Position previousP = getPreviousPosition(p);
     	
     	if( previousP==null ) {
-    		em.remove( p );
-    		positionSearch.doSearch();
-    		messages.info( new DefaultBundleKey("msxt_position_delete_success") )
-	        		.params( p.getName() );
+    		CriteriaBuilder cb = em.getCriteriaBuilder();
+    		CriteriaQuery<Examination> cq = cb.createQuery( Examination.class );
+    		Root<Examination> rp = cq.from( Examination.class );
+    		cq.select( rp ).where( cb.equal( rp.get( Examination_.position), p ) );
+    		
+    		List<Examination> ees = em.createQuery( cq ).getResultList();
+    		if( ees.size()>0 ) {
+    			messages.error( new DefaultBundleKey("msxt_position_delete_failure2") )
+    			        .params( p.getName(), ees.get(0).getName() );
+    		} else {
+	    		em.remove( p );
+	    		messages.info( new DefaultBundleKey("msxt_position_delete_success") )
+		        		.params( p.getName() );
+    		}
     	} else {
-    		messages.error( new DefaultBundleKey("msxt_position_delete_failure") )
+    		messages.error( new DefaultBundleKey("msxt_position_delete_failure1") )
                     .params( p.getName(), previousP.getName() );
     	}
     	

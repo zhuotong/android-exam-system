@@ -2,10 +2,16 @@ package com.msxt.question;
 
 import javax.enterprise.inject.Produces;
 import javax.faces.bean.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.jboss.seam.international.status.Messages;
+
+import com.msxt.booking.i18n.DefaultBundleKey;
+import com.msxt.model.Position;
+import com.msxt.model.PositionQuestion;
 import com.msxt.model.Question;
 import com.msxt.model.QuestionChoiceItem;
 import com.msxt.model.QuestionType;
@@ -16,6 +22,9 @@ public class QuestionCreator {
 	@PersistenceContext
 	private EntityManager em;
 	 
+	@Inject
+    private Messages messages;
+	
 	private final Question newQuestion = new Question();
 	 
 	private String typeId;
@@ -23,7 +32,9 @@ public class QuestionCreator {
 	private String choiceLabels;
 	 
 	private String choiceItems;
- 
+	
+	private String[] positionIds;
+	
 	@Produces
 	@Named
 	public Question getNewQuestion() {
@@ -34,7 +45,16 @@ public class QuestionCreator {
 		QuestionType type = em.find( QuestionType.class, typeId);
 		newQuestion.setQuestionType( type );
 		em.persist( newQuestion );
-		if( type.getName().equalsIgnoreCase("choice") ) {
+		
+		for( String pid : positionIds ) {
+			Position p = em.find( Position.class, pid );
+			PositionQuestion pq = new PositionQuestion();
+			pq.setPosition( p );
+			pq.setQuestion( newQuestion );
+			em.persist( pq );
+		}
+		
+		if( typeId.equals("1") || typeId.equals("2") ) {
 			String[] cls = choiceLabels.split("\\|#\\|");
 			String[] cis = choiceItems.split("\\|#\\|");
 			for( int i=0; i<cls.length; i++ ) {
@@ -48,7 +68,9 @@ public class QuestionCreator {
 				}
 			}
 		}
-		return "search";
+		
+		messages.info( new DefaultBundleKey("msxt_question_create_success") ).params( newQuestion.getName() );
+		return "search?faces-redirect=true";
 	}
 
 	public String getTypeId() {
@@ -73,5 +95,13 @@ public class QuestionCreator {
 	
 	public void setChoiceItems(String choiceItems) {
 		this.choiceItems = choiceItems;
+	}
+	
+	public String[] getPositionIds() {
+		return positionIds;
+	}
+
+	public void setPositionIds(String[] positionIds) {
+		this.positionIds = positionIds;
 	}
 }

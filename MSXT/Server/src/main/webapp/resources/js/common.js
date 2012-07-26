@@ -293,3 +293,16 @@ var DOM = new (function() {
 		_$f = dispatchEvent;
 	});
 });
+
+String.prototype.endsWith = function(suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+};
+String.prototype.trim = function() { 
+	return this.replace(/(^[\s/n]*)|([\s/n]*$)/g, ""); 
+};
+String.prototype.ltrim = function() { 
+	return this.replace(/(^[\s/n]*)/g, ""); 
+}; 
+String.prototype.rtrim = function() { 
+	return this.replace(/([\s/n]*$)/g, ""); 
+}; 

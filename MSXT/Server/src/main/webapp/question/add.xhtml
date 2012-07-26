@@ -11,19 +11,32 @@
         <script type="text/javascript">
       		//<![CDATA[
             function typeChanged( type ) {
-            	var option = type.options[type.selectedIndex];
-                if( option.label == 'Choice' )
+            	//var option = type.options[type.selectedIndex];
+                //if( option.label == 'Choice' )
+                if( type.value=='1' || type.value =='2' )
                 	document.getElementById('choiceItem').style.display='';
             	else 
                 	document.getElementById('choiceItem').style.display='none';
             }
             
             function addChoiceItem(){
-            	var choiceItemsTable = document.getElementById('choiceItemsTable');
+            	var choiceItemsTable = $('choiceItemsTable');
+            	if( choiceItemsTable.children[0].rows.length == 1 ) {
+            		addOneChoiceItem( 'A' )
+            		addOneChoiceItem( 'B' )
+            		addOneChoiceItem( 'C' )
+            		addOneChoiceItem( 'D' )
+            	} else {
+            		addOneChoiceItem( '' )
+            	}
+            }
+            
+            function addOneChoiceItem( label ){
+            	var choiceItemsTable = $('choiceItemsTable');
             	var nr = choiceItemsTable.insertRow( choiceItemsTable.rows.length );
             	var lc = nr.insertCell(0);
             	lc.width = '5%';
-            	lc.innerHTML= '<input name="clabel" type="text" size="2"/>';
+            	lc.innerHTML= '<input name="clabel" type="text" size="1" value="' + label + '"/>';
             	var cc = nr.insertCell(1);
             	cc.width = '85%';
             	cc.innerHTML = '<input name="citem" type="text" size="65"/>';
@@ -39,9 +52,30 @@
             }
             
             function setChoiceItems(){
+            	var name = $('inputName').value.trim();
+            	var title = $('inputTitle').value.trim();
+            	var answer = $('inputAnswer').value.trim();
+            	var positionIds = $('positionIds');
+				if( name.length==0 ) {
+					alert('Please set Name!!!');
+					return false;
+				}
+				if( title.length==0 ) {
+					alert('Please set Title!!!');
+					return false;
+				}
+            	if( answer.length==0 ) {
+					alert('Please set answer!!!');
+					return false;
+				}
+            	$('inputAnswer').value = answer;
+            	if( positionIds.value.length==0 ) {
+            		alert('Please select position!!!');
+					return false;
+            	}
+            	
             	var type  = document.getElementById( 'typeId' );
-            	var option = type.options[type.selectedIndex];
-                if( option.label == 'Choice' ) {
+                if( type.value == '1' || type.value == '2' ) {
 					var clabels = document.getElementsByName('clabel');
 					var citems = document.getElementsByName('citem');
 					if( clabels.length==0 ) {
@@ -66,12 +100,33 @@
 								citemsValue = citems[i].value;
 							} else {
 								clabelsValue = clabelsValue + '|#|' + clabels[i].value;
-								citemsValue = citemsValue + '|#|' + citems[i].value;
+								citemsValue = citemsValue + '|#|' + citems[i].value.trim();
 							}
 						}	
 					}
-					document.getElementById('inputChoiceLabels').value=clabelsValue;
-					document.getElementById('inputChoiceItems').value=citemsValue;
+					$('inputChoiceLabels').value=clabelsValue;
+					$('inputChoiceItems').value=citemsValue;
+					
+					if( type.value == '1' ) {
+						if( answer.length!=1 || clabelsValue.indexOf(answer)==-1 ) {
+							alert('Invalid answer!!!');
+							return false;
+						}
+					} 
+					
+					if( type.value == '2' ) {
+						if( answer.length==1 ) {
+							alert('Invalid answer, Please select multiple label!!!');
+							return false;
+						}
+						for( var i=0; i<answer.length; i++ ) {
+							var l = answer.charAt(i);
+							if( clabelsValue.indexOf(l)==-1 ) {
+								alert('Invalid answer "'+ l +'", Please select right label!!!');
+								return false;	
+							}
+						}
+					}
                 }
                 return true;
             }
@@ -107,6 +162,14 @@
                 			</td>
                 		</tr>
                 		<tr>
+	             			<td>Position</td>
+	             			<td>        
+	             				<h:selectManyListbox id="positionIds" value="#{questionCreator.positionIds}" >
+	                					<f:selectItems value="#{positionCreator.existingPositions}" var="ep" itemLabel="#{ep.name}" itemValue="#{ep.id}"/>
+	             				</h:selectManyListbox>                          
+	             			</td>
+	             		</tr>
+                		<tr>
                 			<td>Question Name</td>
                 			<td>
                 				<h:inputText id="inputName" value="#{newQuestion.name}" required="true"/>
@@ -114,11 +177,11 @@
                 		</tr>
                 		<tr>
                 			<td>Title</td>
-                			<td><h:inputTextarea id="inputTitle" value="#{newQuestion.content}" required="true"/></td>
+                			<td><h:inputTextarea id="inputTitle" value="#{newQuestion.content}" required="true" cols="60" rows="10"/></td>
                 		</tr>
                 		<tr>
                 			<td>Right Answer</td>
-                			<td><h:inputTextarea value="#{newQuestion.rightAnswer}" required="true"/></td>
+                			<td><h:inputTextarea id="inputAnswer" value="#{newQuestion.rightAnswer}" required="true" cols="60" rows="1"/></td>
                 		</tr>
                 	</table>
                 	</div>

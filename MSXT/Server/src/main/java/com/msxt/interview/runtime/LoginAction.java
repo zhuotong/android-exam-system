@@ -34,43 +34,42 @@ public class LoginAction {
     	cq.select( rp ).where( cb.equal(rp.get(Interview_.loginName), name), cb.equal(rp.get(Interview_.loginPassword), password) );
     	
 		List<Interview> ivs = em.createQuery( cq ).getResultList();
-		boolean existFinish = false;
-		boolean existNotStart = false;
-		boolean existOverdue = false; 
+		boolean isFinish = false;
+		boolean isNotStart = false;
+		boolean isOverdue = false; 
 		if( ivs !=null && ivs.size()>0 ) {
-			for( Interview iv : ivs ) {
-				if( iv.getStatus().equals( Interview.STATUS.WAITING ) || iv.getStatus().equals( Interview.STATUS.DOING ) ) 
-					if( iv.getStart().compareTo( DateUtil.getTodayStart() ) == -1 ) {
-						existOverdue = true;
-					} else if ( iv.getStart().compareTo( DateUtil.getTodayEnd() ) >-1 ) {
-						existNotStart = true;
-					} else {
-						StringBuffer sb = new StringBuffer();
-						sb.append( "<login>" );
-						sb.append( "<status>sucess</status>" );		
-						sb.append( "<examinations>" );
-						
-						for( InterviewExamination exam : iv.getExaminations() ) {
-							sb.append( "<examination>" );
-							sb.append( "<id>").append( exam.getId() ).append( "</id>" );
-							sb.append( "<name>").append( exam.getExam().getName() ).append( "</name>" );
-							sb.append( "</examination>" );
-						}		
-						sb.append( "</examinations>" );
-						sb.append( "</login>" );
-						return sb.toString();
-					}
-				else
-					existFinish = true;
-			}
+			Interview iv = ivs.get(0); 
+			if( iv.getStatus().equals( Interview.STATUS.WAITING ) || iv.getStatus().equals( Interview.STATUS.DOING ) ) 
+				if( iv.getStart().compareTo( DateUtil.getTodayStart() ) == -1 ) {
+					isOverdue = true;
+				} else if ( iv.getStart().compareTo( DateUtil.getTodayEnd() ) >-1 ) {
+					isNotStart = true;
+				} else {
+					StringBuffer sb = new StringBuffer();
+					sb.append( "<login>" );
+					sb.append( "<status>sucess</status>" );		
+					sb.append( "<examinations>" );
+					
+					for( InterviewExamination exam : iv.getExaminations() ) {
+						sb.append( "<examination>" );
+						sb.append( "<id>").append( exam.getId() ).append( "</id>" );
+						sb.append( "<name>").append( exam.getExam().getName() ).append( "</name>" );
+						sb.append( "</examination>" );
+					}		
+					sb.append( "</examinations>" );
+					sb.append( "</login>" );
+					return sb.toString();
+				}
+			else
+				isFinish = true;
 		} 
 
-		String des = "";
-		if( existNotStart ) {
+		String des = "Invalid login name or login password";
+		if( isNotStart ) {
 			des = "Interview is not doing on today";
-		} else if (existOverdue) {
+		} else if (isOverdue) {
 			des = "Interview is over due";
-		} else if (existFinish) {
+		} else if (isFinish) {
 			des = "Interview is finished";
 		}
 	

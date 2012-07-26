@@ -4,7 +4,12 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:s="http://jboss.org/seam/faces"
                 template="/WEB-INF/layout/template.xhtml">
+	<f:metadata>
+	    <s:viewAction action="#{positionSearch.doSearch}"/>
+	</f:metadata>
+    
     <ui:define name="head">
         <script type="text/javascript">
             function controlSpinner(behavior) {
@@ -18,7 +23,6 @@
     </ui:define>
 	
     <ui:define name="content">
-
         <div class="section">
 		 <h1>Position Management</h1>
          <span class="errors">
@@ -55,9 +59,18 @@
                         </h:column>
                         <h:column id="actCol">
                             <f:facet id="actFct" name="header">Action</f:facet>
-                            <h:link id="view" value="View" outcome="/position/detail" style="white-space: nowrap;">
+                            <h:button value="View" outcome="/position/detail" style="white-space: nowrap;">
                                 <f:param name="id" value="#{_position.id}"/>
-                            </h:link>
+                            </h:button>
+                            &nbsp;
+                            <h:button value="Examination" outcome="/examination/search" style="white-space: nowrap;">
+                                <f:param name="positionId" value="#{_position.id}"/>
+                            </h:button>
+                            &nbsp;
+                            <h:button value="Interview" outcome="/interview/search" style="white-space: nowrap;">
+                                <f:param name="positionId" value="#{_position.id}"/>
+                            </h:button>
+                            &nbsp;
                      		<h:commandButton id="delete" value="Delete" action="#{positionAgent.deletePosition(_position.id)}"/>
                         </h:column>
                     </h:dataTable>

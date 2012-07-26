@@ -13,6 +13,7 @@
         <title>#{bundles.messages.template_title}</title>
         <link rel="shortcut icon" href="#{request.contextPath}/favicon.ico"/>
         <h:outputStylesheet library="css" name="screen.css"/>
+        <h:outputScript library="js" name="common.js"/>
         <script type="text/javascript">
       		//<![CDATA[
       			function selectExams(){
@@ -40,16 +41,6 @@
       			
       			function openViewWin(){
       				window.open("#", "VE", "height=400,width=600,toolbar=no,menubar=no,scrollbars=yes"); 
-      			}
-      			
-      			String.prototype.trim = function() { 
-      				return this.replace(/(^[\s/n]*)|([\s/n]*$)/g, ""); 
-      			} 
-      			String.prototype.ltrim = function() { 
-      				return this.replace(/(^[\s/n]*)/g, ""); 
-      			} 
-      			String.prototype.rtrim = function() { 
-      				return this.replace(/([\s/n]*$)/g, ""); 
       			} 
           	//]]>
         </script>
