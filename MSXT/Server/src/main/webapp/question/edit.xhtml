@@ -18,14 +18,14 @@
         <script type="text/javascript">
       		//<![CDATA[
             function addChoiceItem(){
-            	var choiceItemsTable = document.getElementById('choiceItemsTable');
+            	var choiceItemsTable = $('choiceItemsTable');
             	var nr = choiceItemsTable.insertRow( choiceItemsTable.rows.length );
             	var lc = nr.insertCell(0);
             	lc.width = '5%';
             	lc.innerHTML= '<input name="clabel" type="text" size="2"/>';
             	var cc = nr.insertCell(1);
             	cc.width = '85%';
-            	cc.innerHTML = '<input name="citem" type="text" size="65"/>';
+            	cc.innerHTML = '<textarea name="citem" cols="60" rows="1"></textarea>';
             	var bc = nr.insertCell(2);
             	bc.width = '10%';
             	bc.innerHTML = '<input type="button" value="Delete" onclick="deleteChoiceItem(this);"/>';
@@ -33,13 +33,13 @@
             
             function deleteChoiceItem( btn ){
             	var tr = btn.parentElement.parentElement;
-            	var choiceItemsTable = document.getElementById('choiceItemsTable');
+            	var choiceItemsTable = $('choiceItemsTable');
             	choiceItemsTable.children[0].removeChild(tr);
             }
             
             function setChoiceItems(){
-            	var type  = '${questionAgent.selectedQuestion.questionType.name}';
-                if( type == 'Choice' ) {
+            	var type  = '${questionAgent.selectedQuestion.questionType.id}';
+                if( type == '1' || type == '2' ) {
 					var clabels = document.getElementsByName('clabel');
 					var citems = document.getElementsByName('citem');
 					if( clabels.length==0 ) {
@@ -132,7 +132,7 @@
              		<ui:repeat var="citem" value="#{questionAgent.choiceItems}">
              		<tr>
              			<td width="5%"><input name="clabel" type="text" value="#{citem.labelName}" size="2"/></td>
-             			<td width="85%"><input name="citem" type="text" value="#{citem.content}" size="65"/></td>
+             			<td width="85%"><textarea name="citem" cols="60" rows="1"><h:outputText value="#{citem.content}" escape="false"/></textarea></td>
              			<td width="10%"><input type="button" value="Delete" onclick="deleteChoiceItem(this);"/></td>
              		</tr>
              		</ui:repeat>

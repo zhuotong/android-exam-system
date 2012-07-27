@@ -11,7 +11,7 @@
     <ui:define name="metadata">
         <f:metadata>
             <f:viewParam name="id" value="#{id}"/>
-            <s:viewAction action="#{questionAgent.selectQuestion(id)}"/>
+            <s:viewAction action="#{questionAgent.selectQuestion4View(id)}"/>
         </f:metadata>
     </ui:define>
 
@@ -23,24 +23,48 @@
 
         <div class="section">
             <div>
-            	<h:panelGrid columns="2">
-            		<h:outputLabel value="Type"/><h:outputText value="${questionAgent.selectedQuestion.questionType.name}"/>
-            		<h:outputLabel value="Name"/><h:outputText value="${questionAgent.selectedQuestion.name}"/>
-            		<h:outputLabel value="Title"/><h:outputText value="${questionAgent.selectedQuestion.content}" escape="true"/>
-            		<h:outputLabel value="Choice Items" rendered="#{not empty questionAgent.choiceItems}"/>
-            		<h:dataTable id="questions" value="#{questionAgent.choiceItems}" var="_citem" border="0">
-                        <h:column>
-                            <h:outputText value="${_citem.labelName}"/>.&nbps;<h:outputText value="${_citem.content}"/>
-                        </h:column>
-                    </h:dataTable>
-            	</h:panelGrid>
+            	<table>
+            		<tr>
+            			<td>Type</td>
+            			<td>${questionAgent.selectedQuestion.questionType.name}</td>
+            		</tr>
+            		<tr>
+            			<td>Position</td>
+            			<td>
+            				<ui:repeat var="pn" value="${questionAgent.positionNames}">
+            					${pn}<br/>
+            				</ui:repeat>
+            			</td>
+            		</tr>
+            		<tr>
+            			<td>Name</td>
+            			<td>${questionAgent.selectedQuestion.name}</td>
+            		</tr>
+            		<tr>
+            			<td>Title</td>
+            			<td><h:outputText value="${questionAgent.selectedQuestion.content}" escape="false"/></td>
+            		</tr>
+            		<tr>
+            			<td>Choice Items</td>
+            			<td>
+	            			<ui:repeat var="ci" value="${questionAgent.choiceItems}">
+	                   		${ci.labelName}.<br/><h:outputText value="${ci.content}" escape="false"/><br/><br/>
+	                    	</ui:repeat>
+                    	</td>
+            		</tr>	
+            		<tr>
+            			<td>Answer</td>
+            			<td>
+	            			${questionAgent.selectedQuestion.rightAnswer}
+                    	</td>
+            		</tr>
+            	</table>
             </div>
             <div class="buttonBox">
                 <h:form id="actions">
                 	<h:button id="cancel" value="Return" outcome="/question/search.xhtml"/>
                 </h:form>
             </div>
-
         </div>
 
     </ui:define>

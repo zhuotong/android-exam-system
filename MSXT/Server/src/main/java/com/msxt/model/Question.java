@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -42,6 +43,9 @@ public class Question {
 	
 	@OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
 	private List<QuestionChoiceItem> choiceItems;
+	
+	@Transient
+	private boolean onUsed = false;
 	
 	public String getId() {
 		return id;
@@ -84,5 +88,11 @@ public class Question {
 	}
 	public void setChoiceItems(List<QuestionChoiceItem> choiceItems) {
 		this.choiceItems = choiceItems;
+	}
+	public boolean isOnUsed() {
+		return onUsed;
+	}
+	public void setOnUsed(boolean onUsed) {
+		this.onUsed = onUsed;
 	}
 }

@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.xml.stream.XMLStreamException;
 
+import com.msxt.common.HtmlUtil;
 import com.msxt.model.Examination;
 import com.msxt.model.ExaminationCatalog;
 import com.msxt.model.ExaminationQuestion;
@@ -61,13 +62,7 @@ public class ExamAgent {
 			for( ExaminationQuestion eq : ec.getQuestions() ) {
 				Question q = eq.getQuestion();
 				q.getChoiceItems().get(0);
-				String htmlContent = q.getContent().replaceAll("&", "&amp;")
-												   .replaceAll(" ",  "&nbsp;")
-									               .replaceAll("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
-									    		   .replaceAll("<",  "&lt;")
-									    		   .replaceAll(">",  "&gt;")
-									    		   .replaceAll("\n", "<br/>")
-									    		   .replaceAll("\"", "&quot;");
+				String htmlContent = HtmlUtil.transferCommon2HTML( q.getContent() );
 				q.setContent( htmlContent );
 				em.detach( q );
 			}

@@ -3,6 +3,7 @@ package com.msxt.question;
 import java.util.List;
 
 import javax.faces.bean.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -10,18 +11,24 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.jboss.seam.international.status.Messages;
+
+import com.msxt.booking.i18n.DefaultBundleKey;
+import com.msxt.common.HtmlUtil;
 import com.msxt.model.Position;
 import com.msxt.model.PositionQuestion;
 import com.msxt.model.PositionQuestion_;
 import com.msxt.model.Question;
 import com.msxt.model.QuestionChoiceItem;
-import com.msxt.model.QuestionChoiceItem_;
 
 @Named
 @RequestScoped
 public class QuestionAgent {
 	@PersistenceContext
     private EntityManager em;
+	
+	@Inject
+	private Messages messages;
 	
 	private Question selectedQuestion = new Question();
 	
@@ -30,14 +37,29 @@ public class QuestionAgent {
 	private String choiceLabels;
 	private String choiceContents;
 	private String[] positionIds;
+	private String[] positionNames;
 	
 	public void selectQuestion(final String id) {
 		selectedQuestion = em.find(Question.class, id);
 		String typeId = selectedQuestion.getQuestionType().getId();
 		if( typeId.equals("1") || typeId.equals("2") ) {
-			selectChoiceItems();
+			qciList = selectedQuestion.getChoiceItems();
+			qciList.get(0);
 		}
 		selectPositions();
+    }
+	
+	public void selectQuestion4View(final String id) {
+		selectQuestion( id );
+		String htmlQC = HtmlUtil.transferCommon2HTML( selectedQuestion.getContent() );
+		selectedQuestion.setContent( htmlQC );
+		em.detach( selectedQuestion );
+		if( qciList!=null && !qciList.isEmpty() ) {
+			for( QuestionChoiceItem qci : qciList ) {
+				qci.setContent( HtmlUtil.transferCommon2HTML( qci.getContent() ) );
+				em.detach( qci );
+			}
+		}
     }
 
 	public String save(){
@@ -54,7 +76,8 @@ public class QuestionAgent {
 		q.setRightAnswer( selectedQuestion.getRightAnswer() );
 		em.persist( q );
 		
-		if( q.getQuestionType().getName().equalsIgnoreCase("choice") ) {
+		String typeId = q.getQuestionType().getId();
+		if( typeId.equals("1") || typeId.equals("2") ) {
 			em.createQuery("delete QuestionChoiceItem item where item.question=:q").setParameter("q", q).executeUpdate();
 			String[] cls = choiceLabels.split("\\|#\\|");
 			String[] cis = choiceContents.split("\\|#\\|");
@@ -69,7 +92,7 @@ public class QuestionAgent {
 				}
 			}
 		}
-		return "search";
+		return "search?faces-redirect=true";
 	}
 	
 	public synchronized Question getSelectedQuestion() {
@@ -78,15 +101,6 @@ public class QuestionAgent {
 	
 	public List<QuestionChoiceItem> getChoiceItems(){
 		return qciList;
-	}
-	
-	private void selectChoiceItems(){
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<QuestionChoiceItem> cq = cb.createQuery(QuestionChoiceItem.class);
-		Root<QuestionChoiceItem> rp = cq.from( QuestionChoiceItem.class );
-		cq.select( rp ).where( cb.equal( rp.get(QuestionChoiceItem_.question ), selectedQuestion) );
-		
-		qciList = em.createQuery( cq ).getResultList();
 	}
 	
 	private void selectPositions(){
@@ -98,8 +112,23 @@ public class QuestionAgent {
 		
 		List<Position> r = em.createQuery( cq ).getResultList();
 		positionIds = new String[r.size()];
-		for( int i=0; i<r.size(); i++ )
+		positionNames = new String[r.size()];
+		for( int i=0; i<r.size(); i++ ) {
 			positionIds[i] = r.get(i).getId();
+			positionNames[i] = r.get(i).getName();
+		}
+	}
+	
+	public String delete(String id){
+		Question q = em.find( Question.class, id );
+		Object result = em.createQuery("select COUNT(eq) from ExaminationQuestion eq where eq.question=:q").setParameter("q", q).getSingleResult();
+		if( ((Number)result).intValue()>0 ) {
+			messages.error( new DefaultBundleKey("msxt_question_delete_failure") ).params( q.getName() );
+			return "search";
+		} else { 
+			em.remove( q );
+			return "search?faces-redirect=true";
+		}
 	}
 	
 	public String getChoiceLabels() {
@@ -121,9 +150,12 @@ public class QuestionAgent {
 	public String[] getPositionIds() {
 		return positionIds;
 	}
-
+	
 	public void setPositionIds(String[] positionIds) {
 		this.positionIds = positionIds;
 	}
-	
+
+	public String[] getPositionNames() {
+		return positionNames;
+	}
 }

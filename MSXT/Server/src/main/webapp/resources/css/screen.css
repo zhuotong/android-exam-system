@@ -36,7 +36,7 @@ a img {
 
 input, select {
     border: 1px solid #C3BBB6;
-    margin: 5px 0;
+    margin: 1px 0;
     background: #FFFFFF url(../img/input.bg.gif) 0 0 repeat-x;
 }
 
@@ -114,7 +114,7 @@ input[type=submit], input[type=button] {
     font-weight: bold;
     color: #FFFFFF;
     border: 1px solid #5D1414;
-    height: 26px;
+    height: 24px;
     background: #FFFFFF url(../img/btn.bg.gif) 0 0 repeat-x;
     border-style: none;
     cursor: pointer;

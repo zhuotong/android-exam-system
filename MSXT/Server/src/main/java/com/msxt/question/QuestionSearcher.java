@@ -99,8 +99,22 @@ public class QuestionSearcher extends PageableSearcher {
 	        }   
 		}
 		
-		List<Question> results = em.createQuery(cquery).setMaxResults(searchCriteria.getFetchSize())
-                .setFirstResult(searchCriteria.getFetchOffset()).getResultList();
+		List<Question> results = em.createQuery(cquery).setMaxResults( searchCriteria.getFetchSize() )
+                                                       .setFirstResult( searchCriteria.getFetchOffset() )
+                                                       .getResultList();
+		
+		for( Question q : results ) {
+			String sql = "select count(*) from examination_question eq " +
+					     "                     join examination_catalog ec on eq.catalog_id = ec.id" +
+                         "                     join examination e on ec.exam_id = e.id" +
+                         "                     join interview_examination ie on e.id=ie.exam_id" +
+                         "				  where eq.question_id = ?";
+			 Object c = em.createNativeQuery(sql).setParameter( 1, q.getId() ).getSingleResult();
+			 if( ((Number)c).intValue()>0 )
+    			q.setOnUsed( true );
+    		 else
+    			q.setOnUsed( false );
+		}
 		
         nextPageAvailable = results.size() > searchCriteria.getPageSize();
         if (nextPageAvailable) {
