@@ -35,7 +35,7 @@ public class FoggySearchCriteria implements Serializable {
     private static final char HUMAN_WILDCARD_CHAR = '*';
 
     private String query = "";
-    private int pageSize = 20;
+    private int pageSize = 15;
     private int page = 0;
 
     public String getSearchPattern() {
