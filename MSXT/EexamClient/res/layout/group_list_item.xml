@@ -8,9 +8,11 @@
     <TextView
         android:id="@+id/groupItem"
         android:textColor="#FFFFFF"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:gravity="center" />
+        android:gravity="center" 
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"/>
 
 </LinearLayout>

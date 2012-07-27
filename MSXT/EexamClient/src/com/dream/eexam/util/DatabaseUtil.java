@@ -13,26 +13,26 @@ public class DatabaseUtil{
 	private static final String TAG = "DatabaseUtil";
 
 	//Database Name
-	private static final String DATABASE_NAME = "db_sysconfig";
+	private static final String DATABASE_NAME = "db_eExam";
 	//Database Version
 	private static final int DATABASE_VERSION = 1;
 	//Table Name
-	private static final String DATABASE_TABLE = "tb_system_config";
-
+	private static final String DATABASE_TABLE = "answer_tbl";
 
 	/**
 	 * Table columns
 	 */
-	public static final String KEY_NAME = "name";
-	public static final String KEY_VALUE = "value";
-	public static final String KEY_ROWID = "id";
+	public static final String CATALOG_ID = "cid";
+	public static final String QUESTION_ID = "qid";
+	public static final String ANSWERS = "answers";
 
 	/**
 	 * Database creation sql statement
 	 */
-	private static final String CREATE_SYSCONFIG_TABLE =
-		"create table " + DATABASE_TABLE + " (" + KEY_ROWID + " integer primary key autoincrement, "
-		+ KEY_NAME +" text not null, " + KEY_VALUE + " text not null);";
+	private static final String CREATE_ANSWER_TABLE = "create table "
+			+ DATABASE_TABLE + "(" + CATALOG_ID + " integer not null,"
+			+ ANSWERS + " integer not null," + ANSWERS + " text," + "primary key("
+			+ CATALOG_ID + "," + QUESTION_ID + ")" + ");";
 
 	/**
 	 * Context
@@ -53,16 +53,15 @@ public class DatabaseUtil{
 		 */
 		@Override
 		public void onCreate(SQLiteDatabase db) {
-			Log.i(TAG, "Creating DataBase: " + CREATE_SYSCONFIG_TABLE);
-			db.execSQL(CREATE_SYSCONFIG_TABLE);
+			Log.i(TAG, "Creating DataBase: " + CREATE_ANSWER_TABLE);
+			db.execSQL(CREATE_ANSWER_TABLE);
 		}
 		/**
 		 * onUpgrade method is called when database version changes.
 		 */
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
-					+ newVersion);
+			Log.w(TAG, "Upgrading database from version " + oldVersion + " to "+ newVersion);
 		}
 	}
 
@@ -98,10 +97,13 @@ public class DatabaseUtil{
 	 * @param value
 	 * @return long
 	 */
-	public long createSystemConfig(String name, String value) {
+	public long createAnswer(long cid, long qid, String answers) {
 		ContentValues initialValues = new ContentValues();
-		initialValues.put(KEY_NAME, name);
-		initialValues.put(KEY_VALUE, value);
+		
+		initialValues.put(CATALOG_ID, cid);
+		initialValues.put(QUESTION_ID, qid);
+		initialValues.put(ANSWERS, answers);
+		
 		return mDb.insert(DATABASE_TABLE, null, initialValues);
 	}
 	/**
@@ -109,17 +111,16 @@ public class DatabaseUtil{
 	 * @param rowId
 	 * @return boolean
 	 */
-	public boolean deleteSystemConfig(long rowId) {
-		return mDb.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
+	public boolean deleteAnswer(long cid, long qid) {
+		return mDb.delete(DATABASE_TABLE, CATALOG_ID + "=" + cid + "AND" + QUESTION_ID + "=" + qid, null) > 0;
 	}
 
 	/**
 	 * This method will return Cursor holding all  records.
 	 * @return Cursor
 	 */
-	public Cursor fetchAllSystemConfigs() {
-		return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_NAME,
-				KEY_VALUE}, null, null, null, null, null);
+	public Cursor fetchAllAnswers() {
+		return mDb.query(DATABASE_TABLE, new String[] {CATALOG_ID,QUESTION_ID,ANSWERS}, null, null, null, null, null);
 	}
 
 	/**
@@ -128,22 +129,10 @@ public class DatabaseUtil{
 	 * @return Cursor
 	 * @throws SQLException
 	 */
-	public Cursor fetchSystemConfig(long id) throws SQLException {
+	public Cursor fetchAnswer(long cid, long qid) throws SQLException {
 		Cursor mCursor =
-			mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID,
-					KEY_NAME, KEY_VALUE}, KEY_ROWID + "=" + id, null,
-					null, null, null, null);
-		if (mCursor != null) {
-			mCursor.moveToFirst();
-		}
-		return mCursor;
-	}
-	
-	public Cursor fetchSystemConfig(String name) throws SQLException {
-		Cursor mCursor =
-			mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID,
-					KEY_NAME, KEY_VALUE}, KEY_NAME + "=" + name, null,
-					null, null, null, null);
+			mDb.query(true, DATABASE_TABLE, new String[] {CATALOG_ID,QUESTION_ID,ANSWERS}, 
+					CATALOG_ID + "=" + cid + "AND" + QUESTION_ID + "=" + qid, null,null, null, null, null);
 		if (mCursor != null) {
 			mCursor.moveToFirst();
 		}
@@ -157,10 +146,12 @@ public class DatabaseUtil{
 	 * @param value
 	 * @return boolean
 	 */
-	public boolean updateSystemConfig(int id, String name, String value) {
+	public boolean updateAnswer(long cid, long qid, String answers) {
 		ContentValues args = new ContentValues();
-		args.put(KEY_NAME, name);
-		args.put(KEY_VALUE, value);
-		return mDb.update(DATABASE_TABLE, args, KEY_ROWID + "=" + id, null) > 0;
+		args.put(CATALOG_ID, cid);
+		args.put(QUESTION_ID, qid);
+		args.put(ANSWERS, answers);
+		
+		return mDb.update(DATABASE_TABLE,args,CATALOG_ID + "=" + cid + "AND" + QUESTION_ID + "=" + qid, null) > 0;
 	}
 }

@@ -65,6 +65,8 @@ public class XMLParseUtil {
 	 */
 	public static Question readQuestion(InputStream inputStream,Integer catalogIndex,Integer questionIndex) throws Exception {
 		
+		Log.i(LOG_TAG, "readQuestion()... ");
+		
 		XmlPullParser xmlpull = Xml.newPullParser();
 		xmlpull.setInput(inputStream, "utf-8");
 		int eventCode = xmlpull.getEventType();
@@ -72,11 +74,14 @@ public class XMLParseUtil {
 		boolean isFoundCatalog = false;
 		boolean isFoundQuestion = false;
 		
-		boolean stopRead = false;
+		boolean isGetQuestion = false;
 		Question question = null;
 		List<Choice> choicesList = new ArrayList<Choice>();
 		Choice choice = null;
-		while (eventCode != XmlPullParser.END_DOCUMENT && !stopRead ) {
+		
+		Integer lasLineInteger = 1;
+		while (eventCode != XmlPullParser.END_DOCUMENT && !isGetQuestion ) {
+			Log.i(LOG_TAG, "Line "+String.valueOf(lasLineInteger++));
 			switch (eventCode) {
 				case XmlPullParser.START_DOCUMENT: {
 					break;
@@ -123,7 +128,7 @@ public class XMLParseUtil {
 						choicesList.add(choice);
 					}else if ("question".equals(xmlpull.getName()) && question != null) {
 						question.setChoices(choicesList);
-						stopRead = true;
+						isGetQuestion = true;
 					}
 					break;
 				}
@@ -215,6 +220,8 @@ public class XMLParseUtil {
 
 	public static String readQuestionType(InputStream inputStream,Integer catalogIndex,Integer questionIndex) throws Exception{
 		
+		Log.i(LOG_TAG, "readQuestionType()...");
+		
 		XmlPullParser xmlpull = Xml.newPullParser();
 		xmlpull.setInput(inputStream, "utf-8");
 		int eventCode = xmlpull.getEventType();
@@ -223,7 +230,9 @@ public class XMLParseUtil {
 		boolean isFoundQuestion = false;
 		String questiontype = null;
 		
-		while (eventCode != XmlPullParser.END_DOCUMENT && questiontype!=null ) {
+	    Integer lasLineInteger = 1;
+		while (eventCode != XmlPullParser.END_DOCUMENT && questiontype==null ) {
+			Log.i(LOG_TAG, "Line "+String.valueOf(lasLineInteger++));
 			switch (eventCode) {
 				case XmlPullParser.START_DOCUMENT: {
 					break;
@@ -250,6 +259,8 @@ public class XMLParseUtil {
 			}
 			eventCode = xmlpull.next();
 		}
+		
+		Log.i(LOG_TAG, String.valueOf(lasLineInteger));
 		
 		return questiontype;
 	}

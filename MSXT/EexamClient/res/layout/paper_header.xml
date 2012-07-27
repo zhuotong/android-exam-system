@@ -9,7 +9,6 @@
 
     <TextView
 	    android:id="@+id/header_tv_catalogs"
-        android:text="@string/msg_header_tv_catalogs"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_gravity="center_vertical|center_horizontal"

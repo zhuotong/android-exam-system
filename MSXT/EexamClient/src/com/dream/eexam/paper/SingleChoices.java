@@ -27,6 +27,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.dream.eexam.base.PapersActivity;
 import com.dream.eexam.base.R;
+import com.dream.eexam.model.CatalogBean;
 import com.dream.eexam.model.Choice;
 import com.dream.eexam.model.Question;
 import com.dream.eexam.util.DatabaseUtil;
@@ -54,7 +55,7 @@ public class SingleChoices extends BaseQuestion {
 	private Question question;
 	List<Choice> choices = new ArrayList<Choice>();
 	
-	Context mContext;
+//	Context mContext;
 	MyListAdapter adapter;
 	List<String> listItemID = new ArrayList<String>();
 	StringBuffer answerString = new StringBuffer();
@@ -70,19 +71,27 @@ public class SingleChoices extends BaseQuestion {
 		
 		//set question text
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
+		catalogsTV.setText(questionType);
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				showWindow(v);
-				if(pressedItemIndex!=-1){
+				/*if(pressedItemIndex!=-1){
 					catalogsTV.setText(groups.get(pressedItemIndex));
-				}
+				}*/
 			}
 		});
 
 		//set question text
+		Integer questionSize = 0;
+		//set question text
+		if(cataLogList!=null&&cataLogList.size()>0){
+			CatalogBean bean = cataLogList.get(currentCatalogIndex-1);
+		    questionSize = bean.getQuestions().size();
+		}
+		
     	currentTV = (TextView)findViewById(R.id.header_tv_current);
-    	currentTV.setText("Q "+String.valueOf(currentQuestionIndex));
+    	currentTV.setText("Q "+String.valueOf(currentQuestionIndex)+" of "+String.valueOf(questionSize));
     	currentTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -116,7 +125,7 @@ public class SingleChoices extends BaseQuestion {
         
         setHeader();
 		
-//        InputStream inputStream =  PapersActivity.class.getClassLoader().getResourceAsStream("sample_paper.xml");
+        InputStream inputStream =  SingleChoices.class.getClassLoader().getResourceAsStream("sample_paper.xml");
         try {
 			question = XMLParseUtil.readQuestion(inputStream, 1, currentQuestionIndex);
 		} catch (Exception e) {
@@ -174,60 +183,63 @@ public class SingleChoices extends BaseQuestion {
 				answerString.append(String.valueOf(choice.getChoiceIndex()));
 				answerString.append(",");
 			}
-
-			if (listItemID.size() == 0) {
-				AlertDialog.Builder builder = new AlertDialog.Builder(SingleChoices.this);
-				builder.setMessage("Answer this question late?")
-						.setCancelable(false)
-						.setPositiveButton("Yes",
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog,int id) {
-										gotoNewQuestion();
-									}
-								})
-						.setNegativeButton("Cancel",
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog,int id) {
-										dialog.cancel();
-									}
-								});
-				builder.show();
-			} else {
-				// save data
-		    	DatabaseUtil dbUtil = new DatabaseUtil(this);
-		    	dbUtil.open();
-		    	dbUtil.createSystemConfig(String.valueOf(question.getIndex()), answerString.toString());
-		    	dbUtil.close();
-				
-		    	gotoNewQuestion();
-			}
 		}
+		
+		if (listItemID.size() == 0) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(SingleChoices.this);
+			builder.setMessage("Answer this question late?")
+					.setCancelable(false)
+					.setPositiveButton("Yes",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,int id) {
+									gotoNewQuestion();
+								}
+							})
+					.setNegativeButton("Cancel",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,int id) {
+									dialog.cancel();
+								}
+							});
+			builder.show();
+		} else {
+			// save data
+	    	DatabaseUtil dbUtil = new DatabaseUtil(this);
+	    	dbUtil.open();
+	    	dbUtil.createAnswer(String.valueOf(question.getIndex()), answerString.toString());
+	    	dbUtil.close();
+			
+	    	gotoNewQuestion();
+		}
+		
     }
     
     //go to next or previous question
     public void gotoNewQuestion(){
-    	//get first question in paper
-		InputStream inputStream =  MultiChoices.class.getClassLoader().getResourceAsStream("sample_paper.xml");
-		Question question = null;
-        try {
-              question = XMLParseUtil.readQuestion(inputStream,1,currentQuestionIndex+direction);
+    	InputStream inputStream =  MultiChoices.class.getClassLoader().getResourceAsStream("sample_paper.xml");
+		String questionType = null;
+		try {
+			 questionType = XMLParseUtil.readQuestionType(inputStream,currentCatalogIndex,currentQuestionIndex+direction);
+			 inputStream.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.i(LOG_TAG, e.getMessage());
 		}
-		if(question!=null){
-			if("Choice:M".equals(question.getQuestionType())){
-				//go to question 1
-				Intent intent = new Intent();
+		if(questionType!=null){
+			//move question
+			Intent intent = new Intent();
+			intent.putExtra("ccIndex", String.valueOf(currentCatalogIndex));
+			intent.putExtra("cqIndex", String.valueOf(currentQuestionIndex+direction));
+			if("Choice:M".equals(questionType)){
+				intent.putExtra("questionType", "Multi Select");
 				intent.setClass( getBaseContext(), MultiChoices.class);
-				startActivity(intent);
-			}else if("Choice:S".equals(question.getQuestionType())){
-				//go to question 1
-				Intent intent = new Intent();
+			}else if("Choice:S".equals(questionType)){
+				intent.putExtra("questionType", "Single Select");
 				intent.setClass( getBaseContext(), SingleChoices.class);
-				startActivity(intent);
 			}
+			finish();
+			startActivity(intent);
 		}else{
-			ShowDialog("Can not get question!");
+			ShowDialog("Please Change Catalog!");
 		}
     }
     
@@ -301,8 +313,8 @@ public class SingleChoices extends BaseQuestion {
 			
 			Choice choice = choices.get(position);
 			holder.radioButton.setChecked(mChecked.get(position));
-			holder.index.setText(String.valueOf(choice.getChoiceIndex()));
-			holder.choiceDesc.setText(choice.getChoiceDesc());
+			holder.index.setText(choice.getChoiceLabel());
+			holder.choiceDesc.setText(choice.getChoiceContent());
 			
 			return view;
 		}

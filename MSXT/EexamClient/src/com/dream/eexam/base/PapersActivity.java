@@ -87,20 +87,24 @@ public class PapersActivity extends BaseActivity {
 				
 				//get first question in paper
 				InputStream inputStream =  PapersActivity.class.getClassLoader().getResourceAsStream("sample_paper.xml");
-				Question question = null;
+				String questionType = null;
 		        try {
-		              question = XMLParseUtil.readQuestion(inputStream,1,1);
+		        	questionType = XMLParseUtil.readQuestionType(inputStream,1,1);
+		        	inputStream.close();
 				} catch (Exception e) {
-					e.printStackTrace();
+					Log.i(LOG_TAG,e.getMessage());
 				}
 
 				//move question
 				Intent intent = new Intent();
 				intent.putExtra("ccIndex", String.valueOf(getccIndex()));
 				intent.putExtra("cqIndex", String.valueOf(getcqIndex()));
-				if("Choice:M".equals(question.getQuestionType())){
+				
+				if("Choice:M".equals(questionType)){
+					intent.putExtra("questionType", "Multi Select");
 					intent.setClass( getBaseContext(), MultiChoices.class);
-				}else if("Choice:S".equals(question.getQuestionType())){
+				}else if("Choice:S".equals(questionType)){
+					intent.putExtra("questionType", "Single Select");
 					intent.setClass( getBaseContext(), SingleChoices.class);
 				}
 				startActivity(intent);

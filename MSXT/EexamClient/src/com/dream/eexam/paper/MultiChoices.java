@@ -9,7 +9,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,16 +25,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import com.dream.eexam.base.PapersActivity;
 import com.dream.eexam.model.CatalogBean;
 import com.dream.eexam.model.Choice;
 import com.dream.eexam.model.Question;
-import com.dream.eexam.model.QuestionProgress;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.XMLParseUtil;
 
 public class MultiChoices extends BaseQuestion {
-
+	
+	public final static String LOG_TAG = "MultiChoices";
+	
 	//set exam header
 	private TextView remainingTime = null;
 	
@@ -55,9 +55,11 @@ public class MultiChoices extends BaseQuestion {
 	
 	private Question question;
 	
-	Context mContext;
+//	Context mContext;
 	MyListAdapter adapter;
 	List<String> listItemID = new ArrayList<String>();
+	
+	Integer indexInExam;
 	StringBuffer answerString = new StringBuffer();
 	
 //	SharedPreferences sharedPreferences;
@@ -72,23 +74,28 @@ public class MultiChoices extends BaseQuestion {
 //		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
 //		qp = getQuestionProgress(sharedPreferences);
 
-		CatalogBean catalog = paperBean.getCatalogBeans().get(0);
 		//set question text
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
-		catalogsTV.setText(catalog.getDesc()+"("+catalog.getQuestions().size()+")");
+		catalogsTV.setText(questionType);
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				showWindow(v);
-				if(pressedItemIndex!=-1){
+				/*if(pressedItemIndex!=-1){
 					catalogsTV.setText(groups.get(pressedItemIndex));
-				}
+				}*/
 			}
 		});
 
+		Integer questionSize = 0;
 		//set question text
+		if(cataLogList!=null&&cataLogList.size()>0){
+			CatalogBean bean = cataLogList.get(currentCatalogIndex-1);
+		    questionSize = bean.getQuestions().size();
+		}
+		
     	currentTV = (TextView)findViewById(R.id.header_tv_current);
-    	currentTV.setText("Q "+String.valueOf(currentQuestionIndex));
+    	currentTV.setText("Q "+String.valueOf(currentQuestionIndex)+" of "+String.valueOf(questionSize));
     	currentTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -124,11 +131,12 @@ public class MultiChoices extends BaseQuestion {
 
         setHeader();
 		
-//        InputStream inputStream =  PapersActivity.class.getClassLoader().getResourceAsStream("sample_paper.xml");
+        InputStream inputStream =  MultiChoices.class.getClassLoader().getResourceAsStream("sample_paper.xml");
         try {
 			question = XMLParseUtil.readQuestion(inputStream,currentCatalogIndex, currentQuestionIndex);
+			
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.i(LOG_TAG, e.getMessage());
 		}
         
         //set question text
@@ -190,6 +198,7 @@ public class MultiChoices extends BaseQuestion {
 					.setPositiveButton("Yes",
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,int id) {
+									clearAnswer();
 									gotoNewQuestion();
 								}
 							})
@@ -201,35 +210,68 @@ public class MultiChoices extends BaseQuestion {
 							});
 			builder.show();
 		} else {
-			// save data
-	    	DatabaseUtil dbUtil = new DatabaseUtil(this);
-	    	dbUtil.open();
-	    	dbUtil.createSystemConfig(String.valueOf(question.getIndex()), answerString.toString());
-	    	dbUtil.close();
 			
+			saveAnswer();
 	    	gotoNewQuestion();
 		}
 		
     }
+
+    public void loadAnswer(){
+    	DatabaseUtil dbUtil = new DatabaseUtil(this);
+    	dbUtil.open();
+    	Cursor cursor = dbUtil.fetchAnswer(currentCatalogIndex,currentQuestionIndex);
+    	if(cursor != null){
+    		answerString.setLength(0);
+    		answerString.append(cursor.getString(2));
+    	}
+    	cursor.close();
+    	dbUtil.close();    
+    }
+    
+    public void clearAnswer(){
+    	DatabaseUtil dbUtil = new DatabaseUtil(this);
+    	dbUtil.open();
+    	dbUtil.deleteAnswer(currentCatalogIndex,currentQuestionIndex);
+    	dbUtil.close();
+    }
+    
+    public void saveAnswer(){
+    	DatabaseUtil dbUtil = new DatabaseUtil(this);
+    	dbUtil.open();
+    	Cursor cursor = dbUtil.fetchAnswer(currentCatalogIndex,currentQuestionIndex);
+    	if(cursor != null){
+    		dbUtil.updateAnswer(currentCatalogIndex,currentQuestionIndex, answerString.toString());
+    	}else{
+    		dbUtil.createAnswer(currentCatalogIndex,currentQuestionIndex, answerString.toString());
+    	}
+    	cursor.close();
+    	dbUtil.close();
+    }
     
     //go to next or previous question
     public void gotoNewQuestion(){
-
+    	Log.i(LOG_TAG, "gotoNewQuestion()...");
+    	
+    	InputStream inputStream =  MultiChoices.class.getClassLoader().getResourceAsStream("sample_paper.xml");
 		String questionType = null;
 		try {
-			 questionType = XMLParseUtil.readQuestionType(inputStream,getccIndex(),getcqIndex()+direction);
+			 questionType = XMLParseUtil.readQuestionType(inputStream,currentCatalogIndex,currentQuestionIndex+direction);
+			 inputStream.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.i(LOG_TAG, e.getMessage());
 		}
 		
 		if(questionType!=null){
 			//move question
 			Intent intent = new Intent();
-			intent.putExtra("ccIndex", String.valueOf(getccIndex()));
-			intent.putExtra("cqIndex", String.valueOf(getcqIndex()+direction));
+			intent.putExtra("ccIndex", String.valueOf(currentCatalogIndex));
+			intent.putExtra("cqIndex", String.valueOf(currentQuestionIndex+direction));
 			if("Choice:M".equals(questionType)){
+				intent.putExtra("questionType", "Multi Select");
 				intent.setClass( getBaseContext(), MultiChoices.class);
 			}else if("Choice:S".equals(questionType)){
+				intent.putExtra("questionType", "Single Select");
 				intent.setClass( getBaseContext(), SingleChoices.class);
 			}
 			finish();
@@ -250,7 +292,12 @@ public class MultiChoices extends BaseQuestion {
 //    		choices = new ArrayList<Choice>();
     		this.choices = choices;
     		for(int i=0;i<choices.size();i++){
-    			mChecked.add(false);
+    			Choice choice = choices.get(i);
+				if (answerString.indexOf(choice.getChoiceLabel()) != -1) {
+					mChecked.add(true);
+				}else{
+					mChecked.add(false);
+				}
     		}
     	}
 

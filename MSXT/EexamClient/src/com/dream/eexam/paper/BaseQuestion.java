@@ -25,13 +25,21 @@ import com.dream.eexam.model.PaperBean;
 import com.dream.eexam.util.XMLParseUtil;
 
 public class BaseQuestion extends BaseActivity{
+	
+	public final static String LOG_TAG = "BaseQuestion";
+	
 	protected InputStream inputStream;
 	protected PaperBean paperBean;
+	protected List<CatalogBean> cataLogList = new ArrayList<CatalogBean>();
+	
+	protected String questionType;
 	protected Integer currentCatalogIndex;
 	protected Integer currentQuestionIndex;
 	protected Integer direction = 0;
 	
 	protected TextView catalogsTV = null;
+	
+	protected Context mContext;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +48,13 @@ public class BaseQuestion extends BaseActivity{
 		
 		//get demoSessionStr and save to string array
 		Bundle bundle = this.getIntent().getExtras();
+		String questionType  = bundle.getString("questionType");
 		String ccIndex  = bundle.getString("ccIndex");
 		String cqIndex  = bundle.getString("cqIndex");
+		
+		if(ccIndex!=null){
+			this.questionType = questionType;
+		}
 		if(ccIndex!=null){
 			currentCatalogIndex = Integer.valueOf(ccIndex);
 		}
@@ -54,6 +67,12 @@ public class BaseQuestion extends BaseActivity{
         try {
         	paperBean = XMLParseUtil.readPaperBean(inputStream);
         	cataLogList = paperBean.getCatalogBeans();
+			for(CatalogBean bean: cataLogList){
+				String catalogDesc = bean.getDesc()+"("+bean.getQuestions().size()+")";
+				Log.i(LOG_TAG, "catalog: "+catalogDesc);
+				groups.add(catalogDesc);
+			}
+        	inputStream.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -96,10 +115,10 @@ public class BaseQuestion extends BaseActivity{
 		super.onStop();
 	}
 
-	protected List<CatalogBean> cataLogList = new ArrayList<CatalogBean>();
+	
 	protected PopupWindow popupWindow;
 	protected ListView lv_group;
-	protected List<String> groups;
+	protected List<String> groups = new ArrayList<String>();;
 	protected Integer pressedItemIndex = -1;
 	protected View popupView;
 	
@@ -109,16 +128,12 @@ public class BaseQuestion extends BaseActivity{
 			LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			popupView = layoutInflater.inflate(R.layout.group_list, null);
 			lv_group = (ListView) popupView.findViewById(R.id.lvGroup);
-			groups = new ArrayList<String>();
-			
-			for(CatalogBean bean: cataLogList){
-				groups.add(bean.getDesc()+"("+bean.getQuestions().size()+")");
-			}
+//			groups = new ArrayList<String>();
 			
 			Log.i(LOG_TAG, "pressedItemIndex:"+pressedItemIndex);
 			GroupAdapter groupAdapter = new GroupAdapter(this, groups);
 			lv_group.setAdapter(groupAdapter);
-			popupWindow = new PopupWindow(popupView,150, 500);
+			popupWindow = new PopupWindow(popupView,200, 500);
 		}else{
 			popupWindow.dismiss();
 		}
@@ -147,22 +162,32 @@ public class BaseQuestion extends BaseActivity{
 				if (popupWindow != null) {
 					popupWindow.dismiss();
 				}
-				catalogsTV.setText(groups.get(position));
+				
+//				catalogsTV.setText(cataLogList.get(position).getDesc());
+				
+				inputStream =  BaseQuestion.class.getClassLoader().getResourceAsStream("sample_paper.xml");
 				String questionType = null;
 				try {
+					 Log.i(LOG_TAG, "Go to catalog "+String.valueOf((position+1))+" question 1");
 					 questionType = XMLParseUtil.readQuestionType(inputStream,(position+1), 1);
+					 
+					 Log.i(LOG_TAG, "questionType " + questionType);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Log.i(LOG_TAG, e.getMessage());
 				}
 				
 				Intent intent = new Intent();
-				intent.putExtra("ccIndex", String.valueOf(getccIndex()));
-				intent.putExtra("cqIndex", String.valueOf(getcqIndex()));
+				intent.putExtra("ccIndex", String.valueOf(position+1));
+				intent.putExtra("cqIndex", String.valueOf(1));
 				if("Choice:M".equals(questionType)){
-					intent.setClass( getBaseContext(), MultiChoices.class);
+					intent.putExtra("questionType", "Multi Select");
+					intent.setClass( mContext, MultiChoices.class);
 				}else if("Choice:S".equals(questionType)){
-					intent.setClass( getBaseContext(), SingleChoices.class);
+					intent.putExtra("questionType", "Single Select");
+					intent.setClass( mContext, SingleChoices.class);
+				}else{
+					ShowDialog("Wrong Question Type: " + questionType);
 				}
 				finish();
 				startActivity(intent);
