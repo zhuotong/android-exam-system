@@ -4,7 +4,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import com.dream.eexam.base.R;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,7 +24,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import com.dream.eexam.model.CatalogBean;
+import com.dream.eexam.base.R;
 import com.dream.eexam.model.Choice;
 import com.dream.eexam.model.Question;
 import com.dream.eexam.util.DatabaseUtil;
@@ -34,91 +33,48 @@ import com.dream.eexam.util.XMLParseUtil;
 public class MultiChoices extends BaseQuestion {
 	
 	public final static String LOG_TAG = "MultiChoices";
-	
-	//set exam header
-	private TextView remainingTime = null;
-	
-	//set question sub header
-//	private TextView catalogsTV = null;
-	private TextView currentTV = null;
-	private TextView waitTV = null;
-	
-	//set question text view
-	private TextView questionTV = null;
-	
-	//LinearLayout listLayout
+
+	//components statement
+	TextView questionTV = null;
 	ListView listView;
+	Button preBtn;
+	Button nextBtn;
 	
-	//LinearLayout listFooter
-	private Button preBtn;
-	private Button nextBtn;
-	
-	private Question question;
-	
-//	Context mContext;
+	//data statement
+	Question question;	
 	MyListAdapter adapter;
 	List<String> listItemID = new ArrayList<String>();
-	
 	Integer indexInExam;
-	StringBuffer answerString = new StringBuffer();
 	
-//	SharedPreferences sharedPreferences;
-//	QuestionProgress qp ;
-
-	public void setHeader(){
-		
-		//set question text
+	public void loadHeader(){
 		remainingTime = (TextView)findViewById(R.id.remainingTime);
-		remainingTime.setText("Time Remaining: "+String.valueOf(paperBean.getTime())+" mins");
-		
-//		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
-//		qp = getQuestionProgress(sharedPreferences);
-
-		//set question text
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
+		currentTV = (TextView)findViewById(R.id.header_tv_current);
+		waitTV = (TextView)findViewById(R.id.header_tv_waiting);
+	}
+	
+	public void setHeader(){
+		//set question text
+		
+		remainingTime.setText("Time Remaining: "+String.valueOf(paperBean.getTime())+" mins");
+
 		catalogsTV.setText(questionType);
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				showWindow(v);
-				/*if(pressedItemIndex!=-1){
-					catalogsTV.setText(groups.get(pressedItemIndex));
-				}*/
 			}
 		});
-
-		Integer questionSize = 0;
-		//set question text
-		if(cataLogList!=null&&cataLogList.size()>0){
-			CatalogBean bean = cataLogList.get(currentCatalogIndex-1);
-		    questionSize = bean.getQuestions().size();
-		}
-		
-    	currentTV = (TextView)findViewById(R.id.header_tv_current);
+    	
     	currentTV.setText("Q "+String.valueOf(currentQuestionIndex)+" of "+String.valueOf(questionSize));
-    	currentTV.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//go to question 1
-				Intent intent = new Intent();
-				intent.setClass( mContext, MultiChoices.class);
-				startActivity(intent);
-			}
-		});
         
         //set question text
-    	waitTV = (TextView)findViewById(R.id.header_tv_waiting);
-//    	waitTV.setText("Wait "+ String.valueOf(qp.getWaitingQueIdsList().size()));
+    	waitTV.setText("Wait "+ String.valueOf(questionSize - comQuestionSize));
     	waitTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//go to question 1
-//				Intent intent = new Intent();
-//				intent.setClass( mContext, QuestionsWaiting.class);
-//				startActivity(intent);
 			}
 		});  
-        
 	
 	}
 	
@@ -129,12 +85,14 @@ public class MultiChoices extends BaseQuestion {
         setContentView(R.layout.paper_multi_choices);
         mContext = getApplicationContext();
 
+        loadHeader();
+        loadAnswer();
         setHeader();
 		
+        //get question
         InputStream inputStream =  MultiChoices.class.getClassLoader().getResourceAsStream("sample_paper.xml");
         try {
 			question = XMLParseUtil.readQuestion(inputStream,currentCatalogIndex, currentQuestionIndex);
-			
 		} catch (Exception e) {
 			Log.i(LOG_TAG, e.getMessage());
 		}
@@ -179,15 +137,20 @@ public class MultiChoices extends BaseQuestion {
     
     //save answer if not empty 
     public void relocationQuestion(){
+    	
+    	//clear answer first
     	listItemID.clear();
-		
-		//get selection
+    	answerString.setLength(0);
+
+    	//get selection choice and assembly to string
 		for (int i = 0; i < adapter.mChecked.size(); i++) {
 			if (adapter.mChecked.get(i)) {
 				Choice choice = adapter.choices.get(i);
 				listItemID.add(String.valueOf(choice.getChoiceIndex()));
+				if(i>0){
+					answerString.append(",");
+				}
 				answerString.append(String.valueOf(choice.getChoiceIndex()));
-				answerString.append(",");
 			}
 		}
 		
@@ -215,38 +178,6 @@ public class MultiChoices extends BaseQuestion {
 	    	gotoNewQuestion();
 		}
 		
-    }
-
-    public void loadAnswer(){
-    	DatabaseUtil dbUtil = new DatabaseUtil(this);
-    	dbUtil.open();
-    	Cursor cursor = dbUtil.fetchAnswer(currentCatalogIndex,currentQuestionIndex);
-    	if(cursor != null){
-    		answerString.setLength(0);
-    		answerString.append(cursor.getString(2));
-    	}
-    	cursor.close();
-    	dbUtil.close();    
-    }
-    
-    public void clearAnswer(){
-    	DatabaseUtil dbUtil = new DatabaseUtil(this);
-    	dbUtil.open();
-    	dbUtil.deleteAnswer(currentCatalogIndex,currentQuestionIndex);
-    	dbUtil.close();
-    }
-    
-    public void saveAnswer(){
-    	DatabaseUtil dbUtil = new DatabaseUtil(this);
-    	dbUtil.open();
-    	Cursor cursor = dbUtil.fetchAnswer(currentCatalogIndex,currentQuestionIndex);
-    	if(cursor != null){
-    		dbUtil.updateAnswer(currentCatalogIndex,currentQuestionIndex, answerString.toString());
-    	}else{
-    		dbUtil.createAnswer(currentCatalogIndex,currentQuestionIndex, answerString.toString());
-    	}
-    	cursor.close();
-    	dbUtil.close();
     }
     
     //go to next or previous question
@@ -281,6 +212,36 @@ public class MultiChoices extends BaseQuestion {
 		}
     }
     
+    public void clearAnswer(){
+    	Log.i(LOG_TAG, "clearAnswer()...");
+    	
+    	DatabaseUtil dbUtil = new DatabaseUtil(this);
+    	dbUtil.open();
+    	dbUtil.deleteAnswer(currentCatalogIndex,currentQuestionIndex);
+    	dbUtil.close();
+    	
+    	Log.i(LOG_TAG, "end clearAnswer().");
+    }
+    
+    public void saveAnswer(){
+    	Log.i(LOG_TAG, "saveAnswer()...");
+    	
+    	DatabaseUtil dbUtil = new DatabaseUtil(this);
+    	dbUtil.open();
+    	Cursor cursor = dbUtil.fetchAnswer(currentCatalogIndex,currentQuestionIndex);
+    	if(cursor != null && cursor.moveToNext()){
+    		Log.i(LOG_TAG, "updateAnswer("+currentCatalogIndex+","+currentQuestionIndex+","+answerString.toString()+")");
+    		dbUtil.updateAnswer(currentCatalogIndex,currentQuestionIndex,"("+ answerString.toString()+")");
+    	}else{
+    		Log.i(LOG_TAG, "createAnswer("+currentCatalogIndex+","+currentQuestionIndex+","+answerString.toString()+")");
+    		dbUtil.createAnswer(currentCatalogIndex,currentQuestionIndex, "("+ answerString.toString()+")");
+    	}
+    	
+    	dbUtil.close();
+    	
+    	Log.i(LOG_TAG, "saveAnswer().");
+    }
+    
     
     class MyListAdapter extends BaseAdapter{
     	List<Boolean> mChecked = new ArrayList<Boolean>();
@@ -293,7 +254,7 @@ public class MultiChoices extends BaseQuestion {
     		this.choices = choices;
     		for(int i=0;i<choices.size();i++){
     			Choice choice = choices.get(i);
-				if (answerString.indexOf(choice.getChoiceLabel()) != -1) {
+				if (answerString.indexOf(String.valueOf(choice.getChoiceIndex())) != -1) {
 					mChecked.add(true);
 				}else{
 					mChecked.add(false);

@@ -29,9 +29,9 @@ public class DatabaseUtil{
 	/**
 	 * Database creation sql statement
 	 */
-	private static final String CREATE_ANSWER_TABLE = "create table "
+	private static final String CREATE_ANSWER_TABLE = "create table if not exists "
 			+ DATABASE_TABLE + "(" + CATALOG_ID + " integer not null,"
-			+ ANSWERS + " integer not null," + ANSWERS + " text," + "primary key("
+			+ QUESTION_ID + " integer not null," + ANSWERS + " text," + "primary key("
 			+ CATALOG_ID + "," + QUESTION_ID + ")" + ");";
 
 	/**
@@ -112,7 +112,7 @@ public class DatabaseUtil{
 	 * @return boolean
 	 */
 	public boolean deleteAnswer(long cid, long qid) {
-		return mDb.delete(DATABASE_TABLE, CATALOG_ID + "=" + cid + "AND" + QUESTION_ID + "=" + qid, null) > 0;
+		return mDb.delete(DATABASE_TABLE, CATALOG_ID + "=" + cid + " AND " + QUESTION_ID + "=" + qid, null) > 0;
 	}
 
 	/**
@@ -123,6 +123,14 @@ public class DatabaseUtil{
 		return mDb.query(DATABASE_TABLE, new String[] {CATALOG_ID,QUESTION_ID,ANSWERS}, null, null, null, null, null);
 	}
 
+	public Cursor fetchAnswer(long cid) throws SQLException {
+		Log.i(TAG, "fetchAnswer()... ");
+		String con = CATALOG_ID + "=" + cid ;
+		Log.i(TAG, "con: " + con);
+		Cursor mCursor = mDb.query(true, DATABASE_TABLE, new String[] {CATALOG_ID,QUESTION_ID,ANSWERS}, con, null,null, null, null, null);
+		return mCursor;
+	}
+	
 	/**
 	 * This method will return Cursor holding the specific record.
 	 * @param id
@@ -130,12 +138,13 @@ public class DatabaseUtil{
 	 * @throws SQLException
 	 */
 	public Cursor fetchAnswer(long cid, long qid) throws SQLException {
-		Cursor mCursor =
-			mDb.query(true, DATABASE_TABLE, new String[] {CATALOG_ID,QUESTION_ID,ANSWERS}, 
-					CATALOG_ID + "=" + cid + "AND" + QUESTION_ID + "=" + qid, null,null, null, null, null);
-		if (mCursor != null) {
+		Log.i(TAG, "fetchAnswer()... ");
+		String con = CATALOG_ID + "=" + cid + " AND " + QUESTION_ID + "=" + qid;
+		Log.i(TAG, "con: " + con);
+		Cursor mCursor = mDb.query(true, DATABASE_TABLE, new String[] {CATALOG_ID,QUESTION_ID,ANSWERS}, con, null,null, null, null, null);
+		/*if (mCursor != null) {
 			mCursor.moveToFirst();
-		}
+		}*/
 		return mCursor;
 	}
 
@@ -152,6 +161,6 @@ public class DatabaseUtil{
 		args.put(QUESTION_ID, qid);
 		args.put(ANSWERS, answers);
 		
-		return mDb.update(DATABASE_TABLE,args,CATALOG_ID + "=" + cid + "AND" + QUESTION_ID + "=" + qid, null) > 0;
+		return mDb.update(DATABASE_TABLE,args,CATALOG_ID + "=" + cid + " AND " + QUESTION_ID + "=" + qid, null) > 0;
 	}
 }
