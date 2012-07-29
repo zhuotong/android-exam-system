@@ -2,6 +2,4 @@ Login:
 http://192.168.0.102:8080/msxt/runinterview/loginAction/login?loginName=test&loginPassword=test
 
 Download exam:
-http://192.168.0.100:8080/msxt/runinterview/examAction/getExam?examId=ff80818138d0a6ba0138d0a758bb0000&conversation=
-
-
+http://192.168.0.102:8080/msxt/runinterview/examAction/getExam?conversation=7a8b8820-e5ea-4a77-a41e-b16d125c1099&examId=ff80818138d0a6ba0138d0a758bb0000
