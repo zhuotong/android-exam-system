@@ -186,6 +186,7 @@ CREATE  TABLE IF NOT EXISTS `MSDB`.`interview` (
   `interviewer_id` VARCHAR(45) NULL COMMENT '面试人ID\n' ,
   `login_name` VARCHAR(50) NULL ,
   `login_password` VARCHAR(50) NULL ,
+  `conversation_id` VARCHAR(50) NULL,
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB, 
 CHARACTER SET utf8,
@@ -248,10 +249,22 @@ CREATE  TABLE IF NOT EXISTS `MSDB`.`interview_examination` (
   `exam_id` VARCHAR(45) NULL ,
   `exam_confuse` INT NULL ,
   `exam_score` INT NULL COMMENT '笔试分数\n',
+  `start_time` TIMESTAMP NULL COMMENT '开始时间',
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB,
 CHARACTER SET utf8;
 
+-- -----------------------------------------------------
+-- Table `MSDB`.`system_parameter`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `MSDB`.`system_parameter` (
+  `ID` VARCHAR(32) NOT NULL ,
+  `version` INT NULL ,
+  `param_name` VARCHAR(50) NULL ,
+  `param_value` VARCHAR(100) NULL ,
+  PRIMARY KEY (`ID`))
+ENGINE = InnoDB,
+CHARACTER SET utf8;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
