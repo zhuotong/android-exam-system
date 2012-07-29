@@ -246,6 +246,7 @@ CREATE  TABLE IF NOT EXISTS `MSDB`.`interview_examination` (
   `version` INT NULL ,
   `interview_id` VARCHAR(32) NULL ,
   `exam_id` VARCHAR(45) NULL ,
+  `exam_confuse` INT NULL ,
   `exam_score` INT NULL COMMENT '笔试分数\n',
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB,
