@@ -46,6 +46,5 @@ public class RunningServlet extends HttpServlet{
 		if( "examAction".equals(action) && "getExam".equals( method ) )
 			result = examAction.getExam( request );
 		response.getOutputStream().print( result );
-		
 	}
 }
