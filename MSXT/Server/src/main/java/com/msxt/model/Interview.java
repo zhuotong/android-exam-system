@@ -65,6 +65,9 @@ public class Interview {
 	@OneToMany(mappedBy = "interview", cascade = CascadeType.REMOVE)
 	private List<Evaluate> evaluates;
 	
+	@Column(name="conversation_id")
+	private String conversationId;
+	
 	public String getId() {
 		return id;
 	}
@@ -159,6 +162,14 @@ public class Interview {
 		return version;
 	}
 	
+	public String getConversationId() {
+		return conversationId;
+	}
+
+	public void setConversationId(String conversationId) {
+		this.conversationId = conversationId;
+	}
+
 	public static enum STATUS{
 		WAITING, DOING, FINISH, ABSENT
 	}

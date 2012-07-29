@@ -1,5 +1,6 @@
 package com.msxt.model;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -43,6 +46,10 @@ public class InterviewExamination {
 	
 	@Column(name="exam_score")
 	private Integer examScore;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="start_time")
+	private Date startTime;
 	
 	public String getId() {
 		return id;
@@ -90,5 +97,11 @@ public class InterviewExamination {
 	}
 	public void setExamConfuse(Integer examConfuse) {
 		this.examConfuse = examConfuse;
+	}
+	public Date getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
 	}
 }
