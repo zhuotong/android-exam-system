@@ -26,7 +26,6 @@ public class LoginAction {
 		String name = request.getParameter( "loginName" );
 		String password = request.getParameter( "loginPassword" );
 		
-		
 		CriteriaBuilder cb = em.getCriteriaBuilder();
     	
     	CriteriaQuery<Interview> cq = cb.createQuery(Interview.class);
