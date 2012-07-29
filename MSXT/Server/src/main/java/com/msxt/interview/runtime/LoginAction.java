@@ -1,6 +1,7 @@
 package com.msxt.interview.runtime;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
@@ -12,6 +13,8 @@ import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 
 import com.msxt.common.DateUtil;
+import com.msxt.model.ExaminationCatalog;
+import com.msxt.model.ExaminationQuestion;
 import com.msxt.model.Interview;
 import com.msxt.model.InterviewExamination;
 import com.msxt.model.Interview_;
@@ -38,25 +41,46 @@ public class LoginAction {
 		boolean isOverdue = false; 
 		if( ivs !=null && ivs.size()>0 ) {
 			Interview iv = ivs.get(0); 
+			
 			if( iv.getStatus().equals( Interview.STATUS.WAITING.name() ) || iv.getStatus().equals( Interview.STATUS.DOING.name() ) ) 
 				if( iv.getStart().compareTo( DateUtil.getTodayStart() ) == -1 ) {
 					isOverdue = true;
 				} else if ( iv.getStart().compareTo( DateUtil.getTodayEnd() ) >-1 ) {
 					isNotStart = true;
 				} else {
+					String conversation = UUID.randomUUID().toString();
 					StringBuffer sb = new StringBuffer();
 					sb.append( "<login>" );
-					sb.append( "<status>sucess</status>" );		
+					sb.append( "<status>success</status>" );
+					sb.append( "<conversation>" ).append( conversation ).append( "</conversation>" );
+					sb.append( "<interviewer>" ).append( iv.getInterviewer().getName() ).append( "</interviewer>" ); 
+					sb.append( "<jobtitle>" ).append( iv.getApplyPosition().getName() ).append( "</jobtitle>" );
 					sb.append( "<examinations>" );
 					
 					for( InterviewExamination exam : iv.getExaminations() ) {
 						sb.append( "<examination>" );
 						sb.append( "<id>").append( exam.getId() ).append( "</id>" );
 						sb.append( "<name>").append( exam.getExam().getName() ).append( "</name>" );
+						
+						int totalScore = 0;
+						int totalQuestion = 0;
+						for( ExaminationCatalog ec : exam.getExam().getCatalogs() ) {
+							for( ExaminationQuestion eq : ec.getQuestions() ) {
+								totalScore += eq.getScore();
+								totalQuestion++;
+							}
+						}
+						sb.append( "<desc><![CDATA[Catalog count:").append( exam.getExam().getCatalogs().size() )
+						  .append( " Total question count : " ).append( totalQuestion )
+						  .append( " Total score : ").append( totalScore )
+						  .append( "]]></desc>" );
 						sb.append( "</examination>" );
 					}		
 					sb.append( "</examinations>" );
 					sb.append( "</login>" );
+					
+					iv.setStatus( Interview.STATUS.DOING.name() );
+					iv.setConversationId( conversation );
 					return sb.toString();
 				}
 			else
