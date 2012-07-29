@@ -1,15 +1,19 @@
+<error>
+	<code>201</code>
+	<desc>Invalid Conversation</desc>
+</error>
+
 <?xml version="1.0" encoding="utf-8"?>
 <examination>
 <examinationid>1213213</examinationid>
-<desc><![CDATA[Java Engineer]]></desc>
-<!-- minutes(-1 mean no time limit)-->
-<time>60</time>
+<name>Java Engineer</name>
+<time>60</time><!-- minutes(-1 mean no time limit)-->
 <confuse>true</confuse>
 <catalogs>
 	<catalog>
 		<index>0</index>
 		<catalogdesc>
-		<![CDATA[ Test for JavaSE base knowlege ]]>
+			<![CDATA[ Test for JavaSE base knowlege ]]>
 		</catalogdesc>
 		<questions>
 			<question>
