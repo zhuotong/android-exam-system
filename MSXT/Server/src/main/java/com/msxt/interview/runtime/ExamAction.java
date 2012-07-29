@@ -36,10 +36,10 @@ public class ExamAction {
 			for( ExaminationQuestion eq : ec.getQuestions() ) {
 				sb.append( "<question>" );
 				sb.append( "<index>" ).append( eq.getIndex() ).append( "</index>" );
-				sb.append( "<type>" ).append( eq.getQuestion().getQuestionType().getName() ).append( ":S</type>" );
+				sb.append( "<type>" ).append( eq.getQuestion().getQuestionType().getName() ).append( "</type>" );
 				sb.append( "<score>" ).append( eq.getScore() ).append( "</score>" );
 				sb.append( "<content><![CDATA[" ).append( eq.getQuestion().getContent() ).append( "]]></content>");	
-				if( eq.getQuestion().getQuestionType().getName().equalsIgnoreCase("choice") )
+				if( eq.getQuestion().getQuestionType().getId().equals("1") || eq.getQuestion().getQuestionType().getId().equals("2") )
 					for( QuestionChoiceItem qci : eq.getQuestion().getChoiceItems() ) {
 						sb.append( "<choice>" );    
 						sb.append( "<index>" ).append( qci.getIndex() ).append( "</index>" );
