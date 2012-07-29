@@ -38,7 +38,7 @@ public class LoginAction {
 		boolean isOverdue = false; 
 		if( ivs !=null && ivs.size()>0 ) {
 			Interview iv = ivs.get(0); 
-			if( iv.getStatus().equals( Interview.STATUS.WAITING ) || iv.getStatus().equals( Interview.STATUS.DOING ) ) 
+			if( iv.getStatus().equals( Interview.STATUS.WAITING.name() ) || iv.getStatus().equals( Interview.STATUS.DOING.name() ) ) 
 				if( iv.getStart().compareTo( DateUtil.getTodayStart() ) == -1 ) {
 					isOverdue = true;
 				} else if ( iv.getStart().compareTo( DateUtil.getTodayEnd() ) >-1 ) {
