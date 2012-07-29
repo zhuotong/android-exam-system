@@ -37,8 +37,8 @@ public class InterviewerCreator {
 	public String create() {
         if (verifyIdCodeIsAvailable()) {	
             em.persist( newInterview );
-            messages.info( new DefaultBundleKey("registration_registered") ).params( newInterview.getName() );
-            return "search";
+            messages.info( new DefaultBundleKey("msxt_interviewer_create_sucess") ).params( newInterview.getName() );
+            return "search?faces-redirect=true";
         } else {
         	return null;
         }
@@ -55,8 +55,8 @@ public class InterviewerCreator {
     	List<Interviewer> existing = q.getResultList();
     	
         if ( existing != null && existing.size()>0 ) {
-            messages.error( new BundleKey("messages", "account_usernameTaken") )
-                    .params( newInterview.getName() );
+            messages.error( new BundleKey("messages", "msxt_interviewer_id_exist") )
+                    .params( newInterview.getIdCode() );
             return false;
         }
 

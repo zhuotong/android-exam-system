@@ -7,7 +7,6 @@
                 xmlns:s="http://jboss.org/seam/faces"
                 xmlns:m="http://java.sun.com/jsf/composite/components/model"
                 template="/WEB-INF/layout/template.xhtml">
-
     <ui:define name="metadata">
         <f:metadata>
             <f:viewParam name="id" value="#{id}"/>
@@ -16,11 +15,9 @@
     </ui:define>
 
     <ui:define name="content">
-
         <div class="section">
             <h1>Question Details</h1>
         </div>
-
         <div class="section">
             <div>
             	<table>
@@ -48,7 +45,7 @@
             			<td>Choice Items</td>
             			<td>
 	            			<ui:repeat var="ci" value="${questionAgent.choiceItems}">
-	                   		${ci.labelName}.<br/><h:outputText value="${ci.content}" escape="false"/><br/><br/>
+	                   		${ci.labelName}.<h:outputText value="${ci.content}" escape="false"/><br/><br/>
 	                    	</ui:repeat>
                     	</td>
             		</tr>	
@@ -66,7 +63,5 @@
                 </h:form>
             </div>
         </div>
-
     </ui:define>
-
 </ui:composition>

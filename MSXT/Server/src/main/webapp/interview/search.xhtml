@@ -44,12 +44,12 @@
                  &nbsp;
                  Interview Time Begin:
                  <h:inputText id="startBegin" value="#{interviewSearcher.searchCriteria.startBegin}" style="width: 100px;">
-                     <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
+                     <f:convertDateTime type="date" pattern="yyyy-MM-dd" timeZone="GMT+8"/>
                  </h:inputText>
                  &nbsp;
                  Interview Time End:
                  <h:inputText id="startEnd" value="#{interviewSearcher.searchCriteria.startEnd}" style="width: 100px;">
-                     <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
+                     <f:convertDateTime type="date" pattern="yyyy-MM-dd" timeZone="GMT+8"/>
                  </h:inputText>
                  &nbsp;
                  Interviewer ID

@@ -55,7 +55,7 @@ public class InterviewerAgent {
 		}
 	}
 	
-	public void delete(String id){
+	public String delete(String id){
 		Interviewer iver = em.find( Interviewer.class, id );
 		
 		CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -66,9 +66,11 @@ public class InterviewerAgent {
 		List<Interview> result = em.createQuery( cq ).getResultList();
 		if( result.size()==0 ) {
 			em.remove( iver );
+			return "search?faces-redirect=true";
 		} else { 
 			messages.error( new BundleKey("messages", "msxt_interviewer_exist_interview") )
                     .params( iver.getName() );
+			return "search";
 		}
 	}
 	

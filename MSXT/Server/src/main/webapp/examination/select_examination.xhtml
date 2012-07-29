@@ -7,6 +7,7 @@
     <f:metadata>
     	<f:viewParam name="positionId" value="#{positionId}"/>
         <s:viewAction action="#{examSearcher.selectPositionId(positionId)}"/>
+        <s:viewAction action="#{examSearcher.doSearch}"/>
     </f:metadata>
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -40,7 +41,7 @@
       			}
       			
       			function openViewWin(){
-      				window.open("#", "VE", "height=400,width=600,toolbar=no,menubar=no,scrollbars=yes"); 
+      				window.open("#", "VE", "top=150,left=250, height=600,width=800,toolbar=no,menubar=no,scrollbars=yes"); 
       			} 
           	//]]>
         </script>

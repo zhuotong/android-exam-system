@@ -16,16 +16,16 @@
       				ccdiv.appendChild( document.createElement('br') );
       				var ctable = document.createElement('table');
       				ctable.innerHTML = 	'<tr>' + 
-						        		'	<td width="20%">Catalog Name</td>' +
-						        		'	<td width="80%"><input type="text" name="catalogName"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Delete" onclick="deleteCatalog(this);" align="right"/></td>' +
+						        		'	<td width="15%">Catalog Name</td>' +
+						        		'	<td width="85%"><input type="text" name="catalogName"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Delete" onclick="deleteCatalog(this);" align="right"/></td>' +
 						        		'</tr>' +
 						        		'<tr>' +
-						        		'	<td width="20%">Catalog Description</td>' +
-						        		'	<td width="80%"><textarea name="catalogDesc" cols="50" rows="4"></textarea></td>' +
+						        		'	<td width="15%">Catalog Description</td>' +
+						        		'	<td width="85%"><textarea name="catalogDesc" cols="50" rows="4"></textarea></td>' +
 						        		'</tr>' +
 						        		'<tr>' +
-						        		'	<td width="20%">Question</td>' +
-						        		'	<td width="80%" align="right"><input type="button" value="Select Question" onclick="openSelectQuestionWin(this);"/><div id="catalogQuestions_'+(catalogIndex++)+'"><table></table></div></td>' +
+						        		'	<td width="15%">Question</td>' +
+						        		'	<td width="85%" align="right"><input type="button" value="Select Question" onclick="openSelectQuestionWin(this);"/><div id="catalogQuestions_'+(catalogIndex++)+'"><table></table></div></td>' +
 						        		'</tr>';
 					ccdiv.appendChild( ctable );
 					document.getElementById('catalogs').appendChild( ccdiv );
@@ -37,7 +37,7 @@
       			}
       			
       			function openSelectQuestionWin( ct ) {
-      				window.open("../question/SelectQuestion.xhtml?positionId=#{examCreator.positionId}&cqId="+ct.nextElementSibling.id,"selectQuestion_"+ct.nextSibling.id,"height=400,width=600,toolbar=no,menubar=no,scrollbars=yes");  
+      				window.open("../question/SelectQuestion.xhtml?positionId=#{examCreator.positionId}&cqId="+ct.nextElementSibling.id,"selectQuestion_"+ct.nextSibling.id,"top=100,left=200,height=400,width=600,toolbar=no,menubar=no,scrollbars=yes");  
       			} 
       			
       			function addQuestion2Catalog(questionId, name, type, cqId){
@@ -47,9 +47,13 @@
       				}
       				var chTable = document.getElementById( cqId ).children[0];
       				var nr = chTable.insertRow( chTable.rows.length );
-                	nr.insertCell(0).innerHTML = name;
+                	
+      				var nc = nr.insertCell(0);
+                	nc.innerHTML = name;
+                	nc.width = "40%"
+                	
                 	nr.insertCell(1).innerHTML = type;
-                	nr.insertCell(2).innerHTML = '<input type="text" name="'+cqId+'_score"/>';
+                	nr.insertCell(2).innerHTML = '<input type="text" name="'+cqId+'_score" size="2"/>';
                 	nr.insertCell(3).innerHTML = '<input type="button" value="View" onclick="viewQuestion(this)"/>&nbsp;&nbsp;<input type="button" value="Delete" onclick="deleteQuestion(this)"/><input type="hidden" name="'+cqId+'_question_id" id="'+questionId+'" value="'+questionId+'"/>';
                 	return true;
       			}
@@ -61,7 +65,7 @@
       			
       			function viewQuestion( vqButton ) {
       				var id = vqButton.parentElement.children[2].value;
-      				window.open("../question/View.xhtml?id="+id, id, "height=400,width=600,toolbar=no,menubar=no,scrollbars=yes");  
+      				window.open("../question/View.xhtml?id="+id, id, "top=150,left=200,height=400,width=600,toolbar=no,menubar=no,scrollbars=yes");  
       			}
       			
       			function isNotNumber( value ) {

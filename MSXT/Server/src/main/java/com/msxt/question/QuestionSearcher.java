@@ -85,7 +85,8 @@ public class QuestionSearcher extends PageableSearcher {
 	        	cquery.select( qp ).where( p1, p2, p3);
 	        } else {
 	        	cquery.select( qp ).where( p1, p2);
-	        }   
+	        } 
+	        cquery.orderBy( builder.asc(qp.get( Question_.name) ) );
 		} else {
 			Root<Question> qp = cquery.from(Question.class);
 	        Predicate p1 = builder.or(
@@ -97,6 +98,7 @@ public class QuestionSearcher extends PageableSearcher {
 	        } else {
 	        	cquery.select( qp ).where( p1 );
 	        }   
+	        cquery.orderBy( builder.asc(qp.get( Question_.name) ) );
 		}
 		
 		List<Question> results = em.createQuery(cquery).setMaxResults( searchCriteria.getFetchSize() )

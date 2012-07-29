@@ -7,64 +7,200 @@
                 xmlns:s="http://jboss.org/seam/faces"
                 xmlns:p="http://java.sun.com/jsf/composite/components/property"
                 template="/WEB-INF/layout/template.xhtml">
-
     <ui:define name="metadata">
         <f:metadata>
             <f:viewParam name="id" value="#{id}"/>
-            <s:viewAction action="#{interviewerAgent.selectInterviewer(id)}"/>
+            <s:viewAction action="#{interviewAgent.selectInterview(id)}"/>
         </f:metadata>
     </ui:define>
-
+    <ui:define name="head">
+        <script type="text/javascript">
+      		//<![CDATA[
+      			function openSelectExaminationWin() {
+      				var apid = document.getElementById('applyPositionId').value;
+      				if( apid=='' ) 
+      					alert( 'Please select position first!!!' );
+      				else	
+      					window.open("../examination/select_examination.xhtml?positionId="+apid,"select_examination","top=100,left=200,height=400,width=600,toolbar=no,menubar=no,scrollbars=yes");  
+      			} 
+      			
+      			function addExaminations(examId, name, position){
+      				var eq = document.getElementById(examId);
+      				if( eq!=null ) {
+      					return false;
+      				}
+      				var chTable = document.getElementById( 'exams' ).children[0];
+      				var nr = chTable.insertRow( chTable.rows.length );
+                	nr.insertCell(0).innerHTML = name;
+                	nr.insertCell(1).innerHTML = position;
+                	nr.insertCell(2).innerHTML = '<select name="exam_confuse"><option value="0">NO</option><option value="1">YES</option></select>';
+                	nr.insertCell(3).innerHTML = '<input type="button" value="View" onclick="viewExam(this)"/>&nbsp;&nbsp;<input type="button" value="Delete" onclick="deleteExam(this)"/><input type="hidden" name="exam_id" id="'+examId+'" value="'+examId+'"/>';
+                	return true;
+      			}
+      			
+      			function deleteExam( dqButton ) {
+      				var tr = dqButton.parentElement.parentElement;
+      				tr.parentElement.removeChild(tr);
+      			}
+      			
+      			function viewExam( vqButton ) {
+      				var id = vqButton.parentElement.children[2].value;
+      				window.open("../examination/View.xhtml?id="+id, id, "top=150,left=200,height=600,width=800,toolbar=no,menubar=no,scrollbars=yes");  
+      			}
+      			
+      			function onSubmitForm(){
+      				var loginName = $('loginName').value;
+      				var loginPassword = $('loginPassword').value;
+      				var startTime = $('startTime').value;
+      				if( loginName.trim().length==0 ) {
+      					alert('Login Name is required!');
+      					return false;
+      				} 
+      				if( loginPassword.trim().length==0 ) {
+      					alert('Login Passord is required!');
+      					return false;
+      				}
+      				if( startTime.trim().length==0 ) {
+      					alert('Start Time is required!');
+      					return false;
+      				}
+      				
+      				var exams = document.getElementsByName('exam_id');
+      				var examsConfuse = document.getElementsByName('exam_confuse');
+      				if( exams.length==0 ) {
+      					alert('Please select examinations');
+      					return false;
+      				} else {
+      					var ap = $('applyPositionId');
+      					var apLabel = ap.options[ap.selectedIndex].label;
+      					var examIds = [];
+      					for( var i=0; i<exams.length; i++ ) {
+      						var exam = exams[i];
+      						var tr = exam.parentElement.parentElement;
+      						if( tr.children[1].innerHTML != apLabel ) {
+      							alert( tr.children[0].innerHTML + 'is not belong ' + apLabel + '! Please remove it!');
+      	      					return false;
+      						} else {
+      							examIds.push( exam.value );
+      							examIds.push( examsConfuse[i].value );
+      						}	
+      					}
+      					$('examinationIds').value = examIds.join('|#|');
+      					$('startTime').value = startTime + ' ' + $( 'hour' ).value + ':' + $( 'minute' ).value  + ':00';
+      					return true;
+      				}
+      			}
+      			
+      			window.onload = function() {
+      				var st = $("startTime");
+      				var time = st.value;
+      				var index = time.indexOf(' ');
+      				
+      				st.value = time.substring(0, index);
+      				
+      				time = time.substring(index+1);
+      				var ta = time.split(':');
+      				$('hour').value=ta[0];
+      				$('minute').value=ta[1];
+      				
+      				Calendar.create(st);
+                }
+          	//]]>
+        </script>
+    </ui:define>
     <ui:define name="content">
-
         <div class="section">
-            <h1>Edit Interviewer</h1>
+            <h1>Create Interview</h1>
         </div>
-
         <div class="section">
-        	<h:form id="regForm" prependId="false">
+
+            <div class="errors">
+                <h:messages id="messages" globalOnly="true"/>
+            </div>
+
+            <h:form id="regForm" prependId="false" onsubmit="return onSubmitForm();">
                 <fieldset>
-		            <div>
-		            	<table>
-		                		<tr>
-		                			<td align="left">
-		                				<h:inputHidden value="#{interviewerAgent.selectedInterviewer.id}"/>
-			                			<p:input label="Name" >
-				                        	<h:inputText value="#{interviewerAgent.selectedInterviewer.name}" required="true"/>
-				                        </p:input>
-			                        </td>
-		                		</tr>
-		                		<tr>
-		                			<td align="left">
-			                			<p:input label="ID Code">
-					                        <h:inputText value="#{interviewerAgent.selectedInterviewer.idCode}" required="true"/>
-					                    </p:input>
-		                			</td>
-		                		</tr>
-		                		<tr>
-		                			<td align="left">
-			                			<p:input label="Phone">
-					                        <h:inputText value="#{interviewerAgent.selectedInterviewer.phone}" required="true"/>
-					                    </p:input>
-		                			</td>
-		                		</tr>
-		                		<tr>
-		                			<td align="left">
-			                			<p:input label="Age">
-					                        <h:inputText value="#{interviewerAgent.selectedInterviewer.age}"/>
-					                    </p:input>
-		                			</td>
-		                		</tr>
-		                	</table>
-		            </div>
-		            <div class="buttonBox">
-		                <h:commandButton id="save" value="save" action="#{interviewerAgent.save}"/>
+                	<div>
+	                	<table>
+	                		<tr>
+	                			<td align="right">Interviewer:</td>
+		                        <td>${interviewAgent.selectedInterview.interviewer.name}<h:inputHidden value="#{interviewAgent.selectedInterview.id}"/></td>
+	                		</tr>
+	                		<tr>
+	                			<td align="right">Position:</td>
+	                			<td>
+						            <h:selectOneMenu id="applyPositionId" value="#{interviewAgent.applyPositionId}">
+					                   <f:selectItem itemValue="#{null}" itemLabel="Select..." noSelectionOption="true"/>
+					                   <f:selectItems value="#{positionCreator.existingPositions}" var="ep" itemLabel="#{ep.name}" itemValue="#{ep.id}"/>
+					                </h:selectOneMenu>	
+                 				</td>
+	                		</tr>
+	                		<tr>
+	                			<td align="right">Login Name:</td>
+	                			<td><h:inputText id="loginName" value="#{interviewAgent.selectedInterview.loginName}" required="true"/></td>
+	                		</tr>
+	                		<tr>
+	                			<td align="right">Login Password:</td>
+	                			<td><h:inputText id="loginPassword" value="#{interviewAgent.selectedInterview.loginPassword}" required="true"/></td>
+	                		</tr>
+	                		<tr>
+	                			<td align="right">Date:</td>
+	                			<td>
+		                			<h:inputText id="startTime" value="#{interviewAgent.selectedInterview.start}" required="true" size="4">
+					                    <f:convertDateTime type="date" pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8"/>
+					                </h:inputText> 
+					                Hour:
+					                <select id="hour">
+		                				<option value="08">8</option>
+		                				<option value="09">9</option>
+		                				<option value="10">10</option>
+		                				<option value="11">11</option>
+		                				<option value="12">12</option>
+		                				<option value="13">13</option>
+		                				<option value="14">14</option>
+		                				<option value="15">15</option>
+		                				<option value="16">16</option>
+		                				<option value="17">17</option>
+		                			</select>
+		                			Minute:
+		                			<select id="minute">
+		                				<option value="00">0</option>
+		                				<option value="10">10</option>
+		                				<option value="20">20</option>
+		                				<option value="30">30</option>
+		                				<option value="40">40</option>
+		                				<option value="50">50</option>
+		                			</select>
+                 				</td>
+	                		</tr>
+	                		<tr>
+	                			<td align="right">Examination:</td>
+	                			<td align="right">
+	                				<h:inputHidden id="examinationIds" value="#{interviewAgent.examinationIds}"/>
+	                				<input type="button" value="Select Examination" onclick="openSelectExaminationWin();"/>
+	                				<div id="exams">
+	                					<table>
+	                						<ui:repeat var="ie" value="#{interviewAgent.selectedInterview.examinations}">
+	                						<tr>
+	                							<td>${ie.exam.name}</td>
+	                							<td>${ie.exam.position.name}</td>
+	                							<td><select name="exam_confuse"><option value="0">#{ie.examConfuse eq 0 ? "selected":""}NO</option><option value="1">#{ie.examConfuse eq 1 ? "selected":""}YES</option></select></td>
+	                							<td><input type="button" value="View" onclick="viewExam(this)"/>&nbsp;&nbsp;<input type="button" value="Delete" onclick="deleteExam(this)"/><input type="hidden" name="exam_id" id="${ie.exam.id}" value="${ie.exam.id}"/></td>
+	                						</tr>
+	                						</ui:repeat>
+	                					</table>
+	                				</div>
+	                			</td>
+	                		</tr>
+	                	</table>
+                	</div>
+                    <div class="buttonBox">
+                        <h:commandButton id="create" value="Create" action="#{interviewAgent.save}"/>
                         &nbsp;
-                        <h:button id="cancel" value="Cancel" outcome="/interviewer/search.xhtml"/>
-		            </div>
-	 			</fieldset>
-            </h:form>
+                        <h:button id="cancel" value="Cancel" outcome="/interview/search.xhtml"/>
+                    </div>
+                </fieldset>
+            </h:form> 
         </div>
     </ui:define>
-
 </ui:composition>

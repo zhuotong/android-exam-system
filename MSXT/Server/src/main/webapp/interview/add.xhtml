@@ -35,7 +35,8 @@
       				var nr = chTable.insertRow( chTable.rows.length );
                 	nr.insertCell(0).innerHTML = name;
                 	nr.insertCell(1).innerHTML = position;
-                	nr.insertCell(2).innerHTML = '<input type="button" value="View" onclick="viewExam(this)"/>&nbsp;&nbsp;<input type="button" value="Delete" onclick="deleteExam(this)"/><input type="hidden" name="exam_id" id="'+examId+'" value="'+examId+'"/>';
+                	nr.insertCell(2).innerHTML = '<select name="exam_confuse"><option value="0">NO</option><option value="1">YES</option></select>';
+                	nr.insertCell(3).innerHTML = '<input type="button" value="View" onclick="viewExam(this)"/>&nbsp;&nbsp;<input type="button" value="Delete" onclick="deleteExam(this)"/><input type="hidden" name="exam_id" id="'+examId+'" value="'+examId+'"/>';
                 	return true;
       			}
       			
@@ -46,16 +47,33 @@
       			
       			function viewExam( vqButton ) {
       				var id = vqButton.parentElement.children[2].value;
-      				window.open("../examination/View.xhtml?id="+id, id, "height=400,width=600,toolbar=no,menubar=no,scrollbars=yes");  
+      				window.open("../examination/View.xhtml?id="+id, id, "top=150,left=200,height=600,width=800,toolbar=no,menubar=no,scrollbars=yes");  
       			}
       			
       			function onSubmitForm(){
+      				var loginName = $('loginName').value;
+      				var loginPassword = $('loginPassword').value;
+      				var startTime = $('startTime').value;
+      				if( loginName.trim().length==0 ) {
+      					alert('Login Name is required!');
+      					return false;
+      				} 
+      				if( loginPassword.trim().length==0 ) {
+      					alert('Login Passord is required!');
+      					return false;
+      				}
+      				if( startTime.trim().length==0 ) {
+      					alert('Start Time is required!');
+      					return false;
+      				}
+      				
       				var exams = document.getElementsByName('exam_id');
+      				var examsConfuse = document.getElementsByName('exam_confuse');
       				if( exams.length==0 ) {
       					alert('Please select examinations');
       					return false;
       				} else {
-      					var ap = document.getElementById('applyPositionId');
+      					var ap = $('applyPositionId');
       					var apLabel = ap.options[ap.selectedIndex].label;
       					var examIds = [];
       					for( var i=0; i<exams.length; i++ ) {
@@ -66,11 +84,13 @@
       	      					return false;
       						} else {
       							examIds.push( exam.value );
+      							examIds.push( examsConfuse[i].value );
       						}	
       					}
-      					document.getElementById( 'examinationIds' ).value = examIds.join('|#|');
+      					$('examinationIds').value = examIds.join('|#|');
+      					$('startTime').value = startTime + ' ' + $( 'hour' ).value + ':' + $( 'minute' ).value  + ':00';
+      					return true;
       				}
-    				return true;
       			}
       			
       			window.onload = function() {
@@ -111,18 +131,40 @@
 	                		</tr>
 	                		<tr>
 	                			<td align="right">Login Name:</td>
-	                			<td><h:inputText value="#{interviewCreator.newInterview.loginName}"/></td>
+	                			<td><h:inputText id="loginName" value="#{interviewCreator.newInterview.loginName}" required="true"/></td>
 	                		</tr>
 	                		<tr>
 	                			<td align="right">Login Password:</td>
-	                			<td><h:inputText value="#{interviewCreator.newInterview.loginPassword}"/></td>
+	                			<td><h:inputText id="loginPassword" value="#{interviewCreator.newInterview.loginPassword}" required="true"/></td>
 	                		</tr>
 	                		<tr>
 	                			<td align="right">Date:</td>
 	                			<td>
-		                			<h:inputText id="startTime" value="#{interviewCreator.newInterview.start}">
-					                    <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
+		                			<h:inputText id="startTime" value="#{interviewCreator.newInterview.start}" required="true" size="4">
+					                    <f:convertDateTime type="date" pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8"/>
 					                </h:inputText> 
+					                Hour:
+					                <select id="hour">
+		                				<option value="08">8</option>
+		                				<option value="09">9</option>
+		                				<option value="10">10</option>
+		                				<option value="11">11</option>
+		                				<option value="12">12</option>
+		                				<option value="13">13</option>
+		                				<option value="14">14</option>
+		                				<option value="15">15</option>
+		                				<option value="16">16</option>
+		                				<option value="17">17</option>
+		                			</select>
+		                			Minute:
+		                			<select id="minute">
+		                				<option value="00">0</option>
+		                				<option value="10">10</option>
+		                				<option value="20">20</option>
+		                				<option value="30">30</option>
+		                				<option value="40">40</option>
+		                				<option value="50">50</option>
+		                			</select>
                  				</td>
 	                		</tr>
 	                		<tr>

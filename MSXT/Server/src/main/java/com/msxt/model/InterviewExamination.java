@@ -38,8 +38,11 @@ public class InterviewExamination {
 	@OneToMany(mappedBy = "interviewExamination", cascade = CascadeType.REMOVE)
 	private List<ExaminationQuestionAnswer> examQuestionAnswers;
 	
+	@Column(name="exam_confuse")
+	private Integer examConfuse;
+	
 	@Column(name="exam_score")
-	private int examScore;
+	private Integer examScore;
 	
 	public String getId() {
 		return id;
@@ -60,11 +63,11 @@ public class InterviewExamination {
 		this.exam = exam;
 	}
 	
-	public int getExamScore() {
+	public Integer getExamScore() {
 		return examScore;
 	}
 	
-	public void setExamScore(int examScore) {
+	public void setExamScore(Integer examScore) {
 		this.examScore = examScore;
 	}
 	
@@ -81,5 +84,11 @@ public class InterviewExamination {
 	}
 	public Integer getVersion() {
 		return version;
+	}
+	public Integer getExamConfuse() {
+		return examConfuse;
+	}
+	public void setExamConfuse(Integer examConfuse) {
+		this.examConfuse = examConfuse;
 	}
 }

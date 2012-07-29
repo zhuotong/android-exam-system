@@ -1,22 +1,20 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:s="http://jboss.org/seam/faces"
-      xmlns:f="http://java.sun.com/jsf/core">
-    <f:metadata>
-        <f:viewParam name="id" value="#{id}"/>
-        <s:viewAction action="#{examAgent.selectExamination4View(id)}"/>
-    </f:metadata>
- 	<h:head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title>#{bundles.messages.template_title}</title>
-        <link rel="shortcut icon" href="#{request.contextPath}/favicon.ico"/>
-        <h:outputStylesheet library="css" name="screen.css"/>
-    </h:head>
-    <h:body>
-    <div id="content">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:s="http://jboss.org/seam/faces"
+                xmlns:p="http://java.sun.com/jsf/composite/components/property"
+                template="/WEB-INF/layout/template.xhtml">
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="id" value="#{id}"/>
+            <s:viewAction action="#{examAgent.selectExamination4View(id)}"/>
+        </f:metadata>
+    </ui:define>
+ 
+    <ui:define name="content">
         <div class="section">
             <h1>View Examination</h1>
         </div>
@@ -59,10 +57,9 @@
                 	</div>
                 </fieldset>
                 <div class="buttonBox">
-                	<input type="button" value="Close" onclick="window.close();"/>
+                    <h:button id="cancel" value="Return" outcome="/examination/search.xhtml"/>
                 </div>
             </h:form>
         </div>
-    </div>
-    </h:body>
-</html>
+    </ui:define>
+</ui:composition>

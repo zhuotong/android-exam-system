@@ -15,6 +15,7 @@ import com.msxt.model.Examination;
 import com.msxt.model.ExaminationCatalog;
 import com.msxt.model.ExaminationQuestion;
 import com.msxt.model.Question;
+import com.msxt.model.QuestionChoiceItem;
 
 @Named
 @RequestScoped
@@ -61,7 +62,12 @@ public class ExamAgent {
 		for( ExaminationCatalog ec : selectedExam.getCatalogs() ) 
 			for( ExaminationQuestion eq : ec.getQuestions() ) {
 				Question q = eq.getQuestion();
-				q.getChoiceItems().get(0);
+				for( QuestionChoiceItem qci : q.getChoiceItems() ) {
+					String html = HtmlUtil.transferCommon2HTML( qci.getContent() );
+					html = html.replaceAll("<br/>", "<br/>&nbsp;&nbsp;&nbsp;&nbsp;");
+					qci.setContent( html );
+					em.detach( qci );
+				}
 				String htmlContent = HtmlUtil.transferCommon2HTML( q.getContent() );
 				q.setContent( htmlContent );
 				em.detach( q );

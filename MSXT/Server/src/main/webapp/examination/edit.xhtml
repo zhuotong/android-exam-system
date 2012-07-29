@@ -44,7 +44,7 @@
       			}
       			
       			function openSelectQuestionWin( ct ) {
-      				window.open("../question/SelectQuestion.xhtml?positionId=#{examAgent.selectedExam.position.id}&cqId="+ct.nextElementSibling.id,"selectQuestion_"+ct.nextSibling.id,"height=400,width=600,toolbar=no,menubar=no,scrollbars=yes");  
+      				window.open("../question/SelectQuestion.xhtml?positionId=#{examAgent.selectedExam.position.id}&cqId="+ct.nextElementSibling.id,"selectQuestion_"+ct.nextSibling.id,"top=100,left=200,height=400,width=600,toolbar=no,menubar=no,scrollbars=yes");  
       			} 
       			
       			function addQuestion2Catalog(questionId, name, type, cqId){
@@ -54,9 +54,13 @@
       				}
       				var chTable = document.getElementById( cqId ).children[0];
       				var nr = chTable.insertRow( chTable.rows.length );
-                	nr.insertCell(0).innerHTML = name;
+      				
+      				var nc = nr.insertCell(0);
+                	nc.innerHTML = name;
+                	nc.width = "40%"
+                	
                 	nr.insertCell(1).innerHTML = type;
-                	nr.insertCell(2).innerHTML = '<input type="text" name="'+cqId+'_score"/>';
+                	nr.insertCell(2).innerHTML = '<input type="text" name="'+cqId+'_score" size="2"/>';
                 	nr.insertCell(3).innerHTML = '<input type="button" value="View" onclick="viewQuestion(this)"/>&nbsp;&nbsp;<input type="button" value="Delete" onclick="deleteQuestion(this)"/><input type="hidden" name="'+cqId+'_question_id" id="'+questionId+'" value="'+questionId+'"/>';
                 	return true;
       			}
@@ -68,7 +72,7 @@
       			
       			function viewQuestion( vqButton ) {
       				var id = vqButton.parentElement.children[2].value;
-      				window.open("../question/View.xhtml?id="+id, id, "height=400,width=600,toolbar=no,menubar=no,scrollbars=yes");  
+      				window.open("../question/View.xhtml?id="+id, id, "top=150,left=200,height=400,width=600,toolbar=no,menubar=no,scrollbars=yes");  
       			}
       			
       			function isNotNumber( value ) {
@@ -210,9 +214,9 @@
 					        				<table>
 					        					<ui:repeat var="cq" value="#{catalog.questions}">
 					        						<tr>
-					        							<td>#{cq.question.name}</td>
+					        							<td width="40%">#{cq.question.name}</td>
 					        							<td>#{cq.question.questionType.name}</td>
-					        							<td><input type="text" name="catalogQuestions_#{vs.index}_score" value="#{cq.score}"/></td>
+					        							<td><input type="text" name="catalogQuestions_#{vs.index}_score" value="#{cq.score}" size="2"/></td>
 					        							<td>
 					        								<input type="button" value="View" onclick="viewQuestion(this)"/>
 					        								&nbsp;&nbsp;

@@ -83,17 +83,20 @@ public class InterviewCreator {
             em.persist( newInterview );
             
             String[] examIds = examinationIds.split( Constants.SIMPLE_SPLIT_KEY );
-            for( String examId : examIds ) {
+            for( int i=0; i<examIds.length; i+=2 ) {
+            	String examId = examIds[i];
+            	
             	InterviewExamination ie = new InterviewExamination();
             	ie.setInterview( newInterview );
             	
             	Examination e = em.find( Examination.class, examId );
             	ie.setExam( e );
+            	ie.setExamConfuse( Integer.valueOf( examIds[i+1] ) );
             	
             	em.persist( ie );
             }
-            messages.info( new DefaultBundleKey("registration_registered") ).params( selectedInterviewer.getName() );
-            return "/interviewer/search";
+            messages.info( new DefaultBundleKey("msxt_interview_create_success") ).params( selectedInterviewer.getName() );
+            return "/interviewer/search?faces-redirect=true";
         } else {
         	return null;
         }

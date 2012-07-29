@@ -8,7 +8,7 @@
 <f:view>
     <f:metadata>
             <f:viewParam name="id" value="#{id}"/>
-            <s:viewAction action="#{questionAgent.selectQuestion(id)}"/>
+            <s:viewAction action="#{questionAgent.selectQuestion4View(id)}"/>
     </f:metadata>
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -22,59 +22,47 @@
             <h1>View Question</h1>
         </div>
         <div class="section">
-	        <h:form id="editQuestionForm" prependId="false" onsubmit="return setChoiceItems();">
-            <fieldset>
-            	<div>
-             	<table>
-             		<tr>
-             			<td>Type</td>
-             			<td>                                  
-                    	<h:outputText value="${questionAgent.selectedQuestion.questionType.name}"/>
-             			</td>
-             		</tr>
-             		<tr>
-             			<td>Position</td>
-             			<td>        
-             				<h:selectManyListbox value="#{questionAgent.positionIds}" readonly="true">
-                					<f:selectItems value="#{positionCreator.existingPositions}" var="ep" itemLabel="#{ep.name}" itemValue="#{ep.id}"/>
-             				</h:selectManyListbox>                          
-             			</td>
-             		</tr>
-             		<tr>
-             			<td>Question Name</td>
-             			<td>
-             				<h:outputText value="${questionAgent.selectedQuestion.name}"/>
-             			</td>
-             		</tr>
-             		<tr>
-             			<td>Title</td>
-             			<td><h:inputTextarea id="inputTitle" value="#{questionAgent.selectedQuestion.content}" required="true" cols="60" rows="10" readonly="true"/></td>
-             		</tr>
-             		<tr>
-             			<td>Right Answer</td>
-             			<td><h:inputTextarea value="#{questionAgent.selectedQuestion.rightAnswer}" cols="60" rows="1" readonly="true"/></td>
-             		</tr>
-             	</table>
-            	</div>
-            	<div id="choiceItem">
-             	<table id="choiceItemsTable">
-             		<tr>
-             			<td>Label</td>
-             			<td>Content</td>
-             		</tr>
-             		<ui:repeat var="citem" value="#{questionAgent.choiceItems}">
-             		<tr>
-             			<td width="10%"><input name="clabel" type="text" value="#{citem.labelName}" size="2" readonly="readonly"/></td>
-             			<td width="90%"><input name="citem" type="text" value="#{citem.content}" size="65" readonly="readonly"/></td>
-             		</tr>
-             		</ui:repeat>
-             	</table>	
-            	</div>
-                <div class="buttonBox">
-                    <input type="button" value="Close" onclick="window.close();"/>
-                </div>
-            </fieldset>
-            </h:form>
+            <div>
+            	<table>
+            		<tr>
+            			<td width="10%">Type</td>
+            			<td width="90%">${questionAgent.selectedQuestion.questionType.name}</td>
+            		</tr>
+            		<tr>
+            			<td>Position</td>
+            			<td>
+            				<ui:repeat var="pn" value="${questionAgent.positionNames}">
+            					${pn}<br/>
+            				</ui:repeat>
+            			</td>
+            		</tr>
+            		<tr>
+            			<td>Name</td>
+            			<td>${questionAgent.selectedQuestion.name}</td>
+            		</tr>
+            		<tr>
+            			<td>Title</td>
+            			<td><h:outputText value="${questionAgent.selectedQuestion.content}" escape="false"/></td>
+            		</tr>
+            		<tr>
+            			<td>Choice Items</td>
+            			<td>
+	            			<ui:repeat var="ci" value="${questionAgent.choiceItems}">
+	                   		${ci.labelName}.<h:outputText value="${ci.content}" escape="false"/><br/><br/>
+	                    	</ui:repeat>
+                    	</td>
+            		</tr>	
+            		<tr>
+            			<td>Answer</td>
+            			<td>
+	            			${questionAgent.selectedQuestion.rightAnswer}
+                    	</td>
+            		</tr>
+            	</table>
+            </div>
+            <div class="buttonBox">
+                <input type="button" value="Close" onclick="window.close();"/>
+            </div>
         </div>
        </div>
     </h:body>
