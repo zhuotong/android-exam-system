@@ -43,7 +43,7 @@ public class RunningServlet extends HttpServlet{
 		String result = ""; 
 		if( "loginAction".equals(action) && "login".equals( method ) ) 			
 			result = loginAction.login( request );
-		if( "examAction".equals(action) && "getExam".equals( method ) );
+		if( "examAction".equals(action) && "getExam".equals( method ) )
 			result = examAction.getExam( request );
 		response.getOutputStream().print( result );
 		
