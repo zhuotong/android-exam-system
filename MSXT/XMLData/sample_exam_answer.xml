@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<examanswer>
+<catalogs>
+	<catalog idx="1">
+	    <answer idx="1">
+	    	<questionid>1</questionid>
+	    	<choices>1,2,3</choices>
+	    </answer>
+   	    <answer idx="2">
+	    	<questionid>2</questionid>
+	    	<choices>1,2,3</choices>
+	    </answer>
+	</catalog>
+	
+	<catalog idx="2">
+	    <answer idx="1">
+	    	<questionid>1</questionid>
+	    	<choices>2</choices>
+	    </answer>
+   	    <answer idx="2">
+	    	<questionid>2</questionid>
+	    	<choices>4</choices>
+	    </answer>
+	</catalog>
+	
+</catalogs>
+</examanswer>

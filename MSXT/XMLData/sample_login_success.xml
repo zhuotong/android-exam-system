@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<login>
+	<validate>true</validate>
+	<interviewer>AndroidShrimp</interviewer>
+	<jobtitle>Java Software Engineer</jobtitle>
+	<papers>
+		<exam index="1">
+		    <id>100001</id>
+		    <name>SCJP1</name>
+			  <desc>
+			  	<![CDATA[This exam is included 2 catalog,1 is Single choice, 
+			  	2 is multi choice,time limit is 60 minutes]]>		  	
+			  </desc>
+		</exam>
+		<exam index="2">
+		    <id>100001</id>
+		    <name>SCJP1</name>
+			  <desc>
+			  	<![CDATA[This exam is included 2 catalog,1 is Single choice, 
+			  	2 is multi choice,time limit is 60 minutes]]>		  	
+			  </desc>
+		</exam>
+		<exam index="3">
+		    <id>100001</id>
+		    <name>SCJP1</name>
+			  <desc>
+			  	<![CDATA[This exam is included 2 catalog,1 is Single choice, 
+			  	2 is multi choice,time limit is 60 minutes]]>		  	
+			  </desc>
+		</exam>	
+	</papers>
+</login>
