@@ -249,7 +249,7 @@ public class SingleChoices extends BaseQuestion {
     		
 			for (int i = 0; i < choices.size(); i++) {
 				Choice choice = choices.get(i);
-				mChecked.add(false);
+//				mChecked.add(false);
 				if (answerString.indexOf(String.valueOf(choice.getChoiceIndex())) != -1) {
 					mChecked.add(true);
 				} else {
