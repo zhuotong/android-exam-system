@@ -7,6 +7,8 @@ import org.xmlpull.v1.XmlPullParser;
 
 import com.dream.eexam.model.CatalogBean;
 import com.dream.eexam.model.Choice;
+import com.dream.eexam.model.ExamBaseBean;
+import com.dream.eexam.model.InterviewBean;
 import com.dream.eexam.model.Paper;
 import com.dream.eexam.model.PaperBean;
 import com.dream.eexam.model.Question;
@@ -18,43 +20,86 @@ public class XMLParseUtil {
 
 	public final static String LOG_TAG = "XMLParseUtil";
 	
-	public static List<Paper> readPaperListXmlByPull(InputStream inputStream) throws Exception {
-		List<Paper> personList = null;
+    public static String readLoginResult(InputStream inputStream) throws Exception{
+		Log.i(LOG_TAG, "readLoginResult()...");
 		XmlPullParser xmlpull = Xml.newPullParser();
 		xmlpull.setInput(inputStream, "utf-8");
 		int eventCode = xmlpull.getEventType();
-
-		Paper paper = null;
-		while (eventCode != XmlPullParser.END_DOCUMENT) {
+		String status = null;
+		while (eventCode != XmlPullParser.END_DOCUMENT && status==null ) {
 			switch (eventCode) {
 				case XmlPullParser.START_DOCUMENT: {
-					personList = new ArrayList<Paper>();
 					break;
 				}
 				case XmlPullParser.START_TAG: {
-					if ("paper".equals(xmlpull.getName())) {
-						paper = new Paper();
-						paper.setIndex(xmlpull.getAttributeValue(0));
-					} else if (paper != null) {
-						if (("id".equals(xmlpull.getName()))) {
-							paper.setId(xmlpull.nextText());
-						} else if ("desc".equals(xmlpull.getName())) {
-							paper.setDesc(xmlpull.nextText());
-						}
+				    if("status".equals(xmlpull.getName()) ){
+				    	status = xmlpull.nextText();
 					}
 					break;
 				}
 				case XmlPullParser.END_TAG: {
-					if ("paper".equals(xmlpull.getName()) && paper != null) {
-						personList.add(paper);
-						paper = null;
+					break;
+				}
+			}
+			eventCode = xmlpull.next();
+		}
+		Log.i(LOG_TAG, "loginResult:"+status);
+		return status;
+	}
+	
+    
+	public static InterviewBean readLoginSuccess(InputStream inputStream) throws Exception {
+
+		XmlPullParser xmlpull = Xml.newPullParser();
+		xmlpull.setInput(inputStream, "utf-8");
+		int eventCode = xmlpull.getEventType();
+
+		InterviewBean bean = null;
+		List<ExamBaseBean> examList = null;
+		ExamBaseBean examBaseBean = null;
+		
+		Paper paper = null;
+		while (eventCode != XmlPullParser.END_DOCUMENT) {
+			switch (eventCode) {
+				case XmlPullParser.START_DOCUMENT: {
+					bean = new InterviewBean();
+					break;
+				}
+				case XmlPullParser.START_TAG: {
+					if ("status".equals(xmlpull.getName())&& bean!=null) {
+						bean.setStatus(xmlpull.nextText());					
+					} else if("conversation".equals(xmlpull.getName())&& bean!=null){
+						bean.setConversation(xmlpull.nextText());
+					} else if("interviewer".equals(xmlpull.getName())&& bean!=null){
+						bean.setInterviewer(xmlpull.nextText());
+					} else if("jobtitle".equals(xmlpull.getName())&& bean!=null){
+						bean.setJobtitle(xmlpull.nextText());
+					} else if("examinations".equals(xmlpull.getName())&& bean!=null){
+						examList = new ArrayList<ExamBaseBean>();
+					} else if("examination".equals(xmlpull.getName())&& examList!=null){
+						examBaseBean = new ExamBaseBean();
+					} else if("id".equals(xmlpull.getName())&& examBaseBean!=null){
+						examBaseBean.setId(xmlpull.nextText());
+					} else if("name".equals(xmlpull.getName())&& examBaseBean!=null){
+						examBaseBean.setName(xmlpull.nextText());
+					} else if("desc".equals(xmlpull.getName())&& examBaseBean!=null){
+						examBaseBean.setDesc(xmlpull.nextText());
+					} 
+					break;
+				}
+				case XmlPullParser.END_TAG: {
+					if ("examination".equals(xmlpull.getName()) && paper != null) {
+						examList.add(examBaseBean);
+						examBaseBean = null;
+					}else if("examinations".equals(xmlpull.getName()) && paper != null){
+						bean.setExamList(examList);
 					}
 					break;
 				}
 			}
 			eventCode = xmlpull.next();
 		}
-		return personList;
+		return bean;
 	}
 	
 	/**
