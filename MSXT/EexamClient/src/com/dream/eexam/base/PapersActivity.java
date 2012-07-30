@@ -27,21 +27,20 @@ import android.widget.TextView;
 
 public class PapersActivity extends BaseActivity {
 	private static final String LOG_TAG = "SessionsDemoVote";
-	
+
+	//declare components
 	private TextView spinnerText = null;
 	private TextView spinnerText2 = null;
 	private TextView spinnerText3 = null;
-	
-	
-	
+	private TextView examDesc = null;
 	private Spinner spinner;
-	private ArrayAdapter<String> adapter;
-	
 	private Button startBtn;
-	private SharedPreferences sharedPreferences;
+//	private SharedPreferences sharedPreferences;
 	
+	//data
 	InterviewBean bean;
 	String[] exams = null;
+	private ArrayAdapter<String> adapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,15 +87,18 @@ public class PapersActivity extends BaseActivity {
 		spinnerText3 = (TextView) this.findViewById(R.id.spinnerText3);
 		spinnerText3.setText("Choose 1 from below paper list:");
 		
-		spinner = (Spinner) findViewById(R.id.Spinner01);
 		
+		
+		spinner = (Spinner) findViewById(R.id.Spinner01);
 		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,exams);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
 		spinner.setOnItemSelectedListener(new SpinnerSelectedListener());
 		spinner.setVisibility(View.VISIBLE);
 		
-		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE); 
+//		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE); 
+		
+		examDesc = (TextView) this.findViewById(R.id.examDesc);
 		
 		startBtn = (Button) findViewById(R.id.startBtn);
 		startBtn.setText("Start");
@@ -134,9 +136,12 @@ public class PapersActivity extends BaseActivity {
 	}
 	
 	class SpinnerSelectedListener implements OnItemSelectedListener{
-		public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
-				long arg3) {
-//			selectedSession = demoSessions[arg2];
+		public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+			Log.i(LOG_TAG,"onItemSelected()...");
+			Log.i(LOG_TAG,"arg2="+String.valueOf(arg2));
+			
+			ExamBaseBean examBaseBean = bean.getExamList().get(arg2);
+			examDesc.setText(examBaseBean.getDesc());
 		}
 		public void onNothingSelected(AdapterView<?> arg0) {
 		}

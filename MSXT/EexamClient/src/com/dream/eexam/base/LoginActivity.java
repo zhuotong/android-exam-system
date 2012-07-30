@@ -35,7 +35,7 @@ public class LoginActivity extends BaseActivity {
 	
 	private String path;
 	private String fileName;
-	private String validate;
+	private String status;
 //	private boolean isSuccess = false;
 	
 	private Context mContext;
@@ -84,7 +84,7 @@ public class LoginActivity extends BaseActivity {
         	//get stream from stream
 //        	InputStream inputStream2 =  PapersActivity.class.getClassLoader().getResourceAsStream(path+ File.separator+fileName);
         	FileInputStream inputStream2 = new FileInputStream(new File(path+ File.separator+fileName));
-            validate = XMLParseUtil.readLoginResult(inputStream2);
+            status = XMLParseUtil.readLoginResult(inputStream2);
             inputStream2.close();
         } catch (IOException e) {
         	Log.i(LOG_TAG,"IOException:" + e.getMessage());
@@ -177,7 +177,7 @@ public class LoginActivity extends BaseActivity {
         		ShowDialog("No return data!");
         	}*/
         	
-        	if("success".equals(validate)){
+        	if("success".equals(status)){
     			Intent intent = new Intent();
     			intent.setClass( mContext, PapersActivity.class);
     			intent.putExtra("path", path);

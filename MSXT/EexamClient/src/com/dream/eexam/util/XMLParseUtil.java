@@ -43,7 +43,6 @@ public class XMLParseUtil {
 			}
 			eventCode = xmlpull.next();
 		}
-		Log.i(LOG_TAG, "loginResult:"+status);
 		return status;
 	}
 	
@@ -58,7 +57,6 @@ public class XMLParseUtil {
 		List<ExamBaseBean> examList = null;
 		ExamBaseBean examBaseBean = null;
 		
-		Paper paper = null;
 		while (eventCode != XmlPullParser.END_DOCUMENT) {
 			switch (eventCode) {
 				case XmlPullParser.START_DOCUMENT: {
@@ -88,10 +86,10 @@ public class XMLParseUtil {
 					break;
 				}
 				case XmlPullParser.END_TAG: {
-					if ("examination".equals(xmlpull.getName()) && paper != null) {
+					if ("examination".equals(xmlpull.getName()) && examList != null) {
 						examList.add(examBaseBean);
 						examBaseBean = null;
-					}else if("examinations".equals(xmlpull.getName()) && paper != null){
+					}else if("examinations".equals(xmlpull.getName()) && examList != null){
 						bean.setExamList(examList);
 					}
 					break;
