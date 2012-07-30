@@ -45,7 +45,6 @@ public class XMLParseUtil {
 		}
 		return status;
 	}
-	
     
 	public static InterviewBean readLoginSuccess(InputStream inputStream) throws Exception {
 
@@ -88,7 +87,6 @@ public class XMLParseUtil {
 				case XmlPullParser.END_TAG: {
 					if ("examination".equals(xmlpull.getName()) && examList != null) {
 						examList.add(examBaseBean);
-						examBaseBean = null;
 					}else if("examinations".equals(xmlpull.getName()) && examList != null){
 						bean.setExamList(examList);
 					}

@@ -8,6 +8,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
+
+import com.dream.eexam.model.ExamBaseBean;
+import com.dream.eexam.model.InterviewBean;
+import com.dream.eexam.util.ExamListDB;
 import com.dream.eexam.util.SystemConfig;
 import com.dream.eexam.util.XMLParseUtil;
 
@@ -37,6 +42,7 @@ public class LoginActivity extends BaseActivity {
 	private String fileName;
 	private String status;
 //	private boolean isSuccess = false;
+	InterviewBean bean;
 	
 	private Context mContext;
 	
@@ -74,12 +80,29 @@ public class LoginActivity extends BaseActivity {
         	//get stream
 //        	inputStream = downloadUrl(urlString);
             inputStream = LoginActivity.class.getClassLoader().getResourceAsStream("login_result.xml");
+//            bean = XMLParseUtil.readLoginSuccess(inputStream);
+            
+            /*if("success".equals(bean.getStatus())){
+            	List<ExamBaseBean> examList = bean.getExamList();
+            	
+            	ExamListDB db = new ExamListDB(this);
+            	db.open();
+            	for(ExamBaseBean baseBean:examList){
+            		String id = baseBean.getId();
+            		String name = baseBean.getName();
+            		String desc = baseBean.getDesc();
+            		db.createExamBase(id, name, desc);
+            	}
+            	db.close();
+            }*/
+            
         	path = Environment.getExternalStorageDirectory().getPath()+File.separator +"eExam";  
         	fileName = "login_result.xml";  
-        	responseText.append(inputStream2String(inputStream));
+//        	responseText.append(inputStream2String(inputStream));
         	
         	//save stream to file
-        	saveFile(path, fileName, responseText.toString());
+        	saveFile(path, fileName, inputStream2String(inputStream));
+        	inputStream.close();
 
         	//get stream from stream
 //        	InputStream inputStream2 =  PapersActivity.class.getClassLoader().getResourceAsStream(path+ File.separator+fileName);
@@ -137,7 +160,10 @@ public class LoginActivity extends BaseActivity {
 	            File dir = new File(path);  
 	            if (!dir.exists()) {  
 	                dir.mkdirs();  
-	            }  
+	            } else{ 
+//	            	dir.delete();
+//	            	dir.mkdirs();
+	            }
 	            FileOutputStream fos = new FileOutputStream(path + File.separator + fileName);  
 	            fos.write(content.getBytes());  
 	            fos.close();  
@@ -177,11 +203,15 @@ public class LoginActivity extends BaseActivity {
         		ShowDialog("No return data!");
         	}*/
         	
-        	if("success".equals(status)){
+        	 if("success".equals(status)){
     			Intent intent = new Intent();
-    			intent.setClass( mContext, PapersActivity.class);
     			intent.putExtra("path", path);
     			intent.putExtra("fileName", fileName);
+//    			intent.putExtra("interviewer", bean.getInterviewer());
+//    			intent.putExtra("jobtitle", bean.getJobtitle());
+    			intent.setClass( mContext, PapersActivity.class);
+    			
+    			
     			startActivity(intent);        		
         	}else{
         		ShowDialog("No return data!");

@@ -20,7 +20,7 @@
 		<examination>
 			<id>ff80818138d0a6ba0ssssss0</id>
 			<name>Software Engineer Iterview C</name>
-			<<desc><![CDATA[This exam include 100 questions,total score is 150,time limit is 120 minutes ]]></desc>
+			<desc><![CDATA[This exam include 100 questions,total score is 150,time limit is 120 minutes ]]></desc>
 		</examination>
 	</examinations>
 </login>

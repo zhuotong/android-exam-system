@@ -3,6 +3,7 @@ package com.dream.eexam.base;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.dream.eexam.model.ExamBaseBean;
@@ -12,9 +13,11 @@ import com.dream.eexam.model.Question;
 import com.dream.eexam.model.QuestionProgress;
 import com.dream.eexam.paper.MultiChoices;
 import com.dream.eexam.paper.SingleChoices;
+import com.dream.eexam.util.ExamListDB;
 import com.dream.eexam.util.XMLParseUtil;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -38,7 +41,7 @@ public class PapersActivity extends BaseActivity {
 //	private SharedPreferences sharedPreferences;
 	
 	//data
-	InterviewBean bean;
+	InterviewBean bean = new InterviewBean();
 	String[] exams = null;
 	private ArrayAdapter<String> adapter;
 	
@@ -52,19 +55,34 @@ public class PapersActivity extends BaseActivity {
 		
 		//get demoSessionStr and save to string array
 		Bundle bundle = this.getIntent().getExtras();
+//		String interviewer  = bundle.getString("interviewer");
+//		String jobtitle  = bundle.getString("jobtitle");
+//		Log.i(LOG_TAG,"interviewer:"+interviewer);
+//		Log.i(LOG_TAG,"jobtitle:"+jobtitle);
+//		bean.setInterviewer(interviewer);
+//		bean.setJobtitle(jobtitle);
+		
+//		List<ExamBaseBean> examList = new ArrayList<ExamBaseBean>();
+//		//get data from database		
+//		ExamListDB db = new ExamListDB(this);
+//    	db.open();
+//    	Cursor cursor =  db.fetchAllExamBases();
+//    	while(!cursor.moveToNext()){
+//    		examList.add(new ExamBaseBean(cursor.getString(0),cursor.getString(1),cursor.getString(2)));
+//    	}
+//    	db.close();
+//    	bean.setExamList(examList);
+    	
 		String path  = bundle.getString("path");
 		String fileName  = bundle.getString("fileName");
-		
-		Log.i(LOG_TAG,"path:"+path);
-		Log.i(LOG_TAG,"fileName:"+fileName);
 		
 		//load paper List
 //	    InputStream inputStream =  PapersActivity.class.getClassLoader().getResourceAsStream("sample_login_success.xml");
 //	    InputStream inputStream =  PapersActivity.class.getClassLoader().getResourceAsStream(path+ File.separator+fileName);
 
 		try {
-	    	File file = new File(path+ File.separator+fileName);
-	    	FileInputStream inputStream = new FileInputStream(file);
+//	    	File file = new File(path+ File.separator+fileName);
+	    	FileInputStream inputStream = new FileInputStream(new File(path+ File.separator+fileName));
 	    	bean = XMLParseUtil.readLoginSuccess(inputStream);
 		} catch (Exception e) {
 			Log.i(LOG_TAG,e.getMessage());
@@ -86,8 +104,6 @@ public class PapersActivity extends BaseActivity {
 		
 		spinnerText3 = (TextView) this.findViewById(R.id.spinnerText3);
 		spinnerText3.setText("Choose 1 from below paper list:");
-		
-		
 		
 		spinner = (Spinner) findViewById(R.id.Spinner01);
 		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,exams);
