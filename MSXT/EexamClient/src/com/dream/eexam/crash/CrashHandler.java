@@ -129,8 +129,8 @@ public class CrashHandler implements UncaughtExceptionHandler {
 		Log.e(TAG, crashInfoString);
 		
 		//保存到手机
-//		String fileName = saveCrashInfo2File(crashInfoString);
-//		if(fileName!=null) Log.e(TAG, "Log file name : "+fileName);
+		String fileName = saveCrashInfo2File(crashInfoString);
+		if(fileName!=null) Log.e(TAG, "Log file name : "+fileName);
 		
 		//发送到邮箱
 //		sendCrashInfo2Mail(crashInfoString);
