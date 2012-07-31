@@ -1,5 +1,7 @@
 package com.dream.eexam.paper;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +58,7 @@ public class MultiChoices extends BaseQuestion {
 	public void setHeader(){
 		//set question text
 		
-		remainingTime.setText("Time Remaining: "+String.valueOf(paperBean.getTime())+" mins");
+		remainingTime.setText("Time Remaining: "+String.valueOf(detailBean.getTime())+" mins");
 
 		catalogsTV.setText(questionType);
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
@@ -90,8 +92,9 @@ public class MultiChoices extends BaseQuestion {
         setHeader();
 		
         //get question
-        InputStream inputStream =  MultiChoices.class.getClassLoader().getResourceAsStream("sample_paper.xml");
+        FileInputStream inputStream = null;
         try {
+        	inputStream = new FileInputStream(new File(downloadExamFilePath+ File.separator+downloadExamFile));
 			question = XMLParseUtil.readQuestion(inputStream,currentCatalogIndex, currentQuestionIndex);
 		} catch (Exception e) {
 			Log.i(LOG_TAG, e.getMessage());
@@ -99,7 +102,7 @@ public class MultiChoices extends BaseQuestion {
         
         //set question text
         questionTV = (TextView)findViewById(R.id.questionTV);
-        questionTV.setText(question.getQuestionDesc());
+        questionTV.setText(question.getContent());
         questionTV.setTextColor(Color.BLACK);	
 
         //set List
@@ -198,10 +201,10 @@ public class MultiChoices extends BaseQuestion {
 			Intent intent = new Intent();
 			intent.putExtra("ccIndex", String.valueOf(currentCatalogIndex));
 			intent.putExtra("cqIndex", String.valueOf(currentQuestionIndex+direction));
-			if("Choice:M".equals(questionType)){
+			if(questionTypeM.equals(questionType)){
 				intent.putExtra("questionType", "Multi Select");
 				intent.setClass( getBaseContext(), MultiChoices.class);
-			}else if("Choice:S".equals(questionType)){
+			}else if(questionTypeS.equals(questionType)){
 				intent.putExtra("questionType", "Single Select");
 				intent.setClass( getBaseContext(), SingleChoices.class);
 			}

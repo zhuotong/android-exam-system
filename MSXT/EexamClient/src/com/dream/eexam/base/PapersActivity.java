@@ -2,23 +2,23 @@ package com.dream.eexam.base;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
-
 import com.dream.eexam.model.ExamBaseBean;
 import com.dream.eexam.model.InterviewBean;
-import com.dream.eexam.model.Paper;
-import com.dream.eexam.model.Question;
-import com.dream.eexam.model.QuestionProgress;
+import com.dream.eexam.model.LoginResultBean;
 import com.dream.eexam.paper.MultiChoices;
 import com.dream.eexam.paper.SingleChoices;
-import com.dream.eexam.util.ExamListDB;
+import com.dream.eexam.util.SystemConfig;
 import com.dream.eexam.util.XMLParseUtil;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -38,57 +38,50 @@ public class PapersActivity extends BaseActivity {
 	private TextView examDesc = null;
 	private Spinner spinner;
 	private Button startBtn;
-//	private SharedPreferences sharedPreferences;
 	
 	//data
-	InterviewBean bean = new InterviewBean();
+	LoginResultBean loginResultBean = new LoginResultBean();
+	List<ExamBaseBean> examList = null;
+	String conversation = null;
 	String[] exams = null;
-	private ArrayAdapter<String> adapter;
+	ArrayAdapter<String> adapter;
+	String examIdString = null;
+	Context mContext;
+	
+	String downloadURL = null;
+	String downloadExamFile = null;
+	String downloadExamFilePath = null;
+	
+	String questionType = null;
+	String questionTypeS = null;
+	String questionTypeM = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		Log.i(LOG_TAG,"onCreate()...");
+		mContext = getApplicationContext();
 		
 		setContentView(R.layout.papers);
 		
+		questionTypeM = SystemConfig.getInstance().getPropertyValue("Question_Type_Multi_Select");
+		questionTypeS = SystemConfig.getInstance().getPropertyValue("Question_Type_Single_Select");
+		
 		//get demoSessionStr and save to string array
 		Bundle bundle = this.getIntent().getExtras();
-//		String interviewer  = bundle.getString("interviewer");
-//		String jobtitle  = bundle.getString("jobtitle");
-//		Log.i(LOG_TAG,"interviewer:"+interviewer);
-//		Log.i(LOG_TAG,"jobtitle:"+jobtitle);
-//		bean.setInterviewer(interviewer);
-//		bean.setJobtitle(jobtitle);
+		String loginResultFile  = bundle.getString("loginResultFile");
+		String loginResultFilePath  = bundle.getString("loginResultFilePath");
 		
-//		List<ExamBaseBean> examList = new ArrayList<ExamBaseBean>();
-//		//get data from database		
-//		ExamListDB db = new ExamListDB(this);
-//    	db.open();
-//    	Cursor cursor =  db.fetchAllExamBases();
-//    	while(!cursor.moveToNext()){
-//    		examList.add(new ExamBaseBean(cursor.getString(0),cursor.getString(1),cursor.getString(2)));
-//    	}
-//    	db.close();
-//    	bean.setExamList(examList);
-    	
-		String path  = bundle.getString("path");
-		String fileName  = bundle.getString("fileName");
-		
-		//load paper List
-//	    InputStream inputStream =  PapersActivity.class.getClassLoader().getResourceAsStream("sample_login_success.xml");
-//	    InputStream inputStream =  PapersActivity.class.getClassLoader().getResourceAsStream(path+ File.separator+fileName);
-
 		try {
-//	    	File file = new File(path+ File.separator+fileName);
-	    	FileInputStream inputStream = new FileInputStream(new File(path+ File.separator+fileName));
-	    	bean = XMLParseUtil.readLoginSuccess(inputStream);
+	    	FileInputStream inputStream = new FileInputStream(new File(loginResultFilePath+ File.separator+loginResultFile));
+	    	loginResultBean = XMLParseUtil.readLoginResult(inputStream);
+	    	
 		} catch (Exception e) {
 			Log.i(LOG_TAG,e.getMessage());
 		}
 		
-		List<ExamBaseBean> examList = bean.getExamList();
+		conversation = loginResultBean.getConversation();
+		examList = loginResultBean.getExamList();
 		if(examList!=null&&examList.size()>0){
 			exams = new String[examList.size()];
 			for(int i=0;i<examList.size();i++){
@@ -112,41 +105,19 @@ public class PapersActivity extends BaseActivity {
 		spinner.setOnItemSelectedListener(new SpinnerSelectedListener());
 		spinner.setVisibility(View.VISIBLE);
 		
-//		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE); 
-		
 		examDesc = (TextView) this.findViewById(R.id.examDesc);
 		
 		startBtn = (Button) findViewById(R.id.startBtn);
 		startBtn.setText("Start");
 		startBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
-				
-				//todo download paper
-				
-				//get first question in paper
-				InputStream inputStream =  PapersActivity.class.getClassLoader().getResourceAsStream("sample_paper.xml");
-				String questionType = null;
-		        try {
-		        	questionType = XMLParseUtil.readQuestionType(inputStream,1,1);
-		        	inputStream.close();
-				} catch (Exception e) {
-					Log.i(LOG_TAG,e.getMessage());
-				}
-
-				//move question
-				Intent intent = new Intent();
-				intent.putExtra("ccIndex", String.valueOf(getccIndex()));
-				intent.putExtra("cqIndex", String.valueOf(getcqIndex()));
-				
-				if("Choice:M".equals(questionType)){
-					intent.putExtra("questionType", "Multi Select");
-					intent.setClass( getBaseContext(), MultiChoices.class);
-				}else if("Choice:S".equals(questionType)){
-					intent.putExtra("questionType", "Single Select");
-					intent.setClass( getBaseContext(), SingleChoices.class);
-				}
-				startActivity(intent);
-				
+				Log.i(LOG_TAG,"onClick()...");
+				downloadURL = SystemConfig.getInstance().getPropertyValue("Download_URL")+"conversation="+conversation;
+				downloadExamFile = SystemConfig.getInstance().getPropertyValue("Download_Exam");
+	        	downloadExamFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + "eExam";
+	        	
+				Log.i(LOG_TAG,"downloadURL:"+downloadURL);
+	        	new DownloadExamTask().execute(downloadURL);
 			}			
 		});
 	}
@@ -156,11 +127,76 @@ public class PapersActivity extends BaseActivity {
 			Log.i(LOG_TAG,"onItemSelected()...");
 			Log.i(LOG_TAG,"arg2="+String.valueOf(arg2));
 			
-			ExamBaseBean examBaseBean = bean.getExamList().get(arg2);
+			ExamBaseBean examBaseBean = loginResultBean.getExamList().get(arg2);
 			examDesc.setText(examBaseBean.getDesc());
+			examIdString = examBaseBean.getId();
+			
+			Log.i(LOG_TAG, "examIdString:"+examIdString);
 		}
 		public void onNothingSelected(AdapterView<?> arg0) {
+			Log.i(LOG_TAG,"onNothingSelected()...");
 		}
+	}
+	
+	private class DownloadExamTask extends AsyncTask<String, Void, String> {
+		ProgressDialog progressDialog;
+		
+		@Override
+		protected void onPreExecute() {
+			Log.i(LOG_TAG, "onPreExecute() called");
+			progressDialog = ProgressDialog.show(PapersActivity.this, null, "Download Exam data...", true, false); 
+		}
+		
+	    @Override
+	    protected String doInBackground(String... urls) {
+//	    	InputStream inputStream = downloadUrl(urls[0]);//get inputStream from server
+	    	InputStream inputStream = LoginActivity.class.getClassLoader().getResourceAsStream(downloadExamFile);
+	    	//save stream to file
+	    	try {
+				saveFile(downloadExamFilePath, downloadExamFile, inputStream2String(inputStream));
+			} catch (IOException e) {
+				Log.i(LOG_TAG,"IOException:" + e.getMessage());
+				return "failure";
+			}
+	        return "success";
+	    }
+	
+	    @Override
+	    protected void onPostExecute(String result) {
+			progressDialog.dismiss();
+			if("success".equals(result)){
+				//get first question in paper
+//				InputStream inputStream =  PapersActivity.class.getClassLoader().getResourceAsStream("sample_paper.xml");
+				FileInputStream inputStream;
+				try {
+					inputStream = new FileInputStream(new File(downloadExamFilePath+ File.separator+downloadExamFile));
+					questionType = XMLParseUtil.readQuestionType(inputStream,1,1);
+		        	inputStream.close();
+				} catch (FileNotFoundException e1) {
+					Log.i(LOG_TAG,"FileNotFoundException:" + e1.getMessage());
+				} catch (Exception e) {
+					Log.i(LOG_TAG,"Exception:" + e.getMessage());
+				}
+	
+				//move question
+				Intent intent = new Intent();
+				intent.putExtra("ccIndex", String.valueOf(getccIndex()));
+				intent.putExtra("cqIndex", String.valueOf(getcqIndex()));
+				
+				if(questionTypeM.equals(questionType)){
+					intent.putExtra("questionType", "Multi Select");
+					intent.setClass( getBaseContext(), MultiChoices.class);
+					startActivity(intent);
+				}else if(questionTypeS.equals(questionType)){
+					intent.putExtra("questionType", "Single Select");
+					intent.setClass( getBaseContext(), SingleChoices.class);
+					startActivity(intent);
+				}else{
+					ShowDialog("Invalid qeustion type:"+questionType);
+				}
+				   					
+			}
+	    }
 	}
 	
 }

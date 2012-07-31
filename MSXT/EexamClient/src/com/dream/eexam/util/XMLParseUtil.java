@@ -8,8 +8,9 @@ import org.xmlpull.v1.XmlPullParser;
 import com.dream.eexam.model.CatalogBean;
 import com.dream.eexam.model.Choice;
 import com.dream.eexam.model.ExamBaseBean;
+import com.dream.eexam.model.ExamDetailBean;
 import com.dream.eexam.model.InterviewBean;
-import com.dream.eexam.model.Paper;
+import com.dream.eexam.model.LoginResultBean;
 import com.dream.eexam.model.PaperBean;
 import com.dream.eexam.model.Question;
 
@@ -20,7 +21,13 @@ public class XMLParseUtil {
 
 	public final static String LOG_TAG = "XMLParseUtil";
 	
-    public static String readLoginResult(InputStream inputStream) throws Exception{
+	/**
+	 * 
+	 * @param inputStream
+	 * @return
+	 * @throws Exception
+	 */
+    public static String readLoginResultStatus(InputStream inputStream) throws Exception{
 		Log.i(LOG_TAG, "readLoginResult()...");
 		XmlPullParser xmlpull = Xml.newPullParser();
 		xmlpull.setInput(inputStream, "utf-8");
@@ -46,20 +53,26 @@ public class XMLParseUtil {
 		return status;
 	}
     
-	public static InterviewBean readLoginSuccess(InputStream inputStream) throws Exception {
+    /**
+     * 
+     * @param inputStream
+     * @return
+     * @throws Exception
+     */
+	public static LoginResultBean readLoginResult(InputStream inputStream) throws Exception {
 
 		XmlPullParser xmlpull = Xml.newPullParser();
 		xmlpull.setInput(inputStream, "utf-8");
 		int eventCode = xmlpull.getEventType();
 
-		InterviewBean bean = null;
+		LoginResultBean bean = null;
 		List<ExamBaseBean> examList = null;
 		ExamBaseBean examBaseBean = null;
 		
 		while (eventCode != XmlPullParser.END_DOCUMENT) {
 			switch (eventCode) {
 				case XmlPullParser.START_DOCUMENT: {
-					bean = new InterviewBean();
+					bean = new LoginResultBean();
 					break;
 				}
 				case XmlPullParser.START_TAG: {
@@ -101,6 +114,8 @@ public class XMLParseUtil {
 	/**
 	 * 
 	 * @param inputStream
+	 * @param catalogIndex
+	 * @param questionIndex
 	 * @return
 	 * @throws Exception
 	 */
@@ -113,11 +128,13 @@ public class XMLParseUtil {
 		int eventCode = xmlpull.getEventType();
 
 		boolean isFoundCatalog = false;
+		boolean isFoundCatalogIndex = false;
 		boolean isFoundQuestion = false;
+		boolean isFoundQuestionIndex = false;
 		
 		boolean isGetQuestion = false;
 		Question question = null;
-		List<Choice> choicesList = new ArrayList<Choice>();
+		List<Choice> choicesList = null;
 		Choice choice = null;
 		
 		Integer lasLineInteger = 1;
@@ -128,28 +145,46 @@ public class XMLParseUtil {
 					break;
 				}
 				case XmlPullParser.START_TAG: {
-					if ("catalog".equals(xmlpull.getName())) {
-						String cIndex = xmlpull.getAttributeValue(0);
-						if(Integer.valueOf(cIndex) == catalogIndex){
-							isFoundCatalog = true;
+					if("catalog".equals(xmlpull.getName())){
+						isFoundCatalog = true;
+						break;
+					}else if(isFoundCatalog && !isFoundCatalogIndex){
+						if("index".equals(xmlpull.getName()) && Integer.valueOf(xmlpull.nextText()) == catalogIndex){
+							isFoundCatalogIndex = true;
+						}else{
+							isFoundCatalog = false;
 						}
 						break;
 					}
-					if(isFoundCatalog && "question".equals(xmlpull.getName())){
-						String qIndex = xmlpull.getAttributeValue(0);
-						if(Integer.valueOf(qIndex) == questionIndex){
-							isFoundQuestion = true;
+					
+					if(isFoundCatalogIndex && "question".equals(xmlpull.getName())){
+						isFoundQuestion = true;
+						break;
+					}else if(isFoundQuestion && !isFoundQuestionIndex){
+						if("index".equals(xmlpull.getName()) && Integer.valueOf(xmlpull.nextText()) == questionIndex){
+							isFoundQuestionIndex = true;
 							question = new Question();
-							question.setIndex(Integer.valueOf(qIndex));
+						}else{
+							isFoundQuestion = false;
 						}
 						break;
 					}
-					if (isFoundQuestion && question != null) {
-						if (("name".equals(xmlpull.getName()))) {
-							question.setQuestionDesc(xmlpull.nextText());
+					
+					if (question != null) {
+						//initial one Question
+						if (("index".equals(xmlpull.getName()))) {
+							question.setIndex(Integer.valueOf(xmlpull.nextText()));
+						} else if ("questionid".equals(xmlpull.getName())) {
+							question.setQuestionId(xmlpull.nextText());
 						} else if ("type".equals(xmlpull.getName())) {
 							question.setQuestionType(xmlpull.nextText());
-						} else if ("choice".equals(xmlpull.getName())) {
+						} else if ("score".equals(xmlpull.getName())) {
+							question.setScore(Integer.valueOf(xmlpull.nextText()));
+						} else if ("content".equals(xmlpull.getName())) {
+							question.setContent(xmlpull.getName());
+						} else if ("choices".equals(xmlpull.getName())) {
+							choicesList = new ArrayList<Choice>();
+						} else if (choicesList!=null && "choice".equals(xmlpull.getName())) {
 							choice = new Choice();
 						} else if (choice != null) {
 							if (("index".equals(xmlpull.getName()))) {
@@ -159,36 +194,112 @@ public class XMLParseUtil {
 							}else if (("content".equals(xmlpull.getName()))) {
 								choice.setChoiceContent(xmlpull.nextText());
 							}
-							break;
 						}
 						break;
 					}
 				}
 				case XmlPullParser.END_TAG: {
-					if ("choice".equals(xmlpull.getName()) && choice != null) {
+					if ("choice".equals(xmlpull.getName()) && choicesList != null) {
 						choicesList.add(choice);
-					}else if ("question".equals(xmlpull.getName()) && question != null) {
+					}else if ("choices".equals(xmlpull.getName()) && question != null) {
 						question.setChoices(choicesList);
+					}else if ("question".equals(xmlpull.getName()) && question != null) {
 						isGetQuestion = true;
 					}
 					break;
 				}
 			}
 			eventCode = xmlpull.next();
+			Log.i(LOG_TAG, xmlpull.getName());
 		}
+		Log.i(LOG_TAG, "readQuestion() end.");
 		
 		return question;
 	}
 
-	public static PaperBean readPaperBean(InputStream inputStream) throws Exception{
-		Log.i(LOG_TAG, "readPaperBean()...");
+	/**
+	 * 
+	 * @param inputStream
+	 * @param catalogIndex
+	 * @param questionIndex
+	 * @return
+	 * @throws Exception
+	 */
+	public static String readQuestionType(InputStream inputStream,Integer catalogIndex,Integer questionIndex) throws Exception{
+		Log.i(LOG_TAG, "readQuestionType()...");
+		XmlPullParser xmlpull = Xml.newPullParser();
+		xmlpull.setInput(inputStream, "utf-8");
+		int eventCode = xmlpull.getEventType();
+
+		boolean isFoundCatalog = false;
+		boolean isFoundCatalogIndex = false;
+		boolean isFoundQuestion = false;
+		boolean isFoundQuestionIndex = false;
+		
+		String questiontype = null;
+	    Integer i = 1;
+		while (eventCode != XmlPullParser.END_DOCUMENT && questiontype==null ) {
+			Log.i(LOG_TAG, String.valueOf(i++)+":"+ String.valueOf(isFoundCatalog) +","+ String.valueOf(isFoundCatalogIndex) +","+ String.valueOf(isFoundQuestion) +","+ String.valueOf(isFoundQuestionIndex) );
+			switch (eventCode) {
+				case XmlPullParser.START_DOCUMENT: {
+					break;
+				}
+				case XmlPullParser.START_TAG: {
+					if("catalog".equals(xmlpull.getName())){
+						isFoundCatalog = true;
+						break;
+					}else if(isFoundCatalog && !isFoundCatalogIndex){
+						if("index".equals(xmlpull.getName()) && Integer.valueOf(xmlpull.nextText()) == catalogIndex){
+							isFoundCatalogIndex = true;
+						}else{
+							isFoundCatalog = false;
+						}
+						break;
+					}
+					
+					if(isFoundCatalogIndex && "question".equals(xmlpull.getName())){
+						isFoundQuestion = true;
+						break;
+					}else if(isFoundQuestion && !isFoundQuestionIndex){
+						if("index".equals(xmlpull.getName()) && Integer.valueOf(xmlpull.nextText()) == questionIndex){
+							isFoundQuestionIndex = true;
+						}else{
+							isFoundQuestion = false;
+						}
+						break;
+					}
+					
+					if(isFoundQuestionIndex && "type".equals(xmlpull.getName())){
+						questiontype = xmlpull.nextText();
+						break;
+					}
+					
+				}
+				case XmlPullParser.END_TAG: {
+					break;
+				}
+			}
+			eventCode = xmlpull.next();
+			
+		}
+		return questiontype;
+	}
+
+	/**
+	 * 
+	 * @param inputStream
+	 * @return
+	 * @throws Exception
+	 */
+	public static ExamDetailBean readExamination(InputStream inputStream) throws Exception{
+		Log.i(LOG_TAG, "readExamination()...");
 		
 		XmlPullParser xmlpull = Xml.newPullParser();
 		xmlpull.setInput(inputStream, "utf-8");
 		int eventCode = xmlpull.getEventType();
 		
-		PaperBean paperBean = null;
-		List<CatalogBean> catalogBeans = null;
+		ExamDetailBean detailBean = null;
+		List<CatalogBean> catalogs = null;
 		CatalogBean catalogBean = null;
 		List<Question> questions = null;
 		Question question = null;
@@ -201,108 +312,83 @@ public class XMLParseUtil {
 					break;
 				}
 				case XmlPullParser.START_TAG: {
-					if ("paper".equals(xmlpull.getName())) {
-						paperBean = new PaperBean();
-					} else if ("desc".equals(xmlpull.getName())&& paperBean != null) {
-						paperBean.setDesc(xmlpull.nextText());
-					} else if ("time".equals(xmlpull.getName())&& paperBean != null) {
-						paperBean.setTime(Integer.valueOf(xmlpull.nextText()));
-					} else if ("catalogs".equals(xmlpull.getName())) {
-						catalogBeans = new ArrayList<CatalogBean>();
-					} else if ("catalog".equals(xmlpull.getName())) {
-						catalogBean = new CatalogBean();
-						catalogBean.setId(Integer.valueOf(xmlpull.getAttributeValue(0)));
-					} else if ("catalogdesc".equals(xmlpull.getName())) {
-						catalogBean.setDesc(xmlpull.nextText());
-					} else if ("questions".equals(xmlpull.getName())) {
-						questions = new ArrayList<Question>();
-					} else if ("question".equals(xmlpull.getName())) {
-						question = new Question();
-						question.setIndex(Integer.valueOf(xmlpull.getAttributeValue(0)));
-						choices = new ArrayList<Choice>();
-					} else if ("type".equals(xmlpull.getName())&& question != null) {
-						question.setQuestionType(xmlpull.nextText());
-					} else if ("name".equals(xmlpull.getName())&& question != null) {
-						question.setQuestionDesc(xmlpull.nextText());
-					} else if ("choice".equals(xmlpull.getName())) {
-						choice = new Choice();
-					} else if ("index".equals(xmlpull.getName())&& choice != null) {
-						choice.setChoiceIndex(Integer.valueOf(xmlpull.nextText()));
-					} else if ("label".equals(xmlpull.getName())&& choice != null) {
-						choice.setChoiceLabel(xmlpull.nextText());
-					} else if ("content".equals(xmlpull.getName())&& choice != null) {
-						choice.setChoiceContent(xmlpull.nextText());
+					if ("examination".equals(xmlpull.getName())) {//ExamDetailBean initial 
+						detailBean = new ExamDetailBean();
+					} else if( detailBean!=null){
+						if ("examinationid".equals(xmlpull.getName())&& detailBean != null) {//ExamDetailBean set examinationid
+							detailBean.setExaminationid(xmlpull.nextText()); 
+						} else if ("name".equals(xmlpull.getName())&& detailBean != null) {//ExamDetailBean set name
+							detailBean.setName(xmlpull.nextText());
+						} else if ("time".equals(xmlpull.getName())&& detailBean != null) {//ExamDetailBean set time
+							detailBean.setTime(Integer.valueOf(xmlpull.nextText()));
+						} else if ("confuse".equals(xmlpull.getName())&& detailBean != null) {//ExamDetailBean set name
+							detailBean.setConfuse(xmlpull.nextText());
+						} else if ("catalogs".equals(xmlpull.getName())) {//List catalogs initial 
+							catalogs = new ArrayList<CatalogBean>();
+						} else if (catalogs!= null){
+							if ("catalog".equals(xmlpull.getName())) {//CatalogBean initial 
+								catalogBean = new CatalogBean();
+							} else if(catalogBean!=null){
+								if ("index".equals(xmlpull.getName())) {//CatalogBean set index 
+									catalogBean.setIndex(Integer.valueOf(xmlpull.nextText()));
+								} else if ("catalogdesc".equals(xmlpull.getName())) {//CatalogBean set catalogdesc 
+									catalogBean.setDesc(xmlpull.nextText());
+								} else if ("questions".equals(xmlpull.getName())) {//List questions initial 
+									questions = new ArrayList<Question>();
+								} else if(questions!=null){
+								 	if ("question".equals(xmlpull.getName())) {//Question initial 
+										question = new Question();
+									} else if ("index".equals(xmlpull.getName())&& question != null) {//Question set type
+										question.setIndex(Integer.valueOf(xmlpull.nextText()));
+									} else if ("questionid".equals(xmlpull.getName())&& question != null) {//Question set name
+										question.setQuestionId(xmlpull.nextText());
+									} else if ("type".equals(xmlpull.getName())&& question != null) {//Question set name
+										question.setQuestionType(xmlpull.nextText());
+									} else if ("score".equals(xmlpull.getName())&& question != null) {//Question set name
+										question.setScore(Integer.valueOf(xmlpull.nextText()));
+									} else if ("content".equals(xmlpull.getName())&& question != null) {//Question set name
+										question.setContent(xmlpull.nextText());
+									} else if ("choices".equals(xmlpull.getName())) {//List choices initial
+										choices = new ArrayList<Choice>();
+									} else if(choices!=null){
+										if ("choice".equals(xmlpull.getName())) {//Choice initial
+											choice = new Choice();
+										} else if ("index".equals(xmlpull.getName())&& choice != null) {//Choice set index
+											choice.setChoiceIndex(Integer.valueOf(xmlpull.nextText()));
+										} else if ("label".equals(xmlpull.getName())&& choice != null) {//Choice set label
+											choice.setChoiceLabel(xmlpull.nextText());
+										} else if ("content".equals(xmlpull.getName())&& choice != null) {//Choice set content
+											choice.setChoiceContent(xmlpull.nextText());
+										}
+									}
+								}
+							}
+						}
 					}
-//					Log.i(LOG_TAG,xmlpull.getName()+""+xmlpull.nextText());
+					
 					break;
 					
 				}
 				case XmlPullParser.END_TAG: {
-					if ("catalogs".equals(xmlpull.getName())) {
-						paperBean.setCatalogBeans(catalogBeans);
-					}else if ("catalog".equals(xmlpull.getName())) {
+					if ("catalogs".equals(xmlpull.getName())) {//Set catalogs
+						detailBean.setCatalogs(catalogs);
+					} else if ("catalog".equals(xmlpull.getName())) {//Add catalog
+						catalogs.add(catalogBean);
+					} else if ("questions".equals(xmlpull.getName()) && question != null) {//Set questions
 						catalogBean.setQuestions(questions);
-						catalogBeans.add(catalogBean);
-					}else if ("question".equals(xmlpull.getName()) && question !=null) {
-						question.setChoices(choices);
+					} else if ("question".equals(xmlpull.getName())&& question != null) {//Add question
 						questions.add(question);
-					} else if ("choice".equals(xmlpull.getName())&& choice!=null) {
+					} else if ("choices".equals(xmlpull.getName()) && choice != null) {//Set choices
+						question.setChoices(choices);
+					} else if ("choice".equals(xmlpull.getName()) && choice != null) {//Add choice
 						choices.add(choice);
-					} 
-//					Log.i(LOG_TAG,xmlpull.getName());
-					break;
-				}
-			}
-			eventCode = xmlpull.next();
-		}
-		
-		return paperBean;
-	}
-
-	public static String readQuestionType(InputStream inputStream,Integer catalogIndex,Integer questionIndex) throws Exception{
-		
-		Log.i(LOG_TAG, "readQuestionType()...");
-		
-		XmlPullParser xmlpull = Xml.newPullParser();
-		xmlpull.setInput(inputStream, "utf-8");
-		int eventCode = xmlpull.getEventType();
-
-		boolean isFoundCatalog = false;
-		boolean isFoundQuestion = false;
-		String questiontype = null;
-		
-	    Integer lasLineInteger = 1;
-		while (eventCode != XmlPullParser.END_DOCUMENT && questiontype==null ) {
-			Log.i(LOG_TAG, "Line "+String.valueOf(lasLineInteger++));
-			switch (eventCode) {
-				case XmlPullParser.START_DOCUMENT: {
-					break;
-				}
-				case XmlPullParser.START_TAG: {
-					if("catalog".equals(xmlpull.getName())){
-						String qIndex = xmlpull.getAttributeValue(0);
-						if(Integer.valueOf(qIndex) == catalogIndex){
-							isFoundCatalog = true;
-						}
-					}else if("question".equals(xmlpull.getName())&& isFoundCatalog){
-						String qIndex = xmlpull.getAttributeValue(0);
-						if(Integer.valueOf(qIndex) == questionIndex){
-							isFoundQuestion = true;
-						}
-					}else if("type".equals(xmlpull.getName()) && isFoundQuestion){
-						questiontype = xmlpull.nextText();
 					}
 					break;
 				}
-				case XmlPullParser.END_TAG: {
-					break;
-				}
 			}
 			eventCode = xmlpull.next();
 		}
 		
-		Log.i(LOG_TAG, String.valueOf(lasLineInteger));
-		
-		return questiontype;
+		return detailBean;
 	}
 }

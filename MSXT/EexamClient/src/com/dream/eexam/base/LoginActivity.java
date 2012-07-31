@@ -1,21 +1,12 @@
 package com.dream.eexam.base;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.List;
-
-import com.dream.eexam.model.ExamBaseBean;
 import com.dream.eexam.model.InterviewBean;
-import com.dream.eexam.util.ExamListDB;
 import com.dream.eexam.util.SystemConfig;
 import com.dream.eexam.util.XMLParseUtil;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -31,18 +22,16 @@ public class LoginActivity extends BaseActivity {
 
 	public final static String LOG_TAG = "LoginActivity";
 	
-	private EditText idEt = null;
-	private EditText passwordET = null;
-	private Button loginBtn = null;
-	
-	private String requestURL = null;
-	private StringBuffer responseText = new StringBuffer();
-	
-	private String path;
-	private String fileName;
-	private String status;
-//	private boolean isSuccess = false;
+	EditText idEt = null;
+	EditText passwordET = null;
+	Button loginBtn = null;
+//	StringBuffer responseText = new StringBuffer();
+
 	InterviewBean bean;
+	String loginURL = null;
+	String loginResultFile = null;
+	String loginResultFilePath = null;
+	String loginStatus;
 	
 	private Context mContext;
 	
@@ -53,10 +42,8 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         mContext = getApplicationContext();
- 
 		idEt = (EditText) this.findViewById(R.id.idEt);
 		passwordET = (EditText) this.findViewById(R.id.passwordET);
-		
 		loginBtn = (Button) this.findViewById(R.id.loginBtn);
 		loginBtn.setOnClickListener(loginListener);
     }
@@ -66,113 +53,13 @@ public class LoginActivity extends BaseActivity {
         public void onClick(View v) {  
         	String id = idEt.getText().toString();
         	String password = passwordET.getText().toString();
-        	responseText.setLength(0);
-        	requestURL = SystemConfig.getInstance().getPropertyValue("Server_URL")+"/msxt/runinterview/loginAction/login?loginName="+id+"&loginPassword="+password;
-        	new DownloadXmlTask().execute(requestURL);
+        	loginURL = SystemConfig.getInstance().getPropertyValue("Login_URL")+"loginName="+id+"&loginPassword="+password;
+        	loginResultFile = SystemConfig.getInstance().getPropertyValue("Login_Result");
+        	loginResultFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + "eExam";
+        	new DownloadXmlTask().execute(loginURL);
         }  
     };
     
-    private void loadXmlFromNetwork(String urlString){
-    	Log.i(LOG_TAG,"loadXmlFromNetwork...");
-    	Log.i(LOG_TAG,"urlString:"+urlString);
-    	InputStream inputStream = null;
-        try {
-        	//get stream
-//        	inputStream = downloadUrl(urlString);
-            inputStream = LoginActivity.class.getClassLoader().getResourceAsStream("login_result.xml");
-//            bean = XMLParseUtil.readLoginSuccess(inputStream);
-            
-            /*if("success".equals(bean.getStatus())){
-            	List<ExamBaseBean> examList = bean.getExamList();
-            	
-            	ExamListDB db = new ExamListDB(this);
-            	db.open();
-            	for(ExamBaseBean baseBean:examList){
-            		String id = baseBean.getId();
-            		String name = baseBean.getName();
-            		String desc = baseBean.getDesc();
-            		db.createExamBase(id, name, desc);
-            	}
-            	db.close();
-            }*/
-            
-        	path = Environment.getExternalStorageDirectory().getPath()+File.separator +"eExam";  
-        	fileName = "login_result.xml";  
-//        	responseText.append(inputStream2String(inputStream));
-        	
-        	//save stream to file
-        	saveFile(path, fileName, inputStream2String(inputStream));
-        	inputStream.close();
-
-        	//get stream from stream
-//        	InputStream inputStream2 =  PapersActivity.class.getClassLoader().getResourceAsStream(path+ File.separator+fileName);
-        	FileInputStream inputStream2 = new FileInputStream(new File(path+ File.separator+fileName));
-            status = XMLParseUtil.readLoginResult(inputStream2);
-            inputStream2.close();
-        } catch (IOException e) {
-        	Log.i(LOG_TAG,"IOException:" + e.getMessage());
-		} catch (Exception e) {
-			Log.i(LOG_TAG,"Exception:" + e.getMessage());
-		} finally {
-
-        }
-    }
-    
-    private InputStream downloadUrl(String urlString){
-        HttpURLConnection conn;
-        InputStream stream = null;
-		try {
-			URL url = new URL(urlString);
-			conn = (HttpURLConnection) url.openConnection();
-	        conn.setReadTimeout(10000 /* milliseconds */);
-	        conn.setConnectTimeout(15000 /* milliseconds */);
-	        conn.setRequestMethod("GET");
-	        conn.setDoInput(true);
-	        
-	        // Starts the query
-	        conn.connect();
-	        stream = conn.getInputStream();
-		} catch (IOException e) {
-			Log.i(LOG_TAG,"IOException:" + e.getMessage());
-		}
-
-        return stream;
-    }
-    
-	public static String inputStream2String(InputStream is) throws IOException {
-		Log.i(LOG_TAG,"inputStream2String...");
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		int i = -1;
-		while ((i = is.read()) != -1) {
-			baos.write(i);
-//			Log.i(LOG_TAG,String.valueOf(i));
-		}
-		return baos.toString();
-	}
-	
-	private void saveFile(String path, String fileName,String content) {
-		Log.i(LOG_TAG,"saveFile...");
-		Log.i(LOG_TAG,"path:"+path);
-		Log.i(LOG_TAG,"fileName:"+fileName);
-		Log.i(LOG_TAG,"content:"+content);
-		try {
-	        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {  
-	            File dir = new File(path);  
-	            if (!dir.exists()) {  
-	                dir.mkdirs();  
-	            } else{ 
-//	            	dir.delete();
-//	            	dir.mkdirs();
-	            }
-	            FileOutputStream fos = new FileOutputStream(path + File.separator + fileName);  
-	            fos.write(content.getBytes());  
-	            fos.close();  
-	        }  
-		} catch (Exception e) {
-			Log.e(LOG_TAG, "an error occured while writing file...", e);
-		}
-		Log.i(LOG_TAG,"saveFile end.");
-	}
     
     private class DownloadXmlTask extends AsyncTask<String, Void, String> {
     	ProgressDialog progressDialog;
@@ -184,15 +71,23 @@ public class LoginActivity extends BaseActivity {
     	}
     	
         @Override
-        protected String doInBackground(String... urls) {
-             loadXmlFromNetwork(urls[0]);
-             
-/*             if(!isSuccess){
-            	 progressDialog.dismiss();
-            	 this.cancel(true);
-             }*/
-             return null;
-        }
+		protected String doInBackground(String... urls) {
+//			InputStream inputStream = downloadUrl(urls[0]);// get inputStream// from server
+        	InputStream inputStream = LoginActivity.class.getClassLoader().getResourceAsStream(loginResultFile);
+			try {
+				//save login result to local
+				saveFile(loginResultFilePath, loginResultFile, inputStream2String(inputStream));
+				//read login result from local
+				FileInputStream inputStream2 = new FileInputStream(new File(loginResultFilePath + File.separator + loginResultFile));
+				loginStatus = XMLParseUtil.readLoginResultStatus(inputStream2);
+				inputStream2.close();
+			} catch (IOException e) {
+				Log.i(LOG_TAG,e.getMessage());
+			} catch (Exception e) {
+				Log.i(LOG_TAG,e.getMessage());
+			}
+			return null;
+		}
 
         @Override
         protected void onPostExecute(String result) {
@@ -202,16 +97,14 @@ public class LoginActivity extends BaseActivity {
         	}else{
         		ShowDialog("No return data!");
         	}*/
-        	
-        	 if("success".equals(status)){
+        	if("success".equals(loginStatus)){
     			Intent intent = new Intent();
-    			intent.putExtra("path", path);
-    			intent.putExtra("fileName", fileName);
+    			intent.putExtra("loginResultFile", loginResultFile);
+    			intent.putExtra("loginResultFilePath", loginResultFilePath);
+//    			intent.putExtra("conversation", bean.getConversation());
 //    			intent.putExtra("interviewer", bean.getInterviewer());
 //    			intent.putExtra("jobtitle", bean.getJobtitle());
     			intent.setClass( mContext, PapersActivity.class);
-    			
-    			
     			startActivity(intent);        		
         	}else{
         		ShowDialog("No return data!");

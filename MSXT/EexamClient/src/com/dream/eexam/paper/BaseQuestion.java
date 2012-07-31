@@ -1,5 +1,7 @@
 package com.dream.eexam.paper;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +11,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,8 +24,10 @@ import com.dream.eexam.base.BaseActivity;
 import com.dream.eexam.base.GroupAdapter;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.CatalogBean;
+import com.dream.eexam.model.ExamDetailBean;
 import com.dream.eexam.model.PaperBean;
 import com.dream.eexam.util.DatabaseUtil;
+import com.dream.eexam.util.SystemConfig;
 import com.dream.eexam.util.XMLParseUtil;
 
 public class BaseQuestion extends BaseActivity{
@@ -44,7 +49,9 @@ public class BaseQuestion extends BaseActivity{
 	protected Integer currentCatalogIndex;//current catalog index
 	protected Integer currentQuestionIndex;//current question index
 	
-	protected PaperBean paperBean;//paperBean
+//	protected PaperBean paperBean;//paperBean
+	protected ExamDetailBean detailBean;//paperBean
+	
 	protected List<CatalogBean> cataLogList = new ArrayList<CatalogBean>();//cataLogList
 	protected List<String> catalogNames = new ArrayList<String>();//catalog names
 
@@ -54,6 +61,12 @@ public class BaseQuestion extends BaseActivity{
 	
 	protected StringBuffer answerString = new StringBuffer();//answer ids
 	protected Context mContext;
+	
+	protected String downloadExamFile = null;
+	protected String downloadExamFilePath = null;
+	
+	protected String questionTypeM;
+	protected String questionTypeS;
 	
     public void loadAnswer(){
     	Log.i(LOG_TAG, "loadAnswer()...");
@@ -91,6 +104,9 @@ public class BaseQuestion extends BaseActivity{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		
+		questionTypeM = SystemConfig.getInstance().getPropertyValue("Question_Type_Multi_Select");
+		questionTypeS = SystemConfig.getInstance().getPropertyValue("Question_Type_Single_Select");
+		
 		//get demoSessionStr and save to string array
 		Bundle bundle = this.getIntent().getExtras();
 		String questionType  = bundle.getString("questionType");
@@ -108,7 +124,7 @@ public class BaseQuestion extends BaseActivity{
 		}
 		saveccIndexcqIndex(Integer.valueOf(cqIndex),Integer.valueOf(cqIndex));
 		
-        inputStream =  BaseQuestion.class.getClassLoader().getResourceAsStream("sample_paper.xml");
+        /*inputStream =  BaseQuestion.class.getClassLoader().getResourceAsStream("sample_paper.xml");
         try {
         	//get paperBean
         	paperBean = XMLParseUtil.readPaperBean(inputStream);
@@ -116,10 +132,21 @@ public class BaseQuestion extends BaseActivity{
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}*/
+		
+		downloadExamFile = SystemConfig.getInstance().getPropertyValue("Login_Result");
+		downloadExamFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + "eExam";
+    	
+		try {
+			
+	    	FileInputStream inputStream = new FileInputStream(new File(downloadExamFilePath+ File.separator+downloadExamFile));
+	    	detailBean = XMLParseUtil.readExamination(inputStream);
+		} catch (Exception e) {
+			Log.i(LOG_TAG,e.getMessage());
 		}
 		
 		//set cataLogList
-		cataLogList = paperBean.getCatalogBeans();
+		cataLogList = detailBean.getCatalogs();
 		
 		//set groups
 		for(CatalogBean bean: cataLogList){
@@ -238,10 +265,10 @@ public class BaseQuestion extends BaseActivity{
 				Intent intent = new Intent();
 				intent.putExtra("ccIndex", String.valueOf(position+1));
 				intent.putExtra("cqIndex", String.valueOf(1));
-				if("Choice:M".equals(questionType)){
+				if(questionTypeM.equals(questionType)){
 					intent.putExtra("questionType", "Multi Select");
 					intent.setClass( mContext, MultiChoices.class);
-				}else if("Choice:S".equals(questionType)){
+				}else if(questionTypeS.equals(questionType)){
 					intent.putExtra("questionType", "Single Select");
 					intent.setClass( mContext, SingleChoices.class);
 				}else{

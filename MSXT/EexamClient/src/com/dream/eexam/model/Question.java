@@ -4,11 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
+	private String questionId;
 	private Integer index;
-	private String questionType;//0 is single, 1 is multi
-	private String questionDesc;
+	private String questionType;
+	private Integer score;
+//	private String questionDesc;
+	private String content;
 	private List<Choice> choices = new ArrayList<Choice>();
 	
+	public String getQuestionId() {
+		return questionId;
+	}
+	public void setQuestionId(String questionId) {
+		this.questionId = questionId;
+	}
 	public Integer getIndex() {
 		return index;
 	}
@@ -22,13 +31,26 @@ public class Question {
 	public void setQuestionType(String questionType) {
 		this.questionType = questionType;
 	}
-	public String getQuestionDesc() {
-		return questionDesc;
-	}
-	public void setQuestionDesc(String questionDesc) {
-		this.questionDesc = questionDesc;
-	}
 	
+	public Integer getScore() {
+		return score;
+	}
+	public void setScore(Integer score) {
+		this.score = score;
+	}
+//	public String getQuestionDesc() {
+//		return questionDesc;
+//	}
+//	public void setQuestionDesc(String questionDesc) {
+//		this.questionDesc = questionDesc;
+//	}
+	
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
 	public List<Choice> getChoices() {
 		return choices;
 	}
@@ -40,26 +62,5 @@ public class Question {
 	public Question() {
 		super();
 	}
-	
-	public Question(Integer index, String questionType, String questionDesc) {
-		super();
-		this.index = index;
-		this.questionType = questionType;
-		this.questionDesc = questionDesc;
-	}
-	
-	public Question(Integer index, String questionType, String questionDesc,
-			List<Choice> choices) {
-		super();
-		this.index = index;
-		this.questionType = questionType;
-		this.questionDesc = questionDesc;
-		this.choices = choices;
-	}
-	
-	
-
-	
-	
 	
 }
