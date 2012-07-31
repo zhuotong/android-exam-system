@@ -1,7 +1,5 @@
 package com.dream.eexam.paper;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,7 +41,7 @@ public class MultiChoices extends BaseQuestion {
 	Button nextBtn;
 	
 	//data statement
-	Question question;	
+//	Question question;	
 	MyListAdapter adapter;
 	List<String> listItemID = new ArrayList<String>();
 	Integer indexInExam;
@@ -60,7 +58,7 @@ public class MultiChoices extends BaseQuestion {
 		
 		remainingTime.setText("Time Remaining: "+String.valueOf(detailBean.getTime())+" mins");
 
-		catalogsTV.setText(questionType);
+		catalogsTV.setText(detailBean.getQuestionByCidQid(currentCatalogIndex));
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -91,15 +89,6 @@ public class MultiChoices extends BaseQuestion {
         loadAnswer();
         setHeader();
 		
-        //get question
-        FileInputStream inputStream = null;
-        try {
-        	inputStream = new FileInputStream(new File(downloadExamFilePath+ File.separator+downloadExamFile));
-			question = XMLParseUtil.readQuestion(inputStream,currentCatalogIndex, currentQuestionIndex);
-		} catch (Exception e) {
-			Log.i(LOG_TAG, e.getMessage());
-		}
-        
         //set question text
         questionTV = (TextView)findViewById(R.id.questionTV);
         questionTV.setText(question.getContent());
@@ -187,7 +176,7 @@ public class MultiChoices extends BaseQuestion {
     public void gotoNewQuestion(){
     	Log.i(LOG_TAG, "gotoNewQuestion()...");
     	
-    	InputStream inputStream =  MultiChoices.class.getClassLoader().getResourceAsStream("sample_paper.xml");
+    	InputStream inputStream =  getExamStream();
 		String questionType = null;
 		try {
 			 questionType = XMLParseUtil.readQuestionType(inputStream,currentCatalogIndex,currentQuestionIndex+direction);

@@ -127,10 +127,12 @@ public class XMLParseUtil {
 		xmlpull.setInput(inputStream, "utf-8");
 		int eventCode = xmlpull.getEventType();
 
-		boolean isFoundCatalog = false;
-		boolean isFoundCatalogIndex = false;
-		boolean isFoundQuestion = false;
-		boolean isFoundQuestionIndex = false;
+//		boolean isFoundCatalog = false;
+//		boolean isFoundCatalogIndex = false;
+//		boolean isFoundQuestion = false;
+//		boolean isFoundQuestionIndex = false;
+		
+		int level = -1;
 		
 		boolean isGetQuestion = false;
 		Question question = null;
@@ -145,33 +147,37 @@ public class XMLParseUtil {
 					break;
 				}
 				case XmlPullParser.START_TAG: {
-					if("catalog".equals(xmlpull.getName())){
-						isFoundCatalog = true;
+					if(level < 1 && "catalog".equals(xmlpull.getName())){//found catalog
+						level = 1;
 						break;
-					}else if(isFoundCatalog && !isFoundCatalogIndex){
-						if("index".equals(xmlpull.getName()) && Integer.valueOf(xmlpull.nextText()) == catalogIndex){
-							isFoundCatalogIndex = true;
+					}
+					
+					if(level == 1 && "index".equals(xmlpull.getName()) ){
+						if(Integer.valueOf(xmlpull.nextText()) == catalogIndex){//found catalog and catalogIndex
+							level = 2;
 						}else{
-							isFoundCatalog = false;
+							level = -1;
 						}
 						break;
 					}
 					
-					if(isFoundCatalogIndex && "question".equals(xmlpull.getName())){
-						isFoundQuestion = true;
+					if(level == 2 && "question".equals(xmlpull.getName()) ){//found question
+						level = 3;
 						break;
-					}else if(isFoundQuestion && !isFoundQuestionIndex){
-						if("index".equals(xmlpull.getName()) && Integer.valueOf(xmlpull.nextText()) == questionIndex){
-							isFoundQuestionIndex = true;
+					}
+					
+					if(level == 3 && "index".equals(xmlpull.getName()) ){
+						if(Integer.valueOf(xmlpull.nextText()) == questionIndex){//found question and questionIndex
+							level = 4;
 							question = new Question();
+							question.setIndex(questionIndex);
 						}else{
-							isFoundQuestion = false;
+							level = 2;
 						}
 						break;
 					}
 					
-					if (question != null) {
-						//initial one Question
+					if(level == 4 ){
 						if (("index".equals(xmlpull.getName()))) {
 							question.setIndex(Integer.valueOf(xmlpull.nextText()));
 						} else if ("questionid".equals(xmlpull.getName())) {
@@ -181,36 +187,45 @@ public class XMLParseUtil {
 						} else if ("score".equals(xmlpull.getName())) {
 							question.setScore(Integer.valueOf(xmlpull.nextText()));
 						} else if ("content".equals(xmlpull.getName())) {
-							question.setContent(xmlpull.getName());
+							question.setContent(xmlpull.nextText());
 						} else if ("choices".equals(xmlpull.getName())) {
 							choicesList = new ArrayList<Choice>();
-						} else if (choicesList!=null && "choice".equals(xmlpull.getName())) {
-							choice = new Choice();
-						} else if (choice != null) {
-							if (("index".equals(xmlpull.getName()))) {
-								choice.setChoiceIndex(Integer.valueOf(xmlpull.nextText()));
-							}else if (("label".equals(xmlpull.getName()))) {
-								choice.setChoiceLabel(xmlpull.nextText());
-							}else if (("content".equals(xmlpull.getName()))) {
-								choice.setChoiceContent(xmlpull.nextText());
-							}
+							level = 5;
+						} 
+						break;
+					}
+					
+					if(level == 5 && "choice".equals(xmlpull.getName())){
+						choice = new Choice();
+						level = 6;
+						break;
+					}
+					
+					if(level == 6 && choice != null){
+						if (("index".equals(xmlpull.getName()))) {
+							choice.setChoiceIndex(Integer.valueOf(xmlpull.nextText()));
+						}else if (("label".equals(xmlpull.getName()))) {
+							choice.setChoiceLabel(xmlpull.nextText());
+						}else if (("content".equals(xmlpull.getName()))) {
+							choice.setChoiceContent(xmlpull.nextText());
 						}
 						break;
 					}
+
+					
 				}
 				case XmlPullParser.END_TAG: {
 					if ("choice".equals(xmlpull.getName()) && choicesList != null) {
 						choicesList.add(choice);
+						level = 5;
 					}else if ("choices".equals(xmlpull.getName()) && question != null) {
 						question.setChoices(choicesList);
-					}else if ("question".equals(xmlpull.getName()) && question != null) {
 						isGetQuestion = true;
 					}
 					break;
 				}
 			}
 			eventCode = xmlpull.next();
-			Log.i(LOG_TAG, xmlpull.getName());
 		}
 		Log.i(LOG_TAG, "readQuestion() end.");
 		
@@ -298,6 +313,7 @@ public class XMLParseUtil {
 		xmlpull.setInput(inputStream, "utf-8");
 		int eventCode = xmlpull.getEventType();
 		
+		int level = -1;
 		ExamDetailBean detailBean = null;
 		List<CatalogBean> catalogs = null;
 		CatalogBean catalogBean = null;
@@ -312,9 +328,13 @@ public class XMLParseUtil {
 					break;
 				}
 				case XmlPullParser.START_TAG: {
-					if ("examination".equals(xmlpull.getName())) {//ExamDetailBean initial 
+					if (level <1 && "examination".equals(xmlpull.getName())) {//ExamDetailBean initial 
 						detailBean = new ExamDetailBean();
-					} else if( detailBean!=null){
+						level = 1;
+						break;
+					} 
+					
+					if (level == 1 && detailBean !=null) {//ExamDetailBean initial 
 						if ("examinationid".equals(xmlpull.getName())&& detailBean != null) {//ExamDetailBean set examinationid
 							detailBean.setExaminationid(xmlpull.nextText()); 
 						} else if ("name".equals(xmlpull.getName())&& detailBean != null) {//ExamDetailBean set name
@@ -325,65 +345,108 @@ public class XMLParseUtil {
 							detailBean.setConfuse(xmlpull.nextText());
 						} else if ("catalogs".equals(xmlpull.getName())) {//List catalogs initial 
 							catalogs = new ArrayList<CatalogBean>();
-						} else if (catalogs!= null){
-							if ("catalog".equals(xmlpull.getName())) {//CatalogBean initial 
-								catalogBean = new CatalogBean();
-							} else if(catalogBean!=null){
-								if ("index".equals(xmlpull.getName())) {//CatalogBean set index 
-									catalogBean.setIndex(Integer.valueOf(xmlpull.nextText()));
-								} else if ("catalogdesc".equals(xmlpull.getName())) {//CatalogBean set catalogdesc 
-									catalogBean.setDesc(xmlpull.nextText());
-								} else if ("questions".equals(xmlpull.getName())) {//List questions initial 
-									questions = new ArrayList<Question>();
-								} else if(questions!=null){
-								 	if ("question".equals(xmlpull.getName())) {//Question initial 
-										question = new Question();
-									} else if ("index".equals(xmlpull.getName())&& question != null) {//Question set type
-										question.setIndex(Integer.valueOf(xmlpull.nextText()));
-									} else if ("questionid".equals(xmlpull.getName())&& question != null) {//Question set name
-										question.setQuestionId(xmlpull.nextText());
-									} else if ("type".equals(xmlpull.getName())&& question != null) {//Question set name
-										question.setQuestionType(xmlpull.nextText());
-									} else if ("score".equals(xmlpull.getName())&& question != null) {//Question set name
-										question.setScore(Integer.valueOf(xmlpull.nextText()));
-									} else if ("content".equals(xmlpull.getName())&& question != null) {//Question set name
-										question.setContent(xmlpull.nextText());
-									} else if ("choices".equals(xmlpull.getName())) {//List choices initial
-										choices = new ArrayList<Choice>();
-									} else if(choices!=null){
-										if ("choice".equals(xmlpull.getName())) {//Choice initial
-											choice = new Choice();
-										} else if ("index".equals(xmlpull.getName())&& choice != null) {//Choice set index
-											choice.setChoiceIndex(Integer.valueOf(xmlpull.nextText()));
-										} else if ("label".equals(xmlpull.getName())&& choice != null) {//Choice set label
-											choice.setChoiceLabel(xmlpull.nextText());
-										} else if ("content".equals(xmlpull.getName())&& choice != null) {//Choice set content
-											choice.setChoiceContent(xmlpull.nextText());
-										}
-									}
-								}
-							}
+							level = 2;
+						} 
+						break;
+					} 
+					
+					if (level ==2 && "catalog".equals(xmlpull.getName())) {//ExamDetailBean initial 
+						catalogBean = new CatalogBean();
+						level = 3;
+						break;
+					} 
+					
+					if (level ==3 && catalogBean!=null) {//ExamDetailBean initial 
+						if ("index".equals(xmlpull.getName())) {//CatalogBean set index 
+							catalogBean.setIndex(Integer.valueOf(xmlpull.nextText()));
+						} else if ("catalogdesc".equals(xmlpull.getName())) {//CatalogBean set catalogdesc 
+							catalogBean.setDesc(xmlpull.nextText());
+						} else if ("questions".equals(xmlpull.getName())) {//List questions initial 
+							questions = new ArrayList<Question>();
+							level = 4;
 						}
+						break;
 					}
 					
-					break;
+					if (level ==4 && "question".equals(xmlpull.getName())) {//ExamDetailBean initial 
+						question = new Question();
+						level = 5;
+						break;
+					} 
 					
+					if (level ==5 && question!=null) {//ExamDetailBean initial 
+						if ("index".equals(xmlpull.getName())) {//Question set type
+							question.setIndex(Integer.valueOf(xmlpull.nextText()));
+						} else if ("questionid".equals(xmlpull.getName())) {//Question set name
+							question.setQuestionId(xmlpull.nextText());
+						} else if ("type".equals(xmlpull.getName())) {//Question set name
+							question.setQuestionType(xmlpull.nextText());
+						} else if ("score".equals(xmlpull.getName())) {//Question set name
+							question.setScore(Integer.valueOf(xmlpull.nextText()));
+						} else if ("content".equals(xmlpull.getName())) {//Question set name
+							question.setContent(xmlpull.nextText());
+						} else if ("choices".equals(xmlpull.getName())) {//List choices initial
+							choices = new ArrayList<Choice>();
+							level = 6;
+						}
+						break;
+					}
+					
+					if (level ==6 && "choice".equals(xmlpull.getName())) {//ExamDetailBean initial 
+						choice = new Choice();
+						level = 7;
+						break;
+					}
+					
+					if (level ==7 && choice!=null) {//ExamDetailBean initial 
+						if ("index".equals(xmlpull.getName())) {//Choice set index
+							choice.setChoiceIndex(Integer.valueOf(xmlpull.nextText()));
+						} else if ("label".equals(xmlpull.getName())) {//Choice set label
+							choice.setChoiceLabel(xmlpull.nextText());
+						} else if ("content".equals(xmlpull.getName())) {//Choice set content
+							choice.setChoiceContent(xmlpull.nextText());
+						}
+						break;
+					} 
 				}
 				case XmlPullParser.END_TAG: {
-					if ("catalogs".equals(xmlpull.getName())) {//Set catalogs
-						detailBean.setCatalogs(catalogs);
-					} else if ("catalog".equals(xmlpull.getName())) {//Add catalog
-						catalogs.add(catalogBean);
-					} else if ("questions".equals(xmlpull.getName()) && question != null) {//Set questions
-						catalogBean.setQuestions(questions);
-					} else if ("question".equals(xmlpull.getName())&& question != null) {//Add question
-						questions.add(question);
-					} else if ("choices".equals(xmlpull.getName()) && choice != null) {//Set choices
-						question.setChoices(choices);
-					} else if ("choice".equals(xmlpull.getName()) && choice != null) {//Add choice
+					
+				    if ("choice".equals(xmlpull.getName()) && choices != null) {//Add choice
 						choices.add(choice);
+						level = 6;
+						break;
 					}
-					break;
+				    
+				    if ("choices".equals(xmlpull.getName()) && question != null) {//Add choice
+				    	question.setChoices(choices);
+						level = 5;
+						break;
+					}
+				    
+				    if ("question".equals(xmlpull.getName()) && questions != null) {//Add choice
+				    	questions.add(question);
+						level = 4;
+						break;
+					}
+				    
+				    if ("questions".equals(xmlpull.getName()) && catalogBean != null) {//Set questions
+				    	catalogBean.setQuestions(questions);
+				    	level = 3;
+				    	break;
+					}
+				    
+				    if ("catalog".equals(xmlpull.getName()) && catalogs != null) {//Set questions
+				    	catalogs.add(catalogBean);
+				    	level = 2;
+				    	break;
+					}
+				    
+				    if ("catalogs".equals(xmlpull.getName()) && detailBean != null) {//Set questions
+				    	detailBean.setCatalogs(catalogs);
+				    	level = 1;
+				    	break;
+					}
+				    
 				}
 			}
 			eventCode = xmlpull.next();

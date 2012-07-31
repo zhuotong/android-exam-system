@@ -41,4 +41,33 @@ public class ExamDetailBean {
 		this.catalogs = catalogs;
 	}
 	
+	public String getQuestionByCidQid(Integer cid){
+		String catalogdesc = "Catalog";
+		for(CatalogBean cBean:catalogs){
+			if(cBean.getIndex() == cid){
+				catalogdesc = cBean.getDesc();
+				break;
+			}
+		}
+		return catalogdesc;
+	}
+	
+	public Question getQuestionByCidQid(Integer cid, Integer qid){
+		Question q = null;
+		List<Question> questions = null;
+		for(CatalogBean cBean:catalogs){
+			if(cBean.getIndex() == cid){
+				questions = cBean.getQuestions();
+			}
+		}
+		if(questions!=null){
+			for(Question qBean:questions){
+				if(qBean.getIndex() == qid){
+					q = qBean;
+				}
+			}
+		}
+		return q;
+	}
+	
 }

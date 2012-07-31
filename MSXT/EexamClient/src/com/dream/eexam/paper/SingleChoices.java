@@ -42,7 +42,7 @@ public class SingleChoices extends BaseQuestion {
 	Button nextBtn;
 
 	//data statement
-	Question question;
+//	Question question;
 	MyListAdapter adapter;
 	List<String> listItemID = new ArrayList<String>();
 
@@ -58,7 +58,7 @@ public class SingleChoices extends BaseQuestion {
 		remainingTime.setText("Time Remaining: "+String.valueOf(detailBean.getTime())+" mins");
 		
 		//set question text
-		catalogsTV.setText(questionType);
+		catalogsTV.setText(detailBean.getQuestionByCidQid(currentCatalogIndex));
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -86,13 +86,6 @@ public class SingleChoices extends BaseQuestion {
         loadHeader();
         loadAnswer();
         setHeader();
-		
-        InputStream inputStream =  SingleChoices.class.getClassLoader().getResourceAsStream("sample_paper.xml");
-        try {
-			question = XMLParseUtil.readQuestion(inputStream, 1, currentQuestionIndex);
-		} catch (Exception e) {
-			Log.i(LOG_TAG, e.getMessage());
-		}
     	
         //set question text
         questionTV = (TextView)findViewById(R.id.questionTV);
@@ -179,7 +172,7 @@ public class SingleChoices extends BaseQuestion {
     
     //go to next or previous question
     public void gotoNewQuestion(){
-    	InputStream inputStream =  MultiChoices.class.getClassLoader().getResourceAsStream("sample_paper.xml");
+    	InputStream inputStream =  getExamStream();
 		String questionType = null;
 		try {
 			 questionType = XMLParseUtil.readQuestionType(inputStream,currentCatalogIndex,currentQuestionIndex+direction);

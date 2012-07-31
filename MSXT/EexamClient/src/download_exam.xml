@@ -7,9 +7,7 @@
 <catalogs>
 	<catalog>
 		<index>1</index>
-		<catalogdesc>
-			<![CDATA[J2SE]]>
-		</catalogdesc>
+		<catalogdesc><![CDATA[J2SE]]></catalogdesc>
 		<questions>
 			<question>
 				<index>1</index>
@@ -38,7 +36,7 @@
 					<label>D</label>
 					<content>false</content>
 			    </choice>
-			    </choices>
+			  </choices>
 			</question>
 			<question>
 				<index>2</index>
@@ -73,9 +71,7 @@
 	</catalog>	
 	<catalog>
 		<index>2</index>
-		<catalogdesc>
-			<![CDATA[OraclePLSQL]]>
-		</catalogdesc>
+		<catalogdesc><![CDATA[Oracle PL/SQL]]></catalogdesc>
 		<questions>
 			<question>
 				<index>1</index>

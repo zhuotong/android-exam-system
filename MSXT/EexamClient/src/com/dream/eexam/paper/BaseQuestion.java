@@ -2,6 +2,7 @@ package com.dream.eexam.paper;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ import com.dream.eexam.base.R;
 import com.dream.eexam.model.CatalogBean;
 import com.dream.eexam.model.ExamDetailBean;
 import com.dream.eexam.model.PaperBean;
+import com.dream.eexam.model.Question;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SystemConfig;
 import com.dream.eexam.util.XMLParseUtil;
@@ -51,6 +53,7 @@ public class BaseQuestion extends BaseActivity{
 	
 //	protected PaperBean paperBean;//paperBean
 	protected ExamDetailBean detailBean;//paperBean
+	protected Question question;	
 	
 	protected List<CatalogBean> cataLogList = new ArrayList<CatalogBean>();//cataLogList
 	protected List<String> catalogNames = new ArrayList<String>();//catalog names
@@ -123,30 +126,15 @@ public class BaseQuestion extends BaseActivity{
 			currentQuestionIndex = Integer.valueOf(cqIndex);
 		}
 		saveccIndexcqIndex(Integer.valueOf(cqIndex),Integer.valueOf(cqIndex));
-		
-        /*inputStream =  BaseQuestion.class.getClassLoader().getResourceAsStream("sample_paper.xml");
-        try {
-        	//get paperBean
-        	paperBean = XMLParseUtil.readPaperBean(inputStream);
-        	inputStream.close();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		
-		downloadExamFile = SystemConfig.getInstance().getPropertyValue("Login_Result");
-		downloadExamFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + "eExam";
     	
 		try {
-			
-	    	FileInputStream inputStream = new FileInputStream(new File(downloadExamFilePath+ File.separator+downloadExamFile));
+	    	FileInputStream inputStream = getExamStream();
 	    	detailBean = XMLParseUtil.readExamination(inputStream);
+	    	cataLogList = detailBean.getCatalogs();
+			question = detailBean.getQuestionByCidQid(currentCatalogIndex, currentQuestionIndex);
 		} catch (Exception e) {
 			Log.i(LOG_TAG,e.getMessage());
 		}
-		
-		//set cataLogList
-		cataLogList = detailBean.getCatalogs();
 		
 		//set groups
 		for(CatalogBean bean: cataLogList){
@@ -162,7 +150,22 @@ public class BaseQuestion extends BaseActivity{
 		    Log.i(LOG_TAG,"questionSize:"+ String.valueOf(questionSize));
 		}
 		
-		
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public FileInputStream getExamStream(){
+		downloadExamFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + "eExam";
+		downloadExamFile = SystemConfig.getInstance().getPropertyValue("Download_Exam");
+		FileInputStream inputStream = null;
+		try {
+			inputStream = new FileInputStream(new File(downloadExamFilePath+ File.separator+downloadExamFile));
+		} catch (FileNotFoundException e) {
+			Log.i(LOG_TAG,e.getMessage());
+		}
+		return inputStream;
 	}
 
 	@Override
@@ -218,7 +221,7 @@ public class BaseQuestion extends BaseActivity{
 			Log.i(LOG_TAG, "pressedItemIndex:"+pressedItemIndex);
 			GroupAdapter groupAdapter = new GroupAdapter(this, catalogNames);
 			lv_group.setAdapter(groupAdapter);
-			popupWindow = new PopupWindow(popupView,200, 500);
+			popupWindow = new PopupWindow(popupView,300, 500);
 		}else{
 			popupWindow.dismiss();
 		}
@@ -250,7 +253,7 @@ public class BaseQuestion extends BaseActivity{
 				
 //				catalogsTV.setText(cataLogList.get(position).getDesc());
 				
-				inputStream =  BaseQuestion.class.getClassLoader().getResourceAsStream("sample_paper.xml");
+				inputStream =  getExamStream();
 				String questionType = null;
 				try {
 					 Log.i(LOG_TAG, "Go to catalog "+String.valueOf((position+1))+" question 1");
