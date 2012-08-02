@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import com.dream.eexam.base.BaseActivity;
@@ -36,8 +37,13 @@ public class BaseQuestion extends BaseActivity{
 	
 	public final static String LOG_TAG = "BaseQuestion";
 	
-	//set exam header
-	protected TextView remainingTime = null;
+	//set exam header(Left)
+	protected TextView homeTV = null;
+	//set exam header(Right)
+	protected TextView remainingTimeLabel = null;
+	protected TextView remainingTime = null;	
+	protected SeekBar completedSeekBar= null;
+	protected TextView completedPercentage = null;
 	
 	//set question sub header
 	protected TextView catalogsTV = null;

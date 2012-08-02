@@ -16,6 +16,7 @@ import com.dream.eexam.util.XMLParseUtil;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -38,6 +39,7 @@ public class PapersActivity extends BaseActivity {
 	private TextView examDesc = null;
 	private Spinner spinner;
 	private Button startBtn;
+	private Button clearBtn;
 	
 	//data
 	LoginResultBean loginResultBean = new LoginResultBean();
@@ -118,6 +120,19 @@ public class PapersActivity extends BaseActivity {
 	        	
 				Log.i(LOG_TAG,"downloadURL:"+downloadURL);
 	        	new DownloadExamTask().execute(downloadURL);
+			}			
+		});
+		
+		clearBtn = (Button) findViewById(R.id.clearBtn);
+		clearBtn.setText("Clear");
+		clearBtn.setOnClickListener(new Button.OnClickListener() {
+			public void onClick(View v) {
+				Log.i(LOG_TAG,"onClick()...");
+				SharedPreferences.Editor editor = sharedPreferences.edit(); 
+				editor.clear();
+				editor.commit();
+				
+				ShowDialog("History is cleared!");
 			}			
 		});
 	}

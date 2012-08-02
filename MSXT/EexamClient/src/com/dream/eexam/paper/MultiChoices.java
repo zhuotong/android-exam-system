@@ -22,11 +22,11 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.SeekBar;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.Choice;
-import com.dream.eexam.model.Question;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.XMLParseUtil;
 
@@ -35,29 +35,41 @@ public class MultiChoices extends BaseQuestion {
 	public final static String LOG_TAG = "MultiChoices";
 
 	//components statement
+	TextView questionHintTV = null;
 	TextView questionTV = null;
+
 	ListView listView;
 	Button preBtn;
 	Button nextBtn;
 	
 	//data statement
-//	Question question;	
 	MyListAdapter adapter;
 	List<String> listItemID = new ArrayList<String>();
 	Integer indexInExam;
 	
 	public void loadHeader(){
+		homeTV = (TextView)findViewById(R.id.homeTV);
+		remainingTimeLabel = (TextView)findViewById(R.id.remainingTimeLabel);
 		remainingTime = (TextView)findViewById(R.id.remainingTime);
+		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
+		completedPercentage = (TextView)findViewById(R.id.completedPercentage);
+		
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
 		currentTV = (TextView)findViewById(R.id.header_tv_current);
 		waitTV = (TextView)findViewById(R.id.header_tv_waiting);
 	}
 	
 	public void setHeader(){
-		//set question text
+		//set exam header(Left)
+		homeTV.setText("Home");
 		
-		remainingTime.setText("Time Remaining: "+String.valueOf(detailBean.getTime())+" mins");
+		//set exam header(Right)
+		remainingTimeLabel.setText("Time Remaining: ");
+		remainingTime.setText(String.valueOf(detailBean.getTime())+" mins");
+		completedSeekBar.setThumb(null);
+		completedPercentage.setText("50%"+" Finished");
 
+		//set exam sub header
 		catalogsTV.setText(detailBean.getQuestionByCidQid(currentCatalogIndex));
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -89,11 +101,19 @@ public class MultiChoices extends BaseQuestion {
         loadAnswer();
         setHeader();
 		
+        String questionHint = "Q "+String.valueOf(question.getIndex())+"(Score:"+String.valueOf(question.getScore())+")";
+        Log.i(LOG_TAG, "questionHint:"+questionHint);
+        
+        //set question text
+        questionHintTV = (TextView)findViewById(R.id.questionHintTV);
+        questionHintTV.setText(questionHint);
+        questionHintTV.setTextColor(Color.BLACK);	
+
         //set question text
         questionTV = (TextView)findViewById(R.id.questionTV);
         questionTV.setText(question.getContent());
         questionTV.setTextColor(Color.BLACK);	
-
+        
         //set List
         listView = (ListView)findViewById(R.id.lvChoices);
         adapter = new MyListAdapter(question.getChoices());

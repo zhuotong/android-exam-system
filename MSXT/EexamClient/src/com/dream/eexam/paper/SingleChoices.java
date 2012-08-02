@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -47,15 +48,26 @@ public class SingleChoices extends BaseQuestion {
 	List<String> listItemID = new ArrayList<String>();
 
 	public void loadHeader(){
+		homeTV = (TextView)findViewById(R.id.homeTV);
+		remainingTimeLabel = (TextView)findViewById(R.id.remainingTimeLabel);
 		remainingTime = (TextView)findViewById(R.id.remainingTime);
+		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
+		completedPercentage = (TextView)findViewById(R.id.completedPercentage);
+		
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
 		currentTV = (TextView)findViewById(R.id.header_tv_current);
 		waitTV = (TextView)findViewById(R.id.header_tv_waiting);
 	}
 	
 	public void setHeader(){
-		//set question text
-		remainingTime.setText("Time Remaining: "+String.valueOf(detailBean.getTime())+" mins");
+		//set exam header(Left)
+		homeTV.setText("Home");
+		
+		//set exam header(Right)
+		remainingTimeLabel.setText("Time Remaining: ");
+		remainingTime.setText(String.valueOf(detailBean.getTime())+" mins");
+		completedSeekBar.setThumb(null);
+		completedPercentage.setText("50%"+" Finished");
 		
 		//set question text
 		catalogsTV.setText(detailBean.getQuestionByCidQid(currentCatalogIndex));
