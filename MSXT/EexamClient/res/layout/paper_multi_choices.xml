@@ -19,22 +19,40 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
 	    android:layout_margin="1dip">
+				    
 		<RelativeLayout 
 			android:id="@+id/listHeader"
 			android:layout_alignParentTop="true"
 			android:gravity="center_horizontal" 
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content">
-					<TextView android:id="@+id/questionTV" 
-					    android:singleLine="false"
-						android:layout_width="fill_parent" 
-						android:layout_height="100dp"
-						android:layout_marginLeft="2dp"
-						android:layout_marginRight="2dp"
-						android:layout_marginBottom="2dp"
-						android:background="@drawable/tv_layout_question"
-						android:textSize="15sp"/>			
+			<TableLayout android:layout_width="fill_parent"
+			          android:layout_height="wrap_content">
+				<TableRow android:layout_width="fill_parent"
+				          android:layout_height="wrap_content">
+					      <TextView android:id="@+id/questionHintTV" 
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_gravity="center_horizontal|center_vertical"
+							android:textColor="#EF00B6"
+							android:textSize="15sp"/>			    
+				</TableRow>
+			    <TableRow android:layout_width="fill_parent"
+						  android:layout_height="wrap_content">
+							<TextView android:id="@+id/questionTV" 
+							    android:singleLine="false"
+								android:layout_width="fill_parent" 
+								android:layout_height="100dp"
+								android:layout_marginLeft="2dp"
+								android:layout_marginRight="2dp"
+								android:layout_marginBottom="4dp"
+								android:background="@drawable/tv_layout_question"
+								android:textSize="15sp"/>				    
+				</TableRow>			    
+			</TableLayout>
+
 		</RelativeLayout>
+		
 	 	<RelativeLayout 
 		    android:id="@+id/listFooter"
 			android:layout_width="fill_parent"
@@ -58,8 +76,8 @@
 					android:text="@string/msg_btn_next" 
 					android:background="@drawable/btn_sys"/>		        
 		    </TableRow>
-
-		</RelativeLayout>		   
+		</RelativeLayout>
+				   
 		<ListView
 	     	android:id="@+id/lvChoices"
 	     	android:layout_width="fill_parent"
