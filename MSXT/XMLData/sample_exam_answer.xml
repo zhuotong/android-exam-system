@@ -4,12 +4,12 @@
 	<examinationid>1213213</examinationid>
 	<answers>
 		<answer>
-		<questionid>0122121</questionid>
-		<content><![CDATA[A]]><content>
+			<questionid>0122121</questionid>
+			<content><![CDATA[A]]><content>
 		<answer>
-			<answer>
-		<questionid>21313221</questionid>
-		<content><![CDATA[ABC]]><content>
+		<answer>
+			<questionid>21313221</questionid>
+			<content><![CDATA[ABC]]><content>
 		<answer>
 	<answers>
 </examanswer>
