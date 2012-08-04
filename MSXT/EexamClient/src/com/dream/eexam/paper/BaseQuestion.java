@@ -6,7 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -26,6 +29,7 @@ import com.dream.eexam.base.BaseActivity;
 import com.dream.eexam.base.GroupAdapter;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.CatalogBean;
+import com.dream.eexam.model.CatalogInfo;
 import com.dream.eexam.model.ExamDetailBean;
 import com.dream.eexam.model.PaperBean;
 import com.dream.eexam.model.Question;
@@ -39,11 +43,13 @@ public class BaseQuestion extends BaseActivity{
 	
 	//set exam header(Left)
 	protected TextView homeTV = null;
-	//set exam header(Right)
+	//set exam header(Center)
 	protected TextView remainingTimeLabel = null;
 	protected TextView remainingTime = null;	
 	protected SeekBar completedSeekBar= null;
 	protected TextView completedPercentage = null;
+	//set exam header(Right)
+	protected TextView submitTV = null;
 	
 	//set question sub header
 	protected TextView catalogsTV = null;
@@ -62,7 +68,7 @@ public class BaseQuestion extends BaseActivity{
 	protected Question question;	
 	
 	protected List<CatalogBean> cataLogList = new ArrayList<CatalogBean>();//cataLogList
-	protected List<String> catalogNames = new ArrayList<String>();//catalog names
+	protected List<CatalogInfo> catalogNames = new ArrayList<CatalogInfo>();//catalog names
 
 	protected Integer direction = 0;//move direction(1 move next, 0 move previous)
 	protected Integer questionSize = 0;//question size for current catalog
@@ -142,12 +148,30 @@ public class BaseQuestion extends BaseActivity{
 			Log.i(LOG_TAG,e.getMessage());
 		}
 		
+		DatabaseUtil dbUtil = new DatabaseUtil(this);
+		dbUtil.open();
+		Cursor cursor;
+		String catalogDesc;
+		int sum;
 		//set groups
-		for(CatalogBean bean: cataLogList){
-			String catalogDesc = bean.getDesc()+"("+bean.getQuestions().size()+")";
+		for(CatalogBean catalogBean: cataLogList){
+			cursor = dbUtil.fetchAnswer(catalogBean.getIndex());
+			sum = 0;
+			while(cursor.moveToNext()){
+				Integer qid = cursor.getInt(1);
+				String answers = cursor.getString(2);
+				if(qid!=null && answers!= null && answers.length()>0){
+					sum++;
+				}
+			}
+			cursor.close();
+			catalogDesc = catalogBean.getDesc()+"(Total:"+catalogBean.getQuestions().size()+","+"Finished:"+String.valueOf(sum)+")";
 			Log.i(LOG_TAG, "catalog: "+catalogDesc);
-			catalogNames.add(catalogDesc);
+			
+			
+			catalogNames.add(new CatalogInfo(catalogBean.getIndex(),catalogBean.getDesc(),catalogBean.getQuestions().size(),sum));
 		}
+		dbUtil.close();
 		
 		//set questionSize
 		if(cataLogList!=null&&cataLogList.size()>0){
@@ -157,7 +181,28 @@ public class BaseQuestion extends BaseActivity{
 		}
 		
 	}
-	
+
+	public void submitAnswer(){
+		/*if (listItemID.size() == 0) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(MultiChoices.this);
+			builder.setMessage("Answer this question late?")
+					.setCancelable(false)
+					.setPositiveButton("Yes",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,int id) {
+								}
+							})
+					.setNegativeButton("Cancel",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,int id) {
+									dialog.cancel();
+								}
+							});
+			builder.show();
+		} else {
+			
+		}*/
+	}
 	/**
 	 * 
 	 * @return
@@ -248,9 +293,9 @@ public class BaseQuestion extends BaseActivity{
 				//initial all items background color
         		for(int i=0;i<adapterView.getChildCount();i++){
         			View item = adapterView.getChildAt(i);
-        			item.setBackgroundColor(Color.parseColor("#4C4C4C"));
+        			item.setBackgroundColor(getResources().getColor(R.color.catalog_menu_bg));
         		}
-				view.setBackgroundColor(Color.parseColor("#D5E43C"));
+				view.setBackgroundColor(getRequestedOrientation());
 				pressedItemIndex = position;
 				Log.i(LOG_TAG, "pressedItemIndex:" + pressedItemIndex);
 				if (popupWindow != null) {

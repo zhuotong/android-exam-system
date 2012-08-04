@@ -53,6 +53,7 @@ public class MultiChoices extends BaseQuestion {
 		remainingTime = (TextView)findViewById(R.id.remainingTime);
 		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
 		completedPercentage = (TextView)findViewById(R.id.completedPercentage);
+		submitTV = (TextView)findViewById(R.id.submitTV);
 		
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
 		currentTV = (TextView)findViewById(R.id.header_tv_current);
@@ -63,11 +64,20 @@ public class MultiChoices extends BaseQuestion {
 		//set exam header(Left)
 		homeTV.setText("Home");
 		
-		//set exam header(Right)
+		//set exam header(Center)
 		remainingTimeLabel.setText("Time Remaining: ");
 		remainingTime.setText(String.valueOf(detailBean.getTime())+" mins");
 		completedSeekBar.setThumb(null);
 		completedPercentage.setText("50%"+" Finished");
+		
+		//set exam header(Right)
+		submitTV.setText("Submit");
+        submitTV.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				submitAnswer();
+			}
+		});
 
 		//set exam sub header
 		catalogsTV.setText(detailBean.getQuestionByCidQid(currentCatalogIndex));

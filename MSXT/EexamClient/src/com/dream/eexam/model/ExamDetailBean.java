@@ -70,4 +70,17 @@ public class ExamDetailBean {
 		return q;
 	}
 	
+	public int getTotalQuestions(){
+		int sum=0;
+		for(CatalogBean catalogBean: catalogs){
+			List<Question> questions = catalogBean.getQuestions();
+			for(Question question: questions){
+				if(question.getQuestionId()!=null){
+					sum++;
+				}
+			}
+		}
+		return sum;
+	}
+	
 }
