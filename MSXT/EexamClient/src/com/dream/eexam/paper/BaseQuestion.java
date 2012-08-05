@@ -7,12 +7,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,7 +28,6 @@ import com.dream.eexam.base.R;
 import com.dream.eexam.model.CatalogBean;
 import com.dream.eexam.model.CatalogInfo;
 import com.dream.eexam.model.ExamDetailBean;
-import com.dream.eexam.model.PaperBean;
 import com.dream.eexam.model.Question;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SystemConfig;
@@ -65,7 +61,9 @@ public class BaseQuestion extends BaseActivity{
 	
 //	protected PaperBean paperBean;//paperBean
 	protected ExamDetailBean detailBean;//paperBean
-	protected Question question;	
+	protected Question question;
+	protected Integer totalQuestions;
+	protected Integer answeredQuestions;
 	
 	protected List<CatalogBean> cataLogList = new ArrayList<CatalogBean>();//cataLogList
 	protected List<CatalogInfo> catalogNames = new ArrayList<CatalogInfo>();//catalog names
@@ -142,14 +140,24 @@ public class BaseQuestion extends BaseActivity{
 		try {
 	    	FileInputStream inputStream = getExamStream();
 	    	detailBean = XMLParseUtil.readExamination(inputStream);
+	    	//set catalog list
 	    	cataLogList = detailBean.getCatalogs();
+	    	//set catalog questionSize
+			if(cataLogList!=null&&cataLogList.size()>0){
+				CatalogBean bean = cataLogList.get(currentCatalogIndex-1);
+			    questionSize = bean.getQuestions().size();
+			    Log.i(LOG_TAG,"questionSize:"+ String.valueOf(questionSize));
+			}
+			//set question
 			question = detailBean.getQuestionByCidQid(currentCatalogIndex, currentQuestionIndex);
+			totalQuestions = detailBean.getTotalQuestions();
 		} catch (Exception e) {
 			Log.i(LOG_TAG,e.getMessage());
 		}
 		
 		DatabaseUtil dbUtil = new DatabaseUtil(this);
 		dbUtil.open();
+		//-------------------get data-----------------------
 		Cursor cursor;
 		String catalogDesc;
 		int sum;
@@ -168,40 +176,22 @@ public class BaseQuestion extends BaseActivity{
 			catalogDesc = catalogBean.getDesc()+"(Total:"+catalogBean.getQuestions().size()+","+"Finished:"+String.valueOf(sum)+")";
 			Log.i(LOG_TAG, "catalog: "+catalogDesc);
 			
-			
 			catalogNames.add(new CatalogInfo(catalogBean.getIndex(),catalogBean.getDesc(),catalogBean.getQuestions().size(),sum));
 		}
+		
+		//get answered questions
+    	answeredQuestions = dbUtil.fetchAllAnswersCount();
+    	Log.i(LOG_TAG, "answeredQuestions:" + String.valueOf(answeredQuestions));	
+    	
+    	//close db
 		dbUtil.close();
 		
-		//set questionSize
-		if(cataLogList!=null&&cataLogList.size()>0){
-			CatalogBean bean = cataLogList.get(currentCatalogIndex-1);
-		    questionSize = bean.getQuestions().size();
-		    Log.i(LOG_TAG,"questionSize:"+ String.valueOf(questionSize));
-		}
+		
 		
 	}
 
 	public void submitAnswer(){
-		/*if (listItemID.size() == 0) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(MultiChoices.this);
-			builder.setMessage("Answer this question late?")
-					.setCancelable(false)
-					.setPositiveButton("Yes",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,int id) {
-								}
-							})
-					.setNegativeButton("Cancel",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,int id) {
-									dialog.cancel();
-								}
-							});
-			builder.show();
-		} else {
-			
-		}*/
+		Log.i(LOG_TAG, "submitAnswer()...");
 	}
 	/**
 	 * 

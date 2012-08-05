@@ -41,7 +41,7 @@ public class ExamDetailBean {
 		this.catalogs = catalogs;
 	}
 	
-	public String getQuestionByCidQid(Integer cid){
+	/*public String getQuestionByCidQid(Integer cid){
 		String catalogdesc = "Catalog";
 		for(CatalogBean cBean:catalogs){
 			if(cBean.getIndex() == cid){
@@ -50,6 +50,31 @@ public class ExamDetailBean {
 			}
 		}
 		return catalogdesc;
+	}*/
+	
+	public String getCatalogDescByCid(Integer cid){
+		String catalogdesc = "Catalog";
+		for(CatalogBean cBean:catalogs){
+			if(cBean.getIndex() == cid){
+				catalogdesc = cBean.getDesc();
+				break;
+			}
+		}
+		return catalogdesc;
+	}
+	
+	public Integer getCatalogSizeByCid(Integer cid){
+		int cSize = 0;
+		for(CatalogBean cBean:catalogs){
+			if(cBean.getIndex() == cid){
+				List<Question> questions = cBean.getQuestions();
+				if(questions!=null){
+					cSize = questions.size();
+				}
+				break;
+			}
+		}
+		return cSize;
 	}
 	
 	public Question getQuestionByCidQid(Integer cid, Integer qid){

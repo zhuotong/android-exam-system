@@ -70,7 +70,8 @@ public class SingleChoices extends BaseQuestion {
 		completedPercentage.setText("50%"+" Finished");
 		
 		//set question text
-		catalogsTV.setText(detailBean.getQuestionByCidQid(currentCatalogIndex));
+		catalogsTV.setText(detailBean.getCatalogDescByCid(currentCatalogIndex)+
+				"("+String.valueOf(detailBean.getCatalogSizeByCid(currentCatalogIndex))+")");
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

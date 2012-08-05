@@ -122,6 +122,15 @@ public class DatabaseUtil{
 	public Cursor fetchAllAnswers() {
 		return mDb.query(DATABASE_TABLE, new String[] {CATALOG_ID,QUESTION_ID,ANSWERS}, null, null, null, null, null);
 	}
+	
+	public int fetchAllAnswersCount() {
+		int sum=0;
+		Cursor cursor = mDb.query(DATABASE_TABLE, new String[] {CATALOG_ID,QUESTION_ID,ANSWERS}, null, null, null, null, null);
+		while(cursor.moveToNext()){
+			sum++;
+		}
+		return sum;
+	}
 
 	public Cursor fetchAnswer(long cid) throws SQLException {
 		Log.i(TAG, "fetchAnswer()... ");

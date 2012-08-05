@@ -49,10 +49,13 @@ public class MultiChoices extends BaseQuestion {
 	
 	public void loadHeader(){
 		homeTV = (TextView)findViewById(R.id.homeTV);
+		
 		remainingTimeLabel = (TextView)findViewById(R.id.remainingTimeLabel);
 		remainingTime = (TextView)findViewById(R.id.remainingTime);
+		
 		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
 		completedPercentage = (TextView)findViewById(R.id.completedPercentage);
+		
 		submitTV = (TextView)findViewById(R.id.submitTV);
 		
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
@@ -67,20 +70,50 @@ public class MultiChoices extends BaseQuestion {
 		//set exam header(Center)
 		remainingTimeLabel.setText("Time Remaining: ");
 		remainingTime.setText(String.valueOf(detailBean.getTime())+" mins");
+		
+		//set completedSeekBar
+		int per = 100 * answeredQuestions/totalQuestions;
 		completedSeekBar.setThumb(null);
-		completedPercentage.setText("50%"+" Finished");
+		completedSeekBar.setProgress(per);
+		completedSeekBar.setEnabled(false);
+		//set completedSeekBar label
+		completedPercentage.setText(String.valueOf(per)+"% finished");
 		
 		//set exam header(Right)
 		submitTV.setText("Submit");
         submitTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				submitAnswer();
+				Log.i(LOG_TAG, "submitTV.onClick()...");
+				
+		    	int waitQuestions = totalQuestions - answeredQuestions;
+				 
+				if (waitQuestions> 0) {
+					AlertDialog.Builder builder = new AlertDialog.Builder(MultiChoices.this);
+					builder.setMessage(String.valueOf(waitQuestions) + " question(s) are not answered, still submit?")
+							.setCancelable(false)
+							.setPositiveButton("Yes",
+									new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog,int id) {
+											submitAnswer();
+										}
+									})
+							.setNegativeButton("Cancel",
+									new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog,int id) {
+											dialog.cancel();
+										}
+									});
+					builder.show();
+				} else {
+					submitAnswer();
+				}
 			}
 		});
 
 		//set exam sub header
-		catalogsTV.setText(detailBean.getQuestionByCidQid(currentCatalogIndex));
+		catalogsTV.setText(detailBean.getCatalogDescByCid(currentCatalogIndex)+
+				"("+String.valueOf(detailBean.getCatalogSizeByCid(currentCatalogIndex))+")");
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
