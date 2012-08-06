@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -175,6 +176,16 @@ public class MultiChoices extends BaseQuestion {
 					long arg3) {
         		CheckBox cb = (CheckBox)view.findViewById(R.id.list_select);
         		cb.setChecked(!cb.isChecked());
+				//set answer
+		    	//clear answer first
+		    	listItemID.clear();
+		    	answerString.setLength(0);
+				setAnswer();
+				if(answerString.length()==0){
+					clearAnswer();
+				}else{
+					saveAnswer();
+				}
 			}      	
         });
         listView.setOnTouchListener(new OnTouchListener(){
@@ -413,6 +424,7 @@ public class MultiChoices extends BaseQuestion {
 						
 						CheckBox cb = (CheckBox)buttonView;
 						mChecked.set(p, cb.isChecked());
+
 						
 						//set answer
 				    	//clear answer first
