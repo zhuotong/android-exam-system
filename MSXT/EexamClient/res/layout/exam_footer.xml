@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="40dp">
+
+	<TableRow android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		
+    	<Button android:id="@+id/preBtn" 
+		    android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="2dp" 
+			android:layout_weight="1"
+			android:text="@string/msg_btn_pre" />
+	        
+    	<TextView android:id="@+id/questionIndex" 
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_weight="1" 
+					android:layout_gravity="center_horizontal|center_vertical"
+					android:gravity="center_horizontal|center_vertical"
+					android:textColor="#EF00B6"
+					android:textSize="15sp"
+					android:text="Question 1 /100"/>	
+        
+ 	    <Button android:id="@+id/nextBtn" 
+		    android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1" 
+			android:layout_marginRight="2dp"
+			android:text="@string/msg_btn_next" />	
+    </TableRow>
+</FrameLayout>

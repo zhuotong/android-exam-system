@@ -16,7 +16,7 @@
     
     <string name="msg_btn_start">Start</string>
     
-    <string name="msg_btn_pre">Previous</string>
+    <string name="msg_btn_pre">Prev</string>
     <string name="msg_btn_next">Next</string>
     
     <string name="connection_error">Unable to load content. Check your network connection.</string>

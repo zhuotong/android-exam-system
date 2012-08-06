@@ -76,7 +76,7 @@
 			<question>
 				<index>1</index>
 				<questionid>0</questionid>
-				<type>Single Select</type>			
+				<type>Multi Select</type>			
 				<score>10</score>
 			  <content><![CDATA[which of the following are oracle object]]></content>
 			  <choices>
@@ -104,5 +104,40 @@
 			</question>
 		</questions>
 	</catalog>	
+	<catalog>
+		<index>3</index>
+		<catalogdesc><![CDATA[Java Script]]></catalogdesc>
+		<questions>
+			<question>
+				<index>1</index>
+				<questionid>0</questionid>
+				<type>Single Select</type>			
+				<score>10</score>
+			  <content><![CDATA[which of the following are javacript function]]></content>
+			  <choices>
+					<choice>
+						<index>1</index>
+						<label>A</label>
+						<content>substring</content>
+				  </choice>
+			    <choice>
+					<index>2</index>
+					<label>B</label>
+					<content>toSting</content>
+			    </choice>
+			    <choice>
+					<index>3</index>
+					<label>C</label>
+					<content>loop</content>
+			    </choice>
+			    <choice>
+					<index>4</index>
+					<label>D</label>
+					<content>size</content>
+			    </choice>
+			    </choices>
+			</question>
+		</questions>
+	</catalog>
 </catalogs>
 </examination>

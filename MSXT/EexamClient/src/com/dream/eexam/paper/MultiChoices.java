@@ -12,9 +12,13 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.GestureDetector.OnGestureListener;
+import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -39,7 +43,9 @@ public class MultiChoices extends BaseQuestion {
 	TextView questionTV = null;
 
 	ListView listView;
+	
 	Button preBtn;
+	TextView questionIndex;
 	Button nextBtn;
 	
 	//data statement
@@ -59,7 +65,7 @@ public class MultiChoices extends BaseQuestion {
 		submitTV = (TextView)findViewById(R.id.submitTV);
 		
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
-		currentTV = (TextView)findViewById(R.id.header_tv_current);
+//		currentTV = (TextView)findViewById(R.id.header_tv_current);
 		waitTV = (TextView)findViewById(R.id.header_tv_waiting);
 	}
 	
@@ -112,8 +118,10 @@ public class MultiChoices extends BaseQuestion {
 		});
 
 		//set exam sub header
-		catalogsTV.setText(detailBean.getCatalogDescByCid(currentCatalogIndex)+
-				"("+String.valueOf(detailBean.getCatalogSizeByCid(currentCatalogIndex))+")");
+		catalogsTV.setText(String.valueOf(currentCatalogIndex)+". "+
+				detailBean.getCatalogDescByCid(currentCatalogIndex) + 
+				"(Q" + String.valueOf(currentQuestionIndex)+" - " + "Q" + String.valueOf(questionSize)+")");
+//				"("+String.valueOf(detailBean.getCatalogSizeByCid(currentCatalogIndex))+")");
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -121,7 +129,7 @@ public class MultiChoices extends BaseQuestion {
 			}
 		});
     	
-    	currentTV.setText("Q "+String.valueOf(currentQuestionIndex)+" of "+String.valueOf(questionSize));
+//    	currentTV.setText("Q "+String.valueOf(currentQuestionIndex)+" -- "+"Q "+String.valueOf(questionSize));
         
         //set question text
     	waitTV.setText("Wait "+ String.valueOf(questionSize - comQuestionSize));
@@ -148,13 +156,13 @@ public class MultiChoices extends BaseQuestion {
         Log.i(LOG_TAG, "questionHint:"+questionHint);
         
         //set question text
-        questionHintTV = (TextView)findViewById(R.id.questionHintTV);
+/*        questionHintTV = (TextView)findViewById(R.id.questionHintTV);
         questionHintTV.setText(questionHint);
-        questionHintTV.setTextColor(Color.BLACK);	
+        questionHintTV.setTextColor(Color.BLACK);	*/
 
         //set question text
         questionTV = (TextView)findViewById(R.id.questionTV);
-        questionTV.setText(question.getContent());
+        questionTV.setText(questionHint+ "\n"+ question.getContent());
         questionTV.setTextColor(Color.BLACK);	
         
         //set List
@@ -169,8 +177,29 @@ public class MultiChoices extends BaseQuestion {
         		cb.setChecked(!cb.isChecked());
 			}      	
         });
+        listView.setOnTouchListener(new OnTouchListener(){
+			@Override
+			public boolean onTouch(View arg0, MotionEvent arg1) {
+				detector.onTouchEvent(arg1);
+				return false;
+			}
+		});
         
-        preBtn = (Button)findViewById(R.id.preBtn);
+        loadFooter();
+        setFooter();
+        
+        //set GestureDetector
+        detector = new GestureDetector((OnGestureListener) this);
+    
+    }
+    
+    public void loadFooter(){
+    	preBtn = (Button)findViewById(R.id.preBtn);
+    	questionIndex = (TextView)findViewById(R.id.questionIndex);
+    	nextBtn = (Button)findViewById(R.id.nextBtn);
+    }
+    
+    public void setFooter(){
         preBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -179,7 +208,9 @@ public class MultiChoices extends BaseQuestion {
 			}
 		});
         
-        nextBtn = (Button)findViewById(R.id.nextBtn);
+        String questionIndexDesc = "Question "+ String.valueOf(currentQuestionIndex) +"/"+ String.valueOf(totalQuestions);
+        questionIndex.setText(questionIndexDesc);
+        
         nextBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -187,28 +218,34 @@ public class MultiChoices extends BaseQuestion {
 				relocationQuestion();
 			}
 		});
-    
     }
     
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		super.onTouch(v,event);
+		return detector.onTouchEvent(event);
+	}
+	
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+			float velocityY) {
+		super.onFling(e1,e2,velocityX,velocityY);
+		Log.i(LOG_TAG, "onFling()...");	
+        if (e1.getX() - e2.getX() > verticalMinDistance && Math.abs(velocityX) > minVelocity) {
+        	Log.i(LOG_TAG,"Move Left");
+			direction = -1;
+			relocationQuestion();
+        } else if (e2.getX() - e1.getX() > verticalMinDistance && Math.abs(velocityX) > minVelocity) {
+        	Log.i(LOG_TAG,"Move Right");
+			direction = 1;
+			relocationQuestion();
+        }
+		return false;
+	}
+	
     //save answer if not empty 
     public void relocationQuestion(){
     	
-    	//clear answer first
-    	listItemID.clear();
-    	answerString.setLength(0);
-
-    	//get selection choice and assembly to string
-		for (int i = 0; i < adapter.mChecked.size(); i++) {
-			if (adapter.mChecked.get(i)) {
-				Choice choice = adapter.choices.get(i);
-				listItemID.add(String.valueOf(choice.getChoiceIndex()));
-				if(i>0){
-					answerString.append(",");
-				}
-				answerString.append(String.valueOf(choice.getChoiceIndex()));
-			}
-		}
-		
 		if (listItemID.size() == 0) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(MultiChoices.this);
 			builder.setMessage("Answer this question late?")
@@ -216,7 +253,7 @@ public class MultiChoices extends BaseQuestion {
 					.setPositiveButton("Yes",
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,int id) {
-									clearAnswer();
+//									clearAnswer();
 									gotoNewQuestion();
 								}
 							})
@@ -228,8 +265,7 @@ public class MultiChoices extends BaseQuestion {
 							});
 			builder.show();
 		} else {
-			
-			saveAnswer();
+//			saveAnswer();
 	    	gotoNewQuestion();
 		}
 		
@@ -276,6 +312,24 @@ public class MultiChoices extends BaseQuestion {
     	dbUtil.close();
     	
     	Log.i(LOG_TAG, "end clearAnswer().");
+    }
+ 
+    public void setAnswer(){
+    	Log.i(LOG_TAG, "setAnswer()...");
+    	
+    	//get selection choice and assembly to string
+		for (int i = 0; i < adapter.mChecked.size(); i++) {
+			if (adapter.mChecked.get(i)) {
+				Choice choice = adapter.choices.get(i);
+				listItemID.add(String.valueOf(choice.getChoiceIndex()));
+				if(i>0){
+					answerString.append(",");
+				}
+				answerString.append(String.valueOf(choice.getChoiceIndex()));
+			}
+		}
+		
+		Log.i(LOG_TAG, "setAnswer().");
     }
     
     public void saveAnswer(){
@@ -359,6 +413,17 @@ public class MultiChoices extends BaseQuestion {
 						
 						CheckBox cb = (CheckBox)buttonView;
 						mChecked.set(p, cb.isChecked());
+						
+						//set answer
+				    	//clear answer first
+				    	listItemID.clear();
+				    	answerString.setLength(0);
+						setAnswer();
+						if(answerString.length()==0){
+							clearAnswer();
+						}else{
+							saveAnswer();
+						}
 					}
 				});
 				

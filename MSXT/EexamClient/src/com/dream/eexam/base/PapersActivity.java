@@ -11,12 +11,14 @@ import com.dream.eexam.model.InterviewBean;
 import com.dream.eexam.model.LoginResultBean;
 import com.dream.eexam.paper.MultiChoices;
 import com.dream.eexam.paper.SingleChoices;
+import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SystemConfig;
 import com.dream.eexam.util.XMLParseUtil;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -30,7 +32,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 public class PapersActivity extends BaseActivity {
-	private static final String LOG_TAG = "SessionsDemoVote";
+	private static final String LOG_TAG = "PapersActivity";
 
 	//declare components
 	private TextView spinnerText = null;
@@ -147,6 +149,8 @@ public class PapersActivity extends BaseActivity {
 			examIdString = examBaseBean.getId();
 			
 			Log.i(LOG_TAG, "examIdString:"+examIdString);
+			
+			loadAnswerOfLasttime();
 		}
 		public void onNothingSelected(AdapterView<?> arg0) {
 			Log.i(LOG_TAG,"onNothingSelected()...");
@@ -213,5 +217,16 @@ public class PapersActivity extends BaseActivity {
 			}
 	    }
 	}
-	
+
+	public void loadAnswerOfLasttime(){
+		Log.i(LOG_TAG, "loadAnswerOfLasttime()...");
+    	DatabaseUtil dbUtil = new DatabaseUtil(this);
+    	dbUtil.open();
+    	Cursor cursor = dbUtil.fetchAllAnswers();
+    	while (cursor.moveToNext()) {
+			Log.i(LOG_TAG, "cid:" + cursor.getInt(0) + " qid:"+ cursor.getInt(1) + " answer:" + cursor.getString(2));
+		}
+    	Log.i(LOG_TAG, "loadAnswerOfLasttime()...");
+    	dbUtil.close();
+	}
 }

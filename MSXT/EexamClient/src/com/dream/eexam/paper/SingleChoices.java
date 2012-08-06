@@ -55,7 +55,7 @@ public class SingleChoices extends BaseQuestion {
 		completedPercentage = (TextView)findViewById(R.id.completedPercentage);
 		
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
-		currentTV = (TextView)findViewById(R.id.header_tv_current);
+//		currentTV = (TextView)findViewById(R.id.header_tv_current);
 		waitTV = (TextView)findViewById(R.id.header_tv_waiting);
 	}
 	
@@ -79,7 +79,7 @@ public class SingleChoices extends BaseQuestion {
 			}
 		});
 		
-    	currentTV.setText("Q "+String.valueOf(currentQuestionIndex)+" of "+String.valueOf(questionSize));
+//    	currentTV.setText("Q "+String.valueOf(currentQuestionIndex)+" of "+String.valueOf(questionSize));
     	
         //set question text
     	waitTV.setText("Wait "+ String.valueOf(questionSize - comQuestionSize));

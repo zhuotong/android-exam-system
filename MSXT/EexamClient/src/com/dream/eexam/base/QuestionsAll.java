@@ -45,7 +45,7 @@ public class QuestionsAll extends BaseActivity {
 		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
 		QuestionProgress qp = getQuestionProgress(sharedPreferences);
 		   //set question text
-    	currentTV = (TextView)findViewById(R.id.header_tv_current);
+//    	currentTV = (TextView)findViewById(R.id.header_tv_current);
     	currentTV.setBackgroundColor(Color.parseColor("#4428FF"));
     	currentTV.setText(String.valueOf(qp.getCurrentQueIndex()));
     	currentTV.setOnClickListener(new View.OnClickListener() {

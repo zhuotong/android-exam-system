@@ -62,7 +62,7 @@ public class GroupAdapter extends BaseAdapter {
 		String queNumber = String.valueOf(bean.getQuestionNumber());
 		Log.i(TAG, "indexStr="+indexStr+" desc="+desc+" queNumber="+queNumber);
 		
-		holder.groupItem.setText(indexStr+". " + desc +"("+queNumber+")");
+		holder.groupItem.setText(indexStr+". " + desc +"(Q1 - "+"Q"+queNumber+")");
 		
 		double percentage = bean.getComPercentage();
 		Log.i(TAG, "percentage="+String.valueOf(percentage));
