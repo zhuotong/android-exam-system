@@ -213,6 +213,36 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		}
 		return inputStream;
 	}
+	
+    public void clearAnswer(Context context,Integer cid,Integer qid){
+    	Log.i(LOG_TAG, "clearAnswer()...");
+    	
+    	Log.i(LOG_TAG, "(cid="+String.valueOf(cid)+",qid="+String.valueOf(qid)+")");
+    	DatabaseUtil dbUtil = new DatabaseUtil(this);
+    	dbUtil.open();
+    	dbUtil.deleteAnswer(cid,qid);
+    	dbUtil.close();
+    	
+    	Log.i(LOG_TAG, "end clearAnswer().");
+    }
+	
+	public void saveAnswer(Context context,Integer cid,Integer qid,String answers){
+    	Log.i(LOG_TAG, "saveAnswer()...");
+    	
+    	DatabaseUtil dbUtil = new DatabaseUtil(context);
+    	dbUtil.open();
+    	Cursor cursor = dbUtil.fetchAnswer(cid,qid);
+    	if(cursor != null && cursor.moveToNext()){
+    		Log.i(LOG_TAG, "updateAnswer("+cid+","+qid+","+answers+")");
+    		dbUtil.updateAnswer(cid,qid,"("+ answers+")");
+    	}else{
+    		Log.i(LOG_TAG, "createAnswer("+cid+","+qid+","+answers+")");
+    		dbUtil.createAnswer(cid,qid, "("+ answers+")");
+    	}
+    	dbUtil.close();
+    	
+    	Log.i(LOG_TAG, "saveAnswer().");
+    }
 
 	@Override
 	protected void onDestroy() {
@@ -260,14 +290,16 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		Log.i(LOG_TAG, "showWindow()...");
 		if (popupWindow == null) {
 			LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			popupView = layoutInflater.inflate(R.layout.group_list, null);
+			popupView = layoutInflater.inflate(R.layout.catalog_info_list, null);
 			lv_group = (ListView) popupView.findViewById(R.id.lvGroup);
 //			groups = new ArrayList<String>();
 			
 			Log.i(LOG_TAG, "pressedItemIndex:"+pressedItemIndex);
 			GroupAdapter groupAdapter = new GroupAdapter(this, catalogNames);
 			lv_group.setAdapter(groupAdapter);
-			popupWindow = new PopupWindow(popupView,300, 500);
+			int ppH = Integer.valueOf(getResources().getString(R.string.popup_window_height));
+			int ppW = Integer.valueOf(getResources().getString(R.string.popup_window_width));
+			popupWindow = new PopupWindow(popupView,ppH, ppW);
 		}else{
 			popupWindow.dismiss();
 		}

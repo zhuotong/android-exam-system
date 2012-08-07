@@ -9,7 +9,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,8 +27,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.Choice;
-import com.dream.eexam.model.Question;
-import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.XMLParseUtil;
 
 public class SingleChoices extends BaseQuestion {
@@ -39,7 +36,9 @@ public class SingleChoices extends BaseQuestion {
 	//components statement
 	TextView questionTV = null;
 	ListView listView;
+	
 	Button preBtn;
+	TextView questionIndex;
 	Button nextBtn;
 
 	//data statement
@@ -113,12 +112,30 @@ public class SingleChoices extends BaseQuestion {
         	@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int arg2,
 					long arg3) {
-        		RadioButton cb = (RadioButton)view.findViewById(R.id.list_select);
+        		//initial all items background color
+        		for(int i=0;i<adapter.getChildCount();i++){
+        			View aView = adapter.getChildAt(i);
+        			RadioButton aRb = (RadioButton)aView.findViewById(R.id.radioButton);
+        			aRb.setChecked(false);
+        		}
+        		
+        		RadioButton cb = (RadioButton)view.findViewById(R.id.radioButton);
         		cb.setChecked(!cb.isChecked());
 			}      	
         });
         
-        preBtn = (Button)findViewById(R.id.preBtn);
+        loadFooter();
+        setFooter();
+    
+    }
+    
+    public void loadFooter(){
+    	preBtn = (Button)findViewById(R.id.preBtn);
+    	questionIndex = (TextView)findViewById(R.id.questionIndex);
+    	nextBtn = (Button)findViewById(R.id.nextBtn);
+    }
+    
+    public void setFooter(){
         preBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -127,7 +144,9 @@ public class SingleChoices extends BaseQuestion {
 			}
 		});
         
-        nextBtn = (Button)findViewById(R.id.nextBtn);
+        String questionIndexDesc = "Question "+ String.valueOf(currentQuestionIndex) +"/"+ String.valueOf(totalQuestions);
+        questionIndex.setText(questionIndexDesc);
+        
         nextBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -135,7 +154,6 @@ public class SingleChoices extends BaseQuestion {
 				relocationQuestion();
 			}
 		});
-    
     }
     
     //save answer if not empty 
@@ -165,7 +183,7 @@ public class SingleChoices extends BaseQuestion {
 					.setPositiveButton("Yes",
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,int id) {
-									clearAnswer();
+									clearAnswer(mContext,currentCatalogIndex,currentQuestionIndex);
 									gotoNewQuestion();
 								}
 							})
@@ -177,7 +195,7 @@ public class SingleChoices extends BaseQuestion {
 							});
 			builder.show();
 		} else {
-			saveAnswer();
+			saveAnswer(mContext,currentCatalogIndex,currentQuestionIndex, answerString.toString());
 	    	gotoNewQuestion();
 		}
 		
@@ -212,7 +230,7 @@ public class SingleChoices extends BaseQuestion {
 		}
     }
     
-    public void clearAnswer(){
+    /*public void clearAnswer(){
     	Log.i(LOG_TAG, "clearAnswer()...");
     	
     	DatabaseUtil dbUtil = new DatabaseUtil(this);
@@ -221,9 +239,9 @@ public class SingleChoices extends BaseQuestion {
     	dbUtil.close();
     	
     	Log.i(LOG_TAG, "end clearAnswer().");
-    }
+    }*/
     
-    public void saveAnswer(){
+    /*public void saveAnswer(){
     	Log.i(LOG_TAG, "saveAnswer()...");
     	
     	DatabaseUtil dbUtil = new DatabaseUtil(this);
@@ -240,7 +258,7 @@ public class SingleChoices extends BaseQuestion {
     	dbUtil.close();
     	
     	Log.i(LOG_TAG, "saveAnswer().");
-    }
+    }*/
     
     class MyListAdapter extends BaseAdapter{
     	List<Boolean> mChecked = new ArrayList<Boolean>();

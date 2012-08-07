@@ -182,9 +182,9 @@ public class MultiChoices extends BaseQuestion {
 		    	answerString.setLength(0);
 				setAnswer();
 				if(answerString.length()==0){
-					clearAnswer();
+					clearAnswer(mContext,currentCatalogIndex,currentQuestionIndex);
 				}else{
-					saveAnswer();
+					saveAnswer(mContext,currentCatalogIndex,currentQuestionIndex,answerString.toString());
 				}
 			}      	
         });
@@ -314,7 +314,7 @@ public class MultiChoices extends BaseQuestion {
 		}
     }
     
-    public void clearAnswer(){
+/*    public void clearAnswer(){
     	Log.i(LOG_TAG, "clearAnswer()...");
     	
     	DatabaseUtil dbUtil = new DatabaseUtil(this);
@@ -323,7 +323,7 @@ public class MultiChoices extends BaseQuestion {
     	dbUtil.close();
     	
     	Log.i(LOG_TAG, "end clearAnswer().");
-    }
+    }*/
  
     public void setAnswer(){
     	Log.i(LOG_TAG, "setAnswer()...");
@@ -343,7 +343,7 @@ public class MultiChoices extends BaseQuestion {
 		Log.i(LOG_TAG, "setAnswer().");
     }
     
-    public void saveAnswer(){
+    /*public void saveAnswer(){
     	Log.i(LOG_TAG, "saveAnswer()...");
     	
     	DatabaseUtil dbUtil = new DatabaseUtil(this);
@@ -360,7 +360,7 @@ public class MultiChoices extends BaseQuestion {
     	dbUtil.close();
     	
     	Log.i(LOG_TAG, "saveAnswer().");
-    }
+    }*/
     
     
     class MyListAdapter extends BaseAdapter{
@@ -432,9 +432,9 @@ public class MultiChoices extends BaseQuestion {
 				    	answerString.setLength(0);
 						setAnswer();
 						if(answerString.length()==0){
-							clearAnswer();
+							clearAnswer(mContext,currentCatalogIndex,currentQuestionIndex);
 						}else{
-							saveAnswer();
+							saveAnswer(mContext,currentCatalogIndex,currentQuestionIndex,answerString.toString());
 						}
 					}
 				});

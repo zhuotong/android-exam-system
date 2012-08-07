@@ -14,6 +14,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -36,6 +37,8 @@ public class BaseActivity extends Activity {
 		Log.i(LOG_TAG,"onCreate()...");
 		ActivityStackControlUtil.add(this);
 		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
+		//set Orientation to PORTRAIT
+		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		
 		//hide title bar
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);

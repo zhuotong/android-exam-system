@@ -45,7 +45,7 @@ public class GroupAdapter extends BaseAdapter {
 		Log.i(TAG, "getView()...");
 		ViewHolder holder;
 		if (convertView==null) {
-			convertView=LayoutInflater.from(context).inflate(R.layout.group_list_item, null);
+			convertView=LayoutInflater.from(context).inflate(R.layout.catalog_info_list_item, null);
 			holder=new ViewHolder();
 			convertView.setTag(holder);
 			
