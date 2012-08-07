@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="40dp" 
+    android:layout_height="60dp" 
     android:background="@drawable/bg_color_paper_header">
 
 	<TableRow android:layout_width="fill_parent"
@@ -15,17 +15,20 @@
 	        android:paddingLeft="5dp"
 	        android:layout_weight="1"
 	        android:textColor="#FFFFFF"
-	        android:textSize="16sp"
+	        android:textSize="30sp"
 	        android:background="@drawable/bg_color_login_header_text_view"/>
 	        
     	<TableLayout
             android:layout_weight="4" 	    	    
             android:layout_width="wrap_content"
 			android:layout_height="fill_parent"
+			android:layout_gravity="center_vertical|center_horizontal"
+			android:gravity="center_vertical|center_horizontal"
 			android:background="@drawable/bg_color_login_header_text_view">
 	    		<TableRow 
 		    	    android:layout_width="fill_parent"
 					android:layout_height="fill_parent"
+					android:layout_gravity="center_vertical|center_horizontal"
 					android:padding="1dp">
 				     <TextView
 				        android:id="@+id/remainingTimeLabel"
@@ -36,7 +39,7 @@
 				        android:layout_gravity="center_vertical"
 				        android:gravity="center_vertical"
 				        android:textColor="#000000"
-				        android:textSize="12sp"/>   
+				        android:textSize="20sp"/>   
 				     <TextView
 				        android:id="@+id/remainingTime"
 				        android:text="@string/msg_header_tv_waiting"
@@ -47,30 +50,9 @@
 				        android:layout_gravity="center_vertical"
 				        android:gravity="center_vertical"
 				        android:textColor="#DA007A"
-				        android:textSize="12sp"/>
+				        android:textSize="20sp"/>
 				</TableRow>
-				<TableRow 
-				     android:layout_width="fill_parent"
-				     android:layout_height="fill_parent"
-				     android:padding="2dp">
-				     <SeekBar android:id="@+id/completedSeekBar" 
-					     android:layout_width="fill_parent"
-						 android:layout_height="wrap_content"
-						 android:layout_weight="1" 
-						 android:layout_gravity="center_vertical"
-				         android:gravity="center_vertical"
-						 android:max="100"
-						 android:progress="50" 
-						 android:minHeight="5dp"/>
-   				     <TextView
-				        android:id="@+id/completedPercentage"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_weight="3"
-				        android:layout_marginLeft="3dp"
-				        android:textColor="#DA007A"
-				        android:textSize="12sp"/>
-				</TableRow>	            	            
+            	            
         </TableLayout>
         
         <TextView
@@ -82,7 +64,7 @@
 	        android:gravity="center_vertical"
 	        android:paddingRight="5dp"
 	        android:textColor="#FFFFFF"
-	        android:textSize="16sp"
+	        android:textSize="30sp"
 	        android:background="@drawable/bg_color_login_header_text_view"/>
     </TableRow>
 </FrameLayout>

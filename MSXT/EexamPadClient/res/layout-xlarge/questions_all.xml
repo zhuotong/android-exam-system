@@ -11,8 +11,8 @@
 	       layout="@layout/base_header" /> 
 
     <include
-       	   android:id="@+id/paperHeader"
-           layout="@layout/paper_header" />
+       	   android:id="@+id/catalogNav"
+           layout="@layout/catalog_nav" />
     	       
 	<RelativeLayout 
 	    android:orientation="vertical"
@@ -21,9 +21,10 @@
 	    android:layout_margin="1dip">		   
 		
 		<ListView
-	     	android:id="@+id/questionsWaitingLV"
+	     	android:id="@+id/questionsAll"
 	     	android:layout_width="fill_parent"
 	     	android:layout_height="fill_parent" 
+	     	android:layout_below="@id/listHeader"
 	  		android:background="#000000"
 	  		/>
 		
