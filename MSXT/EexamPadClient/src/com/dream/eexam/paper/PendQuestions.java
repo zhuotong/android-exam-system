@@ -1,27 +1,19 @@
 package com.dream.eexam.paper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.GestureDetector.OnGestureListener;
-import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ListView;
+import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.SeekBar;
 import android.widget.AdapterView.OnItemClickListener;
@@ -32,11 +24,7 @@ public class PendQuestions extends BaseQuestion {
 	
 	public final static String LOG_TAG = "MultiChoices";
 
-	//components statement
-	TextView questionHintTV = null;
-	TextView questionTV = null;
-
-	ListView gridList;
+	GridView gridList;
 	
 	Button preBtn;
 	TextView questionIndex;
@@ -47,19 +35,20 @@ public class PendQuestions extends BaseQuestion {
 	List<String> listItemID = new ArrayList<String>();
 	Integer indexInExam;
 	
-	public void loadHeader(){
+	public void loadComponents(){
 		homeTV = (TextView)findViewById(R.id.homeTV);
-		
 		remainingTimeLabel = (TextView)findViewById(R.id.remainingTimeLabel);
 		remainingTime = (TextView)findViewById(R.id.remainingTime);
-		
-		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
-		completedPercentage = (TextView)findViewById(R.id.completedPercentage);
-		
 		submitTV = (TextView)findViewById(R.id.submitTV);
 		
+		questionIndex = (TextView)findViewById(R.id.questionIndex);
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
-		waitTV = (TextView)findViewById(R.id.header_tv_waiting);
+		pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);
+		
+    	preBtn = (Button)findViewById(R.id.preBtn);
+		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
+		completedPercentage = (TextView)findViewById(R.id.completedPercentage);   	
+    	nextBtn = (Button)findViewById(R.id.nextBtn);
 	}
 	
 	public void setHeader(){
@@ -102,49 +91,57 @@ public class PendQuestions extends BaseQuestion {
 			}
 		});
 
-		//set exam sub header
+        //set catalog bar(Left) 
+        String questionIndexDesc = "Question "+ String.valueOf(currentQuestionIndex) +"/"+ String.valueOf(totalQuestions);
+        questionIndex.setText(questionIndexDesc);
+        
+        //set catalog bar(Center) 
 		catalogsTV.setText(String.valueOf(currentCatalogIndex)+". "+
 				detailBean.getCatalogDescByCid(currentCatalogIndex) + 
 				"(Q" + String.valueOf(currentQuestionIndex)+" - " + "Q" + String.valueOf(questionSize)+")");
-//				"("+String.valueOf(detailBean.getCatalogSizeByCid(currentCatalogIndex))+")");
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				showWindow(v);
 			}
 		});
-    	
-        
-        //set question text
-    	waitTV.setText("Wait "+ String.valueOf(questionSize - comQuestionSize));
-    	waitTV.setOnClickListener(new View.OnClickListener() {
+		
+		 //set catalog bar(Right) 
+		pendQueNumber.setText("Pending("+Integer.valueOf(pendQuestions.size())+")");
+		pendQueNumber.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.putExtra("ccIndex", String.valueOf(currentCatalogIndex));
+				intent.putExtra("cqIndex", String.valueOf(currentQuestionIndex));
+				if(questionTypeM.equals(questionType)){
+					intent.putExtra("questionType", "Multi Select");
+					intent.setClass( getBaseContext(), PendQuestions.class);
+				}else if(questionTypeS.equals(questionType)){
+					intent.putExtra("questionType", "Single Select");
+					intent.setClass( getBaseContext(), PendQuestions.class);
+				}
+				finish();
+				startActivity(intent);
 			}
-		});  
+		});
+
+	
 	}
 	
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.paper_multi_choices);
+        setContentView(R.layout.pending_questions);
         mContext = getApplicationContext();
 
-        loadHeader();
+        loadComponents();
         loadAnswer();
         setHeader();
-		
-        String questionHint = "Q "+String.valueOf(question.getIndex())+"(Score:"+String.valueOf(question.getScore())+")";
-        Log.i(LOG_TAG, "questionHint:"+questionHint);
-        
-        //set question text
-        questionTV = (TextView)findViewById(R.id.questionTV);
-        questionTV.setText(questionHint+ "\n"+ question.getContent());
-        questionTV.setTextColor(Color.BLACK);	
         
         //set List
-        gridList = (ListView)findViewById(R.id.lvChoices);
+        gridList = (GridView)findViewById(R.id.gridview);
         adapter = new MyListAdapter(pendQuestions);
         gridList.setAdapter(adapter);
         gridList.setOnItemClickListener(new OnItemClickListener(){
@@ -184,10 +181,11 @@ public class PendQuestions extends BaseQuestion {
     
     class MyListAdapter extends BaseAdapter{
     	List<Question> questions = new ArrayList<Question>();
-		HashMap<Integer,View> map = new HashMap<Integer,View>(); 
+    	private LayoutInflater mInflater;
     	
     	public MyListAdapter(List<Question> questions){
     		this.questions = questions;
+    		mInflater = LayoutInflater.from(mContext);  
     	}
 
 		@Override
@@ -207,32 +205,29 @@ public class PendQuestions extends BaseQuestion {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			View view;
-			ViewHolder holder = null;
-			if (map.get(position) == null) {
-				Log.i(LOG_TAG,"position1 = "+position);
-				
-				LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				view = mInflater.inflate(R.layout.pending_questions_item, null);
-				holder = new ViewHolder();
-				//set 3 component 
-				holder.questionBtn = (CheckBox)view.findViewById(R.id.questionBtn);
-				final int p = position;
-				map.put(position, view);
-				holder.questionBtn.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-					}
-				});
-				view.setTag(holder);
-			}else{
-				Log.i(LOG_TAG,"position2 = "+position);
-				view = map.get(position);
-				holder = (ViewHolder)view.getTag();
-			}
-			Question question = questions.get(position);
-			holder.questionBtn.setText(String.valueOf(question.getIndex()));
-			return view;
+			Log.i(LOG_TAG,"getView()..."+" position="+position);
+        	
+			ViewHolder holder;  
+            if (convertView == null){  
+                holder = new ViewHolder();  
+                convertView = mInflater.inflate(R.layout.pending_questions_item, null);  
+                holder.questionBtn = (Button) convertView.findViewById(R.id.questionBtn);  
+                convertView.setTag(holder);  
+            }else {  
+                holder = (ViewHolder) convertView.getTag();  
+            }  
+            
+            Question question = questions.get(position);
+            
+            holder.questionBtn.setText(String.valueOf(question.getIndex()));  
+            
+            final int p = position;
+            holder.questionBtn.setOnClickListener(new Button.OnClickListener() {
+    			public void onClick(View v) {
+    				Log.i(LOG_TAG,"-------------MyListAdapter. holder.questionBtn.setOnClickListener onClick()...------------------");
+    			}
+    		});
+            return convertView; 
 		}
     	
     }

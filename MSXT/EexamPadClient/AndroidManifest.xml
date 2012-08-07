@@ -36,12 +36,5 @@
                   android:launchMode="singleTask">
         </activity>
         
-     	<activity android:name=".QuestionsAll"
-                  android:launchMode="singleTask">
-        </activity>
-        
-   	    <activity android:name=".QuestionsWaiting"
-                  android:launchMode="singleTask">
-        </activity>
     </application>
 </manifest>

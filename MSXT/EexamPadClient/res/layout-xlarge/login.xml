@@ -74,6 +74,27 @@
 
 	</TableLayout>
 
+	<TableRow android:id="@+id/tableRow4" 
+	    android:layout_width="match_parent" 
+	    android:layout_height="wrap_content">
+	    <CheckBox
+		    android:id="@+id/checkBox1"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:text="Save ID" 
+		    android:textColor="#000000"
+		    android:layout_gravity="center_vertical|center_horizontal"/>
+	    <CheckBox
+		    android:id="@+id/checkBox2"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:text="Save Password" 
+		    android:textColor="#000000"
+		    android:layout_gravity="center_vertical|center_horizontal"/>
+	</TableRow>
+	
 	<!-- Login Button -->
 	<TableRow android:id="@+id/tableRow3" 
 		android:layout_width="fill_parent"
@@ -91,31 +112,6 @@
 		</Button>
 	</TableRow>
 
-	<TableRow android:id="@+id/tableRow4" 
-	    android:layout_width="match_parent" 
-	    android:layout_height="wrap_content">
-	    <CheckBox
-		    android:id="@+id/checkBox1"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_weight="1"
-		    android:text="CheckBox" />
-	    <TextView android:id="@+id/textView1" 
-		    android:layout_width="wrap_content" 
-		    android:layout_height="wrap_content" 
-		    android:layout_weight="1"
-		    android:text="TextView"/>
-	    <CheckBox
-		    android:id="@+id/checkBox2"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_weight="1"
-		    android:text="CheckBox" />
-	    <TextView android:id="@+id/textView2" 
-		    android:layout_width="wrap_content" 
-		    android:layout_height="wrap_content"
-		    android:layout_weight="1" 
-		    android:text="TextView"/>
-	</TableRow>
+
 </LinearLayout>
 

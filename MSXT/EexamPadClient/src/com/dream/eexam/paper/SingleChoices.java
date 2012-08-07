@@ -46,7 +46,7 @@ public class SingleChoices extends BaseQuestion {
 		submitTV = (TextView)findViewById(R.id.submitTV);
 		
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
-		waitTV = (TextView)findViewById(R.id.header_tv_waiting);
+//		waitTV = (TextView)findViewById(R.id.header_tv_waiting);
 
 		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
 		completedPercentage = (TextView)findViewById(R.id.completedPercentage);
@@ -77,12 +77,12 @@ public class SingleChoices extends BaseQuestion {
 		});
 		
         //set question text
-    	waitTV.setText("Wait "+ String.valueOf(questionSize - comQuestionSize));
-    	waitTV.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-			}
-		});  
+//    	waitTV.setText("Wait "+ String.valueOf(questionSize - comQuestionSize));
+//    	waitTV.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//			}
+//		});  
 	}
 	
     @Override

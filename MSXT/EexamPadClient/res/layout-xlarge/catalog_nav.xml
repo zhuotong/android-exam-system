@@ -6,6 +6,16 @@
     <TableRow
          android:layout_width="fill_parent"
          android:layout_height="fill_parent">
+         
+   	<TextView android:id="@+id/questionIndex" 
+			android:layout_width="wrap_content"
+			android:layout_height="fill_parent"
+			android:layout_weight="1" 
+			android:layout_gravity="center_horizontal|center_vertical"
+			android:gravity="center_horizontal|center_vertical"
+			android:textColor="#FFFFFF"
+			android:textSize="25sp"
+			android:background="@drawable/bg_color_paper_header_text_view"/>
 
     <TextView
 	    android:id="@+id/header_tv_catalogs"
@@ -15,10 +25,21 @@
         android:gravity="center_vertical|center_horizontal"
         android:layout_weight="2"
         android:textColor="#FFFFFF"
-        android:textSize="35sp"
+        android:textSize="25sp"
         android:background="@drawable/bg_color_paper_header_text_view"/>
 
-     <TextView
+	<TextView
+        android:id="@+id/pendQueNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_weight="1"
+        android:layout_marginLeft="3dp"
+        android:textColor="#DA007A"
+        android:textSize="25sp"
+        android:background="@drawable/bg_color_paper_header_text_view"/>
+<!--      <TextView
         android:id="@+id/header_tv_waiting"
         android:text="@string/msg_header_tv_waiting"
         android:layout_width="wrap_content"
@@ -29,7 +50,7 @@
         android:gravity="center_vertical|center_horizontal"
         android:textColor="#FFFFFF"
         android:textSize="35sp"
-        android:background="@drawable/bg_color_paper_header_text_view"/>
+        android:background="@drawable/bg_color_paper_header_text_view"/> -->
 		            
     </TableRow>
 </FrameLayout>

@@ -50,15 +50,15 @@ public class MultiChoices extends BaseQuestion {
 		remainingTime = (TextView)findViewById(R.id.remainingTime);
 		submitTV = (TextView)findViewById(R.id.submitTV);
 		
+		questionIndex = (TextView)findViewById(R.id.questionIndex);
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
-		waitTV = (TextView)findViewById(R.id.header_tv_waiting);
-
-		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
-		completedPercentage = (TextView)findViewById(R.id.completedPercentage);
 		pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);
 		
+//		waitTV = (TextView)findViewById(R.id.header_tv_waiting);
+		
     	preBtn = (Button)findViewById(R.id.preBtn);
-    	questionIndex = (TextView)findViewById(R.id.questionIndex);
+		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
+		completedPercentage = (TextView)findViewById(R.id.completedPercentage);   	
     	nextBtn = (Button)findViewById(R.id.nextBtn);
 	}
 	
@@ -102,27 +102,41 @@ public class MultiChoices extends BaseQuestion {
 			}
 		});
 
-		//set exam sub header
+        //set catalog bar(Left) 
+        String questionIndexDesc = "Question "+ String.valueOf(currentQuestionIndex) +"/"+ String.valueOf(totalQuestions);
+        questionIndex.setText(questionIndexDesc);
+        
+        //set catalog bar(Center) 
 		catalogsTV.setText(String.valueOf(currentCatalogIndex)+". "+
 				detailBean.getCatalogDescByCid(currentCatalogIndex) + 
 				"(Q" + String.valueOf(currentQuestionIndex)+" - " + "Q" + String.valueOf(questionSize)+")");
-//				"("+String.valueOf(detailBean.getCatalogSizeByCid(currentCatalogIndex))+")");
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				showWindow(v);
 			}
 		});
-    	
-//    	currentTV.setText("Q "+String.valueOf(currentQuestionIndex)+" -- "+"Q "+String.valueOf(questionSize));
-        
-        //set question text
-    	waitTV.setText("Wait "+ String.valueOf(questionSize - comQuestionSize));
-    	waitTV.setOnClickListener(new View.OnClickListener() {
+		
+		 //set catalog bar(Right) 
+		pendQueNumber.setText("Pending("+Integer.valueOf(pendQuestions.size())+")");
+		pendQueNumber.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.putExtra("ccIndex", String.valueOf(currentCatalogIndex));
+				intent.putExtra("cqIndex", String.valueOf(currentQuestionIndex));
+				if(questionTypeM.equals(questionType)){
+					intent.putExtra("questionType", "Multi Select");
+					intent.setClass( getBaseContext(), PendQuestions.class);
+				}else if(questionTypeS.equals(questionType)){
+					intent.putExtra("questionType", "Single Select");
+					intent.setClass( getBaseContext(), PendQuestions.class);
+				}
+				finish();
+				startActivity(intent);
 			}
-		});  
+		});
+
 	
 	}
 	
@@ -184,32 +198,7 @@ public class MultiChoices extends BaseQuestion {
     }
     
     public void setFooter(){
-		//set completedSeekBar
-		int per = 100 * answeredQuestions/totalQuestions;
-		completedSeekBar.setThumb(null);
-		completedSeekBar.setProgress(per);
-		completedSeekBar.setEnabled(false);
-		//set completedSeekBar label
-		completedPercentage.setText(String.valueOf(per)+"%");
-		pendQueNumber.setText("Pending("+Integer.valueOf(pendQuestions.size())+")");
-		pendQueNumber.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent();
-				intent.putExtra("ccIndex", String.valueOf(currentCatalogIndex));
-				intent.putExtra("cqIndex", String.valueOf(currentQuestionIndex+direction));
-				if(questionTypeM.equals(questionType)){
-					intent.putExtra("questionType", "Multi Select");
-					intent.setClass( getBaseContext(), MultiChoices.class);
-				}else if(questionTypeS.equals(questionType)){
-					intent.putExtra("questionType", "Single Select");
-					intent.setClass( getBaseContext(), SingleChoices.class);
-				}
-				finish();
-				startActivity(intent);
-			}
-		});
-		
+    	//set preBtn
         preBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -217,8 +206,14 @@ public class MultiChoices extends BaseQuestion {
 				relocationQuestion();
 			}
 		});
-        String questionIndexDesc = "Question "+ String.valueOf(currentQuestionIndex) +"/"+ String.valueOf(totalQuestions);
-        questionIndex.setText(questionIndexDesc);
+		//set completedSeekBar
+		int per = 100 * answeredQuestions/totalQuestions;
+		completedSeekBar.setThumb(null);
+		completedSeekBar.setProgress(per);
+		completedSeekBar.setEnabled(false);
+		//set completedSeekBar label
+		completedPercentage.setText(String.valueOf(per)+"%");
+		//set nextBtn
         nextBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
