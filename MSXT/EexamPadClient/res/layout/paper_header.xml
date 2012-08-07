@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="35dp"
+    android:background="@drawable/bg_color_paper_header">
+    <TableRow
+         android:layout_width="fill_parent"
+         android:layout_height="fill_parent">
+
+    <TextView
+	    android:id="@+id/header_tv_catalogs"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_weight="2"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:background="@drawable/bg_color_paper_header_text_view"/>
+
+<!-- 	 <TextView
+	    android:id="@+id/header_tv_current"
+        android:text="@string/msg_header_tv_current"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="0.5dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_weight="1"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:background="@drawable/bg_color_paper_header_text_view"/> -->
+     <TextView
+        android:id="@+id/header_tv_waiting"
+        android:text="@string/msg_header_tv_waiting"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_weight="1" 
+        android:layout_marginLeft="0.5dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:gravity="center_vertical|center_horizontal"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:background="@drawable/bg_color_paper_header_text_view"/>
+		            
+    </TableRow>
+</FrameLayout>

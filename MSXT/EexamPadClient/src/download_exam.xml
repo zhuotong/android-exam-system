@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<examination>
+<examinationid>1213213</examinationid>
+<name>Java Engineer</name>
+<time>60</time><!-- minutes(-1 mean no time limit)-->
+<confuse>true</confuse>
+<catalogs>
+	<catalog>
+		<index>1</index>
+		<catalogdesc><![CDATA[J2SE]]></catalogdesc>
+		<questions>
+			<question>
+				<index>1</index>
+				<questionid>0</questionid>
+				<type>Multi Select</type>			
+				<score>5</score>
+			  <content><![CDATA[which of the following are java keywords]]></content>
+			  <choices>
+					<choice>
+						<index>1</index>
+						<label>A</label>
+						<content>goto</content>
+				  </choice>
+			    <choice>
+					<index>2</index>
+					<label>B</label>
+					<content>malloc</content>
+			    </choice>
+			    <choice>
+					<index>3</index>
+					<label>C</label>
+					<content>extends</content>
+			    </choice>
+			    <choice>
+					<index>4</index>
+					<label>D</label>
+					<content>false</content>
+			    </choice>
+			  </choices>
+			</question>
+			<question>
+				<index>2</index>
+				<questionid>01221</questionid>
+				<type>Multi Select</type>			
+				<score>5</score>
+				<content><![CDATA[which of the following are datatype type]]></content>
+				<choices>
+					<choice>
+						<index>1</index>
+						<label>A</label>
+						<content>Integer</content>
+					</choice>
+					<choice>
+						<index>2</index>
+						<label>B</label>
+						<content>Double</content>
+					</choice>
+					<choice>
+						<index>3</index>
+						<label>C</label>
+						<content>Float</content>
+					</choice>
+					<choice>
+						<index>4</index>
+						<label>D</label>
+						<content>String</content>
+					</choice>
+				</choices>
+			</question>
+		</questions>
+	</catalog>	
+	<catalog>
+		<index>2</index>
+		<catalogdesc><![CDATA[Oracle PL/SQL]]></catalogdesc>
+		<questions>
+			<question>
+				<index>1</index>
+				<questionid>0</questionid>
+				<type>Multi Select</type>			
+				<score>10</score>
+			  <content><![CDATA[which of the following are oracle object]]></content>
+			  <choices>
+					<choice>
+						<index>1</index>
+						<label>A</label>
+						<content>procedure</content>
+				  </choice>
+			    <choice>
+					<index>2</index>
+					<label>B</label>
+					<content>function</content>
+			    </choice>
+			    <choice>
+					<index>3</index>
+					<label>C</label>
+					<content>table</content>
+			    </choice>
+			    <choice>
+					<index>4</index>
+					<label>D</label>
+					<content>view</content>
+			    </choice>
+			    </choices>
+			</question>
+		</questions>
+	</catalog>	
+	<catalog>
+		<index>3</index>
+		<catalogdesc><![CDATA[Java Script]]></catalogdesc>
+		<questions>
+			<question>
+				<index>1</index>
+				<questionid>0</questionid>
+				<type>Single Select</type>			
+				<score>10</score>
+			  <content><![CDATA[which of the following are javacript function]]></content>
+			  <choices>
+					<choice>
+						<index>1</index>
+						<label>A</label>
+						<content>substring</content>
+				  </choice>
+			    <choice>
+					<index>2</index>
+					<label>B</label>
+					<content>toSting</content>
+			    </choice>
+			    <choice>
+					<index>3</index>
+					<label>C</label>
+					<content>loop</content>
+			    </choice>
+			    <choice>
+					<index>4</index>
+					<label>D</label>
+					<content>size</content>
+			    </choice>
+			    </choices>
+			</question>
+		</questions>
+	</catalog>
+</catalogs>
+</examination>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EexamClient</string>
+    
+    <string name="msg_header_tv_home">Home</string>
+    
+    <string name="msg_header_tv_current">Current(1)</string>
+    <string name="msg_header_tv_all">All(5)</string>
+    <string name="msg_header_tv_waiting">Waiting(3)</string>
+    
+    <string name="msg_tv_id">ID:</string>
+    <string name="msg_tv_password">Password:</string>
+    <string name="msg_et_id_hint">Input ID</string>
+    <string name="msg_et_password_hint">Input Password</string>
+    <string name="msg_btn_login">Login</string>
+    
+    <string name="msg_btn_start">Start</string>
+    
+    <string name="msg_btn_pre">Prev</string>
+    <string name="msg_btn_next">Next</string>
+    
+    <string name="connection_error">Unable to load content. Check your network connection.</string>
+    <string name="xml_error">Error parsing XML.</string>
+    
+</resources>
