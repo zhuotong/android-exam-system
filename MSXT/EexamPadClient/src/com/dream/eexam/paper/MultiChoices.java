@@ -1,6 +1,5 @@
 package com.dream.eexam.paper;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,8 +7,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,42 +29,37 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.Choice;
-import com.dream.eexam.util.DatabaseUtil;
-import com.dream.eexam.util.XMLParseUtil;
+import com.dream.eexam.model.Question;
 
 public class MultiChoices extends BaseQuestion {
 	
 	public final static String LOG_TAG = "MultiChoices";
 
 	//components statement
-	TextView questionHintTV = null;
 	TextView questionTV = null;
-
 	ListView listView;
-	
-	Button preBtn;
-	TextView questionIndex;
-	Button nextBtn;
 	
 	//data statement
 	MyListAdapter adapter;
 	List<String> listItemID = new ArrayList<String>();
 	Integer indexInExam;
 	
-	public void loadHeader(){
+	public void loadComponents(){
 		homeTV = (TextView)findViewById(R.id.homeTV);
-		
 		remainingTimeLabel = (TextView)findViewById(R.id.remainingTimeLabel);
 		remainingTime = (TextView)findViewById(R.id.remainingTime);
-		
-		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
-		completedPercentage = (TextView)findViewById(R.id.completedPercentage);
-		
 		submitTV = (TextView)findViewById(R.id.submitTV);
 		
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
-//		currentTV = (TextView)findViewById(R.id.header_tv_current);
 		waitTV = (TextView)findViewById(R.id.header_tv_waiting);
+
+		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
+		completedPercentage = (TextView)findViewById(R.id.completedPercentage);
+		pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);
+		
+    	preBtn = (Button)findViewById(R.id.preBtn);
+    	questionIndex = (TextView)findViewById(R.id.questionIndex);
+    	nextBtn = (Button)findViewById(R.id.nextBtn);
 	}
 	
 	public void setHeader(){
@@ -77,14 +69,6 @@ public class MultiChoices extends BaseQuestion {
 		//set exam header(Center)
 		remainingTimeLabel.setText("Time Remaining: ");
 		remainingTime.setText(String.valueOf(detailBean.getTime())+" mins");
-		
-		//set completedSeekBar
-		int per = 100 * answeredQuestions/totalQuestions;
-		completedSeekBar.setThumb(null);
-		completedSeekBar.setProgress(per);
-		completedSeekBar.setEnabled(false);
-		//set completedSeekBar label
-		completedPercentage.setText(String.valueOf(per)+"% finished");
 		
 		//set exam header(Right)
 		submitTV.setText("Submit");
@@ -149,17 +133,13 @@ public class MultiChoices extends BaseQuestion {
         setContentView(R.layout.paper_multi_choices);
         mContext = getApplicationContext();
 
-        loadHeader();
+        loadComponents();
         loadAnswer();
         setHeader();
 		
         String questionHint = "Q "+String.valueOf(question.getIndex())+"(Score:"+String.valueOf(question.getScore())+")";
         Log.i(LOG_TAG, "questionHint:"+questionHint);
         
-        //set question text
-/*        questionHintTV = (TextView)findViewById(R.id.questionHintTV);
-        questionHintTV.setText(questionHint);
-        questionHintTV.setTextColor(Color.BLACK);	*/
 
         //set question text
         questionTV = (TextView)findViewById(R.id.questionTV);
@@ -196,7 +176,6 @@ public class MultiChoices extends BaseQuestion {
 			}
 		});
         
-        loadFooter();
         setFooter();
         
         //set GestureDetector
@@ -204,13 +183,33 @@ public class MultiChoices extends BaseQuestion {
     
     }
     
-    public void loadFooter(){
-    	preBtn = (Button)findViewById(R.id.preBtn);
-    	questionIndex = (TextView)findViewById(R.id.questionIndex);
-    	nextBtn = (Button)findViewById(R.id.nextBtn);
-    }
-    
     public void setFooter(){
+		//set completedSeekBar
+		int per = 100 * answeredQuestions/totalQuestions;
+		completedSeekBar.setThumb(null);
+		completedSeekBar.setProgress(per);
+		completedSeekBar.setEnabled(false);
+		//set completedSeekBar label
+		completedPercentage.setText(String.valueOf(per)+"%");
+		pendQueNumber.setText("Pending("+Integer.valueOf(pendQuestions.size())+")");
+		pendQueNumber.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.putExtra("ccIndex", String.valueOf(currentCatalogIndex));
+				intent.putExtra("cqIndex", String.valueOf(currentQuestionIndex+direction));
+				if(questionTypeM.equals(questionType)){
+					intent.putExtra("questionType", "Multi Select");
+					intent.setClass( getBaseContext(), MultiChoices.class);
+				}else if(questionTypeS.equals(questionType)){
+					intent.putExtra("questionType", "Single Select");
+					intent.setClass( getBaseContext(), SingleChoices.class);
+				}
+				finish();
+				startActivity(intent);
+			}
+		});
+		
         preBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -218,10 +217,8 @@ public class MultiChoices extends BaseQuestion {
 				relocationQuestion();
 			}
 		});
-        
         String questionIndexDesc = "Question "+ String.valueOf(currentQuestionIndex) +"/"+ String.valueOf(totalQuestions);
         questionIndex.setText(questionIndexDesc);
-        
         nextBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -286,16 +283,18 @@ public class MultiChoices extends BaseQuestion {
     public void gotoNewQuestion(){
     	Log.i(LOG_TAG, "gotoNewQuestion()...");
     	
-    	InputStream inputStream =  getExamStream();
+    	/*InputStream inputStream =  getExamStream();
 		String questionType = null;
 		try {
 			 questionType = XMLParseUtil.readQuestionType(inputStream,currentCatalogIndex,currentQuestionIndex+direction);
 			 inputStream.close();
 		} catch (Exception e) {
 			Log.i(LOG_TAG, e.getMessage());
-		}
+		}*/
 		
-		if(questionType!=null){
+		Question newQuestion = detailBean.getQuestionByCidQid(currentCatalogIndex, currentQuestionIndex+direction);
+		String newQuestionType = newQuestion.getQuestionType();
+		if(newQuestionType!=null){
 			//move question
 			Intent intent = new Intent();
 			intent.putExtra("ccIndex", String.valueOf(currentCatalogIndex));

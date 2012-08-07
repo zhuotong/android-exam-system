@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.R.integer;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -22,6 +23,7 @@ import android.view.GestureDetector.OnDoubleTapListener;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.SeekBar;
@@ -42,20 +44,24 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	
 	public final static String LOG_TAG = "BaseQuestion";
 	
-	//set exam header(Left)
-	protected TextView homeTV = null;
-	//set exam header(Center)
-	protected TextView remainingTimeLabel = null;
-	protected TextView remainingTime = null;	
-	protected SeekBar completedSeekBar= null;
-	protected TextView completedPercentage = null;
-	//set exam header(Right)
-	protected TextView submitTV = null;
+	//set exam header(
+	protected TextView homeTV = null;//(Left)
+	protected TextView remainingTimeLabel = null;//(Center 1)
+	protected TextView remainingTime = null;	//(Center 2)	
+	protected TextView submitTV = null;//(Right)
 	
-	//set question sub header
+	//set catalog bar
 	protected TextView catalogsTV = null;
 	protected TextView currentTV = null;
 	protected TextView waitTV = null;
+
+	//set exam footer
+	protected SeekBar completedSeekBar= null;
+	protected TextView completedPercentage = null;
+	protected TextView pendQueNumber = null;
+	protected Button preBtn = null;
+	protected TextView questionIndex = null;
+	protected Button nextBtn = null;
 	
 	protected InputStream inputStream;
 	
@@ -64,8 +70,8 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	protected Integer currentCatalogIndex;//current catalog index
 	protected Integer currentQuestionIndex;//current question index
 	
-//	protected PaperBean paperBean;//paperBean
 	protected ExamDetailBean detailBean;//paperBean
+	protected List<Question> pendQuestions = new ArrayList<Question>();
 	protected Question question;
 	protected Integer totalQuestions;
 	protected Integer answeredQuestions;
@@ -156,6 +162,26 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 			//set question
 			question = detailBean.getQuestionByCidQid(currentCatalogIndex, currentQuestionIndex);
 			totalQuestions = detailBean.getTotalQuestions();
+
+			//load pending questions
+	    	DatabaseUtil dbUtil = new DatabaseUtil(this);
+	    	dbUtil.open();
+	    	Cursor cursor = null;
+			if(cataLogList!=null&&cataLogList.size()>0){
+				for(CatalogBean catalogBean: cataLogList){
+					List<Question> questions = catalogBean.getQuestions();
+					for(Question question: questions){
+						cursor = dbUtil.fetchAnswer(catalogBean.getIndex(),question.getIndex());
+						if(cursor.moveToNext()){
+							continue;
+						}
+						pendQuestions.add(question);
+					}
+				}
+			}
+			cursor.close();
+			dbUtil.close();
+			
 		} catch (Exception e) {
 			Log.i(LOG_TAG,e.getMessage());
 		}

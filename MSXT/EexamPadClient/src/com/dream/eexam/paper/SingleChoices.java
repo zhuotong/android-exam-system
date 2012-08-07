@@ -36,26 +36,25 @@ public class SingleChoices extends BaseQuestion {
 	//components statement
 	TextView questionTV = null;
 	ListView listView;
-	
-	Button preBtn;
-	TextView questionIndex;
-	Button nextBtn;
-
-	//data statement
-//	Question question;
 	MyListAdapter adapter;
 	List<String> listItemID = new ArrayList<String>();
 
-	public void loadHeader(){
+	public void loadComponents(){
 		homeTV = (TextView)findViewById(R.id.homeTV);
 		remainingTimeLabel = (TextView)findViewById(R.id.remainingTimeLabel);
 		remainingTime = (TextView)findViewById(R.id.remainingTime);
-		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
-		completedPercentage = (TextView)findViewById(R.id.completedPercentage);
+		submitTV = (TextView)findViewById(R.id.submitTV);
 		
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
-//		currentTV = (TextView)findViewById(R.id.header_tv_current);
 		waitTV = (TextView)findViewById(R.id.header_tv_waiting);
+
+		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
+		completedPercentage = (TextView)findViewById(R.id.completedPercentage);
+		pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);
+		
+    	preBtn = (Button)findViewById(R.id.preBtn);
+    	questionIndex = (TextView)findViewById(R.id.questionIndex);
+    	nextBtn = (Button)findViewById(R.id.nextBtn);
 	}
 	
 	public void setHeader(){
@@ -65,8 +64,7 @@ public class SingleChoices extends BaseQuestion {
 		//set exam header(Right)
 		remainingTimeLabel.setText("Time Remaining: ");
 		remainingTime.setText(String.valueOf(detailBean.getTime())+" mins");
-		completedSeekBar.setThumb(null);
-		completedPercentage.setText("50%"+" Finished");
+
 		
 		//set question text
 		catalogsTV.setText(detailBean.getCatalogDescByCid(currentCatalogIndex)+
@@ -78,8 +76,6 @@ public class SingleChoices extends BaseQuestion {
 			}
 		});
 		
-//    	currentTV.setText("Q "+String.valueOf(currentQuestionIndex)+" of "+String.valueOf(questionSize));
-    	
         //set question text
     	waitTV.setText("Wait "+ String.valueOf(questionSize - comQuestionSize));
     	waitTV.setOnClickListener(new View.OnClickListener() {
@@ -95,7 +91,7 @@ public class SingleChoices extends BaseQuestion {
         setContentView(R.layout.paper_single_choices);
         mContext = getApplicationContext();
         
-        loadHeader();
+        loadComponents();
         loadAnswer();
         setHeader();
     	
@@ -124,18 +120,23 @@ public class SingleChoices extends BaseQuestion {
 			}      	
         });
         
-        loadFooter();
         setFooter();
     
     }
-    
-    public void loadFooter(){
-    	preBtn = (Button)findViewById(R.id.preBtn);
-    	questionIndex = (TextView)findViewById(R.id.questionIndex);
-    	nextBtn = (Button)findViewById(R.id.nextBtn);
-    }
+
     
     public void setFooter(){
+    	
+		//set completedSeekBar
+		int per = 100 * answeredQuestions/totalQuestions;
+		completedSeekBar.setThumb(null);
+		completedSeekBar.setProgress(per);
+		completedSeekBar.setEnabled(false);
+		
+		//set completedSeekBar label
+		completedPercentage.setText(String.valueOf(per)+"% finished");
+		pendQueNumber.setText("("+Integer.valueOf(pendQuestions.size())+")");
+		
         preBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

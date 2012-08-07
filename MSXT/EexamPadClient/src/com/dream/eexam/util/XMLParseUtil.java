@@ -13,6 +13,7 @@ import com.dream.eexam.model.InterviewBean;
 import com.dream.eexam.model.LoginResultBean;
 import com.dream.eexam.model.PaperBean;
 import com.dream.eexam.model.Question;
+import com.dream.eexam.model.SubmitResultBean;
 
 import android.util.Log;
 import android.util.Xml;
@@ -26,6 +27,7 @@ public class XMLParseUtil {
 	 * @param inputStream
 	 * @return
 	 * @throws Exception
+	 * (When submit login, server will send response xml data) at LoginActivity.java
 	 */
     public static String readLoginResultStatus(InputStream inputStream) throws Exception{
 		Log.i(LOG_TAG, "readLoginResult()...");
@@ -58,6 +60,7 @@ public class XMLParseUtil {
      * @param inputStream
      * @return
      * @throws Exception
+     * (If login success, load login result data) at PapersActivity.java
      */
 	public static LoginResultBean readLoginResult(InputStream inputStream) throws Exception {
 
@@ -111,27 +114,14 @@ public class XMLParseUtil {
 		return bean;
 	}
 	
-	/**
-	 * 
-	 * @param inputStream
-	 * @param catalogIndex
-	 * @param questionIndex
-	 * @return
-	 * @throws Exception
-	 */
-	public static Question readQuestion(InputStream inputStream,Integer catalogIndex,Integer questionIndex) throws Exception {
+
+	/*public static Question readQuestion(InputStream inputStream,Integer catalogIndex,Integer questionIndex) throws Exception {
 		
 		Log.i(LOG_TAG, "readQuestion()... ");
 		
 		XmlPullParser xmlpull = Xml.newPullParser();
 		xmlpull.setInput(inputStream, "utf-8");
 		int eventCode = xmlpull.getEventType();
-
-//		boolean isFoundCatalog = false;
-//		boolean isFoundCatalogIndex = false;
-//		boolean isFoundQuestion = false;
-//		boolean isFoundQuestionIndex = false;
-		
 		int level = -1;
 		
 		boolean isGetQuestion = false;
@@ -230,7 +220,7 @@ public class XMLParseUtil {
 		Log.i(LOG_TAG, "readQuestion() end.");
 		
 		return question;
-	}
+	}*/
 
 	/**
 	 * 
@@ -453,5 +443,61 @@ public class XMLParseUtil {
 		}
 		
 		return detailBean;
+	}
+	
+	
+	/**
+	 * 
+	 * @param inputStream
+	 * @return
+	 * @throws Exception
+	 * (When submit exam, server will send response xml data about exam result) 
+	 */
+    public static SubmitResultBean readSubmitResult(InputStream inputStream) throws Exception{
+		Log.i(LOG_TAG, "readLoginResult()...");
+		XmlPullParser xmlpull = Xml.newPullParser();
+		xmlpull.setInput(inputStream, "utf-8");
+		
+		SubmitResultBean bean = new SubmitResultBean();
+		
+		String examinationid = null;
+		String status = null;
+		String score = null;
+		String desc = null;
+		
+		int eventCode = xmlpull.getEventType();
+		
+		while (eventCode != XmlPullParser.END_DOCUMENT) {
+			switch (eventCode) {
+				case XmlPullParser.START_DOCUMENT: {
+					break;
+				}
+				case XmlPullParser.START_TAG: {
+					if("submitresult".equals(xmlpull.getName()) ){
+						bean = new SubmitResultBean();
+					}else if("examinationid".equals(xmlpull.getName()) ){
+				    	examinationid = xmlpull.nextText();
+					}else if("status".equals(xmlpull.getName()) ){
+						status = xmlpull.nextText();
+					}else if("score".equals(xmlpull.getName()) ){
+						score = xmlpull.nextText();
+					}else if("desc".equals(xmlpull.getName()) ){
+						desc = xmlpull.nextText();
+					}
+					break;
+				}
+				case XmlPullParser.END_TAG: {
+					break;
+				}
+			}
+			eventCode = xmlpull.next();
+		}
+		
+		if(examinationid!=null) bean.setExaminationid(examinationid);
+		if(status!=null) bean.setStatus(status);
+		if(score!=null) bean.setScore(score);
+		if(desc!=null) bean.setDesc(desc);
+		
+		return bean;
 	}
 }

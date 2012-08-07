@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_margin="1dip"
+    android:background="@drawable/bg_color_multichoices">
+
+    <include
+	       android:id="@+id/baseHeader"
+	       layout="@layout/exam_header" /> 
+
+    <include
+       	   android:id="@+id/catalogNav"
+           layout="@layout/catalog_nav" />
+    	       
+	<RelativeLayout 
+	    android:orientation="vertical"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:layout_margin="1dip">
+				    
+	 	<RelativeLayout 
+		    android:id="@+id/listFooter"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true">
+
+		    <include layout="@layout/exam_footer" /> 
+		</RelativeLayout>
+				   
+<!-- 		<ListView
+	     	android:id="@+id/lvChoices"
+	     	android:layout_width="fill_parent"
+	     	android:layout_height="fill_parent" 
+	     	android:layout_below="@id/listHeader"
+	  		android:layout_above="@id/listFooter"
+	  		android:layout_marginLeft="2dp"
+	  		android:layout_marginRight="2dp"
+	  		android:background="#000000"
+	  		/> -->
+		
+		<GridView android:id="@+id/gridview"
+		    android:layout_width="fill_parent" 
+		    android:layout_height="fill_parent"
+		    android:numColumns="2"
+		    android:verticalSpacing="10dp"
+		    android:horizontalSpacing="10dp"
+		    android:stretchMode="columnWidth"
+		    android:gravity="center"
+		/>
+	</RelativeLayout>
+	
+</LinearLayout>
