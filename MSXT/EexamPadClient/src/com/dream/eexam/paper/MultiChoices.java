@@ -44,6 +44,8 @@ public class MultiChoices extends BaseQuestion {
 	List<String> listItemID = new ArrayList<String>();
 	Integer indexInExam;
 	
+	
+	
 	public void loadComponents(){
 		homeTV = (TextView)findViewById(R.id.homeTV);
 		remainingTimeLabel = (TextView)findViewById(R.id.remainingTimeLabel);
@@ -105,7 +107,23 @@ public class MultiChoices extends BaseQuestion {
         //set catalog bar(Left) 
         String questionIndexDesc = "Question "+ String.valueOf(currentQuestionIndex) +"/"+ String.valueOf(totalQuestions);
         questionIndex.setText(questionIndexDesc);
-        
+		questionIndex.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.putExtra("ccIndex", String.valueOf(currentCatalogIndex));
+				intent.putExtra("cqIndex", String.valueOf(currentQuestionIndex));
+				if(questionTypeM.equals(questionType)){
+					intent.putExtra("questionType", "Multi Select");
+					intent.setClass( getBaseContext(), MultiChoices.class);
+				}else if(questionTypeS.equals(questionType)){
+					intent.putExtra("questionType", "Single Select");
+					intent.setClass( getBaseContext(), SingleChoices.class);
+				}
+				finish();
+				startActivity(intent);
+			}
+		});
         //set catalog bar(Center) 
 		catalogsTV.setText(String.valueOf(currentCatalogIndex)+". "+
 				detailBean.getCatalogDescByCid(currentCatalogIndex) + 
@@ -162,7 +180,14 @@ public class MultiChoices extends BaseQuestion {
         
         //set List
         listView = (ListView)findViewById(R.id.lvChoices);
-        adapter = new MyListAdapter(question.getChoices());
+//        List choices = question.getChoices();
+//        
+//        //if confusue set to true, system will sort choices random
+//        if("true".equals(detailBean.getConfuse())){
+//        	Collections.shuffle(choices);
+//        }
+        
+        adapter = new MyListAdapter(choices);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new OnItemClickListener(){
         	@Override
@@ -192,10 +217,14 @@ public class MultiChoices extends BaseQuestion {
         
         setFooter();
         
+        
+        
         //set GestureDetector
         detector = new GestureDetector((OnGestureListener) this);
     
     }
+    
+    
     
     public void setFooter(){
     	//set preBtn
@@ -278,16 +307,8 @@ public class MultiChoices extends BaseQuestion {
     public void gotoNewQuestion(){
     	Log.i(LOG_TAG, "gotoNewQuestion()...");
     	
-    	/*InputStream inputStream =  getExamStream();
-		String questionType = null;
-		try {
-			 questionType = XMLParseUtil.readQuestionType(inputStream,currentCatalogIndex,currentQuestionIndex+direction);
-			 inputStream.close();
-		} catch (Exception e) {
-			Log.i(LOG_TAG, e.getMessage());
-		}*/
-		
-		Question newQuestion = detailBean.getQuestionByCidQid(currentCatalogIndex, currentQuestionIndex+direction);
+//		Question newQuestion = detailBean.getQuestionByCidQid(currentCatalogIndex, currentQuestionIndex+direction);
+		Question newQuestion = detailBean.getQuestionByCidQid(currentQuestionIndex+direction);
 		String newQuestionType = newQuestion.getQuestionType();
 		if(newQuestionType!=null){
 			//move question
@@ -304,7 +325,7 @@ public class MultiChoices extends BaseQuestion {
 			finish();
 			startActivity(intent);
 		}else{
-			ShowDialog("Please Change Catalog!");
+			ShowDialog("Question index "+ String.valueOf(currentQuestionIndex+direction)+" not exist!");
 		}
     }
     
@@ -374,6 +395,7 @@ public class MultiChoices extends BaseQuestion {
 					mChecked.add(false);
 				}
     		}
+    		
     	}
 
 		@Override
@@ -441,7 +463,9 @@ public class MultiChoices extends BaseQuestion {
 			}
 			
 			Choice choice = choices.get(position);
+			
 			holder.selected.setChecked(mChecked.get(position));
+			holder.selected.setText(choicesLabel[position]);
 			holder.index.setText(choice.getChoiceLabel());
 			holder.choiceDesc.setText(choice.getChoiceContent());
 			

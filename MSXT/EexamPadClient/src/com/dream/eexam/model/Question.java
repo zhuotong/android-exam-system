@@ -8,9 +8,10 @@ public class Question {
 	private Integer index;
 	private String questionType;
 	private Integer score;
-//	private String questionDesc;
 	private String content;
 	private List<Choice> choices = new ArrayList<Choice>();
+	private Integer catalogIndex;
+	
 	
 	public String getQuestionId() {
 		return questionId;
@@ -38,12 +39,6 @@ public class Question {
 	public void setScore(Integer score) {
 		this.score = score;
 	}
-//	public String getQuestionDesc() {
-//		return questionDesc;
-//	}
-//	public void setQuestionDesc(String questionDesc) {
-//		this.questionDesc = questionDesc;
-//	}
 	
 	public String getContent() {
 		return content;
@@ -59,8 +54,16 @@ public class Question {
 		this.choices = choices;
 	}
 	
+	public Integer getCatalogIndex() {
+		return catalogIndex;
+	}
+	public void setCatalogIndex(Integer catalogIndex) {
+		this.catalogIndex = catalogIndex;
+	}
 	public Question() {
 		super();
 	}
+	
+	
 	
 }

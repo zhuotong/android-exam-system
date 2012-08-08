@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+
+import com.dream.eexam.model.CatalogBean;
 import com.dream.eexam.model.ExamBaseBean;
 import com.dream.eexam.model.InterviewBean;
 import com.dream.eexam.model.LoginResultBean;
@@ -126,13 +128,18 @@ public class PapersActivity extends BaseActivity {
 		});
 		
 		clearBtn = (Button) findViewById(R.id.clearBtn);
-		clearBtn.setText("Clear");
+		clearBtn.setText("Clear History");
 		clearBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				Log.i(LOG_TAG,"onClick()...");
 				SharedPreferences.Editor editor = sharedPreferences.edit(); 
 				editor.clear();
 				editor.commit();
+				
+				DatabaseUtil dbUtil = new DatabaseUtil(mContext);
+				dbUtil.open();
+				dbUtil.deleteAllAnswers();
+				dbUtil.close();
 				
 				ShowDialog("History is cleared!");
 			}			

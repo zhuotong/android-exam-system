@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
     <string name="app_name">EexamClient</string>
     
     <string name="msg_header_tv_home">Home</string>
@@ -13,6 +13,7 @@
     <string name="msg_et_id_hint">Input ID</string>
     <string name="msg_et_password_hint">Input Password</string>
     <string name="msg_btn_login">Login</string>
+    <string name="msg_btn_reset">Reset</string>
     
     <string name="msg_btn_start">Start</string>
     
@@ -24,5 +25,18 @@
     
     <string name="popup_window_height">300</string>
     <string name="popup_window_width">300</string>
+    
+    <string-array name="display_choice_label">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+        <item>D</item>
+        <item>E</item>
+        <item>F</item>
+        <item>G</item>
+        <item>H</item>
+        <item>I</item>
+        <item>J</item>
+    </string-array>
     
 </resources>

@@ -114,6 +114,10 @@ public class DatabaseUtil{
 	public boolean deleteAnswer(long cid, long qid) {
 		return mDb.delete(DATABASE_TABLE, CATALOG_ID + "=" + cid + " AND " + QUESTION_ID + "=" + qid, null) > 0;
 	}
+	
+	public boolean deleteAllAnswers() {
+		return mDb.delete(DATABASE_TABLE, null, null) > 0;
+	}
 
 	/**
 	 * This method will return Cursor holding all  records.

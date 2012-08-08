@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.CompoundButton;
 import android.widget.ListView;
@@ -46,8 +47,6 @@ public class SingleChoices extends BaseQuestion {
 		submitTV = (TextView)findViewById(R.id.submitTV);
 		
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
-//		waitTV = (TextView)findViewById(R.id.header_tv_waiting);
-
 		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
 		completedPercentage = (TextView)findViewById(R.id.completedPercentage);
 		pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);
@@ -61,14 +60,67 @@ public class SingleChoices extends BaseQuestion {
 		//set exam header(Left)
 		homeTV.setText("Home");
 		
-		//set exam header(Right)
+		//set exam header(Center)
 		remainingTimeLabel.setText("Time Remaining: ");
 		remainingTime.setText(String.valueOf(detailBean.getTime())+" mins");
-
 		
-		//set question text
-		catalogsTV.setText(detailBean.getCatalogDescByCid(currentCatalogIndex)+
-				"("+String.valueOf(detailBean.getCatalogSizeByCid(currentCatalogIndex))+")");
+		//set exam header(Right)
+		submitTV.setText("Submit");
+        submitTV.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Log.i(LOG_TAG, "submitTV.onClick()...");
+				
+		    	int waitQuestions = totalQuestions - answeredQuestions;
+				 
+				if (waitQuestions> 0) {
+					AlertDialog.Builder builder = new AlertDialog.Builder(SingleChoices.this);
+					builder.setMessage(String.valueOf(waitQuestions) + " question(s) are not answered, still submit?")
+							.setCancelable(false)
+							.setPositiveButton("Yes",
+									new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog,int id) {
+											submitAnswer();
+										}
+									})
+							.setNegativeButton("Cancel",
+									new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog,int id) {
+											dialog.cancel();
+										}
+									});
+					builder.show();
+				} else {
+					submitAnswer();
+				}
+			}
+		});
+
+        //set catalog bar(Left) 
+        String questionIndexDesc = "Question "+ String.valueOf(currentQuestionIndex) +"/"+ String.valueOf(totalQuestions);
+        questionIndex.setText(questionIndexDesc);
+		questionIndex.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.putExtra("ccIndex", String.valueOf(currentCatalogIndex));
+				intent.putExtra("cqIndex", String.valueOf(currentQuestionIndex));
+				if(questionTypeM.equals(questionType)){
+					intent.putExtra("questionType", "Multi Select");
+					intent.setClass( getBaseContext(), MultiChoices.class);
+				}else if(questionTypeS.equals(questionType)){
+					intent.putExtra("questionType", "Single Select");
+					intent.setClass( getBaseContext(), SingleChoices.class);
+				}
+				finish();
+				startActivity(intent);
+			}
+		});
+		
+        //set catalog bar(Center) 
+		catalogsTV.setText(String.valueOf(currentCatalogIndex)+". "+
+				detailBean.getCatalogDescByCid(currentCatalogIndex) + 
+				"(Q" + String.valueOf(currentQuestionIndex)+" - " + "Q" + String.valueOf(questionSize)+")");
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -76,13 +128,25 @@ public class SingleChoices extends BaseQuestion {
 			}
 		});
 		
-        //set question text
-//    	waitTV.setText("Wait "+ String.valueOf(questionSize - comQuestionSize));
-//    	waitTV.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//			}
-//		});  
+		 //set catalog bar(Right) 
+		pendQueNumber.setText("Pending("+Integer.valueOf(pendQuestions.size())+")");
+		pendQueNumber.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.putExtra("ccIndex", String.valueOf(currentCatalogIndex));
+				intent.putExtra("cqIndex", String.valueOf(currentQuestionIndex));
+				if(questionTypeM.equals(questionType)){
+					intent.putExtra("questionType", "Multi Select");
+					intent.setClass( getBaseContext(), PendQuestions.class);
+				}else if(questionTypeS.equals(questionType)){
+					intent.putExtra("questionType", "Single Select");
+					intent.setClass( getBaseContext(), PendQuestions.class);
+				}
+				finish();
+				startActivity(intent);
+			}
+		});
 	}
 	
     @Override
@@ -102,41 +166,62 @@ public class SingleChoices extends BaseQuestion {
         
         //set List
         listView = (ListView)findViewById(R.id.lvChoices);
-        adapter = new MyListAdapter(question.getChoices());
+        adapter = new MyListAdapter(choices);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new OnItemClickListener(){
         	@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int arg2,
 					long arg3) {
-        		//initial all items background color
-        		for(int i=0;i<adapter.getChildCount();i++){
-        			View aView = adapter.getChildAt(i);
-        			RadioButton aRb = (RadioButton)aView.findViewById(R.id.radioButton);
-        			aRb.setChecked(false);
-        		}
-        		
+        		clearOldAnswer();
+        		Log.i(LOG_TAG, "onItemClick()...");
         		RadioButton cb = (RadioButton)view.findViewById(R.id.radioButton);
         		cb.setChecked(!cb.isChecked());
+        		Log.i(LOG_TAG, "cb.isChecked():"+cb.isChecked());
+        		setAnswer();
+        		if(answerString.length()>0){
+        			saveAnswer(mContext,currentCatalogIndex,currentQuestionIndex,answerString.toString());
+				}
 			}      	
         });
         
         setFooter();
     
     }
-
+    
+    public void clearOldAnswer(){
+		//initial all items background color
+		for(int i=0;i<choices.size();i++){
+			RadioButton aRb =(RadioButton)adapter.getView(i, null, null).findViewById(R.id.radioButton);
+			aRb.setChecked(false);
+		}   
+		listItemID.clear();
+    	answerString.setLength(0);
+		if(answerString.length()==0){
+			clearAnswer(mContext,currentCatalogIndex,currentQuestionIndex);
+		}
+    }
+    
+    public void setAnswer(){
+    	Log.i(LOG_TAG, "setAnswer()...");
+    	
+    	//get selection choice and assembly to string
+		for (int i = 0; i < adapter.mChecked.size(); i++) {
+			if (adapter.mChecked.get(i)) {
+				Choice choice = adapter.choices.get(i);
+				listItemID.add(String.valueOf(choice.getChoiceIndex()));
+				if(i>0){
+					answerString.append(",");
+				}
+				answerString.append(String.valueOf(choice.getChoiceIndex()));
+			}
+		}
+		
+		Log.i(LOG_TAG, "setAnswer().");
+    }
     
     public void setFooter(){
     	
-		//set completedSeekBar
-		int per = 100 * answeredQuestions/totalQuestions;
-		completedSeekBar.setThumb(null);
-		completedSeekBar.setProgress(per);
-		completedSeekBar.setEnabled(false);
-		
-		//set completedSeekBar label
-		completedPercentage.setText(String.valueOf(per)+"% finished");
-		pendQueNumber.setText("("+Integer.valueOf(pendQuestions.size())+")");
-		
+    	//set preBtn
         preBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -144,10 +229,14 @@ public class SingleChoices extends BaseQuestion {
 				relocationQuestion();
 			}
 		});
-        
-        String questionIndexDesc = "Question "+ String.valueOf(currentQuestionIndex) +"/"+ String.valueOf(totalQuestions);
-        questionIndex.setText(questionIndexDesc);
-        
+		//set completedSeekBar
+		int per = 100 * answeredQuestions/totalQuestions;
+		completedSeekBar.setThumb(null);
+		completedSeekBar.setProgress(per);
+		completedSeekBar.setEnabled(false);
+		//set completedSeekBar label
+		completedPercentage.setText(String.valueOf(per)+"%");
+		//set nextBtn
         nextBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -270,7 +359,7 @@ public class SingleChoices extends BaseQuestion {
     	public MyListAdapter(List<Choice> choices){
     		this.choices = choices;
     		
-    		Log.i(LOG_TAG,"answerString:"+answerString);
+//    		Log.i(LOG_TAG,"answerString:"+answerString);
     		
 			for (int i = 0; i < choices.size(); i++) {
 				Choice choice = choices.get(i);
@@ -304,7 +393,7 @@ public class SingleChoices extends BaseQuestion {
 			ViewHolder holder = null;
 			
 			if (map.get(position) == null) {
-				Log.i(LOG_TAG,"position1 = "+position);
+//				Log.i(LOG_TAG,"position1 = "+position);
 				
 				LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				view = mInflater.inflate(R.layout.paper_single_choices_item, null);
@@ -318,15 +407,30 @@ public class SingleChoices extends BaseQuestion {
 				final int p = position;
 				map.put(position, view);
 				
-				holder.radioButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+/*				holder.radioButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView,
 							boolean isChecked) {
-						
-						RadioButton cb = (RadioButton)buttonView;
-						mChecked.set(p, cb.isChecked());
+
+					}
+				});*/
+				
+				holder.radioButton.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Log.i(LOG_TAG,"pressed item position = "+String.valueOf(p));
+						clearOldAnswer();
+						RadioButton cb = (RadioButton)v;
+						boolean oldStatus = cb.isChecked();
+						cb.setChecked(!oldStatus);
+						mChecked.set(p,!oldStatus);
+		        		setAnswer();
+		        		if(answerString.length()>0){
+		        			saveAnswer(mContext,currentCatalogIndex,currentQuestionIndex,answerString.toString());
+						}
 					}
 				});
+				
 				
 				view.setTag(holder);
 			}else{
@@ -337,6 +441,8 @@ public class SingleChoices extends BaseQuestion {
 			
 			Choice choice = choices.get(position);
 			holder.radioButton.setChecked(mChecked.get(position));
+			holder.radioButton.setText(choicesLabel[position]);
+			
 			holder.index.setText(choice.getChoiceLabel());
 			holder.choiceDesc.setText(choice.getChoiceContent());
 			

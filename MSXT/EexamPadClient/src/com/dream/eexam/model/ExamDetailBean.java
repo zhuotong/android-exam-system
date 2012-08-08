@@ -76,6 +76,18 @@ public class ExamDetailBean {
 		}
 		return cSize;
 	}
+
+	public Question getQuestionByCidQid(Integer qid){
+		Question q = null;
+		for(CatalogBean cBean:catalogs){
+			for(Question qBean:cBean.getQuestions()){
+				if(qBean.getIndex() == qid){
+					return qBean;
+				}
+			}
+		}
+		return q;
+	}
 	
 	public Question getQuestionByCidQid(Integer cid, Integer qid){
 		Question q = null;

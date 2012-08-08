@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.R.integer;
@@ -34,6 +35,7 @@ import com.dream.eexam.base.GroupAdapter;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.CatalogBean;
 import com.dream.eexam.model.CatalogInfo;
+import com.dream.eexam.model.Choice;
 import com.dream.eexam.model.ExamDetailBean;
 import com.dream.eexam.model.Question;
 import com.dream.eexam.util.DatabaseUtil;
@@ -69,10 +71,12 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	protected String questionType;//questionType
 	protected Integer currentCatalogIndex;//current catalog index
 	protected Integer currentQuestionIndex;//current question index
+	protected String[] choicesLabel;
 	
 	protected ExamDetailBean detailBean;//paperBean
 	protected List<Question> pendQuestions = new ArrayList<Question>();
 	protected Question question;
+	protected List<Choice> choices;
 	protected Integer totalQuestions;
 	protected Integer answeredQuestions;
 	
@@ -128,6 +132,8 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		
+		choicesLabel = getResources().getStringArray(R.array.display_choice_label);
+		
 		questionTypeM = SystemConfig.getInstance().getPropertyValue("Question_Type_Multi_Select");
 		questionTypeS = SystemConfig.getInstance().getPropertyValue("Question_Type_Single_Select");
 		
@@ -162,6 +168,12 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 			//set question
 			question = detailBean.getQuestionByCidQid(currentCatalogIndex, currentQuestionIndex);
 			totalQuestions = detailBean.getTotalQuestions();
+			
+	        choices = question.getChoices();
+	        //if confusue set to true, system will sort choices random
+	        if("true".equals(detailBean.getConfuse())){
+	        	Collections.shuffle(choices);
+	        }
 
 			//load pending questions
 	    	DatabaseUtil dbUtil = new DatabaseUtil(this);
@@ -175,6 +187,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 						if(cursor.moveToNext()){
 							continue;
 						}
+						question.setCatalogIndex(catalogBean.getIndex());
 						pendQuestions.add(question);
 					}
 				}
@@ -190,28 +203,33 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		dbUtil.open();
 		//-------------------get data-----------------------
 		Cursor cursor;
-		String catalogDesc;
-		int sum;
+		int answeredCatalogQs;
 		//set groups
 		for(CatalogBean catalogBean: cataLogList){
 			cursor = dbUtil.fetchAnswer(catalogBean.getIndex());
-			sum = 0;
+			answeredCatalogQs = 0;
 			while(cursor.moveToNext()){
 				Integer qid = cursor.getInt(1);
 				String answers = cursor.getString(2);
 				if(qid!=null && answers!= null && answers.length()>0){
-					sum++;
+					answeredCatalogQs++;
 				}
 			}
 			cursor.close();
-			catalogDesc = catalogBean.getDesc()+"(Total:"+catalogBean.getQuestions().size()+","+"Finished:"+String.valueOf(sum)+")";
-			Log.i(LOG_TAG, "catalog: "+catalogDesc);
 			
-			catalogNames.add(new CatalogInfo(catalogBean.getIndex(),catalogBean.getDesc(),catalogBean.getQuestions().size(),sum));
+			List<Question> qList = catalogBean.getQuestions();
+			Integer totalQuestions = qList.size();
+			Integer fQuestionIndex = null;
+			if(totalQuestions>0){
+				Question fQuestion = qList.get(0);
+				fQuestionIndex = fQuestion.getIndex();
+			}
+			
+			catalogNames.add(new CatalogInfo(catalogBean.getIndex(),catalogBean.getDesc(),fQuestionIndex,totalQuestions,answeredCatalogQs));
 		}
 		
 		//get answered questions
-    	answeredQuestions = dbUtil.fetchAllAnswersCount();
+		answeredQuestions = dbUtil.fetchAllAnswersCount();
     	Log.i(LOG_TAG, "answeredQuestions:" + String.valueOf(answeredQuestions));	
     	
     	//close db

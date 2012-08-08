@@ -74,7 +74,7 @@
 		<catalogdesc><![CDATA[Oracle PL/SQL]]></catalogdesc>
 		<questions>
 			<question>
-				<index>1</index>
+				<index>3</index>
 				<questionid>0</questionid>
 				<type>Multi Select</type>			
 				<score>10</score>
@@ -109,7 +109,7 @@
 		<catalogdesc><![CDATA[Java Script]]></catalogdesc>
 		<questions>
 			<question>
-				<index>1</index>
+				<index>4</index>
 				<questionid>0</questionid>
 				<type>Single Select</type>			
 				<score>10</score>

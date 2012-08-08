@@ -6,7 +6,7 @@
          android:descendantFocusability="blocksDescendants">
 
          <Button  android:id="@+id/questionBtn"
-         	   android:layout_height="wrap_content" 
+         	   android:layout_height="120dp" 
                android:layout_width="fill_parent" 
                android:layout_centerHorizontal="true">
          </Button>

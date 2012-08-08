@@ -2,6 +2,7 @@ package com.dream.eexam.paper;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,12 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.TextView;
 import android.widget.SeekBar;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.Question;
 
@@ -25,6 +26,10 @@ public class PendQuestions extends BaseQuestion {
 	public final static String LOG_TAG = "MultiChoices";
 
 	GridView gridList;
+	
+    String qType = null;
+    Integer cid = null;
+    Integer qid = null;
 	
 	Button preBtn;
 	TextView questionIndex;
@@ -94,6 +99,23 @@ public class PendQuestions extends BaseQuestion {
         //set catalog bar(Left) 
         String questionIndexDesc = "Question "+ String.valueOf(currentQuestionIndex) +"/"+ String.valueOf(totalQuestions);
         questionIndex.setText(questionIndexDesc);
+		questionIndex.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.putExtra("ccIndex", String.valueOf(currentCatalogIndex));
+				intent.putExtra("cqIndex", String.valueOf(currentQuestionIndex));
+				if(questionTypeM.equals(questionType)){
+					intent.putExtra("questionType", "Multi Select");
+					intent.setClass( getBaseContext(), MultiChoices.class);
+				}else if(questionTypeS.equals(questionType)){
+					intent.putExtra("questionType", "Single Select");
+					intent.setClass( getBaseContext(), SingleChoices.class);
+				}
+				finish();
+				startActivity(intent);
+			}
+		});
         
         //set catalog bar(Center) 
 		catalogsTV.setText(String.valueOf(currentCatalogIndex)+". "+
@@ -218,13 +240,40 @@ public class PendQuestions extends BaseQuestion {
             }  
             
             Question question = questions.get(position);
+            qType = question.getQuestionType();
+            cid = question.getCatalogIndex();
+            qid = question.getIndex();
             
-            holder.questionBtn.setText(String.valueOf(question.getIndex()));  
-            
-            final int p = position;
+            holder.questionBtn.setText(String.valueOf(question.getCatalogIndex())+","+String.valueOf(question.getIndex()));  
             holder.questionBtn.setOnClickListener(new Button.OnClickListener() {
     			public void onClick(View v) {
-    				Log.i(LOG_TAG,"-------------MyListAdapter. holder.questionBtn.setOnClickListener onClick()...------------------");
+    				Log.i(LOG_TAG,"onClick()...");
+    				
+    				Button sButton = (Button)v;
+    				
+    	            Log.i(LOG_TAG,"qType="+qType);
+    	            Log.i(LOG_TAG,"cid="+cid);
+    	            Log.i(LOG_TAG,"qid="+qid);
+    	            
+    	            String[] cidAndQids = sButton.getText().toString().split(",");
+    	            
+    	            
+    				//move question
+    				Intent intent = new Intent();
+    				intent.putExtra("ccIndex", cidAndQids[0]);
+    				intent.putExtra("cqIndex", cidAndQids[1]);
+    				
+    				if(questionTypeM.equals(qType)){
+    					intent.putExtra("questionType", "Multi Select");
+    					intent.setClass( getBaseContext(), MultiChoices.class);
+    					startActivity(intent);
+    				}else if(questionTypeS.equals(qType)){
+    					intent.putExtra("questionType", "Single Select");
+    					intent.setClass( getBaseContext(), SingleChoices.class);
+    					startActivity(intent);
+    				}else{
+    					ShowDialog("Invalid qeustion type:"+questionType);
+    				}
     			}
     		});
             return convertView; 
