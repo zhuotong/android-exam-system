@@ -143,7 +143,7 @@ COMMENT = '试卷栏目表' ;
 -- -----------------------------------------------------
 -- Table `MSDB`.`examination_question`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `MSDB`.`examination_question` (
+CREATE  TABLE IF NOT EXISTS `MSDB`.`examination_catalog_question` (
   `ID` VARCHAR(32) NOT NULL ,
   `version` INT NULL ,
   `catalog_id` VARCHAR(32) NULL COMMENT '试卷栏目ID' ,
@@ -211,7 +211,7 @@ COMMENT = '评价表' ;
 -- -----------------------------------------------------
 -- Table `MSDB`.`examination_question_answer`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `MSDB`.`examination_question_answer` (
+CREATE  TABLE IF NOT EXISTS `MSDB`.`examination_catalog_question_answer` (
   `ID` VARCHAR(32) NOT NULL ,
   `version` INT NULL ,
   `interview_exam_id` VARCHAR(32) NULL COMMENT '面试面试ID' ,
@@ -248,8 +248,9 @@ CREATE  TABLE IF NOT EXISTS `MSDB`.`interview_examination` (
   `interview_id` VARCHAR(32) NULL ,
   `exam_id` VARCHAR(45) NULL ,
   `exam_confuse` INT NULL ,
-  `exam_score` INT NULL COMMENT '笔试分数\n',
+  `exam_score` FLOAT NULL COMMENT '笔试分数\n',
   `start_time` TIMESTAMP NULL COMMENT '开始时间',
+  `end_time` TIMESTAMP NULL COMMENT '开始时间',
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB,
 CHARACTER SET utf8;
