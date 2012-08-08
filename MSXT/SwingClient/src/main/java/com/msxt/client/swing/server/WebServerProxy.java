@@ -14,6 +14,8 @@ public class WebServerProxy implements ServerProxy{
 	private int port;
 	
 	private static final String LOGIN_URI = "/msxt/runinterview/loginAction/login";
+	private static final String GET_EXAM_URI = "/msxt/runinterview/examAction/getExam";
+	private static final String SUBMIT_ANSWER_URI = "/msxt/runinterview/examAction/submitAnswer";
 	
 	public WebServerProxy(String server, int port){
 		this.server = server;
@@ -32,6 +34,7 @@ public class WebServerProxy implements ServerProxy{
 			conn.setDoOutput(true);
 			conn.setUseCaches(false);
 			conn.setConnectTimeout(10000);
+			conn.setRequestMethod( "POST" );
 			conn.connect();
 			
 			OutputStream os = conn.getOutputStream();
@@ -66,12 +69,105 @@ public class WebServerProxy implements ServerProxy{
 
 	@Override
 	public Result getExam(String examId) {
-		return null;
+		Result result = new Result();
+		
+		HttpURLConnection conn = null;
+    	BufferedReader br = null;
+        try {
+			URL loginURL = new URL("http://" + server + ":" + port + GET_EXAM_URI);
+			conn = (HttpURLConnection)loginURL.openConnection();
+			conn.setDoOutput(true);
+			conn.setUseCaches(false);
+			conn.setConnectTimeout(10000);
+			conn.setRequestMethod( "POST" );
+			conn.connect();
+			
+			OutputStream os = conn.getOutputStream();
+			os.write( ("conversation="+conversationId+"&examId=" + examId).getBytes("utf-8") );
+			os.close();
+			
+			br = new BufferedReader( new InputStreamReader( conn.getInputStream() ) );  
+            String response = "";  
+            String readLine = null;  
+            while( (readLine =br.readLine() ) != null ) 
+                response = response + readLine;  
+            
+            result.setStatus( STATUS.SUCCESS );
+            result.setSuccessMessage( response );
+            
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus( STATUS.ERROR );
+			result.setErrorMessage( "不能连接到服务器" );
+		} finally {
+			if( br!=null )
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			if( conn!=null )
+	            conn.disconnect();
+		}
+        return result;
 	}
 
 	@Override
 	public Result submitAnswer(String examinationid, Map<String, String> answers) {
-		return null;
+		StringBuffer sb = new StringBuffer( "<?xml version=\"1.0\" encoding=\"utf-8\"?>" );
+		sb.append( "<examanswer>" );
+		sb.append( "<conversation>" ).append( conversationId ).append( "</conversation>" );
+		sb.append( "<examinationid>" ).append( examinationid ).append( "</examinationid>" );
+		sb.append( "<answers>" );
+		for( Map.Entry<String, String> en : answers.entrySet() ) {
+			sb.append( "<answer>" );
+			sb.append( "<questionid>" ).append( en.getKey() ).append( "</questionid>" );
+			sb.append( "<content><![CDATA[" ).append( en.getValue() ).append( "]]></content>" ); 
+			sb.append( "</answer>" );
+		}
+		sb.append( "</answers>" ); 
+		sb.append( "</examanswer>" ); 
+		
+		Result result = new Result();
+		
+		HttpURLConnection conn = null;
+    	BufferedReader br = null;
+        try {
+			URL loginURL = new URL("http://" + server + ":" + port + SUBMIT_ANSWER_URI);
+			conn = (HttpURLConnection)loginURL.openConnection();
+			conn.setDoOutput(true);
+			conn.setUseCaches(false);
+			conn.setConnectTimeout(10000);
+			conn.setRequestMethod("POST");
+			conn.connect();
+			
+			OutputStream os = conn.getOutputStream();
+			os.write( sb.toString().getBytes("utf-8") );
+			os.close();
+			
+			br = new BufferedReader( new InputStreamReader( conn.getInputStream() ) );  
+            String response = "";  
+            String readLine = null;  
+            while( (readLine =br.readLine() ) != null ) 
+                response = response + readLine;  
+            
+            result.setStatus( STATUS.SUCCESS );
+            result.setSuccessMessage( response );
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus( STATUS.ERROR );
+			result.setErrorMessage( "不能连接到服务器" );
+		} finally {
+			if( br!=null )
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			if( conn!=null )
+	            conn.disconnect();
+		}
+        return result;
 	}
 
 	@Override
