@@ -39,17 +39,21 @@ public class InterviewExamination {
 	private Examination exam;
 	
 	@OneToMany(mappedBy = "interviewExamination", cascade = CascadeType.REMOVE)
-	private List<ExaminationQuestionAnswer> examQuestionAnswers;
+	private List<ExaminationCatalogQuestionAnswer> examQuestionAnswers;
 	
 	@Column(name="exam_confuse")
 	private Integer examConfuse;
 	
 	@Column(name="exam_score")
-	private Integer examScore;
+	private Float examScore;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="start_time")
 	private Date startTime;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="end_time")
+	private Date endTime;
 	
 	public String getId() {
 		return id;
@@ -70,20 +74,20 @@ public class InterviewExamination {
 		this.exam = exam;
 	}
 	
-	public Integer getExamScore() {
+	public Float getExamScore() {
 		return examScore;
 	}
 	
-	public void setExamScore(Integer examScore) {
+	public void setExamScore(Float examScore) {
 		this.examScore = examScore;
 	}
 	
-	public List<ExaminationQuestionAnswer> getExamQuestionAnswers() {
+	public List<ExaminationCatalogQuestionAnswer> getExamQuestionAnswers() {
 		return examQuestionAnswers;
 	}
 	
 	public void setExamQuestionAnswers(
-			List<ExaminationQuestionAnswer> examQuestionAnswers) {
+			List<ExaminationCatalogQuestionAnswer> examQuestionAnswers) {
 		this.examQuestionAnswers = examQuestionAnswers;
 	}
 	public void setVersion(Integer version) {
@@ -104,4 +108,11 @@ public class InterviewExamination {
 	public void setStartTime(Date startTime) {
 		this.startTime = startTime;
 	}
+	public Date getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+	
 }

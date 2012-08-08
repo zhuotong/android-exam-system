@@ -42,7 +42,7 @@ public class ExaminationCatalog {
 	private int index;
 	
 	@OneToMany(mappedBy = "catalog", cascade = {CascadeType.ALL,CascadeType.REMOVE})
-	private List<ExaminationQuestion> questions;
+	private List<ExaminationCatalogQuestion> questions;
 	
 	public String getId() {
 		return id;
@@ -75,12 +75,12 @@ public class ExaminationCatalog {
 		this.index = index;
 	}
 	
-	public List<ExaminationQuestion> getQuestions() {
+	public List<ExaminationCatalogQuestion> getQuestions() {
 		if( questions==null )
-			questions = new ArrayList<ExaminationQuestion>();
+			questions = new ArrayList<ExaminationCatalogQuestion>();
 		return questions;
 	}
-	public void setQuestions(List<ExaminationQuestion> questions) {
+	public void setQuestions(List<ExaminationCatalogQuestion> questions) {
 		this.questions = questions;
 	}
 	public void setVersion(Integer version) {
