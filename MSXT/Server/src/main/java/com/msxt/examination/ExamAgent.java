@@ -13,7 +13,7 @@ import javax.xml.stream.XMLStreamException;
 import com.msxt.common.HtmlUtil;
 import com.msxt.model.Examination;
 import com.msxt.model.ExaminationCatalog;
-import com.msxt.model.ExaminationQuestion;
+import com.msxt.model.ExaminationCatalogQuestion;
 import com.msxt.model.Question;
 import com.msxt.model.QuestionChoiceItem;
 
@@ -60,7 +60,7 @@ public class ExamAgent {
 		selectedExam = em.find( Examination.class, id );
 		//Load lazy data
 		for( ExaminationCatalog ec : selectedExam.getCatalogs() ) 
-			for( ExaminationQuestion eq : ec.getQuestions() ) {
+			for( ExaminationCatalogQuestion eq : ec.getQuestions() ) {
 				Question q = eq.getQuestion();
 				for( QuestionChoiceItem qci : q.getChoiceItems() ) {
 					String html = HtmlUtil.transferCommon2HTML( qci.getContent() );

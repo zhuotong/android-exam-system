@@ -16,7 +16,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import com.msxt.model.ExaminationCatalog;
-import com.msxt.model.ExaminationQuestion;
+import com.msxt.model.ExaminationCatalogQuestion;
 import com.msxt.model.Question;
 
 @Stateless
@@ -90,7 +90,7 @@ public class CatalogParser {
 		                	break;
 		                } 
 		                case QUESTION: {
-		                	ExaminationQuestion eq = parseQuestion( reader, index++ );
+		                	ExaminationCatalogQuestion eq = parseQuestion( reader, index++ );
 		                	eq.setCatalog( ec );
 		                	ec.getQuestions().add( eq );
 		                	break;
@@ -110,8 +110,8 @@ public class CatalogParser {
 		return ec;
     }
 	
-	private ExaminationQuestion parseQuestion(final XMLStreamReader reader, int index) throws XMLStreamException {
-    	ExaminationQuestion eq = new ExaminationQuestion();
+	private ExaminationCatalogQuestion parseQuestion(final XMLStreamReader reader, int index) throws XMLStreamException {
+    	ExaminationCatalogQuestion eq = new ExaminationCatalogQuestion();
     	eq.setIndex( index );
     	
 		while (reader.hasNext()) {

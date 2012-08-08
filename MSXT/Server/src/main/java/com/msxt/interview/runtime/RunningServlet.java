@@ -1,6 +1,7 @@
 package com.msxt.interview.runtime;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -43,8 +44,15 @@ public class RunningServlet extends HttpServlet{
 		String result = ""; 
 		if( "loginAction".equals(action) && "login".equals( method ) ) 			
 			result = loginAction.login( request );
-		if( "examAction".equals(action) && "getExam".equals( method ) )
-			result = examAction.getExam( request );
+		if( "examAction".equals(action) ) {
+			try {
+				Method m = examAction.getClass().getMethod( method, HttpServletRequest.class );
+				result = (String)m.invoke(examAction, request );
+			} catch (Exception e) {
+				e.printStackTrace();
+				result = "System Exception";
+			}
+		}
 		response.getOutputStream().print( result );
 	}
 }

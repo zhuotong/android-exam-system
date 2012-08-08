@@ -31,12 +31,12 @@
     </servlet-mapping>
 
     <!-- Use Seam Catch for these -->
-    <!--
+    
     <error-page>
         <exception-type>org.jboss.seam.security.NotLoggedInException</exception-type>
-        <location>/home.xhtml</location>
+        <location>/login.xhtml</location>
     </error-page>
-
+	<!--
     <error-page>
         <exception-type>org.jboss.seam.security.AuthorizationException</exception-type>
         <location>/denied.xhtml</location>

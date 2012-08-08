@@ -1,5 +1,6 @@
 package com.msxt.interview.runtime;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.msxt.common.DateUtil;
 import com.msxt.model.ExaminationCatalog;
-import com.msxt.model.ExaminationQuestion;
+import com.msxt.model.ExaminationCatalogQuestion;
 import com.msxt.model.Interview;
 import com.msxt.model.InterviewExamination;
 import com.msxt.model.Interview_;
@@ -25,7 +26,8 @@ public class LoginAction {
 	@PersistenceContext
 	private EntityManager em;
 	
-	public String login( HttpServletRequest request ) {
+	public String login( HttpServletRequest request ) throws UnsupportedEncodingException {
+		request.setCharacterEncoding( "utf-8" );
 		String name = request.getParameter( "loginName" );
 		String password = request.getParameter( "loginPassword" );
 		
@@ -65,7 +67,7 @@ public class LoginAction {
 						int totalScore = 0;
 						int totalQuestion = 0;
 						for( ExaminationCatalog ec : exam.getExam().getCatalogs() ) {
-							for( ExaminationQuestion eq : ec.getQuestions() ) {
+							for( ExaminationCatalogQuestion eq : ec.getQuestions() ) {
 								totalScore += eq.getScore();
 								totalQuestion++;
 							}
