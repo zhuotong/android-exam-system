@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Calendar;
 import java.util.List;
 
 import com.dream.eexam.model.CatalogBean;
@@ -220,11 +221,22 @@ public class PapersActivity extends BaseActivity {
 				}else{
 					ShowDialog("Invalid qeustion type:"+questionType);
 				}
+				
+				//save exam start time
+				saveStartTime();
 				   					
 			}
 	    }
 	}
 
+	public void saveStartTime(){
+		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		long currentTime = Calendar.getInstance().getTimeInMillis();
+		editor.putLong("starttime", currentTime);
+		editor.commit();
+	}
+	
 	public void loadAnswerOfLasttime(){
 		Log.i(LOG_TAG, "loadAnswerOfLasttime()...");
     	DatabaseUtil dbUtil = new DatabaseUtil(this);

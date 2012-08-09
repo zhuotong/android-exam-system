@@ -40,7 +40,5 @@
         android:textColor="#FFFFFF"
         android:textSize="25sp"
         android:background="@drawable/bg_color_paper_header_text_view"/>
-
-		            
     </TableRow>
 </FrameLayout>

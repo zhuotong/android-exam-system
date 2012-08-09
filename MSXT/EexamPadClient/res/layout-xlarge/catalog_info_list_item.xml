@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:background="@color/catalog_menu_bg"
     android:orientation="vertical"
-    android:descendantFocusability="blocksDescendants">"
+    android:descendantFocusability="blocksDescendants">
 
 	<TableRow 
 		android:layout_width="fill_parent"

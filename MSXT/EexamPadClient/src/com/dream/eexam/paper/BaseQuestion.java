@@ -5,8 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.R.integer;
 import android.content.Context;
@@ -15,6 +18,8 @@ import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -42,7 +47,7 @@ import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SystemConfig;
 import com.dream.eexam.util.XMLParseUtil;
 
-public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, OnGestureListener,OnTouchListener{
+public abstract class BaseQuestion extends BaseActivity implements OnDoubleTapListener, OnGestureListener,OnTouchListener{
 	
 	public final static String LOG_TAG = "BaseQuestion";
 	
@@ -95,6 +100,11 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	
 	protected String questionTypeM;
 	protected String questionTypeS;
+	
+	protected TimerTask  timerTask;
+	protected Timer timer;
+	protected Integer minute = 60;
+	protected Integer second = 60;
 	
     public void loadAnswer(){
     	Log.i(LOG_TAG, "loadAnswer()...");
@@ -235,9 +245,27 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
     	//close db
 		dbUtil.close();
 		
-		
+		//set time task to set count down time 
+		timerTask = new TimerTask() {
+			@Override
+			public void run() {
+				Message msg = new Message();
+				msg.what = 0;
+				handler.sendMessage(msg);
+			}
+		};
+		timer = new Timer();
+		timer.schedule(timerTask,0,1000);
 		
 	}
+	
+	Handler handler = new Handler(){
+		public void handleMessage(Message msg) {
+			setCountDownTime();
+		}
+	};
+	
+	abstract protected  void setCountDownTime();
 
 	public void submitAnswer(){
 		Log.i(LOG_TAG, "submitAnswer()...");

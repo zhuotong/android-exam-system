@@ -2,6 +2,7 @@ package com.dream.eexam.paper;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,6 +29,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.Choice;
+import com.dream.eexam.util.TimeDateUtil;
 import com.dream.eexam.util.XMLParseUtil;
 
 public class SingleChoices extends BaseQuestion {
@@ -147,6 +149,15 @@ public class SingleChoices extends BaseQuestion {
 				startActivity(intent);
 			}
 		});
+	}
+	
+	@Override
+	protected void setCountDownTime() {
+		long currentTime = Calendar.getInstance().getTimeInMillis();
+		Log.i(LOG_TAG, String.valueOf(currentTime));
+		
+		String currentTimeString = TimeDateUtil.getCurrentTime();
+		Log.i(LOG_TAG, currentTimeString);
 	}
 	
     @Override

@@ -8,7 +8,7 @@
 		android:layout_height="fill_parent">
     	<TextView
     	    android:id="@+id/homeTV"
-	        android:text="Home"
+	        android:text="@string/msg_header_tv_home"
 	        android:layout_width="wrap_content"
 	        android:layout_height="fill_parent"
 	        android:gravity="center_vertical"
@@ -57,7 +57,7 @@
         
         <TextView
     	    android:id="@+id/submitTV"
-	        android:text="Submit"
+	        android:text="@string/msg_btn_submit"
 	        android:layout_width="wrap_content"
 	        android:layout_height="fill_parent"
 	        android:layout_weight="1"

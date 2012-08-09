@@ -1,6 +1,7 @@
 package com.dream.eexam.paper;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import android.app.AlertDialog;
@@ -30,6 +31,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.Choice;
 import com.dream.eexam.model.Question;
+import com.dream.eexam.util.TimeDateUtil;
 
 public class MultiChoices extends BaseQuestion {
 	
@@ -43,8 +45,6 @@ public class MultiChoices extends BaseQuestion {
 	MyListAdapter adapter;
 	List<String> listItemID = new ArrayList<String>();
 	Integer indexInExam;
-	
-	
 	
 	public void loadComponents(){
 		homeTV = (TextView)findViewById(R.id.homeTV);
@@ -70,7 +70,7 @@ public class MultiChoices extends BaseQuestion {
 		
 		//set exam header(Center)
 		remainingTimeLabel.setText("Time Remaining: ");
-		remainingTime.setText(String.valueOf(detailBean.getTime())+" mins");
+		remainingTime.setText("60:00");
 		
 		//set exam header(Right)
 		submitTV.setText("Submit");
@@ -158,6 +158,58 @@ public class MultiChoices extends BaseQuestion {
 	
 	}
 	
+	@Override
+	protected void setCountDownTime() {
+		long currentTime = Calendar.getInstance().getTimeInMillis();
+		Log.i(LOG_TAG, String.valueOf(currentTime));
+		String currentTimeString = TimeDateUtil.getCurrentTime();
+		Log.i(LOG_TAG, currentTimeString);
+		
+		if (minute == 0) {
+			if (second == 0) {
+				remainingTime.setText("Time out !");
+				if (timer != null) {
+					timer.cancel();
+					timer = null;
+				}
+				if (timerTask != null) {
+					timerTask = null;
+				}
+			}else {
+				second--;
+				if (second >= 10) {
+					remainingTime.setText("0"+minute + ":" + second);
+				}else {
+					remainingTime.setText("0"+minute + ":0" + second);
+				}
+			}
+		}else {
+			if (second == 0) {
+				second =59;
+				minute--;
+				if (minute >= 10) {
+					remainingTime.setText(minute + ":" + second);
+				}else {
+					remainingTime.setText("0"+minute + ":" + second);
+				}
+			}else {
+				second--;
+				if (second >= 10) {
+					if (minute >= 10) {
+						remainingTime.setText(minute + ":" + second);
+					}else {
+						remainingTime.setText("0"+minute + ":" + second);
+					}
+				}else {
+					if (minute >= 10) {
+						remainingTime.setText(minute + ":0" + second);
+					}else {
+						remainingTime.setText("0"+minute + ":0" + second);
+					}
+				}
+			}
+		}
+	}
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -479,4 +531,6 @@ public class MultiChoices extends BaseQuestion {
     	TextView index;
     	TextView choiceDesc;
     }
+
+
 }

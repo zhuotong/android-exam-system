@@ -1,6 +1,7 @@
 package com.dream.eexam.paper;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -20,6 +21,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.Question;
+import com.dream.eexam.util.TimeDateUtil;
 
 public class PendQuestions extends BaseQuestion {
 	
@@ -151,6 +153,14 @@ public class PendQuestions extends BaseQuestion {
 	
 	}
 	
+	@Override
+	protected void setCountDownTime() {
+		long currentTime = Calendar.getInstance().getTimeInMillis();
+		Log.i(LOG_TAG, String.valueOf(currentTime));
+		
+		String currentTimeString = TimeDateUtil.getCurrentTime();
+		Log.i(LOG_TAG, currentTimeString);
+	}
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {

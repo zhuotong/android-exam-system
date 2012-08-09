@@ -12,10 +12,11 @@
     <string name="msg_tv_password">Password:</string>
     <string name="msg_et_id_hint">Input ID</string>
     <string name="msg_et_password_hint">Input Password</string>
+    
     <string name="msg_btn_login">Login</string>
     <string name="msg_btn_reset">Reset</string>
-    
     <string name="msg_btn_start">Start</string>
+    <string name="msg_btn_submit">Submit</string>
     
     <string name="msg_btn_pre">Prev</string>
     <string name="msg_btn_next">Next</string>
@@ -38,5 +39,6 @@
         <item>I</item>
         <item>J</item>
     </string-array>
+        
     
 </resources>
