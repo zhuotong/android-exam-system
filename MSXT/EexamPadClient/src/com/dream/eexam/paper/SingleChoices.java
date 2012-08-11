@@ -110,7 +110,6 @@ public class SingleChoices extends BaseQuestion {
 		});
 		
         //set catalog bar(Center) 
-        //set catalog bar(Center) 
 		catalogsTV.setText(String.valueOf(currentCatalogIndex)+". "+
 				detailBean.getCatalogDescByCid(currentCatalogIndex) + 
 				"(Q" + String.valueOf(currentQuestionIndex)+" - " + "Q" + String.valueOf(currentQuestionIndex+questionSize-1)+")");
@@ -152,10 +151,13 @@ public class SingleChoices extends BaseQuestion {
         loadComponents();
         loadAnswer();
         setHeader();
+        
+        String questionHint = "Q "+String.valueOf(question.getIndex())+" (Score:"+String.valueOf(question.getScore())+")";
+        Log.i(LOG_TAG, "questionHint:"+questionHint);
     	
         //set question text
         questionTV = (TextView)findViewById(R.id.questionTV);
-        questionTV.setText(question.getContent());
+        questionTV.setText(questionHint+ "\n"+question.getContent());
         questionTV.setTextColor(Color.BLACK);
         
         //set List

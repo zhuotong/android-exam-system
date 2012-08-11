@@ -67,6 +67,52 @@
 					</choice>
 				</choices>
 			</question>
+			<question>
+				<index>3</index>
+				<questionid>1233534343</questionid>
+				<type>Multi Select</type>			
+				<score>5</score>
+				<content><![CDATA[Given the following class definition which of the following can be legally placed after the comment line?
+					class Base{
+					public Base(int i){}
+					}
+					public class MyOver extends Base{
+					public static void main(String arg[]){
+					MyOver m=new MyOver(10);
+					}
+					MyOver(int i){
+					super(i);
+					}
+					MyOver(String s,int i){
+					this(i);
+					//Here
+					}
+					}
+Select the one right answer.]]>
+				</content>
+				<choices>
+					<choice>
+						<index>1</index>
+						<label>A</label>
+						<content><![CDATA[MyOver m=new MyOver();]]></content>
+					</choice>
+					<choice>
+						<index>2</index>
+						<label>B</label>
+						<content><![CDATA[super();]]></content>
+					</choice>
+					<choice>
+						<index>3</index>
+						<label>C</label>
+						<content><![CDATA[this("Hello",10);]]></content>
+					</choice>
+					<choice>
+						<index>4</index>
+						<label>D</label>
+						<content><![CDATA[Base b=new Base(10);]]></content>
+					</choice>
+				</choices>
+			</question>
 		</questions>
 	</catalog>	
 	<catalog>
@@ -74,7 +120,7 @@
 		<catalogdesc><![CDATA[Oracle PL/SQL]]></catalogdesc>
 		<questions>
 			<question>
-				<index>3</index>
+				<index>4</index>
 				<questionid>0</questionid>
 				<type>Single Select</type>			
 				<score>10</score>
@@ -103,7 +149,7 @@
 			    </choices>
 			</question>
 			<question>
-				<index>4</index>
+				<index>5</index>
 				<questionid>123123</questionid>
 				<type>Multi Select</type>			
 				<score>10</score>
@@ -138,7 +184,7 @@
 		<catalogdesc><![CDATA[Java Script]]></catalogdesc>
 		<questions>
 			<question>
-				<index>5</index>
+				<index>6</index>
 				<questionid>0</questionid>
 				<type>Single Select</type>			
 				<score>10</score>

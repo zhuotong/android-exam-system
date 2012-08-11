@@ -1,7 +1,6 @@
 package com.dream.eexam.paper;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import android.app.AlertDialog;
@@ -10,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -30,7 +30,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.Choice;
-import com.dream.eexam.util.TimeDateUtil;
 
 public class MultiChoices extends BaseQuestion {
 	
@@ -54,8 +53,6 @@ public class MultiChoices extends BaseQuestion {
 		questionIndex = (TextView)findViewById(R.id.questionIndex);
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
 		pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);
-		
-//		waitTV = (TextView)findViewById(R.id.header_tv_waiting);
 		
     	preBtn = (Button)findViewById(R.id.preBtn);
 		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
@@ -175,24 +172,17 @@ public class MultiChoices extends BaseQuestion {
         loadAnswer();
         setHeader();
 		
-        String questionHint = "Q "+String.valueOf(question.getIndex())+"(Score:"+String.valueOf(question.getScore())+")";
+        String questionHint = "Q "+String.valueOf(question.getIndex())+" (Score:"+String.valueOf(question.getScore())+")";
         Log.i(LOG_TAG, "questionHint:"+questionHint);
-        
 
         //set question text
         questionTV = (TextView)findViewById(R.id.questionTV);
+        questionTV.setMovementMethod(ScrollingMovementMethod.getInstance()); 
         questionTV.setText(questionHint+ "\n"+ question.getContent());
         questionTV.setTextColor(Color.BLACK);	
         
         //set List
         listView = (ListView)findViewById(R.id.lvChoices);
-//        List choices = question.getChoices();
-//        
-//        //if confusue set to true, system will sort choices random
-//        if("true".equals(detailBean.getConfuse())){
-//        	Collections.shuffle(choices);
-//        }
-        
         adapter = new MyListAdapter(choices);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new OnItemClickListener(){

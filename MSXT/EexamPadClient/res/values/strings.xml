@@ -6,7 +6,6 @@
     
     <string name="msg_header_tv_current">Current(1)</string>
     <string name="msg_header_tv_all">All(5)</string>
-    <string name="msg_header_tv_waiting">Waiting(3)</string>
     
     <string name="msg_tv_id">ID:</string>
     <string name="msg_tv_password">Password:</string>

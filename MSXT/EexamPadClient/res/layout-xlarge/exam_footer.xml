@@ -28,9 +28,10 @@
 				 android:layout_weight="5" 
 				 android:layout_gravity="center_vertical"
 		         android:gravity="center_vertical"
+		         android:layout_marginLeft="10dp"
 				 android:max="100"
 				 android:progress="50" 
-				 android:minHeight="5dp"/>
+				 android:minHeight="10dp"/>
 				 
 			<TextView
 		        android:id="@+id/completedPercentage"
@@ -38,7 +39,7 @@
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
 		        android:layout_marginLeft="10dp"
-		        android:textColor="#DA007A"
+		        android:textColor="#134316"
 		        android:textSize="18sp"/>		        
 		        
 	 	    <Button android:id="@+id/nextBtn" 
