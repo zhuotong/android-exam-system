@@ -120,9 +120,10 @@ public class PendQuestions extends BaseQuestion {
 		});
         
         //set catalog bar(Center) 
+        //set catalog bar(Center) 
 		catalogsTV.setText(String.valueOf(currentCatalogIndex)+". "+
 				detailBean.getCatalogDescByCid(currentCatalogIndex) + 
-				"(Q" + String.valueOf(currentQuestionIndex)+" - " + "Q" + String.valueOf(questionSize)+")");
+				"(Q" + String.valueOf(currentQuestionIndex)+" - " + "Q" + String.valueOf(currentQuestionIndex+questionSize-1)+")");
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -153,25 +154,16 @@ public class PendQuestions extends BaseQuestion {
 	
 	}
 	
-	@Override
-	protected void setCountDownTime() {
-		long currentTime = Calendar.getInstance().getTimeInMillis();
-		Log.i(LOG_TAG, String.valueOf(currentTime));
-		
-		String currentTimeString = TimeDateUtil.getCurrentTime();
-		Log.i(LOG_TAG, currentTimeString);
-	}
+
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pending_questions);
         mContext = getApplicationContext();
-
         loadComponents();
         loadAnswer();
         setHeader();
-        
         //set List
         gridList = (GridView)findViewById(R.id.gridview);
         adapter = new MyListAdapter(pendQuestions);
@@ -183,23 +175,50 @@ public class PendQuestions extends BaseQuestion {
 
 			}      	
         });
+        setFooter();
+    }
     
+    public void setFooter(){
+    	//set preBtn
+        preBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				direction = -1;
+				gotoNewQuestion(mContext,direction);
+			}
+		});
+        
+		//set completedSeekBar
+		int per = 100 * answeredQuestions/totalQuestions;
+		completedSeekBar.setThumb(null);
+		completedSeekBar.setProgress(per);
+		completedSeekBar.setEnabled(false);
+		//set completedSeekBar label
+		completedPercentage.setText(String.valueOf(per)+"%");
+		//set nextBtn
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				direction = 1;
+				gotoNewQuestion(mContext,direction);
+			}
+		});
     }
     
     //go to next or previous question
     public void gotoNewQuestion(){
     	Log.i(LOG_TAG, "gotoNewQuestion()...");
 		
-		Question newQuestion = detailBean.getQuestionByCidQid(currentCatalogIndex, currentQuestionIndex+direction);
+		Question newQuestion = detailBean.getQuestionByQid(currentQuestionIndex+direction);
 		String newQuestionType = newQuestion.getQuestionType();
 		if(newQuestionType!=null){
 			//move question
 			Intent intent = new Intent();
-			intent.putExtra("ccIndex", String.valueOf(currentCatalogIndex));
+			intent.putExtra("ccIndex", String.valueOf(newQuestion.getCatalogIndex()));
 			intent.putExtra("cqIndex", String.valueOf(currentQuestionIndex+direction));
 			if(questionTypeM.equals(questionType)){
 				intent.putExtra("questionType", "Multi Select");
-				intent.setClass( getBaseContext(), PendQuestions.class);
+				intent.setClass( getBaseContext(), MultiChoices.class);
 			}else if(questionTypeS.equals(questionType)){
 				intent.putExtra("questionType", "Single Select");
 				intent.setClass( getBaseContext(), SingleChoices.class);
@@ -254,24 +273,20 @@ public class PendQuestions extends BaseQuestion {
             cid = question.getCatalogIndex();
             qid = question.getIndex();
             
-            holder.questionBtn.setText(String.valueOf(question.getCatalogIndex())+","+String.valueOf(question.getIndex()));  
+            holder.questionBtn.setText(String.valueOf(question.getIndex()));  
             holder.questionBtn.setOnClickListener(new Button.OnClickListener() {
     			public void onClick(View v) {
     				Log.i(LOG_TAG,"onClick()...");
     				
     				Button sButton = (Button)v;
-    				
-    	            Log.i(LOG_TAG,"qType="+qType);
-    	            Log.i(LOG_TAG,"cid="+cid);
-    	            Log.i(LOG_TAG,"qid="+qid);
-    	            
-    	            String[] cidAndQids = sButton.getText().toString().split(",");
-    	            
+//    	            String[] cidAndQids = sButton.getText().toString().split(",");
+    	            String qid = sButton.getText().toString();
+    	            Question nQuestion = detailBean.getQuestionByQid(Integer.valueOf(qid));
     	            
     				//move question
     				Intent intent = new Intent();
-    				intent.putExtra("ccIndex", cidAndQids[0]);
-    				intent.putExtra("cqIndex", cidAndQids[1]);
+    				intent.putExtra("ccIndex", String.valueOf(nQuestion.getCatalogIndex()));
+    				intent.putExtra("cqIndex", String.valueOf(nQuestion.getIndex()));
     				
     				if(questionTypeM.equals(qType)){
     					intent.putExtra("questionType", "Multi Select");
@@ -284,6 +299,8 @@ public class PendQuestions extends BaseQuestion {
     				}else{
     					ShowDialog("Invalid qeustion type:"+questionType);
     				}
+    				
+//    				gotoNewQuestion();
     			}
     		});
             return convertView; 

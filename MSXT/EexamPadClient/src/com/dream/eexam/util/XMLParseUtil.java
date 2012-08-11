@@ -360,6 +360,7 @@ public class XMLParseUtil {
 					
 					if (level ==4 && "question".equals(xmlpull.getName())) {//ExamDetailBean initial 
 						question = new Question();
+						question.setCatalogIndex(catalogBean.getIndex());
 						level = 5;
 						break;
 					} 

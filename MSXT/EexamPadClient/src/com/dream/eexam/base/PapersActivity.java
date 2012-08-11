@@ -231,10 +231,17 @@ public class PapersActivity extends BaseActivity {
 
 	public void saveStartTime(){
 		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
-		SharedPreferences.Editor editor = sharedPreferences.edit();
-		long currentTime = Calendar.getInstance().getTimeInMillis();
-		editor.putLong("starttime", currentTime);
-		editor.commit();
+		long startTime = sharedPreferences.getLong("starttime", 0);
+		Log.i(LOG_TAG, "startTime="+String.valueOf(startTime));
+		
+		//if its first time to do exam, save start exam time
+		if(startTime==0){
+			SharedPreferences.Editor editor = sharedPreferences.edit();
+			long currentTime = Calendar.getInstance().getTimeInMillis();
+			Log.i(LOG_TAG, "startTime="+String.valueOf(startTime));
+			editor.putLong("starttime", currentTime);
+			editor.commit();		
+		}
 	}
 	
 	public void loadAnswerOfLasttime(){

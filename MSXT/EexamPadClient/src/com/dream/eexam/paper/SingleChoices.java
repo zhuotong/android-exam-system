@@ -1,6 +1,5 @@
 package com.dream.eexam.paper;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -19,18 +18,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.Choice;
-import com.dream.eexam.util.TimeDateUtil;
-import com.dream.eexam.util.XMLParseUtil;
 
 public class SingleChoices extends BaseQuestion {
 	
@@ -61,20 +55,16 @@ public class SingleChoices extends BaseQuestion {
 	public void setHeader(){
 		//set exam header(Left)
 		homeTV.setText("Home");
-		
 		//set exam header(Center)
 		remainingTimeLabel.setText("Time Remaining: ");
 		remainingTime.setText(String.valueOf(detailBean.getTime())+" mins");
-		
 		//set exam header(Right)
 		submitTV.setText("Submit");
         submitTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Log.i(LOG_TAG, "submitTV.onClick()...");
-				
 		    	int waitQuestions = totalQuestions - answeredQuestions;
-				 
 				if (waitQuestions> 0) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(SingleChoices.this);
 					builder.setMessage(String.valueOf(waitQuestions) + " question(s) are not answered, still submit?")
@@ -120,9 +110,10 @@ public class SingleChoices extends BaseQuestion {
 		});
 		
         //set catalog bar(Center) 
+        //set catalog bar(Center) 
 		catalogsTV.setText(String.valueOf(currentCatalogIndex)+". "+
 				detailBean.getCatalogDescByCid(currentCatalogIndex) + 
-				"(Q" + String.valueOf(currentQuestionIndex)+" - " + "Q" + String.valueOf(questionSize)+")");
+				"(Q" + String.valueOf(currentQuestionIndex)+" - " + "Q" + String.valueOf(currentQuestionIndex+questionSize-1)+")");
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -151,14 +142,6 @@ public class SingleChoices extends BaseQuestion {
 		});
 	}
 	
-	@Override
-	protected void setCountDownTime() {
-		long currentTime = Calendar.getInstance().getTimeInMillis();
-		Log.i(LOG_TAG, String.valueOf(currentTime));
-		
-		String currentTimeString = TimeDateUtil.getCurrentTime();
-		Log.i(LOG_TAG, currentTimeString);
-	}
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -194,9 +177,7 @@ public class SingleChoices extends BaseQuestion {
 				}
 			}      	
         });
-        
         setFooter();
-    
     }
     
     public void clearOldAnswer(){
@@ -285,7 +266,7 @@ public class SingleChoices extends BaseQuestion {
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,int id) {
 									clearAnswer(mContext,currentCatalogIndex,currentQuestionIndex);
-									gotoNewQuestion();
+									gotoNewQuestion(mContext,direction);
 								}
 							})
 					.setNegativeButton("Cancel",
@@ -296,85 +277,20 @@ public class SingleChoices extends BaseQuestion {
 							});
 			builder.show();
 		} else {
-			saveAnswer(mContext,currentCatalogIndex,currentQuestionIndex, answerString.toString());
-	    	gotoNewQuestion();
+			gotoNewQuestion(mContext,direction);
 		}
 		
     }
     
-    //go to next or previous question
-    public void gotoNewQuestion(){
-    	InputStream inputStream =  getExamStream();
-		String questionType = null;
-		try {
-			 questionType = XMLParseUtil.readQuestionType(inputStream,currentCatalogIndex,currentQuestionIndex+direction);
-			 inputStream.close();
-		} catch (Exception e) {
-			Log.i(LOG_TAG, e.getMessage());
-		}
-		if(questionType!=null){
-			//move question
-			Intent intent = new Intent();
-			intent.putExtra("ccIndex", String.valueOf(currentCatalogIndex));
-			intent.putExtra("cqIndex", String.valueOf(currentQuestionIndex+direction));
-			if(questionTypeM.equals(questionType)){
-				intent.putExtra("questionType", "Multi Select");
-				intent.setClass( getBaseContext(), MultiChoices.class);
-			}else if(questionTypeS.equals(questionType)){
-				intent.putExtra("questionType", "Single Select");
-				intent.setClass( getBaseContext(), SingleChoices.class);
-			}
-			finish();
-			startActivity(intent);
-		}else{
-			ShowDialog("Please Change Catalog!");
-		}
-    }
-    
-    /*public void clearAnswer(){
-    	Log.i(LOG_TAG, "clearAnswer()...");
-    	
-    	DatabaseUtil dbUtil = new DatabaseUtil(this);
-    	dbUtil.open();
-    	dbUtil.deleteAnswer(currentCatalogIndex,currentQuestionIndex);
-    	dbUtil.close();
-    	
-    	Log.i(LOG_TAG, "end clearAnswer().");
-    }*/
-    
-    /*public void saveAnswer(){
-    	Log.i(LOG_TAG, "saveAnswer()...");
-    	
-    	DatabaseUtil dbUtil = new DatabaseUtil(this);
-    	dbUtil.open();
-    	Cursor cursor = dbUtil.fetchAnswer(currentCatalogIndex,currentQuestionIndex);
-    	if(cursor != null && cursor.moveToNext()){
-    		Log.i(LOG_TAG, "updateAnswer("+currentCatalogIndex+","+currentQuestionIndex+","+answerString.toString()+")");
-    		dbUtil.updateAnswer(currentCatalogIndex,currentQuestionIndex,"("+ answerString.toString()+")");
-    	}else{
-    		Log.i(LOG_TAG, "createAnswer("+currentCatalogIndex+","+currentQuestionIndex+","+answerString.toString()+")");
-    		dbUtil.createAnswer(currentCatalogIndex,currentQuestionIndex, "("+ answerString.toString()+")");
-    	}
-    	
-    	dbUtil.close();
-    	
-    	Log.i(LOG_TAG, "saveAnswer().");
-    }*/
-    
     class MyListAdapter extends BaseAdapter{
     	List<Boolean> mChecked = new ArrayList<Boolean>();
     	List<Choice> choices = new ArrayList<Choice>();
-    	
 		HashMap<Integer,View> map = new HashMap<Integer,View>(); 
     	
     	public MyListAdapter(List<Choice> choices){
     		this.choices = choices;
-    		
-//    		Log.i(LOG_TAG,"answerString:"+answerString);
-    		
 			for (int i = 0; i < choices.size(); i++) {
 				Choice choice = choices.get(i);
-//				mChecked.add(false);
 				if (answerString.indexOf(String.valueOf(choice.getChoiceIndex())) != -1) {
 					mChecked.add(true);
 				} else {
@@ -404,8 +320,6 @@ public class SingleChoices extends BaseQuestion {
 			ViewHolder holder = null;
 			
 			if (map.get(position) == null) {
-//				Log.i(LOG_TAG,"position1 = "+position);
-				
 				LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				view = mInflater.inflate(R.layout.paper_single_choices_item, null);
 				holder = new ViewHolder();
@@ -418,14 +332,6 @@ public class SingleChoices extends BaseQuestion {
 				final int p = position;
 				map.put(position, view);
 				
-/*				holder.radioButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-					@Override
-					public void onCheckedChanged(CompoundButton buttonView,
-							boolean isChecked) {
-
-					}
-				});*/
-				
 				holder.radioButton.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -436,13 +342,13 @@ public class SingleChoices extends BaseQuestion {
 						cb.setChecked(!oldStatus);
 						mChecked.set(p,!oldStatus);
 		        		setAnswer();
-		        		if(answerString.length()>0){
-		        			saveAnswer(mContext,currentCatalogIndex,currentQuestionIndex,answerString.toString());
+		        		if(answerString.length()==0){
+							clearAnswer(mContext,currentCatalogIndex,currentQuestionIndex);
+						}else{
+							saveAnswer(mContext,currentCatalogIndex,currentQuestionIndex,answerString.toString());
 						}
 					}
 				});
-				
-				
 				view.setTag(holder);
 			}else{
 				Log.i(LOG_TAG,"position2 = "+position);

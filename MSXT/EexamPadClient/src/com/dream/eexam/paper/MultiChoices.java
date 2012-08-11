@@ -30,7 +30,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.Choice;
-import com.dream.eexam.model.Question;
 import com.dream.eexam.util.TimeDateUtil;
 
 public class MultiChoices extends BaseQuestion {
@@ -70,7 +69,14 @@ public class MultiChoices extends BaseQuestion {
 		
 		//set exam header(Center)
 		remainingTimeLabel.setText("Time Remaining: ");
-		remainingTime.setText("60:00");
+		StringBuffer timeSB = new StringBuffer();
+		if(lMinutes<10) timeSB.append("0");
+		timeSB.append(String.valueOf(lMinutes));
+		timeSB.append(String.valueOf(":"));
+		if(lSeconds<10) timeSB.append("0");
+		timeSB.append(String.valueOf(lSeconds));
+		
+		remainingTime.setText(timeSB.toString());
 		
 		//set exam header(Right)
 		submitTV.setText("Submit");
@@ -127,7 +133,7 @@ public class MultiChoices extends BaseQuestion {
         //set catalog bar(Center) 
 		catalogsTV.setText(String.valueOf(currentCatalogIndex)+". "+
 				detailBean.getCatalogDescByCid(currentCatalogIndex) + 
-				"(Q" + String.valueOf(currentQuestionIndex)+" - " + "Q" + String.valueOf(questionSize)+")");
+				"(Q" + String.valueOf(currentQuestionIndex)+" - " + "Q" + String.valueOf(currentQuestionIndex+questionSize-1)+")");
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -158,58 +164,6 @@ public class MultiChoices extends BaseQuestion {
 	
 	}
 	
-	@Override
-	protected void setCountDownTime() {
-		long currentTime = Calendar.getInstance().getTimeInMillis();
-		Log.i(LOG_TAG, String.valueOf(currentTime));
-		String currentTimeString = TimeDateUtil.getCurrentTime();
-		Log.i(LOG_TAG, currentTimeString);
-		
-		if (minute == 0) {
-			if (second == 0) {
-				remainingTime.setText("Time out !");
-				if (timer != null) {
-					timer.cancel();
-					timer = null;
-				}
-				if (timerTask != null) {
-					timerTask = null;
-				}
-			}else {
-				second--;
-				if (second >= 10) {
-					remainingTime.setText("0"+minute + ":" + second);
-				}else {
-					remainingTime.setText("0"+minute + ":0" + second);
-				}
-			}
-		}else {
-			if (second == 0) {
-				second =59;
-				minute--;
-				if (minute >= 10) {
-					remainingTime.setText(minute + ":" + second);
-				}else {
-					remainingTime.setText("0"+minute + ":" + second);
-				}
-			}else {
-				second--;
-				if (second >= 10) {
-					if (minute >= 10) {
-						remainingTime.setText(minute + ":" + second);
-					}else {
-						remainingTime.setText("0"+minute + ":" + second);
-					}
-				}else {
-					if (minute >= 10) {
-						remainingTime.setText(minute + ":0" + second);
-					}else {
-						remainingTime.setText("0"+minute + ":0" + second);
-					}
-				}
-			}
-		}
-	}
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -269,8 +223,6 @@ public class MultiChoices extends BaseQuestion {
         
         setFooter();
         
-        
-        
         //set GestureDetector
         detector = new GestureDetector((OnGestureListener) this);
     
@@ -329,7 +281,6 @@ public class MultiChoices extends BaseQuestion {
 	
     //save answer if not empty 
     public void relocationQuestion(){
-    	
 		if (listItemID.size() == 0) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(MultiChoices.this);
 			builder.setMessage("Answer this question late?")
@@ -337,8 +288,7 @@ public class MultiChoices extends BaseQuestion {
 					.setPositiveButton("Yes",
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,int id) {
-//									clearAnswer();
-									gotoNewQuestion();
+									gotoNewQuestion(mContext,direction);
 								}
 							})
 					.setNegativeButton("Cancel",
@@ -349,23 +299,19 @@ public class MultiChoices extends BaseQuestion {
 							});
 			builder.show();
 		} else {
-//			saveAnswer();
-	    	gotoNewQuestion();
+			gotoNewQuestion(mContext,direction);
 		}
-		
     }
     
     //go to next or previous question
-    public void gotoNewQuestion(){
+/*    public void gotoNewQuestion(){
     	Log.i(LOG_TAG, "gotoNewQuestion()...");
-    	
-//		Question newQuestion = detailBean.getQuestionByCidQid(currentCatalogIndex, currentQuestionIndex+direction);
-		Question newQuestion = detailBean.getQuestionByCidQid(currentQuestionIndex+direction);
+		Question newQuestion = detailBean.getQuestionByQid(currentQuestionIndex+direction);
 		String newQuestionType = newQuestion.getQuestionType();
 		if(newQuestionType!=null){
 			//move question
 			Intent intent = new Intent();
-			intent.putExtra("ccIndex", String.valueOf(currentCatalogIndex));
+			intent.putExtra("ccIndex", String.valueOf(newQuestion.getCatalogIndex()));
 			intent.putExtra("cqIndex", String.valueOf(currentQuestionIndex+direction));
 			if(questionTypeM.equals(questionType)){
 				intent.putExtra("questionType", "Multi Select");
@@ -379,17 +325,6 @@ public class MultiChoices extends BaseQuestion {
 		}else{
 			ShowDialog("Question index "+ String.valueOf(currentQuestionIndex+direction)+" not exist!");
 		}
-    }
-    
-/*    public void clearAnswer(){
-    	Log.i(LOG_TAG, "clearAnswer()...");
-    	
-    	DatabaseUtil dbUtil = new DatabaseUtil(this);
-    	dbUtil.open();
-    	dbUtil.deleteAnswer(currentCatalogIndex,currentQuestionIndex);
-    	dbUtil.close();
-    	
-    	Log.i(LOG_TAG, "end clearAnswer().");
     }*/
  
     public void setAnswer(){
@@ -410,34 +345,12 @@ public class MultiChoices extends BaseQuestion {
 		Log.i(LOG_TAG, "setAnswer().");
     }
     
-    /*public void saveAnswer(){
-    	Log.i(LOG_TAG, "saveAnswer()...");
-    	
-    	DatabaseUtil dbUtil = new DatabaseUtil(this);
-    	dbUtil.open();
-    	Cursor cursor = dbUtil.fetchAnswer(currentCatalogIndex,currentQuestionIndex);
-    	if(cursor != null && cursor.moveToNext()){
-    		Log.i(LOG_TAG, "updateAnswer("+currentCatalogIndex+","+currentQuestionIndex+","+answerString.toString()+")");
-    		dbUtil.updateAnswer(currentCatalogIndex,currentQuestionIndex,"("+ answerString.toString()+")");
-    	}else{
-    		Log.i(LOG_TAG, "createAnswer("+currentCatalogIndex+","+currentQuestionIndex+","+answerString.toString()+")");
-    		dbUtil.createAnswer(currentCatalogIndex,currentQuestionIndex, "("+ answerString.toString()+")");
-    	}
-    	
-    	dbUtil.close();
-    	
-    	Log.i(LOG_TAG, "saveAnswer().");
-    }*/
-    
-    
     class MyListAdapter extends BaseAdapter{
     	List<Boolean> mChecked = new ArrayList<Boolean>();
     	List<Choice> choices = new ArrayList<Choice>();
-    	
 		HashMap<Integer,View> map = new HashMap<Integer,View>(); 
     	
     	public MyListAdapter(List<Choice> choices){
-//    		choices = new ArrayList<Choice>();
     		this.choices = choices;
     		for(int i=0;i<choices.size();i++){
     			Choice choice = choices.get(i);

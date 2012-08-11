@@ -45,9 +45,10 @@ import com.dream.eexam.model.ExamDetailBean;
 import com.dream.eexam.model.Question;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SystemConfig;
+import com.dream.eexam.util.TimeDateUtil;
 import com.dream.eexam.util.XMLParseUtil;
 
-public abstract class BaseQuestion extends BaseActivity implements OnDoubleTapListener, OnGestureListener,OnTouchListener{
+public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, OnGestureListener,OnTouchListener{
 	
 	public final static String LOG_TAG = "BaseQuestion";
 	
@@ -103,8 +104,8 @@ public abstract class BaseQuestion extends BaseActivity implements OnDoubleTapLi
 	
 	protected TimerTask  timerTask;
 	protected Timer timer;
-	protected Integer minute = 60;
-	protected Integer second = 60;
+	protected Integer lMinutes = 0;
+	protected Integer lSeconds = 0;
 	
     public void loadAnswer(){
     	Log.i(LOG_TAG, "loadAnswer()...");
@@ -176,10 +177,10 @@ public abstract class BaseQuestion extends BaseActivity implements OnDoubleTapLi
 			    Log.i(LOG_TAG,"questionSize:"+ String.valueOf(questionSize));
 			}
 			//set question
-			question = detailBean.getQuestionByCidQid(currentCatalogIndex, currentQuestionIndex);
+			question = detailBean.getQuestionByQid(currentQuestionIndex);
+			choices = question.getChoices();
 			totalQuestions = detailBean.getTotalQuestions();
-			
-	        choices = question.getChoices();
+	        
 	        //if confusue set to true, system will sort choices random
 	        if("true".equals(detailBean.getConfuse())){
 	        	Collections.shuffle(choices);
@@ -257,6 +258,9 @@ public abstract class BaseQuestion extends BaseActivity implements OnDoubleTapLi
 		timer = new Timer();
 		timer.schedule(timerTask,0,1000);
 		
+		//set load count down time(MM:SS)
+		setLoadCDTime();
+		
 	}
 	
 	Handler handler = new Handler(){
@@ -265,8 +269,117 @@ public abstract class BaseQuestion extends BaseActivity implements OnDoubleTapLi
 		}
 	};
 	
-	abstract protected  void setCountDownTime();
+	protected void setCountDownTime() {
+		long currentTime = Calendar.getInstance().getTimeInMillis();
+		Log.i(LOG_TAG, String.valueOf(currentTime));
+		String currentTimeString = TimeDateUtil.getCurrentTime();
+		Log.i(LOG_TAG, currentTimeString);
+		if (lMinutes == 0) {
+			if (lSeconds == 0) {
+				remainingTime.setText("Time out !");
+				if (timer != null) {
+					timer.cancel();
+					timer = null;
+				}
+				if (timerTask != null) {
+					timerTask = null;
+				}
+			}else {
+				lSeconds--;
+				if (lSeconds >= 10) {
+					remainingTime.setText("0"+lMinutes + ":" + lSeconds);
+				}else {
+					remainingTime.setText("0"+lMinutes + ":0" + lSeconds);
+				}
+			}
+		}else {
+			if (lSeconds == 0) {
+				lSeconds =59;
+				lMinutes--;
+				if (lMinutes >= 10) {
+					remainingTime.setText(lMinutes + ":" + lSeconds);
+				}else {
+					remainingTime.setText("0"+lMinutes + ":" + lSeconds);
+				}
+			}else {
+				lSeconds--;
+				if (lSeconds >= 10) {
+					if (lMinutes >= 10) {
+						remainingTime.setText(lMinutes + ":" + lSeconds);
+					}else {
+						remainingTime.setText("0"+lMinutes + ":" + lSeconds);
+					}
+				}else {
+					if (lMinutes >= 10) {
+						remainingTime.setText(lMinutes + ":0" + lSeconds);
+					}else {
+						remainingTime.setText("0"+lMinutes + ":0" + lSeconds);
+					}
+				}
+			}
+		}
+	}
+	
+	protected  void setLoadCDTime(){
+		Log.i(LOG_TAG, "-----------------setLoadCDTime()...-----------------");
+		
+		long currentTime = Calendar.getInstance().getTimeInMillis();
+		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
+		long starttime = sharedPreferences.getLong("starttime", 0);
+		
+		long cosumeTime = (currentTime - starttime)/1000;//second
+		Log.i(LOG_TAG, "cosumeTime="+String.valueOf(cosumeTime));
+		
+	    long examTime = detailBean.getTime() * 60;//second
+	    Log.i(LOG_TAG, "examTime="+String.valueOf(examTime));
+	    
+	    if(cosumeTime>examTime){
+	    	ShowDialog("Exam Time Out!");
+	    }else{
+	    	long leftTime = examTime - cosumeTime;
+	    	Log.i(LOG_TAG, "leftTime="+String.valueOf(leftTime));
+	    	
+	    	lMinutes = Integer.valueOf((int)(leftTime/60));
+	    	Log.i(LOG_TAG, "lMinutes="+String.valueOf(lMinutes));
+	    	
+	    	lSeconds = Integer.valueOf((int)(leftTime - lMinutes * 60));
+	    	Log.i(LOG_TAG, "lSeconds="+String.valueOf(lSeconds));
+	    }
+	    
+	    Log.i(LOG_TAG, "-----------------setLoadCDTime().-----------------");
+	}
 
+    //go to new question page
+    public void gotoNewQuestion(Context context, Integer diret){
+    	Log.i(LOG_TAG, "gotoNewQuestion()...");
+		Question newQuestion = detailBean.getQuestionByQid(currentQuestionIndex+diret);
+		if(newQuestion!=null){
+			String newQuestionType = newQuestion.getQuestionType();
+			if(newQuestionType!=null){
+				//move question
+				Intent intent = new Intent();
+				intent.putExtra("ccIndex", String.valueOf(newQuestion.getCatalogIndex()));
+				intent.putExtra("cqIndex", String.valueOf(currentQuestionIndex+diret));
+				if(questionTypeM.equals(newQuestionType)){
+					intent.putExtra("questionType", "Multi Select");
+					intent.setClass( context, MultiChoices.class);
+				}else if(questionTypeS.equals(newQuestionType)){
+					intent.putExtra("questionType", "Single Select");
+					intent.setClass( context, SingleChoices.class);
+				}
+				finish();
+				startActivity(intent);
+			}			
+		}else{
+			if(diret==1){
+				ShowDialog("This question is the last question in Exam!");
+			}else if(diret==-1){
+				ShowDialog("This question is the first question in Exam!");
+			}
+		}
+
+    }
+    
 	public void submitAnswer(){
 		Log.i(LOG_TAG, "submitAnswer()...");
 	}
@@ -403,25 +516,28 @@ public abstract class BaseQuestion extends BaseActivity implements OnDoubleTapLi
 				
 //				catalogsTV.setText(cataLogList.get(position).getDesc());
 				
-				inputStream =  getExamStream();
-				String questionType = null;
-				try {
-					 Log.i(LOG_TAG, "Go to catalog "+String.valueOf((position+1))+" question 1");
-					 questionType = XMLParseUtil.readQuestionType(inputStream,(position+1), 1);
-					 
-					 Log.i(LOG_TAG, "questionType " + questionType);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					Log.i(LOG_TAG, e.getMessage());
-				}
+//				inputStream =  getExamStream();
+//				String questionType = null;
+//				try {
+//					 Log.i(LOG_TAG, "Go to catalog "+String.valueOf((position+1))+" question 1");
+//					 questionType = XMLParseUtil.readQuestionType(inputStream,(position+1), 1);
+//					 
+//					 Log.i(LOG_TAG, "questionType " + questionType);
+//				} catch (Exception e) {
+//					// TODO Auto-generated catch block
+//					Log.i(LOG_TAG, e.getMessage());
+//				}
 				
+				CatalogInfo info = catalogNames.get(position);
+				Question nQuestion = detailBean.getFirstQuestionByCid(info.getIndex());
+				String nQuestionType = nQuestion.getQuestionType();
 				Intent intent = new Intent();
-				intent.putExtra("ccIndex", String.valueOf(position+1));
-				intent.putExtra("cqIndex", String.valueOf(1));
-				if(questionTypeM.equals(questionType)){
+				intent.putExtra("ccIndex", String.valueOf(nQuestion.getCatalogIndex()));
+				intent.putExtra("cqIndex", String.valueOf(nQuestion.getIndex()));
+				if(questionTypeM.equals(nQuestionType)){
 					intent.putExtra("questionType", "Multi Select");
 					intent.setClass( mContext, MultiChoices.class);
-				}else if(questionTypeS.equals(questionType)){
+				}else if(questionTypeS.equals(nQuestionType)){
 					intent.putExtra("questionType", "Single Select");
 					intent.setClass( mContext, SingleChoices.class);
 				}else{
