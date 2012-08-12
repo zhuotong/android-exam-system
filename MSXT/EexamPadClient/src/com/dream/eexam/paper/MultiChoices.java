@@ -199,7 +199,7 @@ public class MultiChoices extends BaseQuestion {
 				if(answerString.length()==0){
 					clearAnswer(mContext,currentCatalogIndex,currentQuestionIndex);
 				}else{
-					saveAnswer(mContext,currentCatalogIndex,currentQuestionIndex,answerString.toString());
+					saveAnswer(mContext,currentCatalogIndex,currentQuestionIndex,question.getQuestionId(),answerString.toString());
 				}
 			}      	
         });
@@ -328,7 +328,7 @@ public class MultiChoices extends BaseQuestion {
 				if(i>0){
 					answerString.append(",");
 				}
-				answerString.append(String.valueOf(choice.getChoiceIndex()));
+				answerString.append(String.valueOf(choice.getChoiceLabel()));
 			}
 		}
 		
@@ -344,7 +344,7 @@ public class MultiChoices extends BaseQuestion {
     		this.choices = choices;
     		for(int i=0;i<choices.size();i++){
     			Choice choice = choices.get(i);
-				if (answerString.indexOf(String.valueOf(choice.getChoiceIndex())) != -1) {
+				if (answerString.indexOf(String.valueOf(choice.getChoiceLabel())) != -1) {
 					mChecked.add(true);
 				}else{
 					mChecked.add(false);
@@ -405,7 +405,7 @@ public class MultiChoices extends BaseQuestion {
 						if(answerString.length()==0){
 							clearAnswer(mContext,currentCatalogIndex,currentQuestionIndex);
 						}else{
-							saveAnswer(mContext,currentCatalogIndex,currentQuestionIndex,answerString.toString());
+							saveAnswer(mContext,currentCatalogIndex,currentQuestionIndex,question.getQuestionId(),answerString.toString());
 						}
 					}
 				});

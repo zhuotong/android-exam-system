@@ -24,6 +24,7 @@ public class DatabaseUtil{
 	 */
 	public static final String CATALOG_ID = "cid";
 	public static final String QUESTION_ID = "qid";
+	public static final String QUESTION_ID_STRING = "qid_str";
 	public static final String ANSWERS = "answers";
 
 	/**
@@ -31,7 +32,7 @@ public class DatabaseUtil{
 	 */
 	private static final String CREATE_ANSWER_TABLE = "create table if not exists "
 			+ DATABASE_TABLE + "(" + CATALOG_ID + " integer not null,"
-			+ QUESTION_ID + " integer not null," + ANSWERS + " text," + "primary key("
+			+ QUESTION_ID + " integer not null," + QUESTION_ID_STRING + " text," + ANSWERS + " text," + "primary key("
 			+ CATALOG_ID + "," + QUESTION_ID + ")" + ");";
 
 	/**
@@ -97,11 +98,12 @@ public class DatabaseUtil{
 	 * @param value
 	 * @return long
 	 */
-	public long createAnswer(long cid, long qid, String answers) {
+	public long createAnswer(long cid, long qid,String qidStr,String answers) {
 		ContentValues initialValues = new ContentValues();
 		
 		initialValues.put(CATALOG_ID, cid);
 		initialValues.put(QUESTION_ID, qid);
+		initialValues.put(QUESTION_ID_STRING, qidStr);
 		initialValues.put(ANSWERS, answers);
 		
 		return mDb.insert(DATABASE_TABLE, null, initialValues);
@@ -124,12 +126,12 @@ public class DatabaseUtil{
 	 * @return Cursor
 	 */
 	public Cursor fetchAllAnswers() {
-		return mDb.query(DATABASE_TABLE, new String[] {CATALOG_ID,QUESTION_ID,ANSWERS}, null, null, null, null, null);
+		return mDb.query(DATABASE_TABLE, new String[] {CATALOG_ID,QUESTION_ID,QUESTION_ID_STRING,ANSWERS}, null, null, null, null, null);
 	}
 	
 	public int fetchAllAnswersCount() {
 		int sum=0;
-		Cursor cursor = mDb.query(DATABASE_TABLE, new String[] {CATALOG_ID,QUESTION_ID,ANSWERS}, null, null, null, null, null);
+		Cursor cursor = mDb.query(DATABASE_TABLE, new String[] {CATALOG_ID,QUESTION_ID,QUESTION_ID_STRING,ANSWERS}, null, null, null, null, null);
 		while(cursor.moveToNext()){
 			sum++;
 		}
@@ -140,7 +142,7 @@ public class DatabaseUtil{
 		Log.i(TAG, "fetchAnswer()... ");
 		String con = CATALOG_ID + "=" + cid ;
 		Log.i(TAG, "con: " + con);
-		Cursor mCursor = mDb.query(true, DATABASE_TABLE, new String[] {CATALOG_ID,QUESTION_ID,ANSWERS}, con, null,null, null, null, null);
+		Cursor mCursor = mDb.query(true, DATABASE_TABLE, new String[] {CATALOG_ID,QUESTION_ID,QUESTION_ID_STRING,ANSWERS,}, con, null,null, null, null, null);
 		return mCursor;
 	}
 	
@@ -154,7 +156,7 @@ public class DatabaseUtil{
 		Log.i(TAG, "fetchAnswer()... ");
 		String con = CATALOG_ID + "=" + cid + " AND " + QUESTION_ID + "=" + qid;
 		Log.i(TAG, "con: " + con);
-		Cursor mCursor = mDb.query(true, DATABASE_TABLE, new String[] {CATALOG_ID,QUESTION_ID,ANSWERS}, con, null,null, null, null, null);
+		Cursor mCursor = mDb.query(true, DATABASE_TABLE, new String[] {CATALOG_ID,QUESTION_ID,QUESTION_ID_STRING,ANSWERS}, con, null,null, null, null, null);
 		/*if (mCursor != null) {
 			mCursor.moveToFirst();
 		}*/
@@ -168,12 +170,12 @@ public class DatabaseUtil{
 	 * @param value
 	 * @return boolean
 	 */
-	public boolean updateAnswer(long cid, long qid, String answers) {
+	public boolean updateAnswer(long cid, long qid,String qidStr, String answers) {
 		ContentValues args = new ContentValues();
 		args.put(CATALOG_ID, cid);
 		args.put(QUESTION_ID, qid);
+		args.put(QUESTION_ID_STRING, qidStr);
 		args.put(ANSWERS, answers);
-		
 		return mDb.update(DATABASE_TABLE,args,CATALOG_ID + "=" + cid + " AND " + QUESTION_ID + "=" + qid, null) > 0;
 	}
 }

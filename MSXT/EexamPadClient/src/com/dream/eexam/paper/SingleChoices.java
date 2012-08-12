@@ -174,8 +174,10 @@ public class SingleChoices extends BaseQuestion {
         		cb.setChecked(!cb.isChecked());
         		Log.i(LOG_TAG, "cb.isChecked():"+cb.isChecked());
         		setAnswer();
-        		if(answerString.length()>0){
-        			saveAnswer(mContext,currentCatalogIndex,currentQuestionIndex,answerString.toString());
+        		if(answerString.length()==0){
+					clearAnswer(mContext,currentCatalogIndex,currentQuestionIndex);
+				}else{
+					saveAnswer(mContext,currentCatalogIndex,currentQuestionIndex,question.getQuestionId(),answerString.toString());
 				}
 			}      	
         });
@@ -206,7 +208,7 @@ public class SingleChoices extends BaseQuestion {
 				if(i>0){
 					answerString.append(",");
 				}
-				answerString.append(String.valueOf(choice.getChoiceIndex()));
+				answerString.append(String.valueOf(choice.getChoiceLabel()));
 			}
 		}
 		
@@ -252,11 +254,11 @@ public class SingleChoices extends BaseQuestion {
 		for (int i = 0; i < adapter.mChecked.size(); i++) {
 			if (adapter.mChecked.get(i)) {
 				Choice choice = adapter.choices.get(i);
-				listItemID.add(String.valueOf(choice.getChoiceIndex()));
+				listItemID.add(String.valueOf(choice.getChoiceLabel()));
 				if(i>0){
 					answerString.append(",");
 				}
-				answerString.append(String.valueOf(choice.getChoiceIndex()));
+				answerString.append(String.valueOf(choice.getChoiceLabel()));
 			}
 		}
 		
@@ -293,7 +295,7 @@ public class SingleChoices extends BaseQuestion {
     		this.choices = choices;
 			for (int i = 0; i < choices.size(); i++) {
 				Choice choice = choices.get(i);
-				if (answerString.indexOf(String.valueOf(choice.getChoiceIndex())) != -1) {
+				if (answerString.indexOf(String.valueOf(choice.getChoiceLabel())) != -1) {
 					mChecked.add(true);
 				} else {
 					mChecked.add(false);
@@ -347,7 +349,7 @@ public class SingleChoices extends BaseQuestion {
 		        		if(answerString.length()==0){
 							clearAnswer(mContext,currentCatalogIndex,currentQuestionIndex);
 						}else{
-							saveAnswer(mContext,currentCatalogIndex,currentQuestionIndex,answerString.toString());
+							saveAnswer(mContext,currentCatalogIndex,currentQuestionIndex,question.getQuestionId(),answerString.toString());
 						}
 					}
 				});

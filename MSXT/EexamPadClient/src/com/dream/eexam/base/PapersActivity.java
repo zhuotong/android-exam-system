@@ -250,7 +250,7 @@ public class PapersActivity extends BaseActivity {
     	dbUtil.open();
     	Cursor cursor = dbUtil.fetchAllAnswers();
     	while (cursor.moveToNext()) {
-			Log.i(LOG_TAG, "cid:" + cursor.getInt(0) + " qid:"+ cursor.getInt(1) + " answer:" + cursor.getString(2));
+			Log.i(LOG_TAG, "cid:" + cursor.getInt(0) + " qid:"+ cursor.getInt(1)+" qid_str:"+ cursor.getString(2) + " answer:" + cursor.getString(3));
 		}
     	Log.i(LOG_TAG, "loadAnswerOfLasttime()...");
     	dbUtil.close();

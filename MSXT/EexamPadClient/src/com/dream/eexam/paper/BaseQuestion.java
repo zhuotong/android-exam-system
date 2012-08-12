@@ -7,7 +7,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -116,11 +118,10 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
     	Cursor cursor = dbUtil.fetchAnswer(currentCatalogIndex,currentQuestionIndex);
 		if (cursor != null && cursor.moveToNext()) {
 			Log.i(LOG_TAG, "find answer...");
-			Log.i(LOG_TAG,
-					"cid: " + cursor.getInt(0) + " qid "
-							+ cursor.getInt(1) + " answer " + cursor.getString(2));
+			Log.i(LOG_TAG, "cid: " + cursor.getInt(0) + " qid " + cursor.getInt(1)
+							+ " qid_str " + cursor.getString(2) + " answer " + cursor.getString(3));
     		answerString.setLength(0);
-    		answerString.append(cursor.getString(2));
+    		answerString.append(cursor.getString(3));
 		}
 		int sum = 0;
 		cursor = dbUtil.fetchAnswer(currentCatalogIndex);
@@ -270,8 +271,8 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	};
 	
 	protected void setCountDownTime() {
-		long currentTime = Calendar.getInstance().getTimeInMillis();
-		Log.i(LOG_TAG, String.valueOf(currentTime));
+//		long currentTime = Calendar.getInstance().getTimeInMillis();
+//		Log.i(LOG_TAG, String.valueOf(currentTime));
 		String currentTimeString = TimeDateUtil.getCurrentTime();
 		Log.i(LOG_TAG, currentTimeString);
 		if (lMinutes == 0) {
@@ -321,32 +322,32 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	}
 	
 	protected  void setLoadCDTime(){
-		Log.i(LOG_TAG, "-----------------setLoadCDTime()...-----------------");
+//		Log.i(LOG_TAG, "-----------------setLoadCDTime()...-----------------");
 		
 		long currentTime = Calendar.getInstance().getTimeInMillis();
 		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
 		long starttime = sharedPreferences.getLong("starttime", 0);
 		
 		long cosumeTime = (currentTime - starttime)/1000;//second
-		Log.i(LOG_TAG, "cosumeTime="+String.valueOf(cosumeTime));
+//		Log.i(LOG_TAG, "cosumeTime="+String.valueOf(cosumeTime));
 		
 	    long examTime = detailBean.getTime() * 60;//second
-	    Log.i(LOG_TAG, "examTime="+String.valueOf(examTime));
+//	    Log.i(LOG_TAG, "examTime="+String.valueOf(examTime));
 	    
 	    if(cosumeTime>examTime){
 	    	ShowDialog("Exam Time Out!");
 	    }else{
 	    	long leftTime = examTime - cosumeTime;
-	    	Log.i(LOG_TAG, "leftTime="+String.valueOf(leftTime));
+//	    	Log.i(LOG_TAG, "leftTime="+String.valueOf(leftTime));
 	    	
 	    	lMinutes = Integer.valueOf((int)(leftTime/60));
-	    	Log.i(LOG_TAG, "lMinutes="+String.valueOf(lMinutes));
+//	    	Log.i(LOG_TAG, "lMinutes="+String.valueOf(lMinutes));
 	    	
 	    	lSeconds = Integer.valueOf((int)(leftTime - lMinutes * 60));
 	    	Log.i(LOG_TAG, "lSeconds="+String.valueOf(lSeconds));
 	    }
 	    
-	    Log.i(LOG_TAG, "-----------------setLoadCDTime().-----------------");
+//	    Log.i(LOG_TAG, "-----------------setLoadCDTime().-----------------");
 	}
 
     //go to new question page
@@ -380,8 +381,32 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 
     }
     
+    public void getAllAnswers(){
+    	Log.w(LOG_TAG, "getAllAnswers()...");
+    	Map<String, String> answers = new HashMap<String,String>();
+    	DatabaseUtil dbUtil = new DatabaseUtil(this);
+    	dbUtil.open();
+    	Cursor cursor = dbUtil.fetchAllAnswers();
+    	while(cursor.moveToNext()){
+			String qidStr = cursor.getString(2);
+			String answer = cursor.getString(3);
+			
+			if(qidStr!=null && answer!= null && answer.length()>0){
+				answers.put(qidStr, answer.replaceAll(",", ""));
+				Log.w(LOG_TAG, qidStr+":"+answer.replaceAll(",", ""));
+			}
+		}
+    	cursor.close();
+    	dbUtil.close();
+    	
+    	Log.w(LOG_TAG, "getAllAnswers().");
+    }
+    
 	public void submitAnswer(){
-		Log.i(LOG_TAG, "submitAnswer()...");
+		getAllAnswers();
+		Log.w(LOG_TAG, "submitAnswer()...");
+		ShowDialog("Submit Success!");
+		
 	}
 	/**
 	 * 
@@ -411,7 +436,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
     	Log.i(LOG_TAG, "end clearAnswer().");
     }
 	
-	public void saveAnswer(Context context,Integer cid,Integer qid,String answers){
+	public void saveAnswer(Context context,Integer cid,Integer qid,String qidStr,String answers){
     	Log.i(LOG_TAG, "saveAnswer()...");
     	
     	DatabaseUtil dbUtil = new DatabaseUtil(context);
@@ -419,10 +444,10 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
     	Cursor cursor = dbUtil.fetchAnswer(cid,qid);
     	if(cursor != null && cursor.moveToNext()){
     		Log.i(LOG_TAG, "updateAnswer("+cid+","+qid+","+answers+")");
-    		dbUtil.updateAnswer(cid,qid,"("+ answers+")");
+    		dbUtil.updateAnswer(cid,qid,qidStr,answers);
     	}else{
     		Log.i(LOG_TAG, "createAnswer("+cid+","+qid+","+answers+")");
-    		dbUtil.createAnswer(cid,qid, "("+ answers+")");
+    		dbUtil.createAnswer(cid,qid,qidStr,answers);
     	}
     	dbUtil.close();
     	
