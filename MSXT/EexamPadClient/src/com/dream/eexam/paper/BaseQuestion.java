@@ -539,20 +539,6 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 					popupWindow.dismiss();
 				}
 				
-//				catalogsTV.setText(cataLogList.get(position).getDesc());
-				
-//				inputStream =  getExamStream();
-//				String questionType = null;
-//				try {
-//					 Log.i(LOG_TAG, "Go to catalog "+String.valueOf((position+1))+" question 1");
-//					 questionType = XMLParseUtil.readQuestionType(inputStream,(position+1), 1);
-//					 
-//					 Log.i(LOG_TAG, "questionType " + questionType);
-//				} catch (Exception e) {
-//					// TODO Auto-generated catch block
-//					Log.i(LOG_TAG, e.getMessage());
-//				}
-				
 				CatalogInfo info = catalogNames.get(position);
 				Question nQuestion = detailBean.getFirstQuestionByCid(info.getIndex());
 				String nQuestionType = nQuestion.getQuestionType();

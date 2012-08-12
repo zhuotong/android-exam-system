@@ -7,10 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
 import java.util.List;
-
-import com.dream.eexam.model.CatalogBean;
 import com.dream.eexam.model.ExamBaseBean;
-import com.dream.eexam.model.InterviewBean;
 import com.dream.eexam.model.LoginResultBean;
 import com.dream.eexam.paper.MultiChoices;
 import com.dream.eexam.paper.SingleChoices;
@@ -119,7 +116,8 @@ public class PapersActivity extends BaseActivity {
 		startBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				Log.i(LOG_TAG,"onClick()...");
-				downloadURL = SystemConfig.getInstance().getPropertyValue("Download_URL")+"conversation="+conversation;
+				
+				downloadURL = SystemConfig.getInstance().getPropertyValue("Download_URL")+"conversation="+conversation+"&examId="+examIdString;;
 				downloadExamFile = SystemConfig.getInstance().getPropertyValue("Download_Exam");
 	        	downloadExamFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + "eExam";
 	        	

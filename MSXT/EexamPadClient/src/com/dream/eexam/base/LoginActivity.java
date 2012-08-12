@@ -10,6 +10,7 @@ import com.dream.eexam.util.XMLParseUtil;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,6 +25,8 @@ public class LoginActivity extends BaseActivity {
 	
 	EditText idEt = null;
 	EditText passwordET = null;
+	String saveId = null;
+	String savePassword = null;
 	Button loginBtn = null;
 //	StringBuffer responseText = new StringBuffer();
 
@@ -42,8 +45,19 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         mContext = getApplicationContext();
-		idEt = (EditText) this.findViewById(R.id.idEt);
+		
+        idEt = (EditText) this.findViewById(R.id.idEt);
+		saveId = sharedPreferences.getString("id", null);
+		if(saveId!=null||!"".equals(saveId)){
+			idEt.setText(saveId);
+		}
+		
 		passwordET = (EditText) this.findViewById(R.id.passwordET);
+		savePassword = sharedPreferences.getString("password", null);
+		if(savePassword!=null||!"".equals(savePassword)){
+			idEt.setText(savePassword);
+		}
+		
 		loginBtn = (Button) this.findViewById(R.id.loginBtn);
 		loginBtn.setOnClickListener(loginListener);
     }
@@ -53,6 +67,12 @@ public class LoginActivity extends BaseActivity {
         public void onClick(View v) {  
         	String id = idEt.getText().toString();
         	String password = passwordET.getText().toString();
+        	
+			SharedPreferences.Editor editor = sharedPreferences.edit();
+			editor.putString("id", saveId);
+			editor.putString("password", savePassword);
+			editor.commit();		
+    		
         	loginURL = SystemConfig.getInstance().getPropertyValue("Login_URL")+"loginName="+id+"&loginPassword="+password;
         	loginResultFile = SystemConfig.getInstance().getPropertyValue("Login_Result");
         	loginResultFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + "eExam";
