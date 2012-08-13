@@ -155,16 +155,16 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		String ccIndex  = bundle.getString("ccIndex");
 		String cqIndex  = bundle.getString("cqIndex");
 		
-		if(ccIndex!=null){
+		if(questionType!=null){
 			this.questionType = questionType;
 		}
 		if(ccIndex!=null){
-			currentCatalogIndex = Integer.valueOf(ccIndex);
+			this.currentCatalogIndex = Integer.valueOf(ccIndex);
 		}
 		if(cqIndex!=null){
-			currentQuestionIndex = Integer.valueOf(cqIndex);
+			this.currentQuestionIndex = Integer.valueOf(cqIndex);
 		}
-		saveccIndexcqIndex(Integer.valueOf(cqIndex),Integer.valueOf(cqIndex));
+		saveccIndexcqIndex(Integer.valueOf(ccIndex),Integer.valueOf(cqIndex));
     	
 		try {
 	    	FileInputStream inputStream = getExamStream();
@@ -271,8 +271,6 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	};
 	
 	protected void setCountDownTime() {
-//		long currentTime = Calendar.getInstance().getTimeInMillis();
-//		Log.i(LOG_TAG, String.valueOf(currentTime));
 		String currentTimeString = TimeDateUtil.getCurrentTime();
 		Log.i(LOG_TAG, currentTimeString);
 		if (lMinutes == 0) {

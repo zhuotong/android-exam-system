@@ -4,12 +4,13 @@
 <time>45</time>
 <confuse>false</confuse>
 <catalogs>
+
 <catalog>
-<index>0</index>
+<index>1</index>
 <catalogdesc><![CDATA[Test for JavaSE base knowlege]]></catalogdesc>
 <questions>
 <question>
-	<index>0</index>
+	<index>1</index>
 	<questionid>ff80818138cfe61b0138cfeba1520002</questionid>
 	<type>Single Choice</type>
 	<score>5</score>
@@ -47,7 +48,12 @@
 	</choices>
 </question>
 
-<question><index>1</index><questionid>ff80818138cfe61b0138cfeba1520003</questionid><type>Single Choice</type><score>5</score><content><![CDATA[public class Test {
+<question>
+<index>2</index>
+<questionid>ff80818138cfe61b0138cfeba1520003</questionid>
+<type>Single Choice</type>
+<score>5</score>
+<content><![CDATA[public class Test {
     public static void main(String[] args){
        String s1 = new String("Test");
        String s2 = new String("Test");
@@ -57,7 +63,53 @@
     }
 }
 
-Please select the output result]]></content><choices></choices></question><question><index>2</index><questionid>ff80818138cfe61b0138cfeba1520004</questionid><type>Single Choice</type><score>5</score><content><![CDATA[Please select the correct option for StringBuilder and StringBuffer]]></content><choices></choices></question><question><index>3</index><questionid>ff80818138cfe61b0138cfeba1520005</questionid><type>Single Choice</type><score>5</score><content><![CDATA[class Father {
+Please select the output result]]>
+</content>
+<choices>
+		<choice>
+			<index>1</index>
+			<label>A</label>
+			<content>true,true,false</content>
+		</choice>
+		<choice>
+			<index>2</index>
+			<label>B</label>
+			<content>true,false,false</content>
+		</choice>
+		<choice>
+			<index>3</index>
+			<label>C</label>
+			<content>false,true,false</content>
+		</choice>
+		<choice>
+		<index>4</index>
+		<label>D</label>
+		<content>true,true,true</content>
+		</choice>
+</choices>
+</question>
+
+<question>
+<index>3</index>
+<questionid>ff80818138cfe61b0138cfeba1520004</questionid>
+<type>Single Choice</type>
+<score>5</score>
+<content>
+<![CDATA[Please select the correct option for StringBuilder and StringBuffer]]>
+</content>
+<choices>
+
+</choices>
+</question>
+
+<question>
+
+<index>4</index>
+<questionid>ff80818138cfe61b0138cfeba1520005</questionid>
+<type>Single Choice</type>
+<score>5</score>
+<content>
+<![CDATA[class Father {
 	public final void flipper() { System.out.println("Father"); }
 }
 
@@ -72,7 +124,17 @@ public static void main(String [] args) {
 	}
 }
 
-Please select the output result]]></content><choices></choices></question><question><index>4</index><questionid>ff80818138cfe61b0138cfeba1520006</questionid><type>Single Choice</type><score>5</score><content><![CDATA[class Top {
+Please select the output result]]></content>
+
+<choices></choices>
+
+</question>
+
+<question><index>4</index><questionid>ff80818138cfe61b0138cfeba1520006</questionid>
+<type>Single Choice</type>
+<score>5</score><content>
+
+<![CDATA[class Top {
 	public Top(String s) { System.out.print("B"); }
 }
 
@@ -84,292 +146,33 @@ public class Bottom extends Top {
 	} 
 }
 
-Please select the output result]]></content><choices><choice><index>1</index><label>A</label><content>BD</content></choice><choice><index>2</index><label>B</label><content>DB</content></choice><choice><index>3</index><label>C</label><content>BDC</content></choice><choice><index>4</index><label>D</label><content>Compilation error</content></choice></choices></question><question><index>5</index><questionid>ff80818138cfe61b0138cfeba1530007</questionid><type>Single Choice</type><score>5</score><content><![CDATA[class Father {
-    private final void flipper() {
-        System.out.println("Father");
-    }
-}
+Please select the output result]]>
+</content>
+<choices>
+<choice>
+<index>1</index>
+<label>A</label>
+<content>BD</content>
+</choice><choice>
+<index>2</index>
+<label>B</label>
+<content>DB</content>
+</choice>
+<choice>
+<index>3</index>
+<label>C</label>
+<content>BDC</content>
+</choice>
 
-public class Son extends Father {
-    public final void flipper() {
-        System.out.println("Son");
-    }
+<choice>
+<index>4</index>
+<label>D</label>
+<content>Compilation error</content>
+</choice>
 
-    public static void main(String[] args) {
-        new Son().flipper();
-    }
-}
+</choices>
+</question>
 
-Please select the output result]]></content><choices></choices></question><question><index>6</index><questionid>ff80818138cfe61b0138cfeba1530008</questionid><type>Single Choice</type><score>5</score><content><![CDATA[class Father {
-	public Father() {
-		System.out.println("This is Father!");
-	}
-	public Father(String s) {
-		this();
-		System.out.println("I am " + s);
-	}
-}
-
-class Son extends Father {
-	public Son(String s) {
-		super(s);
-		System.out.println("This is Son");
-	}
-	public Son() {
-		this("I am Tom");
-	}
-    public static void main(String args[]) {
-		Son s = new Son("Jack");
-	}
-}
-
-Please select the output result]]></content><choices></choices></question><question><index>7</index><questionid>ff80818138cfe61b0138cfeba1530009</questionid><type>Single Choice</type><score>5</score><content><![CDATA[class Uber {
-    static int y = 2;
-    Uber(int x) {
-        this();
-        y = y * 2;
-    }
-    Uber() {
-        y++;
-    }
-}
-
-class Minor extends Uber {
-    Minor(int i) {
-        y = y + 3;
-    }
-
-    public static void main(String[] args) {
-        new Minor(y);
-        System.out.println(y);
-    }
-}
-Please select the output result]]></content><choices><choice><index>1</index><label>A</label><content>6</content></choice><choice><index>2</index><label>B</label><content>7</content></choice><choice><index>3</index><label>C</label><content>8</content></choice><choice><index>4</index><label>D</label><content>9</content></choice></choices></question><question><index>8</index><questionid>ff80818138cfe61b0138cfeba153000a</questionid><type>Single Choice</type><score>5</score><content><![CDATA[class A {
-  public static int addOne(final int x) {
-    return x+1;
-  }
-}
-
-class B{
-    public static void main(String[] args) {
-        final int x = 1;
-        System.out.println(A.addOne(x));
-    }
-}
-
-Please select the output result]]></content><choices><choice><index>1</index><label>A</label><content>1</content></choice><choice><index>2</index><label>B</label><content>2</content></choice><choice><index>3</index><label>C</label><content>3</content></choice><choice><index>4</index><label>D</label><content>Compilation error</content></choice></choices></question><question><index>9</index><questionid>ff80818138cfe61b0138cfeba153000b</questionid><type>Single Choice</type><score>5</score><content><![CDATA[Please select the output result
-class Base{
-    private int i = 0;
-}
-
-class Sub extends Base{
-    public static void main(String[] args) {
-        System.out.println(i++);
-    }
-}]]></content><choices><choice><index>1</index><label>A</label><content>0</content></choice><choice><index>2</index><label>B</label><content>1</content></choice><choice><index>3</index><label>C</label><content>2</content></choice><choice><index>4</index><label>D</label><content>Compilation error</content></choice></choices></question></questions></catalog><catalog><index>1</index><catalogdesc><![CDATA[Test for JavaSE exception knowlege]]></catalogdesc><questions><question><index>0</index><questionid>ff80818138cfe61b0138cfeba153000d</questionid><type>Single Choice</type><score>5</score><content><![CDATA[public class ExTesting {
-    public void f(){
-        try {
-            throw new Exception();
-        } catch (Exception e) {
-            throw new SimpleException();
-        }
-    }
-    public static void main(String[] args) {
-        ExTesting exTesting = new ExTesting();
-        try {
-            exTesting.f();
-        } catch (SimpleException e) {
-            System.out.println("System encounters Simple Exception");
-        } catch (Exception e) {
-            System.out.println("System encounters Exception");
-        }
-    }
-}
-
-class SimpleException extends Exception {}
-
-What is the result of attempting to compile and run this code ?]]></content><choices><choice><index>1</index><label>A</label><content>It will print "System encounters Simple Exception"</content></choice><choice><index>2</index><label>B</label><content>It will print "System encounters Exception"</content></choice><choice><index>3</index><label>C</label><content>Compilation error</content></choice><choice><index>4</index><label>D</label><content>There is no output</content></choice></choices></question><question><index>1</index><questionid>ff80818138cfe61b0138cfeba153000e</questionid><type>Single Choice</type><score>5</score><content><![CDATA[public class ExTesting {
-    public static void main(String[] args) {
-        Father c = new Child();
-        try {
-            c.foo();
-        } catch (IOException e) {
-            System.out.println("Error A");
-        } catch (Exception e) {
-            System.out.println("Error B");
-        }
-    }
-}
-
-class Father {
-    public void foo() throws IOException {
-        throw new IOException();
-    }
-}
-
-class Child extends Father {
-    public void foo() throws Exception {
-        throw new Exception();
-    }
-}
-
-What is the result of attempting to compile and run this code ?]]></content><choices><choice><index>1</index><label>A</label><content>Compiler error</content></choice><choice><index>2</index><label>B</label><content>It will print "Error A"</content></choice><choice><index>3</index><label>C</label><content>It will print "Error B"</content></choice><choice><index>4</index><label>D</label><content>The exception will go uncaught by both catch blocks</content></choice></choices></question><question><index>2</index><questionid>ff80818138cfe61b0138cfeba153000f</questionid><type>Single Choice</type><score>5</score><content><![CDATA[public class ExTesting {
-    public void f(){
-        try {
-            throw new Exception();
-        } catch (Exception e) {
-            throw new SimpleException();
-        }
-    }
-    public static void main(String[] args) {
-        ExTesting exTesting = new ExTesting();
-        try {
-            exTesting.f();
-        } catch (SimpleException e) {
-            System.out.println("System encounters Simple Exception");
-        } catch (Exception e) {
-            System.out.println("System encounters Exception");
-        }
-    }
-}
-
-class SimpleException extends RuntimeException {}
-
-What is the result of attempting to compile and run this code ?]]></content><choices><choice><index>1</index><label>A</label><content>It will print "System encounters Simple Exception"</content></choice><choice><index>2</index><label>B</label><content>It will print "System encounters Exception"</content></choice><choice><index>3</index><label>C</label><content>Compilation error</content></choice><choice><index>4</index><label>D</label><content>There is no output</content></choice></choices></question><question><index>3</index><questionid>ff80818138cfe61b0138cfeba1530010</questionid><type>Single Choice</type><score>5</score><content><![CDATA[public class ExTesting {
-    public void f() throws ChildException{
-            throw new ChildException();
-    }
-    public static void main(String[] args) {
-        ExTesting exTesting = new ExTesting();
-        try {
-            exTesting.f();
-        } catch (GrandFatherException e) {
-            System.out.println("Error A");
-        } catch (FatherException e) {
-            System.out.println("Error B");
-        }
-    }
-}
-
-class GrandFatherException extends Exception {}
-
-class FatherException extends GrandFatherException {}
-
-class ChildException extends FatherException {}
-
-What is the result of attempting to compile and run this code ?]]></content><choices><choice><index>1</index><label>A</label><content>Compiler error</content></choice><choice><index>2</index><label>B</label><content>It will print "Error A"</content></choice><choice><index>3</index><label>C</label><content>It will print "Error B"</content></choice><choice><index>4</index><label>D</label><content>The exception will go uncaught by both catch blocks</content></choice></choices></question><question><index>4</index><questionid>ff80818138cfe61b0138cfeba1530011</questionid><type>Single Choice</type><score>5</score><content><![CDATA[public class ExTesting {
-    public static void main(String[] args) {
-        System.out.println("return value of test() : " + test());
-    }
-
-    public static int test() {
-        int i = 1;
-
-        try {
-            i = 1 / 0;
-            return 1;
-        } catch (Exception e) {
-            return 2;
-        } finally {
-            System.out.println("finally block");
-        }
-    }
-}
-
-What is the result of attempting to compile and run this code ?]]></content><choices><choice><index>1</index><label>A</label><content>It will print     "return value of test() : 1      finally block"</content></choice><choice><index>2</index><label>B</label><content>It will print     "finally block      return value of test() : 2 "</content></choice><choice><index>3</index><label>C</label><content>It will print     "finally block      return value of test() : 1 "</content></choice><choice><index>4</index><label>D</label><content>It will print     "return value of test() : 2      finally block "</content></choice></choices></question><question><index>5</index><questionid>ff80818138cfe61b0138cfeba1530012</questionid><type>Single Choice</type><score>5</score><content><![CDATA[public class ExTesting {
-    public static void main(String[] args) {
-        System.out.println("return value of getValue(): " + getValue());
-    }
-    public static int getValue() {
-        int i = 1;
-        try {
-            return i;
-        } finally {
-            i++;
-        }
-    }
-}
-What is the result of attempting to compile and run this code ?]]></content><choices><choice><index>1</index><label>A</label><content>It will print "return value of getValue(): 1" </content></choice><choice><index>2</index><label>B</label><content>It will print "return value of getValue(): 2"</content></choice><choice><index>3</index><label>C</label><content>Compiler error</content></choice><choice><index>4</index><label>D</label><content>It will print "return value of getValue(): 0"</content></choice></choices></question><question><index>6</index><questionid>ff80818138cfe61b0138cfeba1540013</questionid><type>Single Choice</type><score>5</score><content><![CDATA[ public class ExTesting {
-    public static void main(String[] args) {
-        System.out.println("return value of getValue(): " + getValue());
-    }
-    public static int getValue() {
-        int i = 1;
-        try {
-            i = 4;
-        } finally {
-            i++;
-            return i;
-        }
-    }
-}
-What is the result of attempting to compile and run this code ?]]></content><choices><choice><index>1</index><label>A</label><content>It will print "return value of getValue(): 4" </content></choice><choice><index>2</index><label>B</label><content>It will print "return value of getValue(): 5"</content></choice><choice><index>3</index><label>C</label><content>Compiler error</content></choice><choice><index>4</index><label>D</label><content>It will print "return value of getValue(): 1"</content></choice></choices></question><question><index>7</index><questionid>ff80818138cfe61b0138cfeba1540014</questionid><type>Single Choice</type><score>5</score><content><![CDATA[ public class ExTesting {
-    public static void main(String[] args) {
-        System.out.println(test());
-    }
-
-    public static String test() {
-        try {
-            return test1();
-        } finally {
-            System.out.println("finally block");
-        }
-    }
-
-    public static String test1() {
-        System.out.println("return statement");
-        return "after return";
-    }
-}
-
-What is the result of attempting to compile and run this code ?]]></content><choices><choice><index>1</index><label>A</label><content>It will print     "return statement     finally block     after return"</content></choice><choice><index>2</index><label>B</label><content>It will print     "return statement     after return     finally block"</content></choice><choice><index>3</index><label>C</label><content>Compiler error</content></choice><choice><index>4</index><label>D</label><content>It will print     "finally block     return statement     after return"</content></choice></choices></question><question><index>8</index><questionid>ff80818138cfe61b0138cfeba1540015</questionid><type>Single Choice</type><score>5</score><content><![CDATA[public class ExTesting {
-    public static void main(String[] args) {
-        System.out.println("return value of getValue(): " + getNumberValue());
-    }
-    public static Number getNumberValue() {
-        Number i = new Number(1);
-        try {
-            i.setValue(4);
-            return i;
-        } finally {
-            i.setValue(5);
-        }
-    }
-}
-class Number {
-    private int value;
-
-    Number(int value) {
-        this.value = value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
-    }
-
-    @Override
-    public String toString() {
-        return String.valueOf(value);
-    }
-}
-What is the result of attempting to compile and run this code ?]]></content><choices><choice><index>1</index><label>A</label><content>It will print "return value of getValue(): 4" </content></choice><choice><index>2</index><label>B</label><content>It will print "return value of getValue(): 5"</content></choice><choice><index>3</index><label>C</label><content>Compiler error</content></choice><choice><index>4</index><label>D</label><content>It will print "return value of getValue(): 1"</content></choice></choices></question><question><index>9</index><questionid>ff80818138cfe61b0138cfeba1540016</questionid><type>Single Choice</type><score>5</score><content><![CDATA[public class ExTesting {
-    public void f() {
-        try {
-            throw new Exception();
-        } catch (Exception e) {
-            throw new SimpleException();
-        }
-    }
-    public static void main(String[] args) {
-        ExTesting exTesting = new ExTesting();
-        try {
-            exTesting.f();
-        } catch (Exception e) {
-            System.out.println("System encounters Exception");
-        }
-    }
-}
-
-class SimpleException extends Error {}
-
-What is the result of attempting to compile and run this code ?]]></content><choices><choice><index>1</index><label>A</label><content>It will throw exception</content></choice><choice><index>2</index><label>B</label><content>It will print "System encounters Exception"</content></choice><choice><index>3</index><label>C</label><content>Compilation error</content></choice><choice><index>4</index><label>D</label><content>There is no output</content></choice></choices></question></questions></catalog></catalogs></examination>
+</catalog>
+</catalogs>
+</examination>
