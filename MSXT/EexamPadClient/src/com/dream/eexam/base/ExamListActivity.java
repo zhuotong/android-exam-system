@@ -31,7 +31,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class PapersActivity extends BaseActivity {
+public class ExamListActivity extends BaseActivity {
 	private static final String LOG_TAG = "PapersActivity";
 
 	//declare components
@@ -66,7 +66,7 @@ public class PapersActivity extends BaseActivity {
 		Log.i(LOG_TAG,"onCreate()...");
 		mContext = getApplicationContext();
 		
-		setContentView(R.layout.papers);
+		setContentView(R.layout.exam_list);
 		
 		questionTypeM = SystemConfig.getInstance().getPropertyValue("Question_Type_Multi_Select");
 		questionTypeS = SystemConfig.getInstance().getPropertyValue("Question_Type_Single_Select");
@@ -169,7 +169,7 @@ public class PapersActivity extends BaseActivity {
 		@Override
 		protected void onPreExecute() {
 			Log.i(LOG_TAG, "onPreExecute() called");
-			progressDialog = ProgressDialog.show(PapersActivity.this, null, "Download Exam data...", true, false); 
+			progressDialog = ProgressDialog.show(ExamListActivity.this, null, "Download Exam data...", true, false); 
 		}
 		
 	    @Override

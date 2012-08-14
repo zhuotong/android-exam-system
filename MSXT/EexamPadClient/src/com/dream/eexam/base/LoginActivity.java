@@ -27,8 +27,8 @@ public class LoginActivity extends BaseActivity {
 	EditText passwordET = null;
 	String saveId = null;
 	String savePassword = null;
+	
 	Button loginBtn = null;
-//	StringBuffer responseText = new StringBuffer();
 
 	InterviewBean bean;
 	String loginURL = null;
@@ -124,7 +124,7 @@ public class LoginActivity extends BaseActivity {
 //    			intent.putExtra("conversation", bean.getConversation());
 //    			intent.putExtra("interviewer", bean.getInterviewer());
 //    			intent.putExtra("jobtitle", bean.getJobtitle());
-    			intent.setClass( mContext, PapersActivity.class);
+    			intent.setClass( mContext, ExamListActivity.class);
     			startActivity(intent);        		
         	}else{
         		ShowDialog("No return data!");

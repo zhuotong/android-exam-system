@@ -8,7 +8,7 @@
     <string name="msg_header_tv_all">All(5)</string>
     
     <string name="msg_tv_id">ID:</string>
-    <string name="msg_tv_password">Password:</string>
+    <string name="msg_tv_password">Password :</string>
     <string name="msg_et_id_hint">Input ID</string>
     <string name="msg_et_password_hint">Input Password</string>
     
@@ -38,6 +38,9 @@
         <item>I</item>
         <item>J</item>
     </string-array>
+        <string name="msg_chb_save_password">Save Password</string>
+        <string name="msg_chb_save_id">Save ID</string>
+        <string name="msg_logo_desc">eExam</string>
         
     
 </resources>

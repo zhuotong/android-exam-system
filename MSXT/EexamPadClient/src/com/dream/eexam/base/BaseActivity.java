@@ -37,6 +37,7 @@ public class BaseActivity extends Activity {
 		Log.i(LOG_TAG,"onCreate()...");
 		ActivityStackControlUtil.add(this);
 		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
+		
 		//set Orientation to PORTRAIT
 		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		

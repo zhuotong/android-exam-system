@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.dream.eexam.model.QuestionProgress;
 
+@Deprecated
 public class BasePaper extends BaseActivity {
 
 	@Override

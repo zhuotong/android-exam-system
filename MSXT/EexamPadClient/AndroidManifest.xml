@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         
-     	<activity android:name=".PapersActivity"
+     	<activity android:name=".ExamListActivity"
                   android:launchMode="singleTask">
         </activity>
 

@@ -17,58 +17,69 @@
 		android:layout_height="wrap_content" 
 		android:src="@drawable/eexams"
 		android:layout_gravity="center_horizontal"
-		android:layout_marginTop="10dp"
-		android:layout_marginBottom="10dp">
+		android:layout_marginTop="60dp"
+		android:layout_marginBottom="20dp"
+		android:contentDescription="@string/msg_logo_desc">
 	</ImageView>
 	
 	<TableLayout android:id="@+id/tableLayout1"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content" 
 		android:padding="1dp"
-		android:layout_marginLeft="10dp"
-		android:layout_marginRight="10dp"
+		android:layout_marginLeft="40dp"
+		android:layout_marginRight="40dp"
 		android:layout_marginTop="20dp">
 
 		<TableRow android:id="@+id/tableRow1" 
 			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:background="@drawable/style_login_id_tr">
+			android:layout_height="wrap_content">
 			<TextView 
 			    android:text="@string/msg_tv_id"
-			    android:layout_width="wrap_content"
+			    android:layout_width="fill_parent"
 				android:layout_height="wrap_content" 
+				android:layout_gravity="fill_horizontal|fill_vertical"
+				android:gravity="left|center_vertical"
 				android:layout_weight="1"
 				android:textColor="#000000"
-				android:textSize="18sp"
-				android:layout_marginLeft="4dp"/>
+				android:textSize="25sp"
+				android:background="@drawable/bg_color_login_tv"/>
 			<EditText    
 			    android:id="@+id/idEt"
-				android:layout_width="wrap_content"
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:layout_weight="2"
-				android:hint="@string/msg_et_id_hint">
+				android:layout_gravity="center_vertical"
+				android:layout_weight="3"
+				android:textSize="25sp"
+				android:hint="@string/msg_et_id_hint"
+				android:background="@drawable/bg_color_login_et"
+				android:layout_marginLeft="3dp">
 			</EditText>		
 		</TableRow>
 				
 		<TableRow android:id="@+id/tableRow2" 
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:background="@drawable/style_login_password_tr"
-			android:layout_marginTop="1dp">
+			android:layout_marginTop="4dp">
 			<TextView 
 			    android:text="@string/msg_tv_password"
-			    android:layout_width="wrap_content"
+			    android:layout_width="fill_parent"
 				android:layout_height="wrap_content" 
+				android:layout_gravity="fill_horizontal|fill_vertical"
+				android:gravity="left|center_vertical"
 				android:layout_weight="1"
 				android:textColor="#000000"
-				android:textSize="18sp"
-				android:layout_marginLeft="4dp"/>
+				android:textSize="25sp"
+				android:background="@drawable/bg_color_login_tv"/>
 			<EditText    
 			    android:id="@+id/passwordET"
-				android:layout_width="wrap_content"
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical"
+				android:layout_weight="3"
+				android:textSize="25sp"
 				android:hint="@string/msg_et_password_hint"
-				android:layout_weight="2">
+				android:background="@drawable/bg_color_login_et"
+				android:layout_marginLeft="3dp">
 			</EditText>		
 		</TableRow>
 
@@ -84,19 +95,19 @@
 		    android:id="@+id/checkBox1"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:layout_marginLeft="80dp"
+		    android:layout_marginLeft="100dp"
 		    android:layout_marginRight="80dp"
 		    android:layout_weight="1"
-		    android:text="Save ID" 
+		    android:text="@string/msg_chb_save_id" 
 		    android:textColor="#000000"/>
 	    <CheckBox
 		    android:id="@+id/checkBox2"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-   		    android:layout_marginLeft="80dp"
+   		    android:layout_marginLeft="100dp"
 		    android:layout_marginRight="80dp"
 		    android:layout_weight="1"
-		    android:text="Save Password" 
+		    android:text="@string/msg_chb_save_password" 
 		    android:textColor="#000000"/>
 	</TableRow>
 	
@@ -104,16 +115,17 @@
 	<TableRow android:id="@+id/tableRow3" 
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:layout_marginTop="10dp"
-		android:layout_marginLeft="20dp"
-		android:layout_marginRight="20dp">
+		android:layout_marginTop="30dp"
+		android:layout_marginLeft="40dp"
+		android:layout_marginRight="40dp">
 		
 		<Button android:text="@string/msg_btn_login" 
 		    android:id="@+id/loginBtn"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:background="@drawable/btn_sys">
+			android:background="@drawable/btn_sys"
+			android:textSize="22dp">
 		</Button>
 		
 		<Button android:text="@string/msg_btn_reset" 
@@ -121,7 +133,9 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:background="@drawable/btn_sys">
+			android:layout_marginLeft="5dp"
+			android:background="@drawable/btn_sys"
+			android:textSize="22dp">
 		</Button>
 	</TableRow>
 
