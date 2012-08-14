@@ -1,10 +1,8 @@
 package com.dream.eexam.paper;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -168,12 +166,21 @@ public class SingleChoices extends BaseQuestion {
         	@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int arg2,
 					long arg3) {
-        		clearOldAnswer();
-        		Log.i(LOG_TAG, "onItemClick()...");
+        		Log.i(LOG_TAG, "=================onItemClick()...===============");
+        		
+        		//get old status
         		RadioButton cb = (RadioButton)view.findViewById(R.id.radioButton);
-        		cb.setChecked(!cb.isChecked());
-        		Log.i(LOG_TAG, "cb.isChecked():"+cb.isChecked());
-        		setAnswer();
+        		boolean oldStatus = cb.isChecked();
+        		Log.i(LOG_TAG, "oldStatus:"+String.valueOf(oldStatus));
+        		
+        		clearOldAnswer();
+        		cb.setChecked(!oldStatus);
+        		
+        		Log.i(LOG_TAG, "after check...");
+        		Log.i(LOG_TAG, "newStatus:"+cb.isChecked());
+        		
+        		setAnswer(arg2,cb.isChecked());
+        		
         		if(answerString.length()==0){
 					clearAnswer(mContext,currentCatalogIndex,currentQuestionIndex);
 				}else{
@@ -185,32 +192,51 @@ public class SingleChoices extends BaseQuestion {
     }
     
     public void clearOldAnswer(){
+    	Log.i(LOG_TAG, "clearOldAnswer()...");
+    	
+		listItemID.clear();
+    	answerString.setLength(0);
+    	
 		//initial all items background color
 		for(int i=0;i<choices.size();i++){
 			RadioButton aRb =(RadioButton)adapter.getView(i, null, null).findViewById(R.id.radioButton);
 			aRb.setChecked(false);
-		}   
-		listItemID.clear();
-    	answerString.setLength(0);
-		if(answerString.length()==0){
-			clearAnswer(mContext,currentCatalogIndex,currentQuestionIndex);
-		}
+			adapter.mChecked.set(i, false);
+			Log.i(LOG_TAG, String.valueOf(i)+":"+"false");
+		} 
+		
+		Log.i(LOG_TAG, "clearOldAnswer().");
+
     }
     
-    public void setAnswer(){
+    public void setAnswer(int location,boolean isChecked){
     	Log.i(LOG_TAG, "setAnswer()...");
     	
     	//get selection choice and assembly to string
-		for (int i = 0; i < adapter.mChecked.size(); i++) {
-			if (adapter.mChecked.get(i)) {
-				Choice choice = adapter.choices.get(i);
-				listItemID.add(String.valueOf(choice.getChoiceIndex()));
-				if(i>0){
-					answerString.append(",");
-				}
-				answerString.append(String.valueOf(choice.getChoiceLabel()));
-			}
-		}
+//		for (int i = 0; i < adapter.mChecked.size(); i++) {
+//			if (adapter.mChecked.get(i)) {
+//				
+//				Choice choice = adapter.choices.get(i);
+//				listItemID.add(String.valueOf(choice.getChoiceLabel()));
+//				
+//				if(i>0){
+//					answerString.append(",");
+//				}
+//				answerString.append(String.valueOf(choice.getChoiceLabel()));
+//			}
+			
+//		}
+    	String label = adapter.choices.get(location).getChoiceLabel();
+    	if(isChecked){
+    		listItemID.add(label);
+    		answerString.append(label);
+    	}else{
+    		listItemID.clear();
+    		answerString.setLength(0);
+    	}
+    	
+		
+		Log.i(LOG_TAG, "answerString:"+answerString.toString());
 		
 		Log.i(LOG_TAG, "setAnswer().");
     }
@@ -262,7 +288,7 @@ public class SingleChoices extends BaseQuestion {
 			}
 		}
 		
-		if (listItemID.size() == 0) {
+		if (answerString.length() == 0) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(SingleChoices.this);
 			builder.setMessage("Answer this question late?")
 					.setCancelable(false)
@@ -292,13 +318,18 @@ public class SingleChoices extends BaseQuestion {
 		HashMap<Integer,View> map = new HashMap<Integer,View>(); 
     	
     	public MyListAdapter(List<Choice> choices){
+    		
+    		Log.i(LOG_TAG,"MyListAdapter()...");
+    		
     		this.choices = choices;
 			for (int i = 0; i < choices.size(); i++) {
 				Choice choice = choices.get(i);
 				if (answerString.indexOf(String.valueOf(choice.getChoiceLabel())) != -1) {
 					mChecked.add(true);
+					Log.i(LOG_TAG,String.valueOf(i)+":"+"true");
 				} else {
 					mChecked.add(false);
+					Log.i(LOG_TAG,String.valueOf(i)+":"+"false");
 				}
 			}
     	}
@@ -339,23 +370,35 @@ public class SingleChoices extends BaseQuestion {
 				holder.radioButton.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						Log.i(LOG_TAG,"pressed item position = "+String.valueOf(p));
-						clearOldAnswer();
-						RadioButton cb = (RadioButton)v;
-						boolean oldStatus = cb.isChecked();
-						cb.setChecked(!oldStatus);
-						mChecked.set(p,!oldStatus);
-		        		setAnswer();
-		        		if(answerString.length()==0){
-							clearAnswer(mContext,currentCatalogIndex,currentQuestionIndex);
-						}else{
-							saveAnswer(mContext,currentCatalogIndex,currentQuestionIndex,question.getQuestionId(),answerString.toString());
-						}
+						Log.i(LOG_TAG,"==========pressed item position = "+String.valueOf(p)+"===========");
+						
+						
+//						RadioButton cb = (RadioButton)v;
+//						boolean oldStatus = cb.isChecked();
+//						Log.i(LOG_TAG,"oldStatus:"+String.valueOf(oldStatus));
+//						
+//						clearOldAnswer();
+//						
+//						cb.setChecked(!oldStatus);
+//						Log.i(LOG_TAG,"after setChecked");
+//						
+//						Log.i(LOG_TAG,"newStatus:"+String.valueOf(cb.isChecked()));
+//						mChecked.set(p,cb.isChecked());
+//						
+//		        		setAnswer(p,cb.isChecked());
+//		        		
+//		        		if(answerString.length()==0){
+//							clearAnswer(mContext,currentCatalogIndex,currentQuestionIndex);
+//						}else{
+//							saveAnswer(mContext,currentCatalogIndex,currentQuestionIndex,question.getQuestionId(),answerString.toString());
+//						}
+		        		
+		        		Log.i(LOG_TAG,"=====================");
 					}
 				});
 				view.setTag(holder);
 			}else{
-				Log.i(LOG_TAG,"position2 = "+position);
+//				Log.i(LOG_TAG,"position2 = "+position);
 				view = map.get(position);
 				holder = (ViewHolder)view.getTag();
 			}
