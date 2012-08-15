@@ -15,9 +15,22 @@ import com.msxt.client.model.Examination;
 import com.msxt.client.model.LoginSuccessResult;
 import com.msxt.client.model.transfer.Message2ModelTransfer;
 import com.msxt.client.server.ServerProxy.Result;
+import com.msxt.client.server.ServerProxy.STATUS;
+import com.msxt.client.server.WebServerProxy;
 
 public class DataUtil {
 
+	public static void main(String args[]){
+		WebServerProxy proxy = new WebServerProxy("192.168.1.101",8080);
+		Result result = proxy.login("test", "test");
+		if(STATUS.SUCCESS.equals(result.getStatus())){
+			System.out.println(result.getSuccessMessage());
+		}else if(STATUS.ERROR.equals(result.getStatus())){
+			System.out.println(result.getErrorMessage());
+		}
+		
+	}
+	
 	/**
 	 * 
 	 * @param result

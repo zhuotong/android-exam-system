@@ -14,6 +14,10 @@ import com.dream.eexam.paper.SingleChoices;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SystemConfig;
 import com.dream.eexam.util.XMLParseUtil;
+import com.msxt.client.server.WebServerProxy;
+import com.msxt.client.server.ServerProxy.Result;
+import com.msxt.client.server.ServerProxy.STATUS;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -54,7 +58,7 @@ public class ExamListActivity extends BaseActivity {
 	String examIdString = null;
 	Context mContext;
 	
-	String downloadURL = null;
+//	String downloadURL = null;
 	String downloadExamFile = null;
 	String downloadExamFilePath = null;
 	
@@ -116,12 +120,12 @@ public class ExamListActivity extends BaseActivity {
 			public void onClick(View v) {
 				Log.i(LOG_TAG,"onClick()...");
 				
-				downloadURL = SystemConfig.getInstance().getPropertyValue("Download_URL")+"conversation="+conversation+"&examId="+examIdString;;
+//				downloadURL = SystemConfig.getInstance().getPropertyValue("Download_URL")+"conversation="+conversation+"&examId="+examIdString;;
 				downloadExamFile = SystemConfig.getInstance().getPropertyValue("Download_Exam");
 	        	downloadExamFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + "eExam";
 	        	
-				Log.i(LOG_TAG,"downloadURL:"+downloadURL);
-	        	new DownloadExamTask().execute(downloadURL);
+//				Log.i(LOG_TAG,"downloadURL:"+downloadURL);
+	        	new DownloadExamTask().execute(loginResultBean.getConversation(),examIdString);
 			}			
 		});
 		
@@ -164,6 +168,7 @@ public class ExamListActivity extends BaseActivity {
 	
 	private class DownloadExamTask extends AsyncTask<String, Void, String> {
 		ProgressDialog progressDialog;
+		Result examResult;
 		
 		@Override
 		protected void onPreExecute() {
@@ -174,21 +179,27 @@ public class ExamListActivity extends BaseActivity {
 	    @Override
 	    protected String doInBackground(String... urls) {
 //	    	InputStream inputStream = downloadUrl(urls[0]);//get inputStream from server
-	    	InputStream inputStream = LoginActivity.class.getClassLoader().getResourceAsStream(downloadExamFile);
-	    	//save stream to file
-	    	try {
-				saveFile(downloadExamFilePath, downloadExamFile, inputStream2String(inputStream));
-			} catch (IOException e) {
-				Log.i(LOG_TAG,"IOException:" + e.getMessage());
-				return "failure";
-			}
+//	    	InputStream inputStream = LoginActivity.class.getClassLoader().getResourceAsStream(downloadExamFile);
+	    	
+        	WebServerProxy proxy = new WebServerProxy(mContext.getResources().getString(R.string.host),
+        			Integer.valueOf(mContext.getResources().getString(R.string.port)));
+        	proxy.setConversationId(urls[0]);
+        	examResult = proxy.getExam(urls[1]);
+        	
+    		if(STATUS.SUCCESS.equals(examResult.getStatus())){
+    			saveFile(downloadExamFilePath, downloadExamFile, examResult.getSuccessMessage());
+    		}else if(STATUS.ERROR.equals(examResult.getStatus())){
+    			ShowDialog(examResult.getErrorMessage());
+    			this.cancel(true);
+    		}
+
 	        return "success";
 	    }
 	
 	    @Override
 	    protected void onPostExecute(String result) {
 			progressDialog.dismiss();
-			if("success".equals(result)){
+			if(STATUS.SUCCESS.equals(examResult.getStatus())){
 				//get first question in paper
 //				InputStream inputStream =  PapersActivity.class.getClassLoader().getResourceAsStream("sample_paper.xml");
 				FileInputStream inputStream;

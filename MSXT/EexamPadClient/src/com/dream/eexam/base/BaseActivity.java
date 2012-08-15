@@ -186,11 +186,14 @@ public class BaseActivity extends Activity {
 	 * @param urlString
 	 * @return
 	 */
-	public InputStream downloadUrl(String urlString){
+	public InputStream downloadUrl(String id,String password){
+		Log.i(LOG_TAG,"------downloadUrl()...");
         HttpURLConnection conn;
         InputStream stream = null;
 		try {
-			URL url = new URL(urlString);
+			String urlStr = "http://192.168.1.101:8080/msxt/runinterview/loginAction/login?loginName="+id+"&loginPassword="+password;
+			Log.i(LOG_TAG,"URL:"+urlStr);
+			URL url = new URL(urlStr);
 			conn = (HttpURLConnection) url.openConnection();
 	        conn.setReadTimeout(10000 /* milliseconds */);
 	        conn.setConnectTimeout(15000 /* milliseconds */);
