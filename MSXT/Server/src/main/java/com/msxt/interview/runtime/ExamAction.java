@@ -53,11 +53,13 @@ public class ExamAction {
 		for( ExaminationCatalog ec : exam.getExam().getCatalogs() ) {
 			sb.append( "<catalog>");  
 			sb.append( "<index>" ).append( ec.getIndex() ).append("</index>");
+			sb.append( "<name>" ).append( ec.getName() ).append("</name>");
 			sb.append( "<catalogdesc><![CDATA[" ).append( ec.getDescription() ).append("]]></catalogdesc>");
 			sb.append( "<questions>" ); 
 			for( ExaminationCatalogQuestion ecq : ec.getQuestions() ) {
 				sb.append( "<question>" );
 				sb.append( "<index>" ).append( ecq.getIndex() ).append( "</index>" );
+				sb.append( "<name>" ).append( ecq.getQuestion().getName() ).append("</name>");
 				sb.append( "<questionid>" ).append( ecq.getId() ).append( "</questionid>" );
 				sb.append( "<type>" ).append( ecq.getQuestion().getQuestionType().getName() ).append( "</type>" );
 				sb.append( "<score>" ).append( ecq.getScore() ).append( "</score>" );

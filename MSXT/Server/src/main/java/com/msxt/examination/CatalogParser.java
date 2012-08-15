@@ -32,7 +32,7 @@ public class CatalogParser {
 	    
 	    StringReader sr = new StringReader(catalogsXML);
 	    final XMLStreamReader streamReader = inputFactory.createXMLStreamReader( sr );
-	    int catalogaIndex = 0;
+	    int catalogaIndex = 1;
 	    while ( streamReader.hasNext() ) {
 	        switch ( streamReader.next() ) {
 	            case XMLStreamConstants.START_ELEMENT: {
@@ -72,7 +72,7 @@ public class CatalogParser {
 	private ExaminationCatalog parseCatalogElement(final XMLStreamReader reader,  int catalogaIndex) throws XMLStreamException {
         ExaminationCatalog ec = new ExaminationCatalog();
         ec.setIndex( catalogaIndex );
-        int index=0;
+        int index=1;
 		while (reader.hasNext()) {
 		    switch ( reader.nextTag() ) {
 		        case XMLStreamConstants.START_ELEMENT: {
