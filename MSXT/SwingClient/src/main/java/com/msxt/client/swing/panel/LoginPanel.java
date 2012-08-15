@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.msxt.client.swing.panel;
 
 import java.io.ByteArrayInputStream;
@@ -15,15 +11,16 @@ import javax.swing.JTextField;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.jdesktop.application.Application;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 import com.msxt.client.model.LoginSuccessResult;
-import com.msxt.client.swing.launcher.DesktopLauncher;
-import com.msxt.client.swing.server.ServerProxy;
-import com.msxt.client.swing.server.ServerProxy.Result;
-import com.msxt.client.swing.server.ServerProxy.STATUS;
+import com.msxt.client.model.transfer.Message2ModelTransfer;
+import com.msxt.client.swing.launcher.ExamLauncher;
+import com.msxt.client.server.ServerProxy;
+import com.msxt.client.server.ServerProxy.Result;
+import com.msxt.client.server.ServerProxy.STATUS;
 
 /**
  *
@@ -165,36 +162,15 @@ public class LoginPanel extends JPanel {
 		        } else {
 		        	String conversation = root.getElementsByTagName( "conversation" ).item(0).getTextContent();
 		        	sp.setConversationId( conversation );
-		        	LoginSuccessResult lsr = parseResult( root );
-		        	DesktopLauncher.createSelectExamFram( lsr );
+		        	LoginSuccessResult lsr = Message2ModelTransfer.Factory.getInstance().parseResult( root );
+		        	((ExamLauncher)Application.getInstance()).createSelectExamPanel( lsr );
 		        }
     		} catch (Exception e) {
+    			e.printStackTrace();
     			JOptionPane.showMessageDialog(this, "错误消息格式");
 			}
     	}
     }
     
-    private LoginSuccessResult parseResult( Element root ) {
-    	LoginSuccessResult lsr = new LoginSuccessResult();
-    	String interviewer = root.getElementsByTagName( "interviewer" ).item(0).getTextContent();
-    	String jobtitle = root.getElementsByTagName( "jobtitle" ).item(0).getTextContent();
-    	lsr.setInterviewer( interviewer );
-    	lsr.setJobtitle( jobtitle );
-    	
-    	Element examinations = (Element)root.getElementsByTagName( "examinations" ).item(0);
-    	NodeList examChildren = examinations.getChildNodes();
-    	for( int i=0; i<examChildren.getLength(); i++ ) {
-    		Element exam = (Element)examChildren.item(i);
-    		String id = exam.getElementsByTagName( "id" ).item(0).getTextContent();
-    		String name = exam.getElementsByTagName( "name" ).item(0).getTextContent();
-    		String desc = exam.getElementsByTagName( "desc" ).item(0).getChildNodes().item(0).getTextContent();
-    		
-    		LoginSuccessResult.Examination le = new LoginSuccessResult.Examination();
-    		le.setId( id );
-    		le.setName( name );
-    		le.setDesc( desc );
-    		lsr.getExaminations().add( le );
-    	}
-    	return lsr;
-    }
+
 }

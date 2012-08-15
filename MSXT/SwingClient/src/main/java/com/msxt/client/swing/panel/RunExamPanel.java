@@ -4,8 +4,6 @@
  */
 package com.msxt.client.swing.panel;
 
-import com.msxt.client.model.LoginSuccessResult;
-
 /**
  *
  * @author felix
