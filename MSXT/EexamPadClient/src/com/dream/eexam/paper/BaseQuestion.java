@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import android.R.integer;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -32,6 +30,7 @@ import android.view.GestureDetector.OnGestureListener;
 import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.SeekBar;
@@ -59,6 +58,8 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	protected TextView remainingTimeLabel = null;//(Center 1)
 	protected TextView remainingTime = null;	//(Center 2)	
 	protected TextView submitTV = null;//(Right)
+	
+	protected ImageView imgDownArrow = null;
 	
 	//set catalog bar
 	protected TextView catalogsTV = null;

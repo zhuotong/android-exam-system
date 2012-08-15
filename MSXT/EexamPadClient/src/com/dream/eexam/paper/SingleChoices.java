@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.ListView;
 import android.widget.SeekBar;
@@ -40,6 +41,8 @@ public class SingleChoices extends BaseQuestion {
 		remainingTime = (TextView)findViewById(R.id.remainingTime);
 		submitTV = (TextView)findViewById(R.id.submitTV);
 		
+		imgDownArrow = (ImageView) findViewById(R.id.imgDownArrow);
+		
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
 		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
 		completedPercentage = (TextView)findViewById(R.id.completedPercentage);
@@ -54,7 +57,6 @@ public class SingleChoices extends BaseQuestion {
 		//set exam header(Left)
 		homeTV.setText("Home");
 		//set exam header(Center)
-		remainingTimeLabel.setText("Time Remaining: ");
 		remainingTime.setText(String.valueOf(detailBean.getTime())+" mins");
 		//set exam header(Right)
 		submitTV.setText("Submit");
@@ -107,11 +109,19 @@ public class SingleChoices extends BaseQuestion {
 			}
 		});
 		
+		
         //set catalog bar(Center) 
 		catalogsTV.setText(String.valueOf(currentCatalogIndex)+". "+
 				detailBean.getCatalogDescByCid(currentCatalogIndex) + 
 				"(Q" + String.valueOf(currentQuestionIndex)+" - " + "Q" + String.valueOf(currentQuestionIndex+questionSize-1)+")");
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showWindow(v);
+			}
+		});
+		
+		imgDownArrow.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				showWindow(v);

@@ -35,11 +35,13 @@ public class ExamListActivity extends BaseActivity {
 	private static final String LOG_TAG = "PapersActivity";
 
 	//declare components
-	private TextView spinnerText = null;
-	private TextView spinnerText2 = null;
-	private TextView spinnerText3 = null;
+	private TextView nameTV = null;
+	private TextView jobTitleTV = null;
+	
 	private TextView examDesc = null;
 	private Spinner spinner;
+	
+	//buttons
 	private Button startBtn;
 	private Button clearBtn;
 	
@@ -93,14 +95,11 @@ public class ExamListActivity extends BaseActivity {
 			}
 		}
 		
-		spinnerText = (TextView) this.findViewById(R.id.spinnerText);
-		spinnerText.setText("You applied job title:");
+		nameTV = (TextView) this.findViewById(R.id.nameTV);
+		nameTV.setText(loginResultBean.getInterviewer());
 		
-		spinnerText2 = (TextView) this.findViewById(R.id.spinnerText2);
-		spinnerText2.setText("Java Software Engineer");
-		
-		spinnerText3 = (TextView) this.findViewById(R.id.spinnerText3);
-		spinnerText3.setText("Choose 1 from below paper list:");
+		jobTitleTV = (TextView) this.findViewById(R.id.jobTitleTV);
+		jobTitleTV.setText(loginResultBean.getJobtitle());
 		
 		spinner = (Spinner) findViewById(R.id.Spinner01);
 		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,exams);

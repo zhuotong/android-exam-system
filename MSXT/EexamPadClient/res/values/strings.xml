@@ -1,28 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <string name="app_name">EexamClient</string>
-    
     <string name="msg_header_tv_home">Home</string>
-    
     <string name="msg_header_tv_current">Current(1)</string>
     <string name="msg_header_tv_all">All(5)</string>
-    
+
+    <!-- Login Page Start-->
+    <string name="msg_logo_desc">eExam</string>
+    <string name="msg_chb_save_password">Save Password</string>
+    <string name="msg_chb_save_id">Save ID</string>
     <string name="msg_tv_id">ID:</string>
     <string name="msg_tv_password">Password :</string>
     <string name="msg_et_id_hint">Input ID</string>
     <string name="msg_et_password_hint">Input Password</string>
-    
     <string name="msg_btn_login">Login</string>
-    <string name="msg_btn_reset">Reset</string>
+    <string name="msg_btn_reset">Reset</string> 
+    <!-- Login Page End -->
+    
+    <!-- Exam List Page Start-->
+    <string name="tv_label_your_name">Your name:</string>
+    <string name="tv_label_your_app_job">Your Applied Job:</string>
+    <string name="tv_label_choose_exam">Choose 1 Exam from below:</string>
+    <string name="btn_text_start">Start</string>
+    <string name="btn_text_clear_history">Clear History</string>
+    <!-- Exam List Page End-->
+
     <string name="msg_btn_start">Start</string>
     <string name="msg_btn_submit">Submit</string>
-    
     <string name="msg_btn_pre">Prev</string>
     <string name="msg_btn_next">Next</string>
-    
     <string name="connection_error">Unable to load content. Check your network connection.</string>
     <string name="xml_error">Error parsing XML.</string>
-    
     <string name="popup_window_height">300</string>
     <string name="popup_window_width">300</string>
     
@@ -38,9 +46,5 @@
         <item>I</item>
         <item>J</item>
     </string-array>
-        <string name="msg_chb_save_password">Save Password</string>
-        <string name="msg_chb_save_id">Save ID</string>
-        <string name="msg_logo_desc">eExam</string>
-        
     
 </resources>

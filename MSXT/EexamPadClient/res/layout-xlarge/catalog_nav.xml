@@ -17,7 +17,7 @@
 			android:textSize="25sp"
 			android:background="@drawable/bg_color_paper_header_text_view"/>
 
-    <TextView
+<!--     <TextView
 	    android:id="@+id/header_tv_catalogs"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
@@ -27,9 +27,9 @@
         android:layout_marginLeft="2dp"
         android:textColor="#FFFFFF"
         android:textSize="25sp"
-        android:background="@drawable/bg_color_paper_header_text_view"/>
+        android:background="@drawable/bg_color_paper_header_text_view"/> -->
 
-	<TextView
+<!-- 	<TextView
         android:id="@+id/pendQueNumber"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
@@ -39,6 +39,6 @@
         android:layout_marginLeft="2dp"
         android:textColor="#FFFFFF"
         android:textSize="25sp"
-        android:background="@drawable/bg_color_paper_header_text_view"/>
+        android:background="@drawable/bg_color_paper_header_text_view"/> -->
     </TableRow>
 </FrameLayout>

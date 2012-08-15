@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.View.OnTouchListener;
+import android.widget.ImageView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -50,6 +51,8 @@ public class MultiChoices extends BaseQuestion {
 		remainingTime = (TextView)findViewById(R.id.remainingTime);
 		submitTV = (TextView)findViewById(R.id.submitTV);
 		
+		imgDownArrow = (ImageView) findViewById(R.id.imgDownArrow);
+		
 		questionIndex = (TextView)findViewById(R.id.questionIndex);
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
 		pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);
@@ -65,7 +68,6 @@ public class MultiChoices extends BaseQuestion {
 		homeTV.setText("Home");
 		
 		//set exam header(Center)
-		remainingTimeLabel.setText("Time Remaining: ");
 		StringBuffer timeSB = new StringBuffer();
 		if(lMinutes<10) timeSB.append("0");
 		timeSB.append(String.valueOf(lMinutes));
@@ -127,6 +129,14 @@ public class MultiChoices extends BaseQuestion {
 				startActivity(intent);
 			}
 		});
+		
+		imgDownArrow.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showWindow(v);
+			}
+		});
+		
         //set catalog bar(Center) 
 		catalogsTV.setText(String.valueOf(currentCatalogIndex)+". "+
 				detailBean.getCatalogDescByCid(currentCatalogIndex) + 
