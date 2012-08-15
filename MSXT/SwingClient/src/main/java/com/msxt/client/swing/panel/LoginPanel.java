@@ -17,10 +17,10 @@ import org.w3c.dom.Element;
 
 import com.msxt.client.model.LoginSuccessResult;
 import com.msxt.client.model.transfer.Message2ModelTransfer;
-import com.msxt.client.swing.launcher.ExamLauncher;
 import com.msxt.client.server.ServerProxy;
 import com.msxt.client.server.ServerProxy.Result;
 import com.msxt.client.server.ServerProxy.STATUS;
+import com.msxt.client.swing.launcher.ExamLauncher;
 
 /**
  *

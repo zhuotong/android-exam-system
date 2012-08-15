@@ -2,7 +2,7 @@ package com.msxt.client.swing.launcher;
 
 import com.msxt.client.model.Examination;
 import com.msxt.client.model.LoginSuccessResult;
-import com.msxt.client.model.Question;
+import com.msxt.client.swing.model.Question;
 import com.msxt.client.swing.panel.ExamPanel;
 import com.msxt.client.swing.panel.LoginPanel;
 import com.msxt.client.swing.panel.SelectExamPanel;
