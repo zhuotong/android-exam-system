@@ -45,10 +45,10 @@
                 		<ui:repeat var="catalog" value="${examAgent.selectedExam.catalogs}" varStatus="vs">
                 		<br/>
                 		<div>
-                			<h1>${vs.index + 1}.&nbsp; ${catalog.name}</h1>
+                			<h1>${vs.index}.&nbsp; ${catalog.name}</h1>
                 			<p>&nbsp;&nbsp;&nbsp;&nbsp;${catalog.description}</p>
                				<ui:repeat var="cq" value="${catalog.questions}" varStatus="qvs">
-            					<p>${vs.index+1}.${qvs.index+1}.&nbsp;<h:outputText value="${cq.question.content}" escape="false"/></p>
+            					<p>${vs.index}.${qvs.index}.&nbsp;<h:outputText value="${cq.question.content}" escape="false"/></p>
 				        		<ui:repeat var="ci" value="${cq.question.choiceItems}">
 			        				${ci.labelName}.&nbsp;<h:outputText value="${ci.content}" escape="false"/><br/>
 				        		</ui:repeat>
