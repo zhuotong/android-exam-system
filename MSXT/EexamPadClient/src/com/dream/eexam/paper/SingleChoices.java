@@ -89,18 +89,18 @@ public class SingleChoices extends BaseQuestion {
 		});
 
         //set catalog bar(Left) 
-        String questionIndexDesc = "Question "+ String.valueOf(currentQuestionIndex) +"/"+ String.valueOf(totalQuestions);
+        String questionIndexDesc = "Question "+ String.valueOf(cQuestionIndex) +"/"+ String.valueOf(totalQuestions);
         questionIndex.setText(questionIndexDesc);
 		questionIndex.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
-				intent.putExtra("ccIndex", String.valueOf(currentCatalogIndex));
-				intent.putExtra("cqIndex", String.valueOf(currentQuestionIndex));
-				if(questionTypeM.equals(questionType)){
+				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
+				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
+				if(questionTypes[0].equals(cQuestionType)){
 					intent.putExtra("questionType", "Multi Select");
 					intent.setClass( getBaseContext(), MultiChoices.class);
-				}else if(questionTypeS.equals(questionType)){
+				}else if(questionTypes[1].equals(cQuestionType)){
 					intent.putExtra("questionType", "Single Select");
 					intent.setClass( getBaseContext(), SingleChoices.class);
 				}
@@ -111,9 +111,9 @@ public class SingleChoices extends BaseQuestion {
 		
 		
         //set catalog bar(Center) 
-		catalogsTV.setText(String.valueOf(currentCatalogIndex)+". "+
-				detailBean.getCatalogDescByCid(currentCatalogIndex) + 
-				"(Q" + String.valueOf(currentQuestionIndex)+" - " + "Q" + String.valueOf(currentQuestionIndex+questionSize-1)+")");
+		catalogsTV.setText(String.valueOf(cCatalogIndex)+". "+
+				detailBean.getCatalogDescByCid(cCatalogIndex) + 
+				"(Q" + String.valueOf(cQuestionIndex)+" - " + "Q" + String.valueOf(cQuestionIndex+queSumOfCCatalog-1)+")");
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -134,12 +134,12 @@ public class SingleChoices extends BaseQuestion {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
-				intent.putExtra("ccIndex", String.valueOf(currentCatalogIndex));
-				intent.putExtra("cqIndex", String.valueOf(currentQuestionIndex));
-				if(questionTypeM.equals(questionType)){
+				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
+				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
+				if(questionTypes[0].equals(cQuestionType)){
 					intent.putExtra("questionType", "Multi Select");
 					intent.setClass( getBaseContext(), PendQuestions.class);
-				}else if(questionTypeS.equals(questionType)){
+				}else if(questionTypes[1].equals(cQuestionType)){
 					intent.putExtra("questionType", "Single Select");
 					intent.setClass( getBaseContext(), PendQuestions.class);
 				}
@@ -157,7 +157,6 @@ public class SingleChoices extends BaseQuestion {
         mContext = getApplicationContext();
         
         loadComponents();
-        loadAnswer();
         setHeader();
         
         String questionHint = "Q "+String.valueOf(question.getIndex())+" (Score:"+String.valueOf(question.getScore())+")";
@@ -191,10 +190,10 @@ public class SingleChoices extends BaseQuestion {
         		
         		setAnswer(arg2,cb.isChecked());
         		
-        		if(answerString.length()==0){
-					clearAnswer(mContext,currentCatalogIndex,currentQuestionIndex);
+        		if(answerLabels.length()==0){
+					clearAnswer(mContext,cCatalogIndex,cQuestionIndex);
 				}else{
-					saveAnswer(mContext,currentCatalogIndex,currentQuestionIndex,question.getQuestionId(),answerString.toString());
+					saveAnswer(mContext,cCatalogIndex,cQuestionIndex,question.getQuestionId(),answerLabels.toString());
 				}
 			}      	
         });
@@ -205,7 +204,7 @@ public class SingleChoices extends BaseQuestion {
     	Log.i(LOG_TAG, "clearOldAnswer()...");
     	
 		listItemID.clear();
-    	answerString.setLength(0);
+    	answerLabels.setLength(0);
     	
 		//initial all items background color
 		for(int i=0;i<choices.size();i++){
@@ -239,14 +238,14 @@ public class SingleChoices extends BaseQuestion {
     	String label = adapter.choices.get(location).getChoiceLabel();
     	if(isChecked){
     		listItemID.add(label);
-    		answerString.append(label);
+    		answerLabels.append(label);
     	}else{
     		listItemID.clear();
-    		answerString.setLength(0);
+    		answerLabels.setLength(0);
     	}
     	
 		
-		Log.i(LOG_TAG, "answerString:"+answerString.toString());
+		Log.i(LOG_TAG, "answerString:"+answerLabels.toString());
 		
 		Log.i(LOG_TAG, "setAnswer().");
     }
@@ -257,7 +256,7 @@ public class SingleChoices extends BaseQuestion {
         preBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				direction = -1;
+				moveDirect = -1;
 				relocationQuestion();
 			}
 		});
@@ -272,7 +271,7 @@ public class SingleChoices extends BaseQuestion {
         nextBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				direction = 1;
+				moveDirect = 1;
 				relocationQuestion();
 			}
 		});
@@ -282,7 +281,7 @@ public class SingleChoices extends BaseQuestion {
     public void relocationQuestion(){
     	//clear answer first
     	listItemID.clear();
-    	answerString.setLength(0);
+    	answerLabels.setLength(0);
 
     	//get selection choice and assembly to string
 		
@@ -292,21 +291,21 @@ public class SingleChoices extends BaseQuestion {
 				Choice choice = adapter.choices.get(i);
 				listItemID.add(String.valueOf(choice.getChoiceLabel()));
 				if(i>0){
-					answerString.append(",");
+					answerLabels.append(",");
 				}
-				answerString.append(String.valueOf(choice.getChoiceLabel()));
+				answerLabels.append(String.valueOf(choice.getChoiceLabel()));
 			}
 		}
 		
-		if (answerString.length() == 0) {
+		if (answerLabels.length() == 0) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(SingleChoices.this);
 			builder.setMessage("Answer this question late?")
 					.setCancelable(false)
 					.setPositiveButton("Yes",
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,int id) {
-									clearAnswer(mContext,currentCatalogIndex,currentQuestionIndex);
-									gotoNewQuestion(mContext,direction);
+									clearAnswer(mContext,cCatalogIndex,cQuestionIndex);
+									gotoNewQuestion(mContext,moveDirect);
 								}
 							})
 					.setNegativeButton("Cancel",
@@ -317,7 +316,7 @@ public class SingleChoices extends BaseQuestion {
 							});
 			builder.show();
 		} else {
-			gotoNewQuestion(mContext,direction);
+			gotoNewQuestion(mContext,moveDirect);
 		}
 		
     }
@@ -334,7 +333,7 @@ public class SingleChoices extends BaseQuestion {
     		this.choices = choices;
 			for (int i = 0; i < choices.size(); i++) {
 				Choice choice = choices.get(i);
-				if (answerString.indexOf(String.valueOf(choice.getChoiceLabel())) != -1) {
+				if (answerLabels.indexOf(String.valueOf(choice.getChoiceLabel())) != -1) {
 					mChecked.add(true);
 					Log.i(LOG_TAG,String.valueOf(i)+":"+"true");
 				} else {
@@ -415,7 +414,7 @@ public class SingleChoices extends BaseQuestion {
 			
 			Choice choice = choices.get(position);
 			holder.radioButton.setChecked(mChecked.get(position));
-			holder.radioButton.setText(choicesLabel[position]);
+			holder.radioButton.setText(choicesLabels[position]);
 			
 			holder.index.setText(choice.getChoiceLabel());
 			holder.choiceDesc.setText(choice.getChoiceContent());

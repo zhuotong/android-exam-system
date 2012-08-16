@@ -110,18 +110,18 @@ public class MultiChoices extends BaseQuestion {
 		});
 
         //set catalog bar(Left) 
-        String questionIndexDesc = "Question "+ String.valueOf(currentQuestionIndex) +"/"+ String.valueOf(totalQuestions);
+        String questionIndexDesc = "Question "+ String.valueOf(cQuestionIndex) +"/"+ String.valueOf(totalQuestions);
         questionIndex.setText(questionIndexDesc);
 		questionIndex.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
-				intent.putExtra("ccIndex", String.valueOf(currentCatalogIndex));
-				intent.putExtra("cqIndex", String.valueOf(currentQuestionIndex));
-				if(questionTypeM.equals(questionType)){
+				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
+				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
+				if(questionTypes[0].equals(cQuestionType)){
 					intent.putExtra("questionType", "Multi Select");
 					intent.setClass( getBaseContext(), MultiChoices.class);
-				}else if(questionTypeS.equals(questionType)){
+				}else if(questionTypes[1].equals(cQuestionType)){
 					intent.putExtra("questionType", "Single Select");
 					intent.setClass( getBaseContext(), SingleChoices.class);
 				}
@@ -138,9 +138,9 @@ public class MultiChoices extends BaseQuestion {
 		});
 		
         //set catalog bar(Center) 
-		catalogsTV.setText(String.valueOf(currentCatalogIndex)+". "+
-				detailBean.getCatalogDescByCid(currentCatalogIndex) + 
-				"(Q" + String.valueOf(currentQuestionIndex)+" - " + "Q" + String.valueOf(currentQuestionIndex+questionSize-1)+")");
+		catalogsTV.setText(String.valueOf(cCatalogIndex)+". "+
+				detailBean.getCatalogDescByCid(cCatalogIndex) + 
+				"(Q" + String.valueOf(cQuestionIndex)+" - " + "Q" + String.valueOf(cQuestionIndex+queSumOfCCatalog-1)+")");
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -154,12 +154,12 @@ public class MultiChoices extends BaseQuestion {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
-				intent.putExtra("ccIndex", String.valueOf(currentCatalogIndex));
-				intent.putExtra("cqIndex", String.valueOf(currentQuestionIndex));
-				if(questionTypeM.equals(questionType)){
+				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
+				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
+				if(questionTypes[0].equals(cQuestionType)){
 					intent.putExtra("questionType", "Multi Select");
 					intent.setClass( getBaseContext(), PendQuestions.class);
-				}else if(questionTypeS.equals(questionType)){
+				}else if(questionTypes[1].equals(cQuestionType)){
 					intent.putExtra("questionType", "Single Select");
 					intent.setClass( getBaseContext(), PendQuestions.class);
 				}
@@ -179,7 +179,6 @@ public class MultiChoices extends BaseQuestion {
         mContext = getApplicationContext();
 
         loadComponents();
-        loadAnswer();
         setHeader();
 		
         String questionHint = "Q "+String.valueOf(question.getIndex())+" (Score:"+String.valueOf(question.getScore())+")";
@@ -204,12 +203,12 @@ public class MultiChoices extends BaseQuestion {
 				//set answer
 		    	//clear answer first
 		    	listItemID.clear();
-		    	answerString.setLength(0);
+		    	answerLabels.setLength(0);
 				setAnswer();
-				if(answerString.length()==0){
-					clearAnswer(mContext,currentCatalogIndex,currentQuestionIndex);
+				if(answerLabels.length()==0){
+					clearAnswer(mContext,cCatalogIndex,cQuestionIndex);
 				}else{
-					saveAnswer(mContext,currentCatalogIndex,currentQuestionIndex,question.getQuestionId(),answerString.toString());
+					saveAnswer(mContext,cCatalogIndex,cQuestionIndex,question.getQuestionId(),answerLabels.toString());
 				}
 			}      	
         });
@@ -235,7 +234,7 @@ public class MultiChoices extends BaseQuestion {
         preBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				direction = -1;
+				moveDirect = -1;
 				relocationQuestion();
 			}
 		});
@@ -250,7 +249,7 @@ public class MultiChoices extends BaseQuestion {
         nextBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				direction = 1;
+				moveDirect = 1;
 				relocationQuestion();
 			}
 		});
@@ -269,11 +268,11 @@ public class MultiChoices extends BaseQuestion {
 		Log.i(LOG_TAG, "onFling()...");	
         if (e1.getX() - e2.getX() > verticalMinDistance && Math.abs(velocityX) > minVelocity) {
         	Log.i(LOG_TAG,"Move Left");
-			direction = -1;
+			moveDirect = -1;
 			relocationQuestion();
         } else if (e2.getX() - e1.getX() > verticalMinDistance && Math.abs(velocityX) > minVelocity) {
         	Log.i(LOG_TAG,"Move Right");
-			direction = 1;
+			moveDirect = 1;
 			relocationQuestion();
         }
 		return false;
@@ -288,7 +287,7 @@ public class MultiChoices extends BaseQuestion {
 					.setPositiveButton("Yes",
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,int id) {
-									gotoNewQuestion(mContext,direction);
+									gotoNewQuestion(mContext,moveDirect);
 								}
 							})
 					.setNegativeButton("Cancel",
@@ -299,7 +298,7 @@ public class MultiChoices extends BaseQuestion {
 							});
 			builder.show();
 		} else {
-			gotoNewQuestion(mContext,direction);
+			gotoNewQuestion(mContext,moveDirect);
 		}
     }
     
@@ -336,9 +335,9 @@ public class MultiChoices extends BaseQuestion {
 				Choice choice = adapter.choices.get(i);
 				listItemID.add(String.valueOf(choice.getChoiceIndex()));
 				if(i>0){
-					answerString.append(",");
+					answerLabels.append(",");
 				}
-				answerString.append(String.valueOf(choice.getChoiceLabel()));
+				answerLabels.append(String.valueOf(choice.getChoiceLabel()));
 			}
 		}
 		
@@ -354,7 +353,7 @@ public class MultiChoices extends BaseQuestion {
     		this.choices = choices;
     		for(int i=0;i<choices.size();i++){
     			Choice choice = choices.get(i);
-				if (answerString.indexOf(String.valueOf(choice.getChoiceLabel())) != -1) {
+				if (answerLabels.indexOf(String.valueOf(choice.getChoiceLabel())) != -1) {
 					mChecked.add(true);
 				}else{
 					mChecked.add(false);
@@ -410,12 +409,12 @@ public class MultiChoices extends BaseQuestion {
 						//set answer
 				    	//clear answer first
 				    	listItemID.clear();
-				    	answerString.setLength(0);
+				    	answerLabels.setLength(0);
 						setAnswer();
-						if(answerString.length()==0){
-							clearAnswer(mContext,currentCatalogIndex,currentQuestionIndex);
+						if(answerLabels.length()==0){
+							clearAnswer(mContext,cCatalogIndex,cQuestionIndex);
 						}else{
-							saveAnswer(mContext,currentCatalogIndex,currentQuestionIndex,question.getQuestionId(),answerString.toString());
+							saveAnswer(mContext,cCatalogIndex,cQuestionIndex,question.getQuestionId(),answerLabels.toString());
 						}
 					}
 				});
@@ -430,7 +429,7 @@ public class MultiChoices extends BaseQuestion {
 			Choice choice = choices.get(position);
 			
 			holder.selected.setChecked(mChecked.get(position));
-			holder.selected.setText(choicesLabel[position]);
+			holder.selected.setText(choicesLabels[position]);
 			holder.index.setText(choice.getChoiceLabel());
 			holder.choiceDesc.setText(choice.getChoiceContent());
 			

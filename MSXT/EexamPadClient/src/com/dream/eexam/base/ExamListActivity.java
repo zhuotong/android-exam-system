@@ -2,22 +2,21 @@ package com.dream.eexam.base;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Calendar;
 import java.util.List;
 import com.dream.eexam.model.ExamBaseBean;
 import com.dream.eexam.model.LoginResultBean;
 import com.dream.eexam.paper.MultiChoices;
 import com.dream.eexam.paper.SingleChoices;
+import com.dream.eexam.server.DataUtil;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SystemConfig;
 import com.dream.eexam.util.XMLParseUtil;
+import com.msxt.client.model.Examination;
+import com.msxt.client.model.Examination.Question;
 import com.msxt.client.server.WebServerProxy;
 import com.msxt.client.server.ServerProxy.Result;
 import com.msxt.client.server.ServerProxy.STATUS;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -58,13 +57,14 @@ public class ExamListActivity extends BaseActivity {
 	String examIdString = null;
 	Context mContext;
 	
-//	String downloadURL = null;
 	String downloadExamFile = null;
 	String downloadExamFilePath = null;
 	
-	String questionType = null;
-	String questionTypeS = null;
-	String questionTypeM = null;
+	String fQuestionType = null;
+	String[] questionTypes;
+	
+//	String questionTypeS = null;
+//	String questionTypeM = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +74,10 @@ public class ExamListActivity extends BaseActivity {
 		
 		setContentView(R.layout.exam_list);
 		
-		questionTypeM = SystemConfig.getInstance().getPropertyValue("Question_Type_Multi_Select");
-		questionTypeS = SystemConfig.getInstance().getPropertyValue("Question_Type_Single_Select");
+//		questionTypeM = SystemConfig.getInstance().getPropertyValue("Question_Type_Multi_Select");
+//		questionTypeS = SystemConfig.getInstance().getPropertyValue("Question_Type_Single_Select");
+		
+		questionTypes = getResources().getStringArray(R.array.question_types);
 		
 		//get demoSessionStr and save to string array
 		Bundle bundle = this.getIntent().getExtras();
@@ -97,6 +99,8 @@ public class ExamListActivity extends BaseActivity {
 			for(int i=0;i<examList.size();i++){
 				exams[i] = examList.get(i).getName();
 			}
+		}else{
+			exams = new String[0];
 		}
 		
 		nameTV = (TextView) this.findViewById(R.id.nameTV);
@@ -200,34 +204,43 @@ public class ExamListActivity extends BaseActivity {
 	    protected void onPostExecute(String result) {
 			progressDialog.dismiss();
 			if(STATUS.SUCCESS.equals(examResult.getStatus())){
-				//get first question in paper
-//				InputStream inputStream =  PapersActivity.class.getClassLoader().getResourceAsStream("sample_paper.xml");
-				FileInputStream inputStream;
-				try {
-					inputStream = new FileInputStream(new File(downloadExamFilePath+ File.separator+downloadExamFile));
-					questionType = XMLParseUtil.readQuestionType(inputStream,1,1);
-		        	inputStream.close();
-				} catch (FileNotFoundException e1) {
-					Log.i(LOG_TAG,"FileNotFoundException:" + e1.getMessage());
-				} catch (Exception e) {
-					Log.i(LOG_TAG,"Exception:" + e.getMessage());
+				
+				DataUtil util = new DataUtil();
+				Examination exam = util.getExam(examResult);
+				Question fQuestion = util.getQuestionByCidQid(exam, 1, 1);
+				if(fQuestion==null){
+					ShowDialog("Can not get question!");
+					this.cancel(true);
+					return;
 				}
+				
+				fQuestionType = fQuestion.getType();
+				//get first question in paper
+//				FileInputStream inputStream;
+//				try {
+//					inputStream = new FileInputStream(new File(downloadExamFilePath+ File.separator+downloadExamFile));
+//					fQuestionType = XMLParseUtil.readQuestionType(inputStream,1,1);
+//		        	inputStream.close();
+//				} catch (FileNotFoundException e1) {
+//					Log.i(LOG_TAG,"FileNotFoundException:" + e1.getMessage());
+//				} catch (Exception e) {
+//					Log.i(LOG_TAG,"Exception:" + e.getMessage());
+//				}
 	
 				//move question
 				Intent intent = new Intent();
 				intent.putExtra("ccIndex", String.valueOf(getccIndex()));
 				intent.putExtra("cqIndex", String.valueOf(getcqIndex()));
+				intent.putExtra("questionType",fQuestionType);
 				
-				if(questionTypeM.equals(questionType)){
-					intent.putExtra("questionType", "Multi Select");
+				if(questionTypes[0].equals(fQuestionType)){
 					intent.setClass( getBaseContext(), MultiChoices.class);
 					startActivity(intent);
-				}else if(questionTypeS.equals(questionType)){
-					intent.putExtra("questionType", "Single Select");
+				}else if(questionTypes[1].equals(fQuestionType)){
 					intent.setClass( getBaseContext(), SingleChoices.class);
 					startActivity(intent);
 				}else{
-					ShowDialog("Invalid qeustion type:"+questionType);
+					ShowDialog("Invalid qeustion type:"+fQuestionType);
 				}
 				
 				//save exam start time

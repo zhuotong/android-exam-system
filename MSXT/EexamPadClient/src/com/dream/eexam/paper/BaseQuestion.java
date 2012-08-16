@@ -41,13 +41,16 @@ import com.dream.eexam.base.GroupAdapter;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.CatalogBean;
 import com.dream.eexam.model.CatalogInfo;
-import com.dream.eexam.model.Choice;
 import com.dream.eexam.model.ExamDetailBean;
-import com.dream.eexam.model.Question;
+import com.dream.eexam.server.DataUtil;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SystemConfig;
 import com.dream.eexam.util.TimeDateUtil;
 import com.dream.eexam.util.XMLParseUtil;
+import com.msxt.client.model.Examination;
+import com.msxt.client.model.Examination.Catalog;
+import com.msxt.client.model.Examination.Choice;
+import com.msxt.client.model.Examination.Question;
 
 public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, OnGestureListener,OnTouchListener{
 	
@@ -76,137 +79,206 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	
 	protected InputStream inputStream;
 	
-	//common data
-	protected String questionType;//questionType
-	protected Integer currentCatalogIndex;//current catalog index
-	protected Integer currentQuestionIndex;//current question index
-	protected String[] choicesLabel;
+	//static data
+	protected String[] questionTypes;
+	protected String[] choicesLabels;
 	
-	protected ExamDetailBean detailBean;//paperBean
+	//data store in local database(question and answers)
+	protected StringBuffer answerLabels = new StringBuffer();//answer labels
+	protected Integer queSumOfCCatalog = 0;//question sum for current catalog
+	protected Integer aQueSumOfCCatalog = 0;//answered question sum for current catalog
+	
+	//page data
+	protected String cQuestionType;//current questionType
+	protected int cCatalogIndex;//current catalog index
+	protected int cQuestionIndex;//current question index
+	
+	//-------------exam data---------------
+	protected Examination exam;
+	protected int examQuestionSum;
+	protected int examAedQuestionSum;
+	protected List<Catalog> cataLogs = new ArrayList<Catalog>();
+	protected Catalog cCatalog;
+	protected Question cQuestion;
+	protected List<Choice> cChoices;
 	protected List<Question> pendQuestions = new ArrayList<Question>();
-	protected Question question;
-	protected List<Choice> choices;
-	protected Integer totalQuestions;
-	protected Integer answeredQuestions;
+	protected List<CatalogInfo> catalogNames = new ArrayList<CatalogInfo>();
 	
-	protected List<CatalogBean> cataLogList = new ArrayList<CatalogBean>();//cataLogList
-	protected List<CatalogInfo> catalogNames = new ArrayList<CatalogInfo>();//catalog names
-
-	protected Integer direction = 0;//move direction(1 move next, 0 move previous)
-	protected Integer questionSize = 0;//question size for current catalog
-	protected Integer comQuestionSize = 0;//completed question size for current catalog
+    public void loadExamWithLocalFile(){
+    	DataUtil util = new DataUtil();
+    	FileInputStream inputStream = getExamStream();
+    	exam = util.getExam(inputStream);
+    	examQuestionSum = util.getExamQuestionSum(exam);
+    	cataLogs = exam.getCatalogs();
+    	cCatalog = cataLogs.get(cCatalogIndex-1);
+    	cQuestion = util.getQuestionByCidQid(exam, cCatalogIndex, cQuestionIndex);
+    	cChoices = cQuestion.getChoices();
+    	
+    	//load pending questions
+    	DatabaseUtil dbUtil = new DatabaseUtil(this);
+    	dbUtil.open();
+    	Cursor cursor = null;
+		for(Catalog catalog: cataLogs){
+			List<Question> questions = catalog.getQuestions();
+			for(Question question: questions){
+				cursor = dbUtil.fetchAnswer(catalog.getIndex(),question.getIndex());
+				if(cursor.moveToNext()){
+					continue;
+				}
+//				question.setCatalogIndex(catalogBean.getIndex());
+				pendQuestions.add(question);
+			}
+		}
+		
+		//load catalog list menu
+		Cursor catalogCursor = null;
+		int answeredQuetions;
+		//set catalog menus
+		for(Catalog catalog: cataLogs){
+			catalogCursor = dbUtil.fetchAnswer(catalog.getIndex());
+			answeredQuetions = 0;
+			while(cursor.moveToNext()){
+				Integer qid = cursor.getInt(1);
+				String answers = cursor.getString(3);
+				if(qid!=null && answers!= null && answers.length()>0){
+					answeredQuetions++;
+				}
+			}
+			List<Question> qList = catalog.getQuestions();
+			Integer totalQuestions = qList.size();
+			Integer fQuestionIndex = null;
+			
+			if(totalQuestions>0){
+				Question fQuestion = qList.get(0);
+				fQuestionIndex = fQuestion.getIndex();
+			}
+			catalogNames.add(new CatalogInfo(catalog.getIndex(),catalog.getDesc(),fQuestionIndex,totalQuestions,answeredQuetions));
+		}
+		
+		cursor.close();
+		catalogCursor.close();
+		
+		dbUtil.close();
+    	
+    }
 	
-	protected StringBuffer answerString = new StringBuffer();//answer ids
+//	protected ExamDetailBean detailBean;//paperBean
+//	protected List<Question> pendQuestions = new ArrayList<Question>();
+//	protected Question question;
+//	protected List<Choice> choices;
+//	protected Integer totalQuestions;
+//	protected Integer answeredQuestions;
+//	protected List<CatalogBean> cataLogList = new ArrayList<CatalogBean>();//cataLogList
+//	protected List<CatalogInfo> catalogNames = new ArrayList<CatalogInfo>();//catalog names
+	protected Integer moveDirect = 0;//move direction(1 move next, 0 move previous)
 	protected Context mContext;
-	
 	protected String downloadExamFile = null;
 	protected String downloadExamFilePath = null;
-	
-	protected String questionTypeM;
-	protected String questionTypeS;
+//	protected String questionTypeM;
+//	protected String questionTypeS;
 	
 	protected TimerTask  timerTask;
 	protected Timer timer;
 	protected Integer lMinutes = 0;
 	protected Integer lSeconds = 0;
 	
-    public void loadAnswer(){
+    public void loadLocalAnswerIfExist(int cid,int qid){
     	Log.i(LOG_TAG, "loadAnswer()...");
-		Log.i(LOG_TAG, "currentCatalogIndex = " + currentCatalogIndex
-				+ " currentQuestionIndex = " + currentQuestionIndex);
+		Log.i(LOG_TAG, "cid = " + cid + " qid = " + qid);
+		
+		//load label(s) of answer
     	DatabaseUtil dbUtil = new DatabaseUtil(this);
     	dbUtil.open();
-    	Cursor cursor = dbUtil.fetchAnswer(currentCatalogIndex,currentQuestionIndex);
+    	Cursor cursor = dbUtil.fetchAnswer(cid,qid);
 		if (cursor != null && cursor.moveToNext()) {
 			Log.i(LOG_TAG, "find answer...");
-			Log.i(LOG_TAG, "cid: " + cursor.getInt(0) + " qid " + cursor.getInt(1)
-							+ " qid_str " + cursor.getString(2) + " answer " + cursor.getString(3));
-    		answerString.setLength(0);
-    		answerString.append(cursor.getString(3));
+			Log.i(LOG_TAG, "cid: " + cursor.getInt(0) + " qid " + cursor.getInt(1)+ " qid_str " + cursor.getString(2) + " answer " + cursor.getString(3));
+    		answerLabels.setLength(0);
+    		answerLabels.append(cursor.getString(3));
 		}
+		
+		//load answered question number of current catalog
 		int sum = 0;
-		cursor = dbUtil.fetchAnswer(currentCatalogIndex);
+		cursor = dbUtil.fetchAnswer(cid);
 		while(cursor.moveToNext()){
-			Integer qid = cursor.getInt(1);
-			String answers = cursor.getString(2);
-			if(qid!=null && answers!= null && answers.length()>0){
+			Integer aQid = cursor.getInt(1);
+			String aLabels = cursor.getString(2);
+			if(aQid!=null && aLabels!= null && aLabels.length()>0){
 				sum++;
 			}
 		}
-		comQuestionSize = sum;
-		Log.i(LOG_TAG,"comQuestionSize:"+ String.valueOf(comQuestionSize));
+		aQueSumOfCCatalog = sum;
+		Log.i(LOG_TAG,"aQueSumOfCCatalog:"+ String.valueOf(aQueSumOfCCatalog));
     	cursor.close();
+    	
+    	examAedQuestionSum = dbUtil.fetchAllAnswersCount();
+    	
     	dbUtil.close();  
     	Log.i(LOG_TAG, "end loadAnswer().");
     }
+    
+
 	   
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		
-		choicesLabel = getResources().getStringArray(R.array.display_choice_label);
+		questionTypes = getResources().getStringArray(R.array.question_types);
+		choicesLabels = getResources().getStringArray(R.array.display_choice_label);
 		
-		questionTypeM = SystemConfig.getInstance().getPropertyValue("Question_Type_Multi_Select");
-		questionTypeS = SystemConfig.getInstance().getPropertyValue("Question_Type_Single_Select");
-		
-		//get demoSessionStr and save to string array
 		Bundle bundle = this.getIntent().getExtras();
-		String questionType  = bundle.getString("questionType");
-		String ccIndex  = bundle.getString("ccIndex");
-		String cqIndex  = bundle.getString("cqIndex");
+		this.cQuestionType  = bundle.getString("questionType");
+		this.cCatalogIndex  = Integer.valueOf(bundle.getString("ccIndex"));
+		this.cQuestionIndex  = Integer.valueOf(bundle.getString("cqIndex"));
 		
-		if(questionType!=null){
-			this.questionType = questionType;
-		}
-		if(ccIndex!=null){
-			this.currentCatalogIndex = Integer.valueOf(ccIndex);
-		}
-		if(cqIndex!=null){
-			this.currentQuestionIndex = Integer.valueOf(cqIndex);
-		}
-		saveccIndexcqIndex(Integer.valueOf(ccIndex),Integer.valueOf(cqIndex));
-    	
+		//load old data from database
+		loadLocalAnswerIfExist(cCatalogIndex,cQuestionIndex);
+		
+		//save catalog and question cursor to local SharedPreferences
+		saveccIndexcqIndex(cCatalogIndex,cQuestionIndex);
+		
+		loadExamWithLocalFile();
+		
 		try {
-	    	FileInputStream inputStream = getExamStream();
-	    	detailBean = XMLParseUtil.readExamination(inputStream);
+//	    	FileInputStream inputStream = getExamStream();
+//	    	detailBean = XMLParseUtil.readExamination(inputStream);
 	    	//set catalog list
-	    	cataLogList = detailBean.getCatalogs();
-	    	//set catalog questionSize
-			if(cataLogList!=null&&cataLogList.size()>0){
-				CatalogBean bean = cataLogList.get(currentCatalogIndex-1);
-			    questionSize = bean.getQuestions().size();
-			    Log.i(LOG_TAG,"questionSize:"+ String.valueOf(questionSize));
-			}
-			//set question
-			question = detailBean.getQuestionByQid(currentQuestionIndex);
-			choices = question.getChoices();
-			totalQuestions = detailBean.getTotalQuestions();
-	        
-	        //if confusue set to true, system will sort choices random
-	        if("true".equals(detailBean.getConfuse())){
-	        	Collections.shuffle(choices);
-	        }
+//	    	cataLogList = detailBean.getCatalogs();
+//	    	//set catalog questionSize
+//			if(cataLogList!=null&&cataLogList.size()>0){
+//				CatalogBean bean = cataLogList.get(cCatalogIndex-1);
+//			    queSumOfCCatalog = bean.getQuestions().size();
+//			    Log.i(LOG_TAG,"questionSize:"+ String.valueOf(queSumOfCCatalog));
+//			}
+//			//set question
+//			question = detailBean.getQuestionByQid(cQuestionIndex);
+//			choices = question.getChoices();
+//			totalQuestions = detailBean.getTotalQuestions();
+//	        
+//	        //if confusue set to true, system will sort choices random
+//	        if("true".equals(detailBean.getConfuse())){
+//	        	Collections.shuffle(choices);
+//	        }
 
 			//load pending questions
-	    	DatabaseUtil dbUtil = new DatabaseUtil(this);
-	    	dbUtil.open();
-	    	Cursor cursor = null;
-			if(cataLogList!=null&&cataLogList.size()>0){
-				for(CatalogBean catalogBean: cataLogList){
-					List<Question> questions = catalogBean.getQuestions();
-					for(Question question: questions){
-						cursor = dbUtil.fetchAnswer(catalogBean.getIndex(),question.getIndex());
-						if(cursor.moveToNext()){
-							continue;
-						}
-						question.setCatalogIndex(catalogBean.getIndex());
-						pendQuestions.add(question);
-					}
-				}
-			}
-			cursor.close();
-			dbUtil.close();
+//	    	DatabaseUtil dbUtil = new DatabaseUtil(this);
+//	    	dbUtil.open();
+//	    	Cursor cursor = null;
+//			if(cataLogList!=null&&cataLogList.size()>0){
+//				for(CatalogBean catalogBean: cataLogList){
+//					List<Question> questions = catalogBean.getQuestions();
+//					for(Question question: questions){
+//						cursor = dbUtil.fetchAnswer(catalogBean.getIndex(),question.getIndex());
+//						if(cursor.moveToNext()){
+//							continue;
+//						}
+//						question.setCatalogIndex(catalogBean.getIndex());
+//						pendQuestions.add(question);
+//					}
+//				}
+//			}
+//			cursor.close();
+//			dbUtil.close();
 			
 		} catch (Exception e) {
 			Log.i(LOG_TAG,e.getMessage());
@@ -215,7 +287,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		DatabaseUtil dbUtil = new DatabaseUtil(this);
 		dbUtil.open();
 		//-------------------get data-----------------------
-		Cursor cursor;
+/*		Cursor cursor;
 		int answeredCatalogQs;
 		//set groups
 		for(CatalogBean catalogBean: cataLogList){
@@ -239,14 +311,14 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 			}
 			
 			catalogNames.add(new CatalogInfo(catalogBean.getIndex(),catalogBean.getDesc(),fQuestionIndex,totalQuestions,answeredCatalogQs));
-		}
+		}*/
 		
-		//get answered questions
-		answeredQuestions = dbUtil.fetchAllAnswersCount();
-    	Log.i(LOG_TAG, "answeredQuestions:" + String.valueOf(answeredQuestions));	
-    	
-    	//close db
-		dbUtil.close();
+//		//get answered questions
+//		answeredQuestions = dbUtil.fetchAllAnswersCount();
+//    	Log.i(LOG_TAG, "answeredQuestions:" + String.valueOf(answeredQuestions));	
+//    	
+//    	//close db
+//		dbUtil.close();
 		
 		//set time task to set count down time 
 		timerTask = new TimerTask() {
@@ -321,49 +393,35 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	}
 	
 	protected  void setLoadCDTime(){
-//		Log.i(LOG_TAG, "-----------------setLoadCDTime()...-----------------");
-		
 		long currentTime = Calendar.getInstance().getTimeInMillis();
 		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
 		long starttime = sharedPreferences.getLong("starttime", 0);
-		
 		long cosumeTime = (currentTime - starttime)/1000;//second
-//		Log.i(LOG_TAG, "cosumeTime="+String.valueOf(cosumeTime));
-		
-	    long examTime = detailBean.getTime() * 60;//second
-//	    Log.i(LOG_TAG, "examTime="+String.valueOf(examTime));
-	    
+	    long examTime = exam.getTime() * 60;//second
 	    if(cosumeTime>examTime){
 	    	ShowDialog("Exam Time Out!");
 	    }else{
 	    	long leftTime = examTime - cosumeTime;
-//	    	Log.i(LOG_TAG, "leftTime="+String.valueOf(leftTime));
-	    	
 	    	lMinutes = Integer.valueOf((int)(leftTime/60));
-//	    	Log.i(LOG_TAG, "lMinutes="+String.valueOf(lMinutes));
-	    	
 	    	lSeconds = Integer.valueOf((int)(leftTime - lMinutes * 60));
-	    	Log.i(LOG_TAG, "lSeconds="+String.valueOf(lSeconds));
 	    }
-	    
-//	    Log.i(LOG_TAG, "-----------------setLoadCDTime().-----------------");
 	}
 
     //go to new question page
     public void gotoNewQuestion(Context context, Integer diret){
     	Log.i(LOG_TAG, "gotoNewQuestion()...");
-		Question newQuestion = detailBean.getQuestionByQid(currentQuestionIndex+diret);
+		Question newQuestion = detailBean.getQuestionByQid(cQuestionIndex+diret);
 		if(newQuestion!=null){
 			String newQuestionType = newQuestion.getQuestionType();
 			if(newQuestionType!=null){
 				//move question
 				Intent intent = new Intent();
 				intent.putExtra("ccIndex", String.valueOf(newQuestion.getCatalogIndex()));
-				intent.putExtra("cqIndex", String.valueOf(currentQuestionIndex+diret));
-				if(questionTypeM.equals(newQuestionType)){
+				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex+diret));
+				if(questionTypes[0].equals(newQuestionType)){
 					intent.putExtra("questionType", "Multi Select");
 					intent.setClass( context, MultiChoices.class);
-				}else if(questionTypeS.equals(newQuestionType)){
+				}else if(questionTypes[1].equals(newQuestionType)){
 					intent.putExtra("questionType", "Single Select");
 					intent.setClass( context, SingleChoices.class);
 				}
@@ -544,14 +602,14 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 				Intent intent = new Intent();
 				intent.putExtra("ccIndex", String.valueOf(nQuestion.getCatalogIndex()));
 				intent.putExtra("cqIndex", String.valueOf(nQuestion.getIndex()));
-				if(questionTypeM.equals(nQuestionType)){
+				if(questionTypes[0].equals(nQuestionType)){
 					intent.putExtra("questionType", "Multi Select");
 					intent.setClass( mContext, MultiChoices.class);
-				}else if(questionTypeS.equals(nQuestionType)){
+				}else if(questionTypes[1].equals(nQuestionType)){
 					intent.putExtra("questionType", "Single Select");
 					intent.setClass( mContext, SingleChoices.class);
 				}else{
-					ShowDialog("Wrong Question Type: " + questionType);
+					ShowDialog("Wrong Question Type: " + cQuestionType);
 				}
 				finish();
 				startActivity(intent);
