@@ -1,5 +1,6 @@
 package com.dream.eexam.model;
 
+@Deprecated
 public class SubmitResultBean extends BaseBean {
 	private String examinationid;
 	private String status;

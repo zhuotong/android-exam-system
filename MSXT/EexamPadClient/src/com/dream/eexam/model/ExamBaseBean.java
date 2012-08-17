@@ -1,5 +1,6 @@
 package com.dream.eexam.model;
 
+@Deprecated
 public class ExamBaseBean extends BaseBean {
 	
 	private String id;

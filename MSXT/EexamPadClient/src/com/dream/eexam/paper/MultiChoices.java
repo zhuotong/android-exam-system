@@ -30,7 +30,8 @@ import android.widget.SeekBar;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.dream.eexam.base.R;
-import com.dream.eexam.model.Choice;
+import com.dream.eexam.server.DataUtil;
+import com.msxt.client.model.Examination.Choice;
 
 public class MultiChoices extends BaseQuestion {
 	
@@ -50,13 +51,10 @@ public class MultiChoices extends BaseQuestion {
 		remainingTimeLabel = (TextView)findViewById(R.id.remainingTimeLabel);
 		remainingTime = (TextView)findViewById(R.id.remainingTime);
 		submitTV = (TextView)findViewById(R.id.submitTV);
-		
 		imgDownArrow = (ImageView) findViewById(R.id.imgDownArrow);
-		
 		questionIndex = (TextView)findViewById(R.id.questionIndex);
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
 		pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);
-		
     	preBtn = (Button)findViewById(R.id.preBtn);
 		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
 		completedPercentage = (TextView)findViewById(R.id.completedPercentage);   	
@@ -83,9 +81,7 @@ public class MultiChoices extends BaseQuestion {
 			@Override
 			public void onClick(View v) {
 				Log.i(LOG_TAG, "submitTV.onClick()...");
-				
-		    	int waitQuestions = totalQuestions - answeredQuestions;
-				 
+		    	int waitQuestions = examQuestionSum - examAedQuestionSum;
 				if (waitQuestions> 0) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(MultiChoices.this);
 					builder.setMessage(String.valueOf(waitQuestions) + " question(s) are not answered, still submit?")
@@ -110,7 +106,7 @@ public class MultiChoices extends BaseQuestion {
 		});
 
         //set catalog bar(Left) 
-        String questionIndexDesc = "Question "+ String.valueOf(cQuestionIndex) +"/"+ String.valueOf(totalQuestions);
+        String questionIndexDesc = "Question "+ String.valueOf(cQuestionIndex) +"/"+ String.valueOf(examQuestionSum);
         questionIndex.setText(questionIndexDesc);
 		questionIndex.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -138,8 +134,7 @@ public class MultiChoices extends BaseQuestion {
 		});
 		
         //set catalog bar(Center) 
-		catalogsTV.setText(String.valueOf(cCatalogIndex)+". "+
-				detailBean.getCatalogDescByCid(cCatalogIndex) + 
+		catalogsTV.setText(String.valueOf(cCatalogIndex)+". " + cCatalog.getDesc() + 
 				"(Q" + String.valueOf(cQuestionIndex)+" - " + "Q" + String.valueOf(cQuestionIndex+queSumOfCCatalog-1)+")");
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -171,7 +166,6 @@ public class MultiChoices extends BaseQuestion {
 	
 	}
 	
-	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -181,18 +175,18 @@ public class MultiChoices extends BaseQuestion {
         loadComponents();
         setHeader();
 		
-        String questionHint = "Q "+String.valueOf(question.getIndex())+" (Score:"+String.valueOf(question.getScore())+")";
+        String questionHint = "Q "+String.valueOf(DataUtil.getQuestionExamIndex(exam, cQuestion.getId()))+" (Score:"+String.valueOf(cQuestion.getScore())+")";
         Log.i(LOG_TAG, "questionHint:"+questionHint);
 
         //set question text
         questionTV = (TextView)findViewById(R.id.questionTV);
         questionTV.setMovementMethod(ScrollingMovementMethod.getInstance()); 
-        questionTV.setText(questionHint+ "\n"+ question.getContent());
+        questionTV.setText(questionHint+ "\n"+ cQuestion.getContent());
         questionTV.setTextColor(Color.BLACK);	
         
         //set List
         listView = (ListView)findViewById(R.id.lvChoices);
-        adapter = new MyListAdapter(choices);
+        adapter = new MyListAdapter(cChoices);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new OnItemClickListener(){
         	@Override
@@ -208,7 +202,7 @@ public class MultiChoices extends BaseQuestion {
 				if(answerLabels.length()==0){
 					clearAnswer(mContext,cCatalogIndex,cQuestionIndex);
 				}else{
-					saveAnswer(mContext,cCatalogIndex,cQuestionIndex,question.getQuestionId(),answerLabels.toString());
+					saveAnswer(mContext,cCatalogIndex,cQuestionIndex,cQuestion.getId(),answerLabels.toString());
 				}
 			}      	
         });
@@ -224,10 +218,7 @@ public class MultiChoices extends BaseQuestion {
         
         //set GestureDetector
         detector = new GestureDetector((OnGestureListener) this);
-    
     }
-    
-    
     
     public void setFooter(){
     	//set preBtn
@@ -235,11 +226,11 @@ public class MultiChoices extends BaseQuestion {
 			@Override
 			public void onClick(View v) {
 				moveDirect = -1;
-				relocationQuestion();
+				move2NewQuestion();
 			}
 		});
 		//set completedSeekBar
-		int per = 100 * answeredQuestions/totalQuestions;
+		int per = 100 * examAedQuestionSum/examQuestionSum;
 		completedSeekBar.setThumb(null);
 		completedSeekBar.setProgress(per);
 		completedSeekBar.setEnabled(false);
@@ -250,7 +241,7 @@ public class MultiChoices extends BaseQuestion {
 			@Override
 			public void onClick(View v) {
 				moveDirect = 1;
-				relocationQuestion();
+				move2NewQuestion();
 			}
 		});
     }
@@ -269,17 +260,17 @@ public class MultiChoices extends BaseQuestion {
         if (e1.getX() - e2.getX() > verticalMinDistance && Math.abs(velocityX) > minVelocity) {
         	Log.i(LOG_TAG,"Move Left");
 			moveDirect = -1;
-			relocationQuestion();
+			move2NewQuestion();
         } else if (e2.getX() - e1.getX() > verticalMinDistance && Math.abs(velocityX) > minVelocity) {
         	Log.i(LOG_TAG,"Move Right");
 			moveDirect = 1;
-			relocationQuestion();
+			move2NewQuestion();
         }
 		return false;
 	}
 	
     //save answer if not empty 
-    public void relocationQuestion(){
+    public void move2NewQuestion(){
 		if (listItemID.size() == 0) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(MultiChoices.this);
 			builder.setMessage("Answer this question late?")
@@ -287,7 +278,7 @@ public class MultiChoices extends BaseQuestion {
 					.setPositiveButton("Yes",
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,int id) {
-									gotoNewQuestion(mContext,moveDirect);
+									gotoNewQuestion(mContext,cCatalogIndex,cQuestionIndex,moveDirect);
 								}
 							})
 					.setNegativeButton("Cancel",
@@ -298,49 +289,23 @@ public class MultiChoices extends BaseQuestion {
 							});
 			builder.show();
 		} else {
-			gotoNewQuestion(mContext,moveDirect);
+			gotoNewQuestion(mContext,cCatalogIndex,cQuestionIndex,moveDirect);
 		}
     }
     
-    //go to next or previous question
-/*    public void gotoNewQuestion(){
-    	Log.i(LOG_TAG, "gotoNewQuestion()...");
-		Question newQuestion = detailBean.getQuestionByQid(currentQuestionIndex+direction);
-		String newQuestionType = newQuestion.getQuestionType();
-		if(newQuestionType!=null){
-			//move question
-			Intent intent = new Intent();
-			intent.putExtra("ccIndex", String.valueOf(newQuestion.getCatalogIndex()));
-			intent.putExtra("cqIndex", String.valueOf(currentQuestionIndex+direction));
-			if(questionTypeM.equals(questionType)){
-				intent.putExtra("questionType", "Multi Select");
-				intent.setClass( getBaseContext(), MultiChoices.class);
-			}else if(questionTypeS.equals(questionType)){
-				intent.putExtra("questionType", "Single Select");
-				intent.setClass( getBaseContext(), SingleChoices.class);
-			}
-			finish();
-			startActivity(intent);
-		}else{
-			ShowDialog("Question index "+ String.valueOf(currentQuestionIndex+direction)+" not exist!");
-		}
-    }*/
- 
     public void setAnswer(){
     	Log.i(LOG_TAG, "setAnswer()...");
-    	
     	//get selection choice and assembly to string
 		for (int i = 0; i < adapter.mChecked.size(); i++) {
 			if (adapter.mChecked.get(i)) {
 				Choice choice = adapter.choices.get(i);
-				listItemID.add(String.valueOf(choice.getChoiceIndex()));
+				listItemID.add(String.valueOf(choice.getIndex()));
 				if(i>0){
 					answerLabels.append(",");
 				}
-				answerLabels.append(String.valueOf(choice.getChoiceLabel()));
+				answerLabels.append(String.valueOf(choice.getLabel()));
 			}
 		}
-		
 		Log.i(LOG_TAG, "setAnswer().");
     }
     
@@ -353,7 +318,7 @@ public class MultiChoices extends BaseQuestion {
     		this.choices = choices;
     		for(int i=0;i<choices.size();i++){
     			Choice choice = choices.get(i);
-				if (answerLabels.indexOf(String.valueOf(choice.getChoiceLabel())) != -1) {
+				if (answerLabels.indexOf(String.valueOf(choice.getLabel())) != -1) {
 					mChecked.add(true);
 				}else{
 					mChecked.add(false);
@@ -414,7 +379,7 @@ public class MultiChoices extends BaseQuestion {
 						if(answerLabels.length()==0){
 							clearAnswer(mContext,cCatalogIndex,cQuestionIndex);
 						}else{
-							saveAnswer(mContext,cCatalogIndex,cQuestionIndex,question.getQuestionId(),answerLabels.toString());
+							saveAnswer(mContext,cCatalogIndex,cQuestionIndex,cQuestion.getId(),answerLabels.toString());
 						}
 					}
 				});
@@ -430,8 +395,8 @@ public class MultiChoices extends BaseQuestion {
 			
 			holder.selected.setChecked(mChecked.get(position));
 			holder.selected.setText(choicesLabels[position]);
-			holder.index.setText(choice.getChoiceLabel());
-			holder.choiceDesc.setText(choice.getChoiceContent());
+			holder.index.setText(choice.getLabel());
+			holder.choiceDesc.setText(choice.getContent());
 			
 			return view;
 		}

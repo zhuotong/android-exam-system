@@ -4,36 +4,20 @@ import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
-
 import com.msxt.client.model.Examination;
 import com.msxt.client.model.Examination.Question;
 import com.msxt.client.model.LoginSuccessResult;
 import com.msxt.client.model.Examination.Catalog;
 import com.msxt.client.model.transfer.Message2ModelTransfer;
 import com.msxt.client.server.ServerProxy.Result;
-import com.msxt.client.server.ServerProxy.STATUS;
-import com.msxt.client.server.WebServerProxy;
 
 public class DataUtil {
-
-	public static void main(String args[]){
-		WebServerProxy proxy = new WebServerProxy("192.168.1.101",8080);
-		Result result = proxy.login("test", "test");
-		if(STATUS.SUCCESS.equals(result.getStatus())){
-			System.out.println(result.getSuccessMessage());
-		}else if(STATUS.ERROR.equals(result.getStatus())){
-			System.out.println(result.getErrorMessage());
-		}
-		
-	}
 	
 	/**
 	 * 
@@ -61,7 +45,12 @@ public class DataUtil {
 		return exam;
 	}
 	
-	public Examination getExam(FileInputStream is) {
+	/**
+	 * 
+	 * @param is
+	 * @return
+	 */
+	public static Examination getExam(FileInputStream is) {
 		DocumentBuilder db;
 //		ByteArrayInputStream is;
 		Document doc = null;
@@ -82,7 +71,12 @@ public class DataUtil {
 		return exam;
 	}
 	
-	public int getExamQuestionSum(Examination exam) {
+	/**
+	 * 
+	 * @param exam
+	 * @return
+	 */
+	public static int getExamQuestionSum(Examination exam) {
 		int sum = 0;
 		List<Catalog> catalogs = exam.getCatalogs();
 		for (Catalog catalog : catalogs) {
@@ -95,7 +89,14 @@ public class DataUtil {
 		return sum;
 	}
 	
-	public Question getQuestionByCidQid(Examination exam,int cid, int qid){
+	/**
+	 * 
+	 * @param exam
+	 * @param cid
+	 * @param qid
+	 * @return
+	 */
+	public static Question getQuestionByCidQid(Examination exam,int cid, int qid){
 		List<Catalog> catalogs = exam.getCatalogs();
 		for(Catalog catalog:catalogs){
 			if(catalog.getIndex() == cid){
@@ -110,61 +111,85 @@ public class DataUtil {
 		return null;
 	}
 	
-	public Question getNewQuestionByCidQid(Examination exam,int cid, int qid,int mvDirect){
-		
+	public static Question getNewQuestionByCidQid(Examination exam,int cid, int qid,int mvDirect){
 		List<Catalog> catalogs = exam.getCatalogs();
 		
-		int newcid;
-		int newqid;
-		
-	    if(qid == 1 && mvDirect == -1){
-			newcid = cid - 1;
-			if(newcid>0){
+		//go to previous question
+	    if(mvDirect == -1 && qid==1){
+	    	cid --;
+			if(cid>0){
 				for(Catalog catalog:catalogs){
-					if(catalog.getIndex() == newcid){
+					if(catalog.getIndex() == cid){
 						List<Question> questions = catalog.getQuestions();
 						return questions.get(questions.size()-1);
 					}
 				}
-			}else{
-				return null;//this is first question of exam
 			}
 		}
 	    
+	    //go to next question
 	    if(mvDirect == 1){
-	    	newcid = cid;
-	    	newqid = qid + 1;
-	    	Question newQuestion = null;	    	
 	    	for(Catalog catalog:catalogs){
-				if(catalog.getIndex() == newcid){
+				if(catalog.getIndex() == cid){
 					List<Question> questions = catalog.getQuestions();
 					int queSum = questions.size();
-					if(newqid > queSum){//this question is last one of current catalog will move to next catalog
-						newcid++;//go to next catalog
-						newqid = 1;
+					if(qid == queSum){//this question is last one of current catalog will move to next catalog
+						cid++;//go to next catalog
+						qid = 1;
 						continue;
-					}
-					
-					for(Question question:questions){
-						if(question.getIndex() == newqid){
-							return question;
+					}else{
+						for(Question question:questions){
+							if(question.getIndex() == qid){
+								return question;
+							}
 						}
 					}
-					
-					if(newqid==1){//this question is first one of current catalog will move to next catalog
-						newcid--;
-						continue;
-					}
 				}
-			}
+	    	}
 	    }
-		
-		
-		
 		return null;
 	}
 	
-
+	public static int getCidByQid(Examination exam,String qid){
+		List<Catalog> catalogs = exam.getCatalogs();
+		for(Catalog catalog:catalogs){
+			List<Question> questions = catalog.getQuestions();
+			for(Question question:questions){
+				if(question.getId().equals(qid)){
+					return catalog.getIndex();
+				}
+			}
+		}
+		return -1;
+	}
+	
+	public static int getQuestionExamIndex(Examination exam,String qid){
+		int index = 0;
+		List<Catalog> catalogs = exam.getCatalogs();
+		for(Catalog catalog:catalogs){
+			List<Question> questions = catalog.getQuestions();
+			for(Question question:questions){
+				index++;
+				if(question.getId().equals(qid)){
+					return catalog.getIndex();
+				}
+			}
+		}
+		return -1;
+	}
+	
+	public static Question getQuestionById(Examination exam,String qid){
+		List<Catalog> catalogs = exam.getCatalogs();
+		for(Catalog catalog:catalogs){
+			List<Question> questions = catalog.getQuestions();
+			for(Question question:questions){
+				if(question.getId().equals(qid)){
+					return question;
+				}
+			}
+		}
+		return null;
+	}
 	
 	
 	

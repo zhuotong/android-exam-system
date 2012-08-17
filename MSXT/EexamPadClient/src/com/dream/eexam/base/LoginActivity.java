@@ -1,8 +1,6 @@
 package com.dream.eexam.base;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 
 import com.dream.eexam.model.InterviewBean;
 import com.dream.eexam.util.SystemConfig;

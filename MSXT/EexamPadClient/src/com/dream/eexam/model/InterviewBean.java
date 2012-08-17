@@ -3,6 +3,7 @@ package com.dream.eexam.model;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class InterviewBean {
 	private String status;
 	private String conversation;

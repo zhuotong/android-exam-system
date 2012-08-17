@@ -23,7 +23,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import com.dream.eexam.base.R;
-import com.dream.eexam.model.Choice;
+import com.msxt.client.model.Examination.Choice;
 
 public class SingleChoices extends BaseQuestion {
 	
@@ -37,34 +37,33 @@ public class SingleChoices extends BaseQuestion {
 
 	public void loadComponents(){
 		homeTV = (TextView)findViewById(R.id.homeTV);
+		imgDownArrow = (ImageView) findViewById(R.id.imgDownArrow);
+		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
+		questionIndex = (TextView)findViewById(R.id.questionIndex);
+		
+		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
+		completedPercentage = (TextView)findViewById(R.id.completedPercentage);
+    	preBtn = (Button)findViewById(R.id.preBtn);
+    	pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);
 		remainingTimeLabel = (TextView)findViewById(R.id.remainingTimeLabel);
 		remainingTime = (TextView)findViewById(R.id.remainingTime);
 		submitTV = (TextView)findViewById(R.id.submitTV);
-		
-		imgDownArrow = (ImageView) findViewById(R.id.imgDownArrow);
-		
-		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
-		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
-		completedPercentage = (TextView)findViewById(R.id.completedPercentage);
-		pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);
-		
-    	preBtn = (Button)findViewById(R.id.preBtn);
-    	questionIndex = (TextView)findViewById(R.id.questionIndex);
     	nextBtn = (Button)findViewById(R.id.nextBtn);
+    	
 	}
 	
 	public void setHeader(){
 		//set exam header(Left)
 		homeTV.setText("Home");
 		//set exam header(Center)
-		remainingTime.setText(String.valueOf(detailBean.getTime())+" mins");
+		remainingTime.setText(String.valueOf(exam.getTime())+" mins");
 		//set exam header(Right)
 		submitTV.setText("Submit");
         submitTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Log.i(LOG_TAG, "submitTV.onClick()...");
-		    	int waitQuestions = totalQuestions - answeredQuestions;
+		    	int waitQuestions = examQuestionSum - examAedQuestionSum;
 				if (waitQuestions> 0) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(SingleChoices.this);
 					builder.setMessage(String.valueOf(waitQuestions) + " question(s) are not answered, still submit?")
@@ -89,7 +88,7 @@ public class SingleChoices extends BaseQuestion {
 		});
 
         //set catalog bar(Left) 
-        String questionIndexDesc = "Question "+ String.valueOf(cQuestionIndex) +"/"+ String.valueOf(totalQuestions);
+        String questionIndexDesc = "Question "+ String.valueOf(cQuestionIndex) +"/"+ String.valueOf(examQuestionSum);
         questionIndex.setText(questionIndexDesc);
 		questionIndex.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -111,8 +110,7 @@ public class SingleChoices extends BaseQuestion {
 		
 		
         //set catalog bar(Center) 
-		catalogsTV.setText(String.valueOf(cCatalogIndex)+". "+
-				detailBean.getCatalogDescByCid(cCatalogIndex) + 
+		catalogsTV.setText(String.valueOf(cCatalogIndex)+". "+ cCatalog.getDesc() + 
 				"(Q" + String.valueOf(cQuestionIndex)+" - " + "Q" + String.valueOf(cQuestionIndex+queSumOfCCatalog-1)+")");
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -159,17 +157,17 @@ public class SingleChoices extends BaseQuestion {
         loadComponents();
         setHeader();
         
-        String questionHint = "Q "+String.valueOf(question.getIndex())+" (Score:"+String.valueOf(question.getScore())+")";
+        String questionHint = "Q "+String.valueOf(cQuestion.getIndex())+" (Score:"+String.valueOf(cQuestion.getScore())+")";
         Log.i(LOG_TAG, "questionHint:"+questionHint);
     	
         //set question text
         questionTV = (TextView)findViewById(R.id.questionTV);
-        questionTV.setText(questionHint+ "\n"+question.getContent());
+        questionTV.setText(questionHint+ "\n"+cQuestion.getContent());
         questionTV.setTextColor(Color.BLACK);
         
         //set List
         listView = (ListView)findViewById(R.id.lvChoices);
-        adapter = new MyListAdapter(choices);
+        adapter = new MyListAdapter(cChoices);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new OnItemClickListener(){
         	@Override
@@ -193,7 +191,7 @@ public class SingleChoices extends BaseQuestion {
         		if(answerLabels.length()==0){
 					clearAnswer(mContext,cCatalogIndex,cQuestionIndex);
 				}else{
-					saveAnswer(mContext,cCatalogIndex,cQuestionIndex,question.getQuestionId(),answerLabels.toString());
+					saveAnswer(mContext,cCatalogIndex,cQuestionIndex,cQuestion.getId(),answerLabels.toString());
 				}
 			}      	
         });
@@ -207,7 +205,7 @@ public class SingleChoices extends BaseQuestion {
     	answerLabels.setLength(0);
     	
 		//initial all items background color
-		for(int i=0;i<choices.size();i++){
+		for(int i=0;i<cChoices.size();i++){
 			RadioButton aRb =(RadioButton)adapter.getView(i, null, null).findViewById(R.id.radioButton);
 			aRb.setChecked(false);
 			adapter.mChecked.set(i, false);
@@ -220,22 +218,7 @@ public class SingleChoices extends BaseQuestion {
     
     public void setAnswer(int location,boolean isChecked){
     	Log.i(LOG_TAG, "setAnswer()...");
-    	
-    	//get selection choice and assembly to string
-//		for (int i = 0; i < adapter.mChecked.size(); i++) {
-//			if (adapter.mChecked.get(i)) {
-//				
-//				Choice choice = adapter.choices.get(i);
-//				listItemID.add(String.valueOf(choice.getChoiceLabel()));
-//				
-//				if(i>0){
-//					answerString.append(",");
-//				}
-//				answerString.append(String.valueOf(choice.getChoiceLabel()));
-//			}
-			
-//		}
-    	String label = adapter.choices.get(location).getChoiceLabel();
+    	String label = adapter.choices.get(location).getLabel();
     	if(isChecked){
     		listItemID.add(label);
     		answerLabels.append(label);
@@ -243,15 +226,11 @@ public class SingleChoices extends BaseQuestion {
     		listItemID.clear();
     		answerLabels.setLength(0);
     	}
-    	
-		
 		Log.i(LOG_TAG, "answerString:"+answerLabels.toString());
-		
 		Log.i(LOG_TAG, "setAnswer().");
     }
     
     public void setFooter(){
-    	
     	//set preBtn
         preBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -261,7 +240,7 @@ public class SingleChoices extends BaseQuestion {
 			}
 		});
 		//set completedSeekBar
-		int per = 100 * answeredQuestions/totalQuestions;
+		int per = 100 * examAedQuestionSum/examQuestionSum;
 		completedSeekBar.setThumb(null);
 		completedSeekBar.setProgress(per);
 		completedSeekBar.setEnabled(false);
@@ -289,11 +268,11 @@ public class SingleChoices extends BaseQuestion {
 		for (int i = 0; i < adapter.mChecked.size(); i++) {
 			if (adapter.mChecked.get(i)) {
 				Choice choice = adapter.choices.get(i);
-				listItemID.add(String.valueOf(choice.getChoiceLabel()));
+				listItemID.add(String.valueOf(choice.getLabel()));
 				if(i>0){
 					answerLabels.append(",");
 				}
-				answerLabels.append(String.valueOf(choice.getChoiceLabel()));
+				answerLabels.append(String.valueOf(choice.getLabel()));
 			}
 		}
 		
@@ -305,7 +284,7 @@ public class SingleChoices extends BaseQuestion {
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,int id) {
 									clearAnswer(mContext,cCatalogIndex,cQuestionIndex);
-									gotoNewQuestion(mContext,moveDirect);
+									gotoNewQuestion(mContext,cCatalogIndex,cQuestionIndex,moveDirect);
 								}
 							})
 					.setNegativeButton("Cancel",
@@ -316,7 +295,7 @@ public class SingleChoices extends BaseQuestion {
 							});
 			builder.show();
 		} else {
-			gotoNewQuestion(mContext,moveDirect);
+			gotoNewQuestion(mContext,cCatalogIndex,cQuestionIndex,moveDirect);
 		}
 		
     }
@@ -327,13 +306,11 @@ public class SingleChoices extends BaseQuestion {
 		HashMap<Integer,View> map = new HashMap<Integer,View>(); 
     	
     	public MyListAdapter(List<Choice> choices){
-    		
     		Log.i(LOG_TAG,"MyListAdapter()...");
-    		
     		this.choices = choices;
 			for (int i = 0; i < choices.size(); i++) {
 				Choice choice = choices.get(i);
-				if (answerLabels.indexOf(String.valueOf(choice.getChoiceLabel())) != -1) {
+				if (answerLabels.indexOf(String.valueOf(choice.getLabel())) != -1) {
 					mChecked.add(true);
 					Log.i(LOG_TAG,String.valueOf(i)+":"+"true");
 				} else {
@@ -415,9 +392,8 @@ public class SingleChoices extends BaseQuestion {
 			Choice choice = choices.get(position);
 			holder.radioButton.setChecked(mChecked.get(position));
 			holder.radioButton.setText(choicesLabels[position]);
-			
-			holder.index.setText(choice.getChoiceLabel());
-			holder.choiceDesc.setText(choice.getChoiceContent());
+			holder.index.setText(choice.getLabel());
+			holder.choiceDesc.setText(choice.getContent());
 			
 			return view;
 		}

@@ -3,6 +3,7 @@ package com.dream.eexam.model;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class ExamDetailBean {
 	private String examinationid;
 	private String name;

@@ -3,6 +3,7 @@ package com.dream.eexam.model;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class PaperBean extends BaseBean {
 	
 	private String desc;

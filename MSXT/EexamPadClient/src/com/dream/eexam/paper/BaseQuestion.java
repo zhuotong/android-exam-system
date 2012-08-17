@@ -2,11 +2,9 @@ package com.dream.eexam.paper;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,14 +37,11 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.dream.eexam.base.BaseActivity;
 import com.dream.eexam.base.GroupAdapter;
 import com.dream.eexam.base.R;
-import com.dream.eexam.model.CatalogBean;
 import com.dream.eexam.model.CatalogInfo;
-import com.dream.eexam.model.ExamDetailBean;
 import com.dream.eexam.server.DataUtil;
+import com.dream.eexam.server.FileUtil;
 import com.dream.eexam.util.DatabaseUtil;
-import com.dream.eexam.util.SystemConfig;
 import com.dream.eexam.util.TimeDateUtil;
-import com.dream.eexam.util.XMLParseUtil;
 import com.msxt.client.model.Examination;
 import com.msxt.client.model.Examination.Catalog;
 import com.msxt.client.model.Examination.Choice;
@@ -61,14 +56,11 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	protected TextView remainingTimeLabel = null;//(Center 1)
 	protected TextView remainingTime = null;	//(Center 2)	
 	protected TextView submitTV = null;//(Right)
-	
 	protected ImageView imgDownArrow = null;
-	
 	//set catalog bar
 	protected TextView catalogsTV = null;
 	protected TextView currentTV = null;
 	protected TextView waitTV = null;
-
 	//set exam footer
 	protected SeekBar completedSeekBar= null;
 	protected TextView completedPercentage = null;
@@ -88,10 +80,15 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	protected Integer queSumOfCCatalog = 0;//question sum for current catalog
 	protected Integer aQueSumOfCCatalog = 0;//answered question sum for current catalog
 	
+	protected Context mContext;
+	
 	//page data
 	protected String cQuestionType;//current questionType
 	protected int cCatalogIndex;//current catalog index
 	protected int cQuestionIndex;//current question index
+	protected String examFileName = null;
+	protected String examFilePath = null;
+	protected int moveDirect = 0;
 	
 	//-------------exam data---------------
 	protected Examination exam;
@@ -103,15 +100,18 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	protected List<Choice> cChoices;
 	protected List<Question> pendQuestions = new ArrayList<Question>();
 	protected List<CatalogInfo> catalogNames = new ArrayList<CatalogInfo>();
+	protected TimerTask  timerTask;
+	protected Timer timer;
+	protected Integer lMinutes = 0;
+	protected Integer lSeconds = 0;
 	
     public void loadExamWithLocalFile(){
-    	DataUtil util = new DataUtil();
-    	FileInputStream inputStream = getExamStream();
-    	exam = util.getExam(inputStream);
-    	examQuestionSum = util.getExamQuestionSum(exam);
+    	FileInputStream examStream = FileUtil.getExamStream(examFileName, examFilePath);
+    	exam = DataUtil.getExam(examStream);
+    	examQuestionSum = DataUtil.getExamQuestionSum(exam);
     	cataLogs = exam.getCatalogs();
     	cCatalog = cataLogs.get(cCatalogIndex-1);
-    	cQuestion = util.getQuestionByCidQid(exam, cCatalogIndex, cQuestionIndex);
+    	cQuestion = DataUtil.getQuestionByCidQid(exam, cCatalogIndex, cQuestionIndex);
     	cChoices = cQuestion.getChoices();
     	
     	//load pending questions
@@ -147,7 +147,6 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 			List<Question> qList = catalog.getQuestions();
 			Integer totalQuestions = qList.size();
 			Integer fQuestionIndex = null;
-			
 			if(totalQuestions>0){
 				Question fQuestion = qList.get(0);
 				fQuestionIndex = fQuestion.getIndex();
@@ -157,30 +156,9 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		
 		cursor.close();
 		catalogCursor.close();
-		
 		dbUtil.close();
     	
     }
-	
-//	protected ExamDetailBean detailBean;//paperBean
-//	protected List<Question> pendQuestions = new ArrayList<Question>();
-//	protected Question question;
-//	protected List<Choice> choices;
-//	protected Integer totalQuestions;
-//	protected Integer answeredQuestions;
-//	protected List<CatalogBean> cataLogList = new ArrayList<CatalogBean>();//cataLogList
-//	protected List<CatalogInfo> catalogNames = new ArrayList<CatalogInfo>();//catalog names
-	protected Integer moveDirect = 0;//move direction(1 move next, 0 move previous)
-	protected Context mContext;
-	protected String downloadExamFile = null;
-	protected String downloadExamFilePath = null;
-//	protected String questionTypeM;
-//	protected String questionTypeS;
-	
-	protected TimerTask  timerTask;
-	protected Timer timer;
-	protected Integer lMinutes = 0;
-	protected Integer lSeconds = 0;
 	
     public void loadLocalAnswerIfExist(int cid,int qid){
     	Log.i(LOG_TAG, "loadAnswer()...");
@@ -217,14 +195,16 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
     	Log.i(LOG_TAG, "end loadAnswer().");
     }
     
-
-	   
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		questionTypes = getResources().getStringArray(R.array.question_types);
 		choicesLabels = getResources().getStringArray(R.array.display_choice_label);
+		
+		//set file home and file
+		examFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + getResources().getString(R.string.app_file_home);
+		examFileName = getResources().getString(R.string.exam_file_name);
 		
 		Bundle bundle = this.getIntent().getExtras();
 		this.cQuestionType  = bundle.getString("questionType");
@@ -234,91 +214,8 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		//load old data from database
 		loadLocalAnswerIfExist(cCatalogIndex,cQuestionIndex);
 		
-		//save catalog and question cursor to local SharedPreferences
-		saveccIndexcqIndex(cCatalogIndex,cQuestionIndex);
-		
+		//load exam with local file
 		loadExamWithLocalFile();
-		
-		try {
-//	    	FileInputStream inputStream = getExamStream();
-//	    	detailBean = XMLParseUtil.readExamination(inputStream);
-	    	//set catalog list
-//	    	cataLogList = detailBean.getCatalogs();
-//	    	//set catalog questionSize
-//			if(cataLogList!=null&&cataLogList.size()>0){
-//				CatalogBean bean = cataLogList.get(cCatalogIndex-1);
-//			    queSumOfCCatalog = bean.getQuestions().size();
-//			    Log.i(LOG_TAG,"questionSize:"+ String.valueOf(queSumOfCCatalog));
-//			}
-//			//set question
-//			question = detailBean.getQuestionByQid(cQuestionIndex);
-//			choices = question.getChoices();
-//			totalQuestions = detailBean.getTotalQuestions();
-//	        
-//	        //if confusue set to true, system will sort choices random
-//	        if("true".equals(detailBean.getConfuse())){
-//	        	Collections.shuffle(choices);
-//	        }
-
-			//load pending questions
-//	    	DatabaseUtil dbUtil = new DatabaseUtil(this);
-//	    	dbUtil.open();
-//	    	Cursor cursor = null;
-//			if(cataLogList!=null&&cataLogList.size()>0){
-//				for(CatalogBean catalogBean: cataLogList){
-//					List<Question> questions = catalogBean.getQuestions();
-//					for(Question question: questions){
-//						cursor = dbUtil.fetchAnswer(catalogBean.getIndex(),question.getIndex());
-//						if(cursor.moveToNext()){
-//							continue;
-//						}
-//						question.setCatalogIndex(catalogBean.getIndex());
-//						pendQuestions.add(question);
-//					}
-//				}
-//			}
-//			cursor.close();
-//			dbUtil.close();
-			
-		} catch (Exception e) {
-			Log.i(LOG_TAG,e.getMessage());
-		}
-		
-		DatabaseUtil dbUtil = new DatabaseUtil(this);
-		dbUtil.open();
-		//-------------------get data-----------------------
-/*		Cursor cursor;
-		int answeredCatalogQs;
-		//set groups
-		for(CatalogBean catalogBean: cataLogList){
-			cursor = dbUtil.fetchAnswer(catalogBean.getIndex());
-			answeredCatalogQs = 0;
-			while(cursor.moveToNext()){
-				Integer qid = cursor.getInt(1);
-				String answers = cursor.getString(2);
-				if(qid!=null && answers!= null && answers.length()>0){
-					answeredCatalogQs++;
-				}
-			}
-			cursor.close();
-			
-			List<Question> qList = catalogBean.getQuestions();
-			Integer totalQuestions = qList.size();
-			Integer fQuestionIndex = null;
-			if(totalQuestions>0){
-				Question fQuestion = qList.get(0);
-				fQuestionIndex = fQuestion.getIndex();
-			}
-			
-			catalogNames.add(new CatalogInfo(catalogBean.getIndex(),catalogBean.getDesc(),fQuestionIndex,totalQuestions,answeredCatalogQs));
-		}*/
-		
-//		//get answered questions
-//		answeredQuestions = dbUtil.fetchAllAnswersCount();
-//    	Log.i(LOG_TAG, "answeredQuestions:" + String.valueOf(answeredQuestions));	
-//    	
-//    	//close db
-//		dbUtil.close();
 		
 		//set time task to set count down time 
 		timerTask = new TimerTask() {
@@ -334,6 +231,9 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		
 		//set load count down time(MM:SS)
 		setLoadCDTime();
+		
+		//save catalog and question cursor to local SharedPreferences
+		saveccIndexcqIndex(cCatalogIndex,cQuestionIndex);
 		
 	}
 	
@@ -408,21 +308,22 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	}
 
     //go to new question page
-    public void gotoNewQuestion(Context context, Integer diret){
+    public void gotoNewQuestion(Context context,int cid, int qid, int diret){
     	Log.i(LOG_TAG, "gotoNewQuestion()...");
-		Question newQuestion = detailBean.getQuestionByQid(cQuestionIndex+diret);
+		Question newQuestion = DataUtil.getNewQuestionByCidQid(exam, cid, qid,diret);
+		
 		if(newQuestion!=null){
-			String newQuestionType = newQuestion.getQuestionType();
+			String newQuestionType = newQuestion.getType();
 			if(newQuestionType!=null){
 				//move question
 				Intent intent = new Intent();
-				intent.putExtra("ccIndex", String.valueOf(newQuestion.getCatalogIndex()));
-				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex+diret));
+				intent.putExtra("ccIndex",String.valueOf(DataUtil.getCidByQid(exam, newQuestion.getId())));
+				intent.putExtra("cqIndex",String.valueOf(newQuestion.getIndex()));
+				intent.putExtra("questionType", newQuestionType);
+				
 				if(questionTypes[0].equals(newQuestionType)){
-					intent.putExtra("questionType", "Multi Select");
 					intent.setClass( context, MultiChoices.class);
 				}else if(questionTypes[1].equals(newQuestionType)){
-					intent.putExtra("questionType", "Single Select");
 					intent.setClass( context, SingleChoices.class);
 				}
 				finish();
@@ -437,7 +338,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		}
 
     }
-    
+
     public void getAllAnswers(){
     	Log.w(LOG_TAG, "getAllAnswers()...");
     	Map<String, String> answers = new HashMap<String,String>();
@@ -455,47 +356,21 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		}
     	cursor.close();
     	dbUtil.close();
-    	
     	Log.w(LOG_TAG, "getAllAnswers().");
     }
     
-	public void submitAnswer(){
-		getAllAnswers();
-		Log.w(LOG_TAG, "submitAnswer()...");
-		ShowDialog("Submit Success!");
-		
-	}
-	/**
-	 * 
-	 * @return
-	 */
-	public FileInputStream getExamStream(){
-		downloadExamFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + "eExam";
-		downloadExamFile = SystemConfig.getInstance().getPropertyValue("Download_Exam");
-		FileInputStream inputStream = null;
-		try {
-			inputStream = new FileInputStream(new File(downloadExamFilePath+ File.separator+downloadExamFile));
-		} catch (FileNotFoundException e) {
-			Log.i(LOG_TAG,e.getMessage());
-		}
-		return inputStream;
-	}
-	
     public void clearAnswer(Context context,Integer cid,Integer qid){
     	Log.i(LOG_TAG, "clearAnswer()...");
-    	
     	Log.i(LOG_TAG, "(cid="+String.valueOf(cid)+",qid="+String.valueOf(qid)+")");
     	DatabaseUtil dbUtil = new DatabaseUtil(this);
     	dbUtil.open();
     	dbUtil.deleteAnswer(cid,qid);
     	dbUtil.close();
-    	
     	Log.i(LOG_TAG, "end clearAnswer().");
     }
 	
 	public void saveAnswer(Context context,Integer cid,Integer qid,String qidStr,String answers){
     	Log.i(LOG_TAG, "saveAnswer()...");
-    	
     	DatabaseUtil dbUtil = new DatabaseUtil(context);
     	dbUtil.open();
     	Cursor cursor = dbUtil.fetchAnswer(cid,qid);
@@ -507,10 +382,15 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
     		dbUtil.createAnswer(cid,qid,qidStr,answers);
     	}
     	dbUtil.close();
-    	
     	Log.i(LOG_TAG, "saveAnswer().");
     }
 
+	public void submitAnswer(){
+		getAllAnswers();
+		Log.w(LOG_TAG, "submitAnswer()...");
+		ShowDialog("Submit Success!");
+	}
+	
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
@@ -597,10 +477,10 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 				}
 				
 				CatalogInfo info = catalogNames.get(position);
-				Question nQuestion = detailBean.getFirstQuestionByCid(info.getIndex());
-				String nQuestionType = nQuestion.getQuestionType();
+				Question nQuestion = DataUtil.getQuestionByCidQid(exam, info.getIndex(),1);
+				String nQuestionType = nQuestion.getType();
 				Intent intent = new Intent();
-				intent.putExtra("ccIndex", String.valueOf(nQuestion.getCatalogIndex()));
+				intent.putExtra("ccIndex", String.valueOf(info.getIndex()));
 				intent.putExtra("cqIndex", String.valueOf(nQuestion.getIndex()));
 				if(questionTypes[0].equals(nQuestionType)){
 					intent.putExtra("questionType", "Multi Select");
@@ -613,7 +493,6 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 				}
 				finish();
 				startActivity(intent);
-				
 			}
 		});
 	}

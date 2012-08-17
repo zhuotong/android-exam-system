@@ -3,6 +3,7 @@ package com.dream.eexam.model;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class LoginResultBean extends BaseBean {
 	private String status;
 	private String message;

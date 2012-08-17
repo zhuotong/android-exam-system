@@ -20,8 +20,9 @@ import android.widget.GridView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.dream.eexam.base.R;
-import com.dream.eexam.model.Question;
+import com.dream.eexam.server.DataUtil;
 import com.dream.eexam.util.TimeDateUtil;
+import com.msxt.client.model.Examination.Question;
 
 public class PendQuestions extends BaseQuestion {
 	
@@ -30,8 +31,8 @@ public class PendQuestions extends BaseQuestion {
 	GridView gridList;
 	
     String qType = null;
-    Integer cid = null;
-    Integer qid = null;
+//    Integer cid = null;
+    String qid = null;
 	
 	Button preBtn;
 	TextView questionIndex;
@@ -64,7 +65,7 @@ public class PendQuestions extends BaseQuestion {
 		
 		//set exam header(Center)
 		remainingTimeLabel.setText("Time Remaining: ");
-		remainingTime.setText(String.valueOf(detailBean.getTime())+" mins");
+		remainingTime.setText(String.valueOf(exam.getTime())+" mins");
 		
 		//set exam header(Right)
 		submitTV.setText("Submit");
@@ -73,7 +74,7 @@ public class PendQuestions extends BaseQuestion {
 			public void onClick(View v) {
 				Log.i(LOG_TAG, "submitTV.onClick()...");
 				
-		    	int waitQuestions = totalQuestions - answeredQuestions;
+		    	int waitQuestions = examQuestionSum - examAedQuestionSum;
 				 
 				if (waitQuestions> 0) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(PendQuestions.this);
@@ -99,7 +100,7 @@ public class PendQuestions extends BaseQuestion {
 		});
 
         //set catalog bar(Left) 
-        String questionIndexDesc = "Question "+ String.valueOf(cQuestionIndex) +"/"+ String.valueOf(totalQuestions);
+        String questionIndexDesc = "Question "+ String.valueOf(cQuestionIndex) +"/"+ String.valueOf(examQuestionSum);
         questionIndex.setText(questionIndexDesc);
 		questionIndex.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -122,7 +123,7 @@ public class PendQuestions extends BaseQuestion {
         //set catalog bar(Center) 
         //set catalog bar(Center) 
 		catalogsTV.setText(String.valueOf(cCatalogIndex)+". "+
-				detailBean.getCatalogDescByCid(cCatalogIndex) + 
+				cCatalog.getDesc() + 
 				"(Q" + String.valueOf(cQuestionIndex)+" - " + "Q" + String.valueOf(cQuestionIndex+queSumOfCCatalog-1)+")");
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -183,12 +184,12 @@ public class PendQuestions extends BaseQuestion {
 			@Override
 			public void onClick(View v) {
 				moveDirect = -1;
-				gotoNewQuestion(mContext,moveDirect);
+				gotoNewQuestion(mContext,cCatalogIndex,cQuestionIndex,moveDirect);
 			}
 		});
         
 		//set completedSeekBar
-		int per = 100 * answeredQuestions/totalQuestions;
+		int per = 100 * examAedQuestionSum/examQuestionSum;
 		completedSeekBar.setThumb(null);
 		completedSeekBar.setProgress(per);
 		completedSeekBar.setEnabled(false);
@@ -199,16 +200,16 @@ public class PendQuestions extends BaseQuestion {
 			@Override
 			public void onClick(View v) {
 				moveDirect = 1;
-				gotoNewQuestion(mContext,moveDirect);
+				gotoNewQuestion(mContext,cCatalogIndex,cQuestionIndex,moveDirect);
 			}
 		});
     }
     
-    //go to next or previous question
+/*    //go to next or previous question
     public void gotoNewQuestion(){
     	Log.i(LOG_TAG, "gotoNewQuestion()...");
 		
-		Question newQuestion = detailBean.getQuestionByQid(cQuestionIndex+moveDirect);
+		Question newQuestion = exam.getQuestionByQid(cQuestionIndex+moveDirect);
 		String newQuestionType = newQuestion.getQuestionType();
 		if(newQuestionType!=null){
 			//move question
@@ -227,7 +228,7 @@ public class PendQuestions extends BaseQuestion {
 		}else{
 			ShowDialog("Please Change Catalog!");
 		}
-    }
+    }*/
     
     class MyListAdapter extends BaseAdapter{
     	List<Question> questions = new ArrayList<Question>();
@@ -268,9 +269,9 @@ public class PendQuestions extends BaseQuestion {
             }  
             
             Question question = questions.get(position);
-            qType = question.getQuestionType();
-            cid = question.getCatalogIndex();
-            qid = question.getIndex();
+            qType = question.getType();
+//            cid = question.ge);
+            qid = question.getId();
             
             holder.questionBtn.setText(String.valueOf(question.getIndex()));  
             holder.questionBtn.setOnClickListener(new Button.OnClickListener() {
@@ -280,11 +281,11 @@ public class PendQuestions extends BaseQuestion {
     				Button sButton = (Button)v;
 //    	            String[] cidAndQids = sButton.getText().toString().split(",");
     	            String qid = sButton.getText().toString();
-    	            Question nQuestion = detailBean.getQuestionByQid(Integer.valueOf(qid));
+    	            Question nQuestion = DataUtil.getQuestionById(exam, qid);
     	            
     				//move question
     				Intent intent = new Intent();
-    				intent.putExtra("ccIndex", String.valueOf(nQuestion.getCatalogIndex()));
+    				intent.putExtra("ccIndex", DataUtil.getCidByQid(exam, qid));
     				intent.putExtra("cqIndex", String.valueOf(nQuestion.getIndex()));
     				
     				if(questionTypes[0].equals(qType)){

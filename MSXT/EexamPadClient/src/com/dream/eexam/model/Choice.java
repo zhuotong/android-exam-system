@@ -1,5 +1,6 @@
 package com.dream.eexam.model;
 
+@Deprecated
 public class Choice {
 	private Integer choiceIndex;
 	private String choiceLabel;

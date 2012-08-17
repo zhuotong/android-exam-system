@@ -1,5 +1,6 @@
 package com.dream.eexam.model;
 
+@Deprecated
 public class Paper {
 	private String index;
 	private String id;

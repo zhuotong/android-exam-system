@@ -3,6 +3,7 @@ package com.dream.eexam.model;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class ExamProgress {
 	private Integer catalogIndex;
 	private Integer questionIndex;
