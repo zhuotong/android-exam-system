@@ -237,11 +237,20 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		
 	}
 	
-	Handler handler = new Handler(){
-		public void handleMessage(Message msg) {
-			setCountDownTime();
-		}
-	};
+	protected void setLoadCDTime(){
+		long currentTime = Calendar.getInstance().getTimeInMillis();
+		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
+		long starttime = sharedPreferences.getLong("starttime", 0);
+		long cosumeTime = (currentTime - starttime)/1000;//second
+	    long examTime = exam.getTime() * 60;//second
+	    if(cosumeTime>examTime){
+	    	ShowDialog("Exam Time Out!");
+	    }else{
+	    	long leftTime = examTime - cosumeTime;
+	    	lMinutes = Integer.valueOf((int)(leftTime/60));
+	    	lSeconds = Integer.valueOf((int)(leftTime - lMinutes * 60));
+	    }
+	}
 	
 	protected void setCountDownTime() {
 		String currentTimeString = TimeDateUtil.getCurrentTime();
@@ -291,22 +300,13 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 			}
 		}
 	}
-	
-	protected  void setLoadCDTime(){
-		long currentTime = Calendar.getInstance().getTimeInMillis();
-		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
-		long starttime = sharedPreferences.getLong("starttime", 0);
-		long cosumeTime = (currentTime - starttime)/1000;//second
-	    long examTime = exam.getTime() * 60;//second
-	    if(cosumeTime>examTime){
-	    	ShowDialog("Exam Time Out!");
-	    }else{
-	    	long leftTime = examTime - cosumeTime;
-	    	lMinutes = Integer.valueOf((int)(leftTime/60));
-	    	lSeconds = Integer.valueOf((int)(leftTime - lMinutes * 60));
-	    }
-	}
 
+	Handler handler = new Handler(){
+		public void handleMessage(Message msg) {
+			setCountDownTime();
+		}
+	};
+	
     //go to new question page
     public void gotoNewQuestion(Context context,int cid, int qid, int diret){
     	Log.i(LOG_TAG, "gotoNewQuestion()...");
@@ -427,7 +427,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		super.onStop();
 	}
 
-	
+	//----------------------------------define popupWindow-----------------------------
 	protected PopupWindow popupWindow;
 	protected ListView lv_group;
 	protected Integer pressedItemIndex = -1;
@@ -497,7 +497,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		});
 	}
 
-	//----------------------------------------------------------------------
+	//----------------------------------define fling move------------------------------------
 	GestureDetector detector = null;
 	protected int verticalMinDistance = 5;
 	protected int horizontalMinDistance = 5;

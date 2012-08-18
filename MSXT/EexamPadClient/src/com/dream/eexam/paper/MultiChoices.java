@@ -246,29 +246,6 @@ public class MultiChoices extends BaseQuestion {
 		});
     }
     
-	@Override
-	public boolean onTouch(View v, MotionEvent event) {
-		super.onTouch(v,event);
-		return detector.onTouchEvent(event);
-	}
-	
-	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-			float velocityY) {
-		super.onFling(e1,e2,velocityX,velocityY);
-		Log.i(LOG_TAG, "onFling()...");	
-        if (e1.getX() - e2.getX() > verticalMinDistance && Math.abs(velocityX) > minVelocity) {
-        	Log.i(LOG_TAG,"Move Left");
-			moveDirect = -1;
-			move2NewQuestion();
-        } else if (e2.getX() - e1.getX() > verticalMinDistance && Math.abs(velocityX) > minVelocity) {
-        	Log.i(LOG_TAG,"Move Right");
-			moveDirect = 1;
-			move2NewQuestion();
-        }
-		return false;
-	}
-	
     //save answer if not empty 
     public void move2NewQuestion(){
 		if (listItemID.size() == 0) {
@@ -292,6 +269,29 @@ public class MultiChoices extends BaseQuestion {
 			gotoNewQuestion(mContext,cCatalogIndex,cQuestionIndex,moveDirect);
 		}
     }
+    
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		super.onTouch(v,event);
+		return detector.onTouchEvent(event);
+	}
+	
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+			float velocityY) {
+		super.onFling(e1,e2,velocityX,velocityY);
+		Log.i(LOG_TAG, "onFling()...");	
+        if (e1.getX() - e2.getX() > verticalMinDistance && Math.abs(velocityX) > minVelocity) {
+        	Log.i(LOG_TAG,"Move Left");
+			moveDirect = -1;
+			move2NewQuestion();
+        } else if (e2.getX() - e1.getX() > verticalMinDistance && Math.abs(velocityX) > minVelocity) {
+        	Log.i(LOG_TAG,"Move Right");
+			moveDirect = 1;
+			move2NewQuestion();
+        }
+		return false;
+	}
     
     public void setAnswer(){
     	Log.i(LOG_TAG, "setAnswer()...");
