@@ -2,6 +2,7 @@ package com.dream.eexam.base;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import com.dream.eexam.model.ExamBaseBean;
@@ -14,6 +15,8 @@ import com.dream.eexam.util.SystemConfig;
 import com.dream.eexam.util.XMLParseUtil;
 import com.msxt.client.model.Examination;
 import com.msxt.client.model.Examination.Question;
+import com.msxt.client.model.LoginSuccessResult;
+import com.msxt.client.server.ServerProxy;
 import com.msxt.client.server.WebServerProxy;
 import com.msxt.client.server.ServerProxy.Result;
 import com.msxt.client.server.ServerProxy.STATUS;
@@ -35,7 +38,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 public class ExamListActivity extends BaseActivity {
-	private static final String LOG_TAG = "PapersActivity";
+	private static final String LOG_TAG = "ExamListActivity";
 
 	//declare components
 	private TextView nameTV = null;
@@ -49,8 +52,11 @@ public class ExamListActivity extends BaseActivity {
 	private Button clearBtn;
 	
 	//data
-	LoginResultBean loginResultBean = new LoginResultBean();
-	List<ExamBaseBean> examList = null;
+//	LoginResultBean loginResultBean = new LoginResultBean();
+//	List<ExamBaseBean> examList = null;
+	
+	LoginSuccessResult succResult = new LoginSuccessResult();
+	
 	String conversation = null;
 	String[] exams = null;
 	ArrayAdapter<String> adapter;
@@ -63,19 +69,12 @@ public class ExamListActivity extends BaseActivity {
 	String fQuestionType = null;
 	String[] questionTypes;
 	
-//	String questionTypeS = null;
-//	String questionTypeM = null;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.i(LOG_TAG,"onCreate()...");
 		mContext = getApplicationContext();
-		
 		setContentView(R.layout.exam_list);
-		
-//		questionTypeM = SystemConfig.getInstance().getPropertyValue("Question_Type_Multi_Select");
-//		questionTypeS = SystemConfig.getInstance().getPropertyValue("Question_Type_Single_Select");
 		
 		questionTypes = getResources().getStringArray(R.array.question_types);
 		
@@ -86,13 +85,14 @@ public class ExamListActivity extends BaseActivity {
 		
 		try {
 	    	FileInputStream inputStream = new FileInputStream(new File(loginResultFilePath+ File.separator+loginResultFile));
-	    	loginResultBean = XMLParseUtil.readLoginResult(inputStream);
+//	    	loginResultBean = XMLParseUtil.readLoginResult(inputStream);
+	    	succResult = DataUtil.getSuccessResult(inputStream);
 	    	
 		} catch (Exception e) {
 			Log.i(LOG_TAG,e.getMessage());
 		}
 		
-		conversation = loginResultBean.getConversation();
+/*		conversation = loginResultBean.getConversation();
 		examList = loginResultBean.getExamList();
 		if(examList!=null&&examList.size()>0){
 			exams = new String[examList.size()];
@@ -101,13 +101,23 @@ public class ExamListActivity extends BaseActivity {
 			}
 		}else{
 			exams = new String[0];
-		}
+		}*/
+		
+/*		List<com.msxt.client.model.LoginSuccessResult.Examination> examinations = succResult.getExaminations();
+		if(examinations!=null&&examinations.size()>0){
+			exams = new String[examinations.size()];
+			for(int i=0;i<examinations.size();i++){
+				exams[i] = examinations.get(i).getName();
+			}
+		}else{
+			exams = new String[0];
+		}*/
 		
 		nameTV = (TextView) this.findViewById(R.id.nameTV);
-		nameTV.setText(loginResultBean.getInterviewer());
+		nameTV.setText(succResult.getInterviewer());
 		
 		jobTitleTV = (TextView) this.findViewById(R.id.jobTitleTV);
-		jobTitleTV.setText(loginResultBean.getJobtitle());
+		jobTitleTV.setText(succResult.getJobtitle());
 		
 		spinner = (Spinner) findViewById(R.id.Spinner01);
 		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,exams);
@@ -128,8 +138,9 @@ public class ExamListActivity extends BaseActivity {
 				downloadExamFile = SystemConfig.getInstance().getPropertyValue("Download_Exam");
 	        	downloadExamFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + "eExam";
 	        	
+//	        	ServerProxy proxy =  WebServerProxy.Factroy.getCurrrentInstance();
 //				Log.i(LOG_TAG,"downloadURL:"+downloadURL);
-	        	new DownloadExamTask().execute(loginResultBean.getConversation(),examIdString);
+	        	new DownloadExamTask().execute(examIdString);
 			}			
 		});
 		
@@ -157,9 +168,13 @@ public class ExamListActivity extends BaseActivity {
 			Log.i(LOG_TAG,"onItemSelected()...");
 			Log.i(LOG_TAG,"arg2="+String.valueOf(arg2));
 			
-			ExamBaseBean examBaseBean = loginResultBean.getExamList().get(arg2);
-			examDesc.setText(examBaseBean.getDesc());
-			examIdString = examBaseBean.getId();
+//			ExamBaseBean examBaseBean = loginResultBean.getExamList().get(arg2);
+			
+			List<com.msxt.client.model.LoginSuccessResult.Examination> exams = succResult.getExaminations();
+			com.msxt.client.model.LoginSuccessResult.Examination exam = exams.get(arg2);
+			
+			examDesc.setText(exam.getDesc());
+			examIdString = exam.getId();
 			
 			Log.i(LOG_TAG, "examIdString:"+examIdString);
 			
@@ -185,10 +200,12 @@ public class ExamListActivity extends BaseActivity {
 //	    	InputStream inputStream = downloadUrl(urls[0]);//get inputStream from server
 //	    	InputStream inputStream = LoginActivity.class.getClassLoader().getResourceAsStream(downloadExamFile);
 	    	
-        	WebServerProxy proxy = new WebServerProxy(mContext.getResources().getString(R.string.host),
-        			Integer.valueOf(mContext.getResources().getString(R.string.port)));
-        	proxy.setConversationId(urls[0]);
-        	examResult = proxy.getExam(urls[1]);
+//        	WebServerProxy proxy = new WebServerProxy(mContext.getResources().getString(R.string.host),
+//        			Integer.valueOf(mContext.getResources().getString(R.string.port)));
+//        	proxy.setConversationId(urls[0]);
+        	
+        	ServerProxy proxy =  WebServerProxy.Factroy.getCurrrentInstance();
+        	examResult = proxy.getExam(urls[0]);
         	
     		if(STATUS.SUCCESS.equals(examResult.getStatus())){
     			saveFile(downloadExamFilePath, downloadExamFile, examResult.getSuccessMessage());

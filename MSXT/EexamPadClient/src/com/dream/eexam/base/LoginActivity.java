@@ -4,6 +4,7 @@ import java.io.File;
 
 import com.dream.eexam.model.InterviewBean;
 import com.dream.eexam.util.SystemConfig;
+import com.msxt.client.server.ServerProxy;
 import com.msxt.client.server.WebServerProxy;
 import com.msxt.client.server.ServerProxy.Result;
 import com.msxt.client.server.ServerProxy.STATUS;
@@ -80,7 +81,12 @@ public class LoginActivity extends BaseActivity {
 //        	loginURL = SystemConfig.getInstance().getPropertyValue("Login_URL")+"loginName="+id+"&loginPassword="+password;
         	loginResultFile = SystemConfig.getInstance().getPropertyValue("Login_Result");
         	loginResultFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + "eExam";
-        	new DownloadXmlTask().execute(new String[]{id,password});
+        	if (getWifiIP() != null && getWifiIP().trim().length() > 0 && !getWifiIP().trim().equals("0.0.0.0")){
+        		new DownloadXmlTask().execute(new String[]{id,password});
+        	}else{
+        		ShowDialog("Your mobile is not in a available NetWork!");
+        	}
+        	
         }  
     };
     
@@ -111,8 +117,11 @@ public class LoginActivity extends BaseActivity {
         		loginResult = new Result();
         		loginResult.setStatus(STATUS.ERROR);
         	}*/
-        	WebServerProxy proxy = new WebServerProxy(mContext.getResources().getString(R.string.host),
-        			Integer.valueOf(mContext.getResources().getString(R.string.port)));
+        	String host = mContext.getResources().getString(R.string.host);
+        	Integer port = Integer.valueOf(mContext.getResources().getString(R.string.port));
+        	ServerProxy proxy = new WebServerProxy(host,port);
+//        	ServerProxy proxy =  WebServerProxy.Factroy.createInstance(host, port);
+        	
     		loginResult = proxy.login(urls[0], urls[1]);
     		if(STATUS.SUCCESS.equals(loginResult.getStatus())){
     			saveFile(loginResultFilePath, loginResultFile, loginResult.getSuccessMessage());

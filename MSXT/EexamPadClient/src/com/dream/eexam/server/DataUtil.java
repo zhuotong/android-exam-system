@@ -18,7 +18,51 @@ import com.msxt.client.model.transfer.Message2ModelTransfer;
 import com.msxt.client.server.ServerProxy.Result;
 
 public class DataUtil {
+
 	
+	public static LoginSuccessResult getSuccessResult(Result result) {
+		DocumentBuilder db;
+		ByteArrayInputStream is;
+		Document doc = null;
+		try {
+			db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			is = new ByteArrayInputStream(result.getSuccessMessage().getBytes());
+			doc = db.parse(is);
+			is.close();
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Element root = doc.getDocumentElement();
+		LoginSuccessResult logiSuccResult = Message2ModelTransfer.Factory.getInstance().parseResult(root);
+		
+		return logiSuccResult;
+	}
+	
+	public static LoginSuccessResult getSuccessResult(FileInputStream is) {
+		DocumentBuilder db;
+//		ByteArrayInputStream is;
+		Document doc = null;
+		try {
+			db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+//			is = new ByteArrayInputStream(result.getSuccessMessage().getBytes());
+			doc = db.parse(is);
+			is.close();
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Element root = doc.getDocumentElement();
+		LoginSuccessResult logiSuccResult = Message2ModelTransfer.Factory.getInstance().parseResult(root);
+		
+		return logiSuccResult;
+	}
 	/**
 	 * 
 	 * @param result

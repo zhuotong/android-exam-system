@@ -12,9 +12,12 @@ import com.dream.eexam.model.QuestionProgress;
 import com.dream.eexam.util.ActivityStackControlUtil;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -87,6 +90,15 @@ public class BaseActivity extends Activity {
 					public void onClick(DialogInterface dialog, int which) {
 					}
 		}).show();
+	}
+	
+	public String getWifiIP() {
+		// get wifi service
+		WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+		int ipAddress = wifiInfo.getIpAddress();
+		String ip = (ipAddress& 0xFF) + "." + ((ipAddress >> 8) & 0xFF) + "." + ((ipAddress >> 16) & 0xFF)+ "." + (ipAddress >> 24 & 0xFF);
+		return ip;
 	}
 	
 	/**
