@@ -68,7 +68,7 @@ public class DataUtil {
 	 * @param result
 	 * @return
 	 */
-	public Examination getExam(Result result) {
+	public static Examination getExam(Result result) {
 		DocumentBuilder db;
 		ByteArrayInputStream is;
 		Document doc = null;

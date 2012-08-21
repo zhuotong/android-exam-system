@@ -56,6 +56,7 @@ public class ExamListActivity extends BaseActivity {
 //	List<ExamBaseBean> examList = null;
 	
 	LoginSuccessResult succResult = new LoginSuccessResult();
+	List<com.msxt.client.model.LoginSuccessResult.Examination> examinations;
 	
 	String conversation = null;
 	String[] exams = null;
@@ -92,18 +93,8 @@ public class ExamListActivity extends BaseActivity {
 			Log.i(LOG_TAG,e.getMessage());
 		}
 		
-/*		conversation = loginResultBean.getConversation();
-		examList = loginResultBean.getExamList();
-		if(examList!=null&&examList.size()>0){
-			exams = new String[examList.size()];
-			for(int i=0;i<examList.size();i++){
-				exams[i] = examList.get(i).getName();
-			}
-		}else{
-			exams = new String[0];
-		}*/
 		
-/*		List<com.msxt.client.model.LoginSuccessResult.Examination> examinations = succResult.getExaminations();
+		examinations = succResult.getExaminations();
 		if(examinations!=null&&examinations.size()>0){
 			exams = new String[examinations.size()];
 			for(int i=0;i<examinations.size();i++){
@@ -111,7 +102,7 @@ public class ExamListActivity extends BaseActivity {
 			}
 		}else{
 			exams = new String[0];
-		}*/
+		}
 		
 		nameTV = (TextView) this.findViewById(R.id.nameTV);
 		nameTV.setText(succResult.getInterviewer());
@@ -141,6 +132,7 @@ public class ExamListActivity extends BaseActivity {
 //	        	ServerProxy proxy =  WebServerProxy.Factroy.getCurrrentInstance();
 //				Log.i(LOG_TAG,"downloadURL:"+downloadURL);
 	        	new DownloadExamTask().execute(examIdString);
+
 			}			
 		});
 		
@@ -222,9 +214,8 @@ public class ExamListActivity extends BaseActivity {
 			progressDialog.dismiss();
 			if(STATUS.SUCCESS.equals(examResult.getStatus())){
 				
-				DataUtil util = new DataUtil();
-				Examination exam = util.getExam(examResult);
-				Question fQuestion = util.getQuestionByCidQid(exam, 1, 1);
+				Examination exam = DataUtil.getExam(examResult);
+				Question fQuestion = DataUtil.getQuestionByCidQid(exam, 1, 1);
 				if(fQuestion==null){
 					ShowDialog("Can not get question!");
 					this.cancel(true);

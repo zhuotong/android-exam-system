@@ -1,6 +1,13 @@
 package com.dream.eexam.base;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import com.dream.eexam.model.InterviewBean;
 import com.dream.eexam.util.SystemConfig;
@@ -69,7 +76,10 @@ public class LoginActivity extends BaseActivity {
 
     View.OnClickListener loginListener = new View.OnClickListener() {  
         @Override  
-        public void onClick(View v) {  
+        public void onClick(View v) { 
+        	Button lBtn = (Button)v;
+        	lBtn.setEnabled(false);
+        	
         	String id = idEt.getText().toString();
         	String password = passwordET.getText().toString();
         	
@@ -93,6 +103,7 @@ public class LoginActivity extends BaseActivity {
     
     private class DownloadXmlTask extends AsyncTask<String, Void, String> {
     	ProgressDialog progressDialog;
+    	ServerProxy proxy;
     	Result loginResult;
     	
     	@Override
@@ -119,17 +130,15 @@ public class LoginActivity extends BaseActivity {
         	}*/
         	String host = mContext.getResources().getString(R.string.host);
         	Integer port = Integer.valueOf(mContext.getResources().getString(R.string.port));
-        	ServerProxy proxy = new WebServerProxy(host,port);
-//        	ServerProxy proxy =  WebServerProxy.Factroy.createInstance(host, port);
-        	
+        	proxy =  WebServerProxy.Factroy.createInstance(host, port);
     		loginResult = proxy.login(urls[0], urls[1]);
-    		if(STATUS.SUCCESS.equals(loginResult.getStatus())){
-    			saveFile(loginResultFilePath, loginResultFile, loginResult.getSuccessMessage());
-    		}else if(STATUS.ERROR.equals(loginResult.getStatus())){
-    			ShowDialog(loginResult.getErrorMessage());
-    			this.cancel(true);
-    		}
     		
+//    		if(STATUS.SUCCESS.equals(loginResult.getStatus())){
+//    			saveFile(loginResultFilePath, loginResultFile, loginResult.getSuccessMessage());
+//    		}else if(STATUS.ERROR.equals(loginResult.getStatus())){
+//    			ShowDialog(loginResult.getErrorMessage());
+//    			this.cancel(true);
+//    		}
 //        	InputStream inputStream = LoginActivity.class.getClassLoader().getResourceAsStream(loginResultFile);
 //			try {
 //				//save login result to local
@@ -149,8 +158,9 @@ public class LoginActivity extends BaseActivity {
         @Override
         protected void onPostExecute(String result) {
         	progressDialog.dismiss();
+        	loginBtn.setEnabled(true);
 
-        	if(STATUS.SUCCESS.equals(loginResult.getStatus())){
+        	/*if(STATUS.SUCCESS.equals(loginResult.getStatus())){
     			Intent intent = new Intent();
     			intent.putExtra("loginResultFile", loginResultFile);
     			intent.putExtra("loginResultFilePath", loginResultFilePath);
@@ -158,6 +168,38 @@ public class LoginActivity extends BaseActivity {
     			startActivity(intent);        		
         	}else{
         		ShowDialog("Can not login server!");
+        	}*/
+        	
+    		if( loginResult.getStatus() == STATUS.ERROR ) {
+    			ShowDialog(loginResult.getErrorMessage());
+        	} else {
+        		saveFile(loginResultFilePath, loginResultFile, loginResult.getSuccessMessage());
+        		
+        		try{
+    		    	DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+    		        ByteArrayInputStream is = new ByteArrayInputStream( loginResult.getSuccessMessage().getBytes() );
+    		        Document doc = db.parse( is );
+    		        is.close();
+    		        
+    		        Element root = doc.getDocumentElement();
+    		        String status = root.getElementsByTagName("status").item(0).getTextContent();
+    		        if( status.equals("failed") ) {
+    		        	String desc = root.getElementsByTagName("desc").item(0).getTextContent();
+    		        	ShowDialog(desc);
+    		        } else {
+    		        	String conversation = root.getElementsByTagName( "conversation" ).item(0).getTextContent();
+    		        	proxy.setConversationId( conversation );
+    		        	
+    		        	//go to examList page
+    		        	Intent intent = new Intent();
+    	    			intent.putExtra("loginResultFile", loginResultFile);
+    	    			intent.putExtra("loginResultFilePath", loginResultFilePath);
+    	    			intent.setClass( mContext, ExamListActivity.class);
+    	    			startActivity(intent);   
+    		        }
+        		} catch (Exception e) {
+        			ShowDialog("Invalid XML Data");
+    			}
         	}
         }
     }
