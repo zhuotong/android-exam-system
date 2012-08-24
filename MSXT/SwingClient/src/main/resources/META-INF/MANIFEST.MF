@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.7.0
+Created-By: 1.6.0-b105 (Sun Microsystems Inc.)
+Main-Class: com.sun.swingset3.SwingSet3
+Class-Path: lib/swing-worker.jar lib/AppFramework.jar lib/swingx.jar l
+ ib/TimingFramework.jar lib/javaws.jar
+X-COMMENT: Main-Class will be added automatically by build
+SplashScreen-Image: swingset3/resources/images/splash3.png
+
