@@ -4,13 +4,13 @@ import com.msxt.client.model.Examination;
 import com.msxt.client.model.LoginSuccessResult;
 import com.msxt.client.swing.model.Question;
 import com.msxt.client.swing.panel.ExamPanel;
+import com.msxt.client.swing.panel.IntroPanel;
 import com.msxt.client.swing.panel.LoginPanel;
+import com.msxt.client.swing.panel.QuestionSelectorPanel;
+import com.msxt.client.swing.panel.RoundedPanel;
 import com.msxt.client.swing.panel.SelectExamPanel;
 import com.mxst.client.swing.utilities.RoundedBorder;
-import com.mxst.client.swing.utilities.RoundedPanel;
 import com.mxst.client.swing.utilities.Utilities;
-import com.sun.swingset3.IntroPanel;
-import com.sun.swingset3.QuestionSelectorPanel;
 
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
@@ -80,7 +80,7 @@ public class ExamLauncher extends SingleFrameApplication  {
 
     public static final int MAIN_FRAME_WIDTH = 880;
     public static final int MAIN_FRAME_HEIGHT = 640;
-    public static final int DEMO_SELECTOR_WIDTH = 186;
+    public static final int DEMO_SELECTOR_WIDTH = 250;
     public static final int DEMO_PANEL_HEIGHT = 400;
     public static final int DEMO_PANEL_WIDTH = MAIN_FRAME_WIDTH - DEMO_SELECTOR_WIDTH;
     
