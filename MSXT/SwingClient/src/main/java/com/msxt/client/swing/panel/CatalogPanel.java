@@ -1,12 +1,13 @@
 package com.msxt.client.swing.panel;
 
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.List;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.msxt.client.model.Examination;
+import com.mxst.client.swing.utilities.GBC;
 
 public class CatalogPanel extends JPanel{
 
@@ -16,16 +17,12 @@ public class CatalogPanel extends JPanel{
 		this.setLayout( new GridBagLayout() );
 		
 		List<Examination.Question> eqs = ec.getQuestions();
+		add( new JLabel( ec.getIndex()+". "), new GBC(0, 0, 1, eqs.size()+1 ).setAnchor( GBC.NORTHEAST )  );
+		add( new JLabel( ec.getDesc() ), new GBC(1, 0).setAnchor( GBC.WEST ).setInsets(0,0,10,0) );
 		for( int i=0; i<eqs.size(); i++ ) {
-			Examination.Question eq = eqs.get(i);
-			GridBagConstraints gc2 = new GridBagConstraints();
-			gc2.gridx = 0;
-			gc2.gridy = i;
-			gc2.weighty = 1.0;
-			gc2.weighty = 1.0;
-			
+			Examination.Question eq = eqs.get(i);			
 			JPanel qp = new SingleChoicePanel( eq );
-			add( qp, gc2 );
+			add( qp, new GBC(1, i + 1).setWeight(100, 100).setInsets(0,0,10,0).setFill( GBC.HORIZONTAL ) );
 		}
 	}
 }

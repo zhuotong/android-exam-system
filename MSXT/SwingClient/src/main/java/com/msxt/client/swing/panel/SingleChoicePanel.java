@@ -2,41 +2,29 @@ package com.msxt.client.swing.panel;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.List;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import com.msxt.client.model.Examination;
+import com.mxst.client.swing.utilities.GBC;
 
 public class SingleChoicePanel extends JPanel{
 	private static final long serialVersionUID = -3380325920299172267L;
 	
 	public SingleChoicePanel(Examination.Question question){
 		this.setLayout( new GridBagLayout() );
-		
-		GridBagConstraints gc1 = new GridBagConstraints();
-		gc1.gridx = 0;
-		gc1.gridy = 0;
-		gc1.weighty = 2;
-		
-		GridBagConstraints gc2 = new GridBagConstraints();
-		gc2.gridx = 1;
-		gc2.gridy = 0;
-		
-		GridBagConstraints gc3 = new GridBagConstraints();
-		gc3.gridx = 1;
-		gc3.gridy = 1;
-		
+				
 		JLabel index = new JLabel( question.getIndex() + ". " );
 		index.setFont( index.getFont().deriveFont(Font.BOLD, 13) );
 		
-		add( index, gc1 );
-		add( createContentPanel(question), gc2 );
-		add( createChoiceItemPanel(question), gc3 );
+		add( index, new GBC(0, 0, 1, 2).setAnchor( GBC.NORTHEAST ) );
+		add( createContentPanel(question), new GBC(1, 0).setWeight(100, 100).setInsets(1).setAnchor( GBC.WEST ).setFill( GBC.HORIZONTAL ) );
+		add( createChoiceItemPanel(question), new GBC(1, 1).setWeight(100, 100).setInsets(1).setAnchor( GBC.WEST ).setFill( GBC.HORIZONTAL ) );
 	}
 	
 	private JPanel createContentPanel(Examination.Question question){
@@ -54,25 +42,15 @@ public class SingleChoicePanel extends JPanel{
 		panel.setLayout( new GridBagLayout() );
 		
 		List<Examination.Choice> choices = question.getChoices();
+		ButtonGroup bg = new ButtonGroup();
 		for( int i=0; i<choices.size(); i++ ) {
-			Examination.Choice c = choices.get(i);
-			GridBagConstraints gc1 = new GridBagConstraints();
-			gc1.gridx = 0;
-			gc1.gridy = i;
-			gc1.weighty = 0;
-			gc1.weighty = 0;
-			
-			GridBagConstraints gc2 = new GridBagConstraints();
-			gc2.gridx = 1;
-			gc2.gridy = i;
-			gc2.weighty = 1.0;
-			gc2.weighty = 1.0;
-			
-			JRadioButton l = new JRadioButton( c.getLabel() );
+			Examination.Choice c = choices.get(i);			
+			JRadioButton l = new JRadioButton( c.getLabel() + ". " );
 			JLabel item = new JLabel();
 			item.setText( "<html>"+c.getContent().replaceAll("\n", "<br>")+"</html>" );
-			panel.add( l, gc1 );
-			panel.add( item, gc2 );
+			bg.add( l );
+			panel.add( l, new GBC(0, i).setAnchor( GBC.NORTHEAST ) );
+			panel.add( item, new GBC(1, i).setAnchor( GBC.WEST ).setWeight(100,  100).setInsets(1, 5, 0, 0).setFill( GBC.HORIZONTAL ) );
 		}
 		return panel;
 	}

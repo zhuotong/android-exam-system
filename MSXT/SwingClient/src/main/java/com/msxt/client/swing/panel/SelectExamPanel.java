@@ -37,7 +37,7 @@ public class SelectExamPanel extends JPanel {
 	private LoginSuccessResult lsr;
 	
 	private JButton start;
-    private JComboBox<LoginSuccessResult.Examination> examCB;
+    private JComboBox examCB;
     private javax.swing.JScrollPane jScrollPane1;
     private JTextArea desc;
 	    
@@ -52,7 +52,7 @@ public class SelectExamPanel extends JPanel {
     private void initComponents() {
         jScrollPane1 = new JScrollPane();
         desc = new JTextArea();
-        examCB = new JComboBox<LoginSuccessResult.Examination>();
+        examCB = new JComboBox();
         start = new JButton("开始");
 
         desc.setColumns(20);
@@ -97,8 +97,8 @@ public class SelectExamPanel extends JPanel {
         );
     }
     
-    private ComboBoxModel<LoginSuccessResult.Examination> getCBModel(){
-    	DefaultComboBoxModel<LoginSuccessResult.Examination> model = new DefaultComboBoxModel<LoginSuccessResult.Examination>();
+    private ComboBoxModel getCBModel(){
+    	DefaultComboBoxModel model = new DefaultComboBoxModel();
     	for( LoginSuccessResult.Examination le : lsr.getExaminations() )
     		model.addElement( le );
     	return model;
