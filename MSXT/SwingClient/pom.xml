@@ -39,5 +39,10 @@
 	</build>
 
 	<dependencies>
+		<dependency>
+           <groupId>com.msxt</groupId>
+           <artifactId>ClientBase</artifactId>
+		   <version>1.0-SNAPSHOT</version>
+        </dependency>
 	</dependencies>
 </project>
