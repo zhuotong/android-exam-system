@@ -66,7 +66,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	protected TextView completedPercentage = null;
 	protected TextView pendQueNumber = null;
 	protected Button preBtn = null;
-	protected TextView questionIndex = null;
+//	protected TextView questionIndex = null;
 	protected Button nextBtn = null;
 	
 	protected InputStream inputStream;
@@ -106,7 +106,8 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	protected Integer lSeconds = 0;
 	
     public void loadExamWithLocalFile(){
-    	FileInputStream examStream = FileUtil.getExamStream(examFileName, examFilePath);
+    	FileInputStream examStream = FileUtil.getExamStream(examFilePath,examFileName);
+    	
     	exam = DataUtil.getExam(examStream);
     	examQuestionSum = DataUtil.getExamQuestionSum(exam);
     	cataLogs = exam.getCatalogs();

@@ -52,7 +52,7 @@ public class MultiChoices extends BaseQuestion {
 		remainingTime = (TextView)findViewById(R.id.remainingTime);
 		submitTV = (TextView)findViewById(R.id.submitTV);
 		imgDownArrow = (ImageView) findViewById(R.id.imgDownArrow);
-		questionIndex = (TextView)findViewById(R.id.questionIndex);
+//		questionIndex = (TextView)findViewById(R.id.questionIndex);
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
 		pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);
     	preBtn = (Button)findViewById(R.id.preBtn);
@@ -106,25 +106,25 @@ public class MultiChoices extends BaseQuestion {
 		});
 
         //set catalog bar(Left) 
-        String questionIndexDesc = "Question "+ String.valueOf(cQuestionIndex) +"/"+ String.valueOf(examQuestionSum);
-        questionIndex.setText(questionIndexDesc);
-		questionIndex.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent();
-				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
-				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
-				if(questionTypes[0].equals(cQuestionType)){
-					intent.putExtra("questionType", "Multi Select");
-					intent.setClass( getBaseContext(), MultiChoices.class);
-				}else if(questionTypes[1].equals(cQuestionType)){
-					intent.putExtra("questionType", "Single Select");
-					intent.setClass( getBaseContext(), SingleChoices.class);
-				}
-				finish();
-				startActivity(intent);
-			}
-		});
+//        String questionIndexDesc = "Question "+ String.valueOf(cQuestionIndex) +"/"+ String.valueOf(examQuestionSum);
+//        questionIndex.setText(questionIndexDesc);
+//		questionIndex.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				Intent intent = new Intent();
+//				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
+//				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
+//				if(questionTypes[0].equals(cQuestionType)){
+//					intent.putExtra("questionType", "Multi Select");
+//					intent.setClass( getBaseContext(), MultiChoices.class);
+//				}else if(questionTypes[1].equals(cQuestionType)){
+//					intent.putExtra("questionType", "Single Select");
+//					intent.setClass( getBaseContext(), SingleChoices.class);
+//				}
+//				finish();
+//				startActivity(intent);
+//			}
+//		});
 		
 		imgDownArrow.setOnClickListener(new View.OnClickListener() {
 			@Override

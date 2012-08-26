@@ -10,9 +10,9 @@
 	       android:id="@+id/baseHeader"
 	       layout="@layout/exam_header" /> 
 
-    <include
+<!--     <include
        	   android:id="@+id/catalogNav"
-           layout="@layout/catalog_nav" />
+           layout="@layout/catalog_nav" /> -->
     	       
 	<RelativeLayout 
 	    android:orientation="vertical"

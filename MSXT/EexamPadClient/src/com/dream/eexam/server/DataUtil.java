@@ -173,17 +173,18 @@ public class DataUtil {
 	    
 	    //go to next question
 	    if(mvDirect == 1){
+	    	int newQid = qid+1;
 	    	for(Catalog catalog:catalogs){
 				if(catalog.getIndex() == cid){
 					List<Question> questions = catalog.getQuestions();
 					int queSum = questions.size();
-					if(qid == queSum){//this question is last one of current catalog will move to next catalog
+					if(newQid > queSum){//this question is last one of current catalog will move to next catalog
 						cid++;//go to next catalog
-						qid = 1;
+						newQid = 1;
 						continue;
 					}else{
 						for(Question question:questions){
-							if(question.getIndex() == qid){
+							if(question.getIndex() == newQid){
 								return question;
 							}
 						}

@@ -37,16 +37,23 @@ public class SingleChoices extends BaseQuestion {
 
 	public void loadComponents(){
 		homeTV = (TextView)findViewById(R.id.homeTV);
-		imgDownArrow = (ImageView) findViewById(R.id.imgDownArrow);
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
-		questionIndex = (TextView)findViewById(R.id.questionIndex);
+		imgDownArrow = (ImageView) findViewById(R.id.imgDownArrow);
+		
+//		questionIndex = (TextView)findViewById(R.id.questionIndex);
+		
+		//Button[Prev]
+    	preBtn = (Button)findViewById(R.id.preBtn);
+    	
+    	//Button[Prev]
+    	pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);
+		
+    	remainingTimeLabel = (TextView)findViewById(R.id.remainingTimeLabel);
+		remainingTime = (TextView)findViewById(R.id.remainingTime);
 		
 		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
 		completedPercentage = (TextView)findViewById(R.id.completedPercentage);
-    	preBtn = (Button)findViewById(R.id.preBtn);
-    	pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);
-		remainingTimeLabel = (TextView)findViewById(R.id.remainingTimeLabel);
-		remainingTime = (TextView)findViewById(R.id.remainingTime);
+		
 		submitTV = (TextView)findViewById(R.id.submitTV);
     	nextBtn = (Button)findViewById(R.id.nextBtn);
     	
@@ -88,25 +95,25 @@ public class SingleChoices extends BaseQuestion {
 		});
 
         //set catalog bar(Left) 
-        String questionIndexDesc = "Question "+ String.valueOf(cQuestionIndex) +"/"+ String.valueOf(examQuestionSum);
-        questionIndex.setText(questionIndexDesc);
-		questionIndex.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent();
-				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
-				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
-				if(questionTypes[0].equals(cQuestionType)){
-					intent.putExtra("questionType", "Multi Select");
-					intent.setClass( getBaseContext(), MultiChoices.class);
-				}else if(questionTypes[1].equals(cQuestionType)){
-					intent.putExtra("questionType", "Single Select");
-					intent.setClass( getBaseContext(), SingleChoices.class);
-				}
-				finish();
-				startActivity(intent);
-			}
-		});
+//        String questionIndexDesc = "Question "+ String.valueOf(cQuestionIndex) +"/"+ String.valueOf(examQuestionSum);
+//        questionIndex.setText(questionIndexDesc);
+//		questionIndex.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				Intent intent = new Intent();
+//				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
+//				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
+//				if(questionTypes[0].equals(cQuestionType)){
+//					intent.putExtra("questionType", "Multi Select");
+//					intent.setClass( getBaseContext(), MultiChoices.class);
+//				}else if(questionTypes[1].equals(cQuestionType)){
+//					intent.putExtra("questionType", "Single Select");
+//					intent.setClass( getBaseContext(), SingleChoices.class);
+//				}
+//				finish();
+//				startActivity(intent);
+//			}
+//		});
 		
 		
         //set catalog bar(Center) 

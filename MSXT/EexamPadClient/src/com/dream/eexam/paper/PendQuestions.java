@@ -1,9 +1,7 @@
 package com.dream.eexam.paper;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,7 +19,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import com.dream.eexam.base.R;
 import com.dream.eexam.server.DataUtil;
-import com.dream.eexam.util.TimeDateUtil;
 import com.msxt.client.model.Examination.Question;
 
 public class PendQuestions extends BaseQuestion {
@@ -35,7 +32,7 @@ public class PendQuestions extends BaseQuestion {
     String qid = null;
 	
 	Button preBtn;
-	TextView questionIndex;
+//	TextView questionIndex;
 	Button nextBtn;
 	
 	//data statement
@@ -49,7 +46,7 @@ public class PendQuestions extends BaseQuestion {
 		remainingTime = (TextView)findViewById(R.id.remainingTime);
 		submitTV = (TextView)findViewById(R.id.submitTV);
 		
-		questionIndex = (TextView)findViewById(R.id.questionIndex);
+//		questionIndex = (TextView)findViewById(R.id.questionIndex);
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
 		pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);
 		
@@ -99,26 +96,26 @@ public class PendQuestions extends BaseQuestion {
 			}
 		});
 
-        //set catalog bar(Left) 
-        String questionIndexDesc = "Question "+ String.valueOf(cQuestionIndex) +"/"+ String.valueOf(examQuestionSum);
-        questionIndex.setText(questionIndexDesc);
-		questionIndex.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent();
-				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
-				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
-				if(questionTypes[0].equals(cQuestionType)){
-					intent.putExtra("questionType", "Multi Select");
-					intent.setClass( getBaseContext(), MultiChoices.class);
-				}else if(questionTypes[1].equals(cQuestionType)){
-					intent.putExtra("questionType", "Single Select");
-					intent.setClass( getBaseContext(), SingleChoices.class);
-				}
-				finish();
-				startActivity(intent);
-			}
-		});
+//        //set catalog bar(Left) 
+//        String questionIndexDesc = "Question "+ String.valueOf(cQuestionIndex) +"/"+ String.valueOf(examQuestionSum);
+//        questionIndex.setText(questionIndexDesc);
+//		questionIndex.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				Intent intent = new Intent();
+//				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
+//				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
+//				if(questionTypes[0].equals(cQuestionType)){
+//					intent.putExtra("questionType", "Multi Select");
+//					intent.setClass( getBaseContext(), MultiChoices.class);
+//				}else if(questionTypes[1].equals(cQuestionType)){
+//					intent.putExtra("questionType", "Single Select");
+//					intent.setClass( getBaseContext(), SingleChoices.class);
+//				}
+//				finish();
+//				startActivity(intent);
+//			}
+//		});
         
         //set catalog bar(Center) 
         //set catalog bar(Center) 
