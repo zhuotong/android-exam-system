@@ -106,7 +106,7 @@ public class QuestionSearcher extends PageableSearcher {
                                                        .getResultList();
 		
 		for( Question q : results ) {
-			String sql = "select count(*) from examination_question eq " +
+			String sql = "select count(*) from examination_catalog_question eq " +
 					     "                     join examination_catalog ec on eq.catalog_id = ec.id" +
                          "                     join examination e on ec.exam_id = e.id" +
                          "                     join interview_examination ie on e.id=ie.exam_id" +
