@@ -270,7 +270,7 @@ public class PendQuestions extends BaseQuestion {
 //            cid = question.ge);
             qid = question.getId();
             
-            holder.questionBtn.setText(String.valueOf(question.getIndex()));  
+            holder.questionBtn.setText(String.valueOf(DataUtil.getQuestionExamIndex(exam, qid)));  
             holder.questionBtn.setOnClickListener(new Button.OnClickListener() {
     			public void onClick(View v) {
     				Log.i(LOG_TAG,"onClick()...");

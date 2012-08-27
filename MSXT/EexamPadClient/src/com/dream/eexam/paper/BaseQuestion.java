@@ -254,8 +254,8 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	}
 	
 	protected void setCountDownTime() {
-		String currentTimeString = TimeDateUtil.getCurrentTime();
-		Log.i(LOG_TAG, currentTimeString);
+//		String currentTimeString = TimeDateUtil.getCurrentTime();
+//		Log.i(LOG_TAG, currentTimeString);
 		if (lMinutes == 0) {
 			if (lSeconds == 0) {
 				remainingTime.setText("Time out !");
@@ -312,6 +312,11 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
     public void gotoNewQuestion(Context context,int cid, int qid, int diret){
     	Log.i(LOG_TAG, "gotoNewQuestion()...");
 		Question newQuestion = DataUtil.getNewQuestionByCidQid(exam, cid, qid,diret);
+		
+		Log.i(LOG_TAG, "question id:" + String.valueOf(newQuestion.getId()));
+		Log.i(LOG_TAG, "question index:" + String.valueOf(newQuestion.getIndex()));
+		Log.i(LOG_TAG, "question type:" + String.valueOf(newQuestion.getType()));
+		
 		
 		if(newQuestion!=null){
 			String newQuestionType = newQuestion.getType();
