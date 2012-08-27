@@ -141,7 +141,7 @@ COMMENT = '试卷栏目表' ;
 
 
 -- -----------------------------------------------------
--- Table `MSDB`.`examination_question`
+-- Table `MSDB`.`examination_catalog_question`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `MSDB`.`examination_catalog_question` (
   `ID` VARCHAR(32) NOT NULL ,
@@ -209,7 +209,7 @@ COMMENT = '评价表' ;
 
 
 -- -----------------------------------------------------
--- Table `MSDB`.`examination_question_answer`
+-- Table `MSDB`.`examination_catalog_question_answer`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `MSDB`.`examination_catalog_question_answer` (
   `ID` VARCHAR(32) NOT NULL ,
