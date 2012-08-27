@@ -23,6 +23,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import com.dream.eexam.base.R;
+import com.dream.eexam.server.DataUtil;
 import com.msxt.client.model.Examination.Choice;
 
 public class SingleChoices extends BaseQuestion {
@@ -70,7 +71,7 @@ public class SingleChoices extends BaseQuestion {
 			@Override
 			public void onClick(View v) {
 				Log.i(LOG_TAG, "submitTV.onClick()...");
-		    	int waitQuestions = examQuestionSum - examAedQuestionSum;
+		    	int waitQuestions = examQuestionSum - examAnsweredQuestionSum;
 				if (waitQuestions> 0) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(SingleChoices.this);
 					builder.setMessage(String.valueOf(waitQuestions) + " question(s) are not answered, still submit?")
@@ -115,10 +116,11 @@ public class SingleChoices extends BaseQuestion {
 //			}
 //		});
 		
+//		int queExamIndex = DataUtil.getQuestionExamIndex(exam, cQuestion.getId());
 		
         //set catalog bar(Center) 
 		catalogsTV.setText(String.valueOf(cCatalogIndex)+". "+ cCatalog.getDesc() + 
-				"(Q" + String.valueOf(cQuestionIndex)+" - " + "Q" + String.valueOf(cQuestionIndex+queSumOfCCatalog-1)+")");
+				"(Q" + String.valueOf(cQuestionIndexOfExam)+" - " + "Q" + String.valueOf(cQuestionIndexOfExam+queSumOfCCatalog-1)+")");
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -133,25 +135,6 @@ public class SingleChoices extends BaseQuestion {
 			}
 		});
 		
-		 //set catalog bar(Right) 
-		pendQueNumber.setText("Pending("+Integer.valueOf(pendQuestions.size())+")");
-		pendQueNumber.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent();
-				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
-				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
-				if(questionTypes[0].equals(cQuestionType)){
-					intent.putExtra("questionType", "Multi Select");
-					intent.setClass( getBaseContext(), PendQuestions.class);
-				}else if(questionTypes[1].equals(cQuestionType)){
-					intent.putExtra("questionType", "Single Select");
-					intent.setClass( getBaseContext(), PendQuestions.class);
-				}
-				finish();
-				startActivity(intent);
-			}
-		});
 	}
 	
 	
@@ -164,7 +147,7 @@ public class SingleChoices extends BaseQuestion {
         loadComponents();
         setHeader();
         
-        String questionHint = "Q "+String.valueOf(cQuestion.getIndex())+" (Score:"+String.valueOf(cQuestion.getScore())+")";
+        String questionHint = "Q"+String.valueOf(cQuestionIndexOfExam)+" (Score:"+String.valueOf(cQuestion.getScore())+")\n";
         Log.i(LOG_TAG, "questionHint:"+questionHint);
     	
         //set question text
@@ -246,13 +229,45 @@ public class SingleChoices extends BaseQuestion {
 				relocationQuestion();
 			}
 		});
+        
+		 //set catalog bar(Right) 
+		pendQueNumber.setText("Pending("+Integer.valueOf(pendQuestions.size())+")");
+		pendQueNumber.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
+				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
+				intent.putExtra("questionType", cQuestionType);
+				
+//				if(questionTypes[0].equals(cQuestionType)){
+//					intent.putExtra("questionType", "Multi Select");
+//					intent.setClass( getBaseContext(), PendQuestions.class);
+//				}else if(questionTypes[1].equals(cQuestionType)){
+//					intent.putExtra("questionType", "Single Select");
+//					intent.setClass( getBaseContext(), PendQuestions.class);
+//				}
+				
+				if(questionTypes[0].equals(cQuestionType)){
+					intent.setClass( getBaseContext(), MultiChoices.class);
+				}else if(questionTypes[1].equals(cQuestionType)){
+					intent.setClass( getBaseContext(), SingleChoices.class);
+				}
+				finish();
+				startActivity(intent);
+
+			}
+		});
+		
 		//set completedSeekBar
-		int per = 100 * examAedQuestionSum/examQuestionSum;
+		int per = 100 * examAnsweredQuestionSum/examQuestionSum;
 		completedSeekBar.setThumb(null);
 		completedSeekBar.setProgress(per);
 		completedSeekBar.setEnabled(false);
+		
 		//set completedSeekBar label
 		completedPercentage.setText(String.valueOf(per)+"%");
+		
 		//set nextBtn
         nextBtn.setOnClickListener(new View.OnClickListener() {
 			@Override

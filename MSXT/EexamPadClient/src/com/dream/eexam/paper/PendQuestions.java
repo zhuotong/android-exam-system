@@ -71,7 +71,7 @@ public class PendQuestions extends BaseQuestion {
 			public void onClick(View v) {
 				Log.i(LOG_TAG, "submitTV.onClick()...");
 				
-		    	int waitQuestions = examQuestionSum - examAedQuestionSum;
+		    	int waitQuestions = examQuestionSum - examAnsweredQuestionSum;
 				 
 				if (waitQuestions> 0) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(PendQuestions.this);
@@ -186,7 +186,7 @@ public class PendQuestions extends BaseQuestion {
 		});
         
 		//set completedSeekBar
-		int per = 100 * examAedQuestionSum/examQuestionSum;
+		int per = 100 * examAnsweredQuestionSum/examQuestionSum;
 		completedSeekBar.setThumb(null);
 		completedSeekBar.setProgress(per);
 		completedSeekBar.setEnabled(false);

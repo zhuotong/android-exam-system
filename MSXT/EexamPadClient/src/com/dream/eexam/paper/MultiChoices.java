@@ -81,7 +81,7 @@ public class MultiChoices extends BaseQuestion {
 			@Override
 			public void onClick(View v) {
 				Log.i(LOG_TAG, "submitTV.onClick()...");
-		    	int waitQuestions = examQuestionSum - examAedQuestionSum;
+		    	int waitQuestions = examQuestionSum - examAnsweredQuestionSum;
 				if (waitQuestions> 0) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(MultiChoices.this);
 					builder.setMessage(String.valueOf(waitQuestions) + " question(s) are not answered, still submit?")
@@ -135,7 +135,7 @@ public class MultiChoices extends BaseQuestion {
 		
         //set catalog bar(Center) 
 		catalogsTV.setText(String.valueOf(cCatalogIndex)+". " + cCatalog.getDesc() + 
-				"(Q" + String.valueOf(cQuestionIndex)+" - " + "Q" + String.valueOf(cQuestionIndex+queSumOfCCatalog-1)+")");
+				"(Q" + String.valueOf(cQuestionIndexOfExam)+" - " + "Q" + String.valueOf(cQuestionIndexOfExam+queSumOfCCatalog-1)+")");
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -175,7 +175,7 @@ public class MultiChoices extends BaseQuestion {
         loadComponents();
         setHeader();
 		
-        String questionHint = "Q "+String.valueOf(DataUtil.getQuestionExamIndex(exam, cQuestion.getId()))+" (Score:"+String.valueOf(cQuestion.getScore())+")";
+        String questionHint = "Q"+String.valueOf(cQuestionIndexOfExam)+" (Score:"+String.valueOf(cQuestion.getScore())+")\n";
         Log.i(LOG_TAG, "questionHint:"+questionHint);
 
         //set question text
@@ -230,7 +230,7 @@ public class MultiChoices extends BaseQuestion {
 			}
 		});
 		//set completedSeekBar
-		int per = 100 * examAedQuestionSum/examQuestionSum;
+		int per = 100 * examAnsweredQuestionSum/examQuestionSum;
 		completedSeekBar.setThumb(null);
 		completedSeekBar.setProgress(per);
 		completedSeekBar.setEnabled(false);

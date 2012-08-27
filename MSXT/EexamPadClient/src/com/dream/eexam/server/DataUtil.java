@@ -216,7 +216,7 @@ public class DataUtil {
 			for(Question question:questions){
 				index++;
 				if(question.getId().equals(qid)){
-					return catalog.getIndex();
+					return index;
 				}
 			}
 		}

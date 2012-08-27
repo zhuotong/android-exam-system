@@ -35,7 +35,7 @@
     <string name="popup_window_width">300</string>
 
  	<string-array name="question_types">
-        <item>Multi Choice</item>
+        <item>Multiple Choice</item>
         <item>Single Choice</item>
     </string-array>
         

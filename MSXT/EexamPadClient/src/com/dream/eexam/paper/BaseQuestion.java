@@ -85,7 +85,8 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	//page data
 	protected String cQuestionType;//current questionType
 	protected int cCatalogIndex;//current catalog index
-	protected int cQuestionIndex;//current question index
+	protected int cQuestionIndex;//question index in catalog
+	protected int cQuestionIndexOfExam;//question index in catalog
 	protected String examFileName = null;
 	protected String examFilePath = null;
 	protected int moveDirect = 0;
@@ -93,7 +94,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	//-------------exam data---------------
 	protected Examination exam;
 	protected int examQuestionSum;
-	protected int examAedQuestionSum;
+	protected int examAnsweredQuestionSum;
 	protected List<Catalog> cataLogs = new ArrayList<Catalog>();
 	protected Catalog cCatalog;
 	protected Question cQuestion;
@@ -105,14 +106,19 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	protected Integer lMinutes = 0;
 	protected Integer lSeconds = 0;
 	
-    public void loadExamWithLocalFile(){
+    public void loadDownLoadExam(){
     	FileInputStream examStream = FileUtil.getExamStream(examFilePath,examFileName);
     	
+    	//load exam 
     	exam = DataUtil.getExam(examStream);
+    	
+    	//load exam related
     	examQuestionSum = DataUtil.getExamQuestionSum(exam);
     	cataLogs = exam.getCatalogs();
     	cCatalog = cataLogs.get(cCatalogIndex-1);
     	cQuestion = DataUtil.getQuestionByCidQid(exam, cCatalogIndex, cQuestionIndex);
+    	cQuestionIndexOfExam = DataUtil.getQuestionExamIndex(exam, cQuestion.getId());
+    	queSumOfCCatalog = cCatalog.getQuestions().size();
     	cChoices = cQuestion.getChoices();
     	
     	//load pending questions
@@ -161,7 +167,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
     	
     }
 	
-    public void loadLocalAnswerIfExist(int cid,int qid){
+    public void loadAnswerHistory(int cid,int qid){
     	Log.i(LOG_TAG, "loadAnswer()...");
 		Log.i(LOG_TAG, "cid = " + cid + " qid = " + qid);
 		
@@ -190,7 +196,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		Log.i(LOG_TAG,"aQueSumOfCCatalog:"+ String.valueOf(aQueSumOfCCatalog));
     	cursor.close();
     	
-    	examAedQuestionSum = dbUtil.fetchAllAnswersCount();
+    	examAnsweredQuestionSum = dbUtil.fetchAllAnswersCount();
     	
     	dbUtil.close();  
     	Log.i(LOG_TAG, "end loadAnswer().");
@@ -208,15 +214,16 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		examFileName = getResources().getString(R.string.exam_file_name);
 		
 		Bundle bundle = this.getIntent().getExtras();
-		this.cQuestionType  = bundle.getString("questionType");
-		this.cCatalogIndex  = Integer.valueOf(bundle.getString("ccIndex"));
-		this.cQuestionIndex  = Integer.valueOf(bundle.getString("cqIndex"));
+		cQuestionType  = bundle.getString("questionType");
+		cCatalogIndex  = Integer.valueOf(bundle.getString("ccIndex"));
+		cQuestionIndex  = Integer.valueOf(bundle.getString("cqIndex"));
+		
 		
 		//load old data from database
-		loadLocalAnswerIfExist(cCatalogIndex,cQuestionIndex);
+		loadAnswerHistory(cCatalogIndex,cQuestionIndex);
 		
 		//load exam with local file
-		loadExamWithLocalFile();
+		loadDownLoadExam();
 		
 		//set time task to set count down time 
 		timerTask = new TimerTask() {
@@ -313,9 +320,9 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
     	Log.i(LOG_TAG, "gotoNewQuestion()...");
 		Question newQuestion = DataUtil.getNewQuestionByCidQid(exam, cid, qid,diret);
 		
-		Log.i(LOG_TAG, "question id:" + String.valueOf(newQuestion.getId()));
-		Log.i(LOG_TAG, "question index:" + String.valueOf(newQuestion.getIndex()));
-		Log.i(LOG_TAG, "question type:" + String.valueOf(newQuestion.getType()));
+//		Log.i(LOG_TAG, "question id:" + String.valueOf(newQuestion.getId()));
+//		Log.i(LOG_TAG, "question index:" + String.valueOf(newQuestion.getIndex()));
+//		Log.i(LOG_TAG, "question type:" + String.valueOf(newQuestion.getType()));
 		
 		
 		if(newQuestion!=null){
