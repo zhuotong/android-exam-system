@@ -96,28 +96,6 @@ public class PendQuestions extends BaseQuestion {
 			}
 		});
 
-//        //set catalog bar(Left) 
-//        String questionIndexDesc = "Question "+ String.valueOf(cQuestionIndex) +"/"+ String.valueOf(examQuestionSum);
-//        questionIndex.setText(questionIndexDesc);
-//		questionIndex.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				Intent intent = new Intent();
-//				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
-//				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
-//				if(questionTypes[0].equals(cQuestionType)){
-//					intent.putExtra("questionType", "Multi Select");
-//					intent.setClass( getBaseContext(), MultiChoices.class);
-//				}else if(questionTypes[1].equals(cQuestionType)){
-//					intent.putExtra("questionType", "Single Select");
-//					intent.setClass( getBaseContext(), SingleChoices.class);
-//				}
-//				finish();
-//				startActivity(intent);
-//			}
-//		});
-        
-        //set catalog bar(Center) 
         //set catalog bar(Center) 
 		catalogsTV.setText(String.valueOf(cCatalogIndex)+". "+
 				cCatalog.getDesc() + 
@@ -148,8 +126,6 @@ public class PendQuestions extends BaseQuestion {
 				startActivity(intent);
 			}
 		});
-
-	
 	}
 	
 
@@ -202,31 +178,6 @@ public class PendQuestions extends BaseQuestion {
 		});
     }
     
-/*    //go to next or previous question
-    public void gotoNewQuestion(){
-    	Log.i(LOG_TAG, "gotoNewQuestion()...");
-		
-		Question newQuestion = exam.getQuestionByQid(cQuestionIndex+moveDirect);
-		String newQuestionType = newQuestion.getQuestionType();
-		if(newQuestionType!=null){
-			//move question
-			Intent intent = new Intent();
-			intent.putExtra("ccIndex", String.valueOf(newQuestion.getCatalogIndex()));
-			intent.putExtra("cqIndex", String.valueOf(cQuestionIndex+moveDirect));
-			if(questionTypes[0].equals(cQuestionType)){
-				intent.putExtra("questionType", "Multi Select");
-				intent.setClass( getBaseContext(), MultiChoices.class);
-			}else if(questionTypes[1].equals(cQuestionType)){
-				intent.putExtra("questionType", "Single Select");
-				intent.setClass( getBaseContext(), SingleChoices.class);
-			}
-			finish();
-			startActivity(intent);
-		}else{
-			ShowDialog("Please Change Catalog!");
-		}
-    }*/
-    
     class MyListAdapter extends BaseAdapter{
     	List<Question> questions = new ArrayList<Question>();
     	private LayoutInflater mInflater;
@@ -266,8 +217,7 @@ public class PendQuestions extends BaseQuestion {
             }  
             
             Question question = questions.get(position);
-            qType = question.getType();
-//            cid = question.ge);
+//            qType = question.getType();
             qid = question.getId();
             
             holder.questionBtn.setText(String.valueOf(DataUtil.getQuestionExamIndex(exam, qid)));  
@@ -276,28 +226,24 @@ public class PendQuestions extends BaseQuestion {
     				Log.i(LOG_TAG,"onClick()...");
     				
     				Button sButton = (Button)v;
-//    	            String[] cidAndQids = sButton.getText().toString().split(",");
-    	            String qid = sButton.getText().toString();
-    	            Question nQuestion = DataUtil.getQuestionById(exam, qid);
+    	            String indexInExam = sButton.getText().toString();
+    	            Question nQuestion = DataUtil.getQuestionByIndexInExam(exam, Integer.valueOf(indexInExam));
     	            
     				//move question
     				Intent intent = new Intent();
-    				intent.putExtra("ccIndex", DataUtil.getCidByQid(exam, qid));
+    				intent.putExtra("ccIndex", String.valueOf(DataUtil.getCidByQid(exam, nQuestion.getId())));
     				intent.putExtra("cqIndex", String.valueOf(nQuestion.getIndex()));
+    				intent.putExtra("questionType", nQuestion.getType());
     				
-    				if(questionTypes[0].equals(qType)){
-    					intent.putExtra("questionType", "Multi Select");
-    					intent.setClass( getBaseContext(), MultiChoices.class);
-    					startActivity(intent);
-    				}else if(questionTypes[1].equals(qType)){
-    					intent.putExtra("questionType", "Single Select");
-    					intent.setClass( getBaseContext(), SingleChoices.class);
-    					startActivity(intent);
+    				if(questionTypes[0].equals(nQuestion.getType())){
+    					intent.setClass( mContext, MultiChoices.class);
+    				}else if(questionTypes[1].equals(nQuestion.getType())){
+    					intent.setClass( mContext, SingleChoices.class);
     				}else{
     					ShowDialog("Invalid qeustion type:"+cQuestionType);
     				}
-    				
-//    				gotoNewQuestion();
+    				finish();
+    				startActivity(intent);
     			}
     		});
             return convertView; 

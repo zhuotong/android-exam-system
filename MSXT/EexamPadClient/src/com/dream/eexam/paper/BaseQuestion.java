@@ -153,12 +153,12 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 			}
 			List<Question> qList = catalog.getQuestions();
 			Integer totalQuestions = qList.size();
-			Integer fQuestionIndex = null;
-			if(totalQuestions>0){
-				Question fQuestion = qList.get(0);
-				fQuestionIndex = fQuestion.getIndex();
-			}
-			catalogNames.add(new CatalogInfo(catalog.getIndex(),catalog.getDesc(),fQuestionIndex,totalQuestions,answeredQuetions));
+//			Integer fQuestionIndex = null;
+//			if(totalQuestions>0){
+//				Question fQuestion = qList.get(0);
+//				fQuestionIndex = fQuestion.getIndex();
+//			}
+			catalogNames.add(new CatalogInfo(catalog.getIndex(),catalog.getDesc(),DataUtil.getFirstIndexOfCatalog(exam, catalog.getIndex()),totalQuestions,answeredQuetions));
 		}
 		
 		cursor.close();

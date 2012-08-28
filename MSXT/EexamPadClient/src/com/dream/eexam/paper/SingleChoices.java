@@ -239,23 +239,13 @@ public class SingleChoices extends BaseQuestion {
 				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
 				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
 				intent.putExtra("questionType", cQuestionType);
-				
-//				if(questionTypes[0].equals(cQuestionType)){
-//					intent.putExtra("questionType", "Multi Select");
-//					intent.setClass( getBaseContext(), PendQuestions.class);
-//				}else if(questionTypes[1].equals(cQuestionType)){
-//					intent.putExtra("questionType", "Single Select");
-//					intent.setClass( getBaseContext(), PendQuestions.class);
-//				}
-				
 				if(questionTypes[0].equals(cQuestionType)){
-					intent.setClass( getBaseContext(), MultiChoices.class);
+					intent.setClass( getBaseContext(), PendQuestions.class);
 				}else if(questionTypes[1].equals(cQuestionType)){
-					intent.setClass( getBaseContext(), SingleChoices.class);
+					intent.setClass( getBaseContext(), PendQuestions.class);
 				}
 				finish();
 				startActivity(intent);
-
 			}
 		});
 		

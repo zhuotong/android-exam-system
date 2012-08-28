@@ -236,7 +236,34 @@ public class DataUtil {
 		return null;
 	}
 	
+	public static Question getQuestionByIndexInExam(Examination exam,int indexInExam){
+		int index = 0;
+		List<Catalog> catalogs = exam.getCatalogs();
+		for(Catalog catalog:catalogs){
+			List<Question> questions = catalog.getQuestions();
+			for(Question question:questions){
+				index++;
+				if(indexInExam == index){
+					return question;
+				}
+			}
+		}
+		return null;
+	}
 	
+	public static int getFirstIndexOfCatalog(Examination exam,int catalogIndex){
+		int index = 1;
+		List<Catalog> catalogs = exam.getCatalogs();
+		for(Catalog catalog:catalogs){
+			if(catalog.getIndex() == catalogIndex){
+				return index;
+			}else{
+				List<Question> questions = catalog.getQuestions();
+				index+=questions.size();
+			}
+		}
+		return -1;
+	}
 	
 	/**
 	 * 
