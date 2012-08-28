@@ -12,7 +12,7 @@ public class ExamPanel extends JPanel{
 	private static final long serialVersionUID = 2469894635490125068L;
 	
 	public ExamPanel(Examination e){
-		this.setLayout( new GridBagLayout() );
+		setLayout( new GridBagLayout() );
 		List<Examination.Catalog> ecs = e.getCatalogs();
 		for( int i=0; i<ecs.size(); i++ ) {
 			Examination.Catalog ec = ecs.get(i);		
