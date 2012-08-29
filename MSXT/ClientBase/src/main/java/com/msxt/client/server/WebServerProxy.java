@@ -156,7 +156,7 @@ public class WebServerProxy implements ServerProxy{
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setStatus( STATUS.ERROR );
-			result.setErrorMessage( "不能连接到服务器" );
+			result.setErrorMessage( "Can not connect to server!" );
 		} finally {
 			if( br!=null )
 				try {
