@@ -31,7 +31,7 @@
 
 package com.msxt.client.swing.panel;
 
-import com.mxst.client.swing.utilities.ArrowIcon;
+import com.msxt.client.swing.utilities.ArrowIcon;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

@@ -37,7 +37,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.JPanel;
 
-import com.mxst.client.swing.utilities.Utilities;
+import com.msxt.client.swing.utilities.Utilities;
 
 /**
  * Simple panel subclass which renders a 2-color vertical linear gradient

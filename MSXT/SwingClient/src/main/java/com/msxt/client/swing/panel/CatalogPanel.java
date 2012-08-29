@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.msxt.client.model.Examination;
-import com.mxst.client.swing.utilities.GBC;
+import com.msxt.client.swing.utilities.GBC;
 
 public class CatalogPanel extends JPanel{
 

@@ -35,8 +35,8 @@ import com.msxt.client.model.Examination;
 import com.msxt.client.model.Examination.Catalog;
 import com.msxt.client.swing.launcher.ExamLauncher;
 import com.msxt.client.swing.model.Question;
-import com.mxst.client.swing.utilities.ArrowIcon;
-import com.mxst.client.swing.utilities.Utilities;
+import com.msxt.client.swing.utilities.ArrowIcon;
+import com.msxt.client.swing.utilities.Utilities;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

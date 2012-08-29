@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import com.msxt.client.model.Examination;
-import com.mxst.client.swing.utilities.GBC;
+import com.msxt.client.swing.utilities.GBC;
 
 public class SingleChoicePanel extends JPanel{
 	private static final long serialVersionUID = -3380325920299172267L;

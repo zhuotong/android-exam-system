@@ -6,7 +6,7 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import com.msxt.client.model.Examination;
-import com.mxst.client.swing.utilities.GBC;
+import com.msxt.client.swing.utilities.GBC;
 
 public class ExamPanel extends JPanel{
 	private static final long serialVersionUID = 2469894635490125068L;
