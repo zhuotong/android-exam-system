@@ -23,7 +23,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import com.dream.eexam.base.R;
-import com.dream.eexam.server.DataUtil;
 import com.msxt.client.model.Examination.Choice;
 
 public class SingleChoices extends BaseQuestion {
@@ -36,88 +35,24 @@ public class SingleChoices extends BaseQuestion {
 	MyListAdapter adapter;
 	List<String> listItemID = new ArrayList<String>();
 
-	public void loadComponents(){
-		homeTV = (TextView)findViewById(R.id.homeTV);
+	public void initialComponents(){
+		homeTV = (TextView)findViewById(R.id.homeTV);//TextView[Home]
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
 		imgDownArrow = (ImageView) findViewById(R.id.imgDownArrow);
-		
-//		questionIndex = (TextView)findViewById(R.id.questionIndex);
-		
-		//Button[Prev]
-    	preBtn = (Button)findViewById(R.id.preBtn);
-    	
-    	//Button[Prev]
-    	pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);
-		
-    	remainingTimeLabel = (TextView)findViewById(R.id.remainingTimeLabel);
-		remainingTime = (TextView)findViewById(R.id.remainingTime);
-		
+    	preBtn = (Button)findViewById(R.id.preBtn);//Button[Prev]
+    	pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);//TextView[Pending([count])]
+    	remainingTimeLabel = (TextView)findViewById(R.id.remainingTimeLabel);//TextView[Time Label]
+		remainingTime = (TextView)findViewById(R.id.remainingTime);//TextView[Time Value]
 		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
 		completedPercentage = (TextView)findViewById(R.id.completedPercentage);
-		
 		submitTV = (TextView)findViewById(R.id.submitTV);
-    	nextBtn = (Button)findViewById(R.id.nextBtn);
-    	
+    	nextBtn = (Button)findViewById(R.id.nextBtn);//Button[Next]
 	}
 	
 	public void setHeader(){
 		//set exam header(Left)
-		homeTV.setText("Home");
-		//set exam header(Center)
-		remainingTime.setText(String.valueOf(exam.getTime())+" mins");
-		//set exam header(Right)
-		submitTV.setText("Submit");
-        submitTV.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Log.i(LOG_TAG, "submitTV.onClick()...");
-		    	int waitQuestions = examQuestionSum - examAnsweredQuestionSum;
-				if (waitQuestions> 0) {
-					AlertDialog.Builder builder = new AlertDialog.Builder(SingleChoices.this);
-					builder.setMessage(String.valueOf(waitQuestions) + " question(s) are not answered, still submit?")
-							.setCancelable(false)
-							.setPositiveButton("Yes",
-									new DialogInterface.OnClickListener() {
-										public void onClick(DialogInterface dialog,int id) {
-											submitAnswer();
-										}
-									})
-							.setNegativeButton("Cancel",
-									new DialogInterface.OnClickListener() {
-										public void onClick(DialogInterface dialog,int id) {
-											dialog.cancel();
-										}
-									});
-					builder.show();
-				} else {
-					submitAnswer();
-				}
-			}
-		});
+		homeTV.setText(R.string.msg_header_tv_home);
 
-        //set catalog bar(Left) 
-//        String questionIndexDesc = "Question "+ String.valueOf(cQuestionIndex) +"/"+ String.valueOf(examQuestionSum);
-//        questionIndex.setText(questionIndexDesc);
-//		questionIndex.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				Intent intent = new Intent();
-//				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
-//				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
-//				if(questionTypes[0].equals(cQuestionType)){
-//					intent.putExtra("questionType", "Multi Select");
-//					intent.setClass( getBaseContext(), MultiChoices.class);
-//				}else if(questionTypes[1].equals(cQuestionType)){
-//					intent.putExtra("questionType", "Single Select");
-//					intent.setClass( getBaseContext(), SingleChoices.class);
-//				}
-//				finish();
-//				startActivity(intent);
-//			}
-//		});
-		
-//		int queExamIndex = DataUtil.getQuestionExamIndex(exam, cQuestion.getId());
-		
         //set catalog bar(Center) 
 		catalogsTV.setText(String.valueOf(cCatalogIndex)+". "+ cCatalog.getDesc() + 
 				"(Q" + String.valueOf(cQuestionIndexOfExam)+" - " + "Q" + String.valueOf(cQuestionIndexOfExam+queSumOfCCatalog-1)+")");
@@ -144,7 +79,7 @@ public class SingleChoices extends BaseQuestion {
         setContentView(R.layout.paper_single_choices);
         mContext = getApplicationContext();
         
-        loadComponents();
+        initialComponents();
         setHeader();
         
         String questionHint = "Q"+String.valueOf(cQuestionIndexOfExam)+" (Score:"+String.valueOf(cQuestion.getScore())+")\n";
@@ -193,7 +128,6 @@ public class SingleChoices extends BaseQuestion {
     	
 		listItemID.clear();
     	answerLabels.setLength(0);
-    	
 		//initial all items background color
 		for(int i=0;i<cChoices.size();i++){
 			RadioButton aRb =(RadioButton)adapter.getView(i, null, null).findViewById(R.id.radioButton);
@@ -249,11 +183,45 @@ public class SingleChoices extends BaseQuestion {
 			}
 		});
 		
+		
+		//set exam header(Center)
+		remainingTime.setText(String.valueOf(exam.getTime())+" mins");
+		
 		//set completedSeekBar
 		int per = 100 * examAnsweredQuestionSum/examQuestionSum;
 		completedSeekBar.setThumb(null);
 		completedSeekBar.setProgress(per);
 		completedSeekBar.setEnabled(false);
+		
+		//set exam header(Right)
+		submitTV.setText("Submit");
+        submitTV.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Log.i(LOG_TAG, "submitTV.onClick()...");
+		    	int waitQuestions = examQuestionSum - examAnsweredQuestionSum;
+				if (waitQuestions> 0) {
+					AlertDialog.Builder builder = new AlertDialog.Builder(SingleChoices.this);
+					builder.setMessage(String.valueOf(waitQuestions) + " question(s) are not answered, still submit?")
+							.setCancelable(false)
+							.setPositiveButton("Yes",
+									new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog,int id) {
+											submitAnswer();
+										}
+									})
+							.setNegativeButton("Cancel",
+									new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog,int id) {
+											dialog.cancel();
+										}
+									});
+					builder.show();
+				} else {
+					submitAnswer();
+				}
+			}
+		});
 		
 		//set completedSeekBar label
 		completedPercentage.setText(String.valueOf(per)+"%");

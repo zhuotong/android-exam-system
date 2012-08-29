@@ -2,8 +2,6 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <string name="app_name">EexamClient</string>
     <string name="msg_header_tv_home">Home</string>
-    <string name="msg_header_tv_current">Current(1)</string>
-    <string name="msg_header_tv_all">All(5)</string>
 
     <!-- Login Page Start-->
     <string name="msg_logo_desc">eExam</string>
@@ -28,6 +26,7 @@
     <string name="msg_btn_start">Start</string>
     <string name="msg_btn_submit">Submit</string>
     <string name="msg_btn_pre">Prev</string>
+    <string name="msg_tv_time">Time:</string>
     <string name="msg_btn_next">Next</string>
     <string name="connection_error">Unable to load content. Check your network connection.</string>
     <string name="xml_error">Error parsing XML.</string>
