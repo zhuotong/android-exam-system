@@ -1,4 +1,4 @@
-package com.mxst.client.swing.utilities;
+package com.msxt.client.swing.utilities;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;

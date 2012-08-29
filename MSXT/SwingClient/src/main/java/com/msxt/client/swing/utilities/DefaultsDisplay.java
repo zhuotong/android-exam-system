@@ -29,7 +29,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.mxst.client.swing.utilities;
+package com.msxt.client.swing.utilities;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
