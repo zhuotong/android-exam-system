@@ -9,8 +9,8 @@ import com.msxt.client.swing.panel.LoginPanel;
 import com.msxt.client.swing.panel.QuestionSelectorPanel;
 import com.msxt.client.swing.panel.RoundedPanel;
 import com.msxt.client.swing.panel.SelectExamPanel;
-import com.mxst.client.swing.utilities.RoundedBorder;
-import com.mxst.client.swing.utilities.Utilities;
+import com.msxt.client.swing.utilities.RoundedBorder;
+import com.msxt.client.swing.utilities.Utilities;
 
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
@@ -116,8 +116,6 @@ public class ExamLauncher extends SingleFrameApplication  {
     public static boolean usingNimbus() {
         return UIManager.getLookAndFeel().getName().equals("Nimbus");
     }
-
-    // End of statics
     
     private ResourceMap resourceMap;
     
@@ -130,7 +128,7 @@ public class ExamLauncher extends SingleFrameApplication  {
     private JPanel selectExamPanel;
     private JPanel mainPanel;
     private QuestionSelectorPanel questionSelectorPanel;
-    private JPanel demoContainer;
+    private JPanel examContainer;
     private JComponent currentDemoPanel;
     private JComponent demoPlaceholder;
     private ButtonGroup lookAndFeelRadioGroup;
@@ -229,17 +227,17 @@ public class ExamLauncher extends SingleFrameApplication  {
         questionSelectorPanel.addPropertyChangeListener( new QuestionSelectionListener() );
         mainPanel.add(questionSelectorPanel, BorderLayout.WEST);
         
-        demoContainer = new JPanel();
-        demoContainer.setLayout(new BorderLayout());
-        demoContainer.setBorder(PANEL_BORDER);
-        demoContainer.setPreferredSize(new Dimension(DEMO_PANEL_WIDTH, DEMO_PANEL_HEIGHT));
+        examContainer = new JPanel();
+        examContainer.setLayout(new BorderLayout());
+        examContainer.setBorder(PANEL_BORDER);
+        examContainer.setPreferredSize(new Dimension(DEMO_PANEL_WIDTH, DEMO_PANEL_HEIGHT));
         
-        mainPanel.add( demoContainer, BorderLayout.CENTER );
+        mainPanel.add( examContainer, BorderLayout.CENTER );
         
 //      currentDemoPanel = demoPlaceholder;
 //      demoContainer.add(demoPlaceholder, BorderLayout.CENTER);
         JScrollPane epsp = new JScrollPane( new ExamPanel( exam ) );
-        demoContainer.add( epsp, BorderLayout.CENTER );
+        examContainer.add( epsp, BorderLayout.CENTER );
         
         // Create shareable popup menu for demo actions
         popup = new JPopupMenu();
@@ -349,11 +347,11 @@ public class ExamLauncher extends SingleFrameApplication  {
         currentQuestion = q;
         if (q != null) {
             JPanel demoPanel = runningPanelCache.get(q.getName());
-            demoContainer.remove(currentDemoPanel);
+            examContainer.remove(currentDemoPanel);
             currentDemoPanel = demoPanel;
-            demoContainer.add( currentDemoPanel, BorderLayout.CENTER) ;
-            demoContainer.revalidate();
-            demoContainer.repaint();
+            examContainer.add( currentDemoPanel, BorderLayout.CENTER) ;
+            examContainer.revalidate();
+            examContainer.repaint();
             getMainFrame().validate();
         }
           
@@ -461,7 +459,7 @@ public class ExamLauncher extends SingleFrameApplication  {
                 if (!component.isShowing()) {
                     //demo.stop();
                 } else {
-                    demoContainer.revalidate();
+                    examContainer.revalidate();
                     EventQueue.invokeLater(new Runnable() {
                         public void run() {
                             //demo.start();
