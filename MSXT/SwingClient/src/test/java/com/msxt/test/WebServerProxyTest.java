@@ -3,8 +3,8 @@ package com.msxt.test;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.msxt.client.swing.server.ServerProxy.Result;
-import com.msxt.client.swing.server.WebServerProxy;
+import com.msxt.client.server.ServerProxy.Result;
+import com.msxt.client.server.WebServerProxy;
 
 public class WebServerProxyTest {
 	public static void main(String[] args){
