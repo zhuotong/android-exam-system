@@ -125,7 +125,6 @@ public class ExamListActivity extends BaseActivity {
 			public void onClick(View v) {
 				Log.i(LOG_TAG,"onClick()...");
 				
-//				downloadURL = SystemConfig.getInstance().getPropertyValue("Download_URL")+"conversation="+conversation+"&examId="+examIdString;;
 				downloadExamFile = SystemConfig.getInstance().getPropertyValue("Download_Exam");
 	        	downloadExamFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + "eExam";
 	        	

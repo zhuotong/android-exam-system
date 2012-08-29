@@ -2,20 +2,15 @@ package com.dream.eexam.base;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import com.dream.eexam.model.InterviewBean;
 import com.dream.eexam.util.SystemConfig;
 import com.msxt.client.server.ServerProxy;
 import com.msxt.client.server.WebServerProxy;
 import com.msxt.client.server.ServerProxy.Result;
 import com.msxt.client.server.ServerProxy.STATUS;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -38,14 +33,8 @@ public class LoginActivity extends BaseActivity {
 	String savePassword = null;
 	
 	Button loginBtn = null;
-
-	InterviewBean bean;
-//	String loginURL = null;
 	String loginResultFile = null;
 	String loginResultFilePath = null;
-//	String loginStatus;
-	
-
 	
 	private Context mContext;
 	
@@ -88,7 +77,6 @@ public class LoginActivity extends BaseActivity {
 			editor.putString("password", password);
 			editor.commit();		
     		
-//        	loginURL = SystemConfig.getInstance().getPropertyValue("Login_URL")+"loginName="+id+"&loginPassword="+password;
         	loginResultFile = SystemConfig.getInstance().getPropertyValue("Login_Result");
         	loginResultFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + "eExam";
         	if (getWifiIP() != null && getWifiIP().trim().length() > 0 && !getWifiIP().trim().equals("0.0.0.0")){
@@ -114,44 +102,10 @@ public class LoginActivity extends BaseActivity {
     	
         @Override
 		protected String doInBackground(String... urls) {
-/*			InputStream inputStream = downloadUrl(urls[0],urls[1]);// get inputStream// from server
-        	if(inputStream!=null){
-        		loginResult = new Result();
-        		loginResult.setStatus(STATUS.SUCCESS);
-        		try {
-					loginResult.setSuccessMessage(inputStream2String(inputStream));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-        	}else{
-        		loginResult = new Result();
-        		loginResult.setStatus(STATUS.ERROR);
-        	}*/
         	String host = mContext.getResources().getString(R.string.host);
         	Integer port = Integer.valueOf(mContext.getResources().getString(R.string.port));
         	proxy =  WebServerProxy.Factroy.createInstance(host, port);
     		loginResult = proxy.login(urls[0], urls[1]);
-    		
-//    		if(STATUS.SUCCESS.equals(loginResult.getStatus())){
-//    			saveFile(loginResultFilePath, loginResultFile, loginResult.getSuccessMessage());
-//    		}else if(STATUS.ERROR.equals(loginResult.getStatus())){
-//    			ShowDialog(loginResult.getErrorMessage());
-//    			this.cancel(true);
-//    		}
-//        	InputStream inputStream = LoginActivity.class.getClassLoader().getResourceAsStream(loginResultFile);
-//			try {
-//				//save login result to local
-//				saveFile(loginResultFilePath, loginResultFile, inputStream2String(inputStream));
-//				//read login result from local
-//				FileInputStream inputStream2 = new FileInputStream(new File(loginResultFilePath + File.separator + loginResultFile));
-//				loginStatus = XMLParseUtil.readLoginResultStatus(inputStream2);
-//				inputStream2.close();
-//			} catch (IOException e) {
-//				Log.i(LOG_TAG,e.getMessage());
-//			} catch (Exception e) {
-//				Log.i(LOG_TAG,e.getMessage());
-//			}
 			return null;
 		}
 
@@ -160,16 +114,6 @@ public class LoginActivity extends BaseActivity {
         	progressDialog.dismiss();
         	loginBtn.setEnabled(true);
 
-        	/*if(STATUS.SUCCESS.equals(loginResult.getStatus())){
-    			Intent intent = new Intent();
-    			intent.putExtra("loginResultFile", loginResultFile);
-    			intent.putExtra("loginResultFilePath", loginResultFilePath);
-    			intent.setClass( mContext, ExamListActivity.class);
-    			startActivity(intent);        		
-        	}else{
-        		ShowDialog("Can not login server!");
-        	}*/
-        	
     		if( loginResult.getStatus() == STATUS.ERROR ) {
     			ShowDialog(loginResult.getErrorMessage());
         	} else {
