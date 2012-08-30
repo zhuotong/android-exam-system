@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Message;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -64,8 +65,8 @@ public class MultiChoices extends BaseQuestion {
 		homeTV.setText("Home");
 		
         //set catalog bar(Center) 
-		catalogsTV.setText(String.valueOf(cCatalog1stQuestionIndex)+". "+ cCatalog.getDesc() + 
-				"(Q" + String.valueOf(cQuestionIndexOfExam)+" - " + "Q" + String.valueOf(cCataloglastQuestionIndex)+")");
+		catalogsTV.setText(String.valueOf(cCatalogIndex)+". "+ cCatalog.getDesc() + 
+				"(Q" + String.valueOf(cCatalog1stQuestionIndex)+" - " + "Q" + String.valueOf(cCataloglastQuestionIndex)+")");
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -120,6 +121,10 @@ public class MultiChoices extends BaseQuestion {
 				}else{
 					saveAnswer(mContext,cCatalogIndex,cQuestionIndex,cQuestion.getId(),answerLabels.toString());
 				}
+				
+				Message msg = new Message();
+				msg.what = 1;
+				handler.sendMessage(msg);
 			}      	
         });
         listView.setOnTouchListener(new OnTouchListener(){

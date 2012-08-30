@@ -142,7 +142,7 @@ public class DatabaseUtil{
 		Log.i(TAG, "fetchAnswer()... ");
 		String con = CATALOG_ID + "=" + cid ;
 		Log.i(TAG, "con: " + con);
-		Cursor mCursor = mDb.query(true, DATABASE_TABLE, new String[] {CATALOG_ID,QUESTION_ID,QUESTION_ID_STRING,ANSWERS,}, con, null,null, null, null, null);
+		Cursor mCursor = mDb.query(true, DATABASE_TABLE, new String[] {CATALOG_ID,QUESTION_ID,QUESTION_ID_STRING,ANSWERS}, con, null,null, null, null, null);
 		return mCursor;
 	}
 	

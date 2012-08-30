@@ -51,7 +51,8 @@
         <item>J</item>
     </string-array>
     
-    <string name="host">192.168.241.45</string>
+<!--     <string name="host">192.168.241.45</string> -->
+    <string name="host">192.168.1.101</string>
     <string name="port">8080</string>
     <string name="app_file_home">eExam</string>
     <string name="login_file_name">login_result.xml</string>

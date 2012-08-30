@@ -43,17 +43,12 @@ public class ExamListActivity extends BaseActivity {
 	//declare components
 	private TextView nameTV = null;
 	private TextView jobTitleTV = null;
-	
 	private TextView examDesc = null;
 	private Spinner spinner;
 	
 	//buttons
 	private Button startBtn;
 	private Button clearBtn;
-	
-	//data
-//	LoginResultBean loginResultBean = new LoginResultBean();
-//	List<ExamBaseBean> examList = null;
 	
 	LoginSuccessResult succResult = new LoginSuccessResult();
 	List<com.msxt.client.model.LoginSuccessResult.Examination> examinations;
@@ -92,8 +87,6 @@ public class ExamListActivity extends BaseActivity {
 		} catch (Exception e) {
 			Log.i(LOG_TAG,e.getMessage());
 		}
-		
-		
 		examinations = succResult.getExaminations();
 		if(examinations!=null&&examinations.size()>0){
 			exams = new String[examinations.size()];
@@ -128,8 +121,6 @@ public class ExamListActivity extends BaseActivity {
 				downloadExamFile = SystemConfig.getInstance().getPropertyValue("Download_Exam");
 	        	downloadExamFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + "eExam";
 	        	
-//	        	ServerProxy proxy =  WebServerProxy.Factroy.getCurrrentInstance();
-//				Log.i(LOG_TAG,"downloadURL:"+downloadURL);
 	        	new DownloadExamTask().execute(examIdString);
 
 			}			
@@ -159,8 +150,6 @@ public class ExamListActivity extends BaseActivity {
 			Log.i(LOG_TAG,"onItemSelected()...");
 			Log.i(LOG_TAG,"arg2="+String.valueOf(arg2));
 			
-//			ExamBaseBean examBaseBean = loginResultBean.getExamList().get(arg2);
-			
 			List<com.msxt.client.model.LoginSuccessResult.Examination> exams = succResult.getExaminations();
 			com.msxt.client.model.LoginSuccessResult.Examination exam = exams.get(arg2);
 			
@@ -188,23 +177,14 @@ public class ExamListActivity extends BaseActivity {
 		
 	    @Override
 	    protected String doInBackground(String... urls) {
-//	    	InputStream inputStream = downloadUrl(urls[0]);//get inputStream from server
-//	    	InputStream inputStream = LoginActivity.class.getClassLoader().getResourceAsStream(downloadExamFile);
-	    	
-//        	WebServerProxy proxy = new WebServerProxy(mContext.getResources().getString(R.string.host),
-//        			Integer.valueOf(mContext.getResources().getString(R.string.port)));
-//        	proxy.setConversationId(urls[0]);
-        	
         	ServerProxy proxy =  WebServerProxy.Factroy.getCurrrentInstance();
         	examResult = proxy.getExam(urls[0]);
-        	
     		if(STATUS.SUCCESS.equals(examResult.getStatus())){
     			saveFile(downloadExamFilePath, downloadExamFile, examResult.getSuccessMessage());
     		}else if(STATUS.ERROR.equals(examResult.getStatus())){
     			ShowDialog(examResult.getErrorMessage());
     			this.cancel(true);
     		}
-
 	        return "success";
 	    }
 	
@@ -222,17 +202,6 @@ public class ExamListActivity extends BaseActivity {
 				}
 				
 				fQuestionType = fQuestion.getType();
-				//get first question in paper
-//				FileInputStream inputStream;
-//				try {
-//					inputStream = new FileInputStream(new File(downloadExamFilePath+ File.separator+downloadExamFile));
-//					fQuestionType = XMLParseUtil.readQuestionType(inputStream,1,1);
-//		        	inputStream.close();
-//				} catch (FileNotFoundException e1) {
-//					Log.i(LOG_TAG,"FileNotFoundException:" + e1.getMessage());
-//				} catch (Exception e) {
-//					Log.i(LOG_TAG,"Exception:" + e.getMessage());
-//				}
 	
 				//move question
 				Intent intent = new Intent();

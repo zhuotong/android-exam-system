@@ -54,8 +54,8 @@ public class SingleChoices extends BaseQuestion {
 		homeTV.setText(R.string.msg_header_tv_home);
 
         //set catalog bar(Center) 
-		catalogsTV.setText(String.valueOf(cCatalog1stQuestionIndex)+". "+ cCatalog.getDesc() + 
-				"(Q" + String.valueOf(cQuestionIndexOfExam)+" - " + "Q" + String.valueOf(cCataloglastQuestionIndex)+")");
+		catalogsTV.setText(String.valueOf(cCatalogIndex)+". "+ cCatalog.getDesc() + 
+				"(Q" + String.valueOf(cCatalog1stQuestionIndex)+" - " + "Q" + String.valueOf(cCataloglastQuestionIndex)+")");
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

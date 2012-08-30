@@ -102,32 +102,33 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	protected Question cQuestion;
 	protected List<Choice> cChoices;
 	protected List<Question> pendQuestions = new ArrayList<Question>();
-	protected List<CatalogInfo> catalogNames = new ArrayList<CatalogInfo>();
+	protected List<CatalogInfo> catalogInfos = new ArrayList<CatalogInfo>();
 	protected TimerTask  timerTask;
 	protected Timer timer;
 	protected Integer lMinutes = 0;
 	protected Integer lSeconds = 0;
 	
-    public void loadDownLoadExam(){
+    public void loadDownLoadExam(DatabaseUtil dbUtil){
     	FileInputStream examStream = FileUtil.getExamStream(examFilePath,examFileName);
-    	
-    	//load exam 
+    	//load exam data
     	exam = DataUtil.getExam(examStream);
-    	
-    	//load exam related
+    	//load exam related data
     	examQuestionSum = DataUtil.getExamQuestionSum(exam);
     	cataLogs = exam.getCatalogs();
     	cCatalog = cataLogs.get(cCatalogIndex-1);
     	cCatalog1stQuestionIndex = DataUtil.getFirstQuestionIndexOfCatalog(exam, cCatalogIndex);
-    	
     	cQuestion = DataUtil.getQuestionByCidQid(exam, cCatalogIndex, cQuestionIndex);
     	cQuestionIndexOfExam = DataUtil.getQuestionExamIndex(exam, cQuestion.getId());
     	queSumOfCCatalog = cCatalog.getQuestions().size();
-    	cCataloglastQuestionIndex = cCatalog1stQuestionIndex+cCataloglastQuestionIndex-1;
+    	cCataloglastQuestionIndex = cCatalog1stQuestionIndex+queSumOfCCatalog-1;
     	cChoices = cQuestion.getChoices();
     	
+    	loadPendingQuestions(dbUtil);
+    	loadCatalogInfos(dbUtil);
+    }
+    
+    public void loadPendingQuestions(DatabaseUtil dbUtil){
     	//load pending questions
-    	DatabaseUtil dbUtil = new DatabaseUtil(this);
     	dbUtil.open();
     	Cursor cursor = null;
 		for(Catalog catalog: cataLogs){
@@ -140,7 +141,10 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 				pendQuestions.add(question);
 			}
 		}
-		
+		cursor.close();
+    }
+    
+    public void loadCatalogInfos(DatabaseUtil dbUtil){
 		//load catalog list menu
 		Cursor catalogCursor = null;
 		int answeredQuetions;
@@ -148,9 +152,9 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		for(Catalog catalog: cataLogs){
 			catalogCursor = dbUtil.fetchAnswer(catalog.getIndex());
 			answeredQuetions = 0;
-			while(cursor.moveToNext()){
-				Integer qid = cursor.getInt(1);
-				String answers = cursor.getString(3);
+			while(catalogCursor.moveToNext()){
+				Integer qid = catalogCursor.getInt(1);
+				String answers = catalogCursor.getString(3);
 				if(qid!=null && answers!= null && answers.length()>0){
 					answeredQuetions++;
 				}
@@ -158,22 +162,19 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 			List<Question> qList = catalog.getQuestions();
 			Integer totalQuestions = qList.size();
 
-			catalogNames.add(new CatalogInfo(catalog.getIndex(),catalog.getDesc(),
+			catalogInfos.add(new CatalogInfo(catalog.getIndex(),catalog.getDesc(),
 					DataUtil.getFirstQuestionIndexOfCatalog(exam, catalog.getIndex()),totalQuestions,answeredQuetions));
+			catalogCursor.close();
 		}
-		
-		cursor.close();
 		catalogCursor.close();
-		dbUtil.close();
-    	
     }
 	
-    public void loadAnswerHistory(int cid,int qid){
+    public void loadAnswerHistory(int cid,int qid,DatabaseUtil dbUtil){
     	Log.i(LOG_TAG, "loadAnswer()...");
 		Log.i(LOG_TAG, "cid = " + cid + " qid = " + qid);
 		
 		//load label(s) of answer
-    	DatabaseUtil dbUtil = new DatabaseUtil(this);
+    	
     	dbUtil.open();
     	Cursor cursor = dbUtil.fetchAnswer(cid,qid);
 		if (cursor != null && cursor.moveToNext()) {
@@ -199,7 +200,6 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
     	
     	examAnsweredQuestionSum = dbUtil.fetchAllAnswersCount();
     	
-    	dbUtil.close();  
     	Log.i(LOG_TAG, "end loadAnswer().");
     }
     
@@ -219,12 +219,11 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		cCatalogIndex  = Integer.valueOf(bundle.getString("ccIndex"));
 		cQuestionIndex  = Integer.valueOf(bundle.getString("cqIndex"));
 		
-		
 		//load old data from database
-		loadAnswerHistory(cCatalogIndex,cQuestionIndex);
-		
-		//load exam with local file
-		loadDownLoadExam();
+		DatabaseUtil dbUtil = new DatabaseUtil(this);
+		loadAnswerHistory(cCatalogIndex,cQuestionIndex,dbUtil);
+		loadDownLoadExam(dbUtil);//load exam with local file
+		dbUtil.close();
 		
 		//set time task to set count down time 
 		timerTask = new TimerTask() {
@@ -262,8 +261,6 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	}
 	
 	protected void setCountDownTime() {
-//		String currentTimeString = TimeDateUtil.getCurrentTime();
-//		Log.i(LOG_TAG, currentTimeString);
 		if (lMinutes == 0) {
 			if (lSeconds == 0) {
 				remainingTime.setText("Time out !");
@@ -309,10 +306,27 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 			}
 		}
 	}
+	
+	public void updateCompletedSeekBar(){
+		Log.w(LOG_TAG, "updateCompletedSeekBar()...");
+		
+		DatabaseUtil dbUtil = new DatabaseUtil(this);
+		examAnsweredQuestionSum = dbUtil.fetchAllAnswersCount();
+		int per = 100 * examAnsweredQuestionSum/examQuestionSum;
+		completedSeekBar.setThumb(null);
+		completedSeekBar.setProgress(per);
+		completedSeekBar.setEnabled(false);
+		
+		Log.w(LOG_TAG, "updateCompletedSeekBar().");
+	}
+	
 
-	Handler handler = new Handler(){
+	protected Handler handler = new Handler(){
 		public void handleMessage(Message msg) {
-			setCountDownTime();
+			switch(msg.what){
+				case 0:setCountDownTime();break;
+				case 1:updateCompletedSeekBar();break;
+			}
 		}
 	};
 	
@@ -448,10 +462,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 			LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			popupView = layoutInflater.inflate(R.layout.catalog_info_list, null);
 			lv_group = (ListView) popupView.findViewById(R.id.lvGroup);
-//			groups = new ArrayList<String>();
-			
-			Log.i(LOG_TAG, "pressedItemIndex:"+pressedItemIndex);
-			GroupAdapter groupAdapter = new GroupAdapter(this, catalogNames);
+			GroupAdapter groupAdapter = new GroupAdapter(this, catalogInfos);
 			lv_group.setAdapter(groupAdapter);
 			int ppH = Integer.valueOf(getResources().getString(R.string.popup_window_height));
 			int ppW = Integer.valueOf(getResources().getString(R.string.popup_window_width));
@@ -485,7 +496,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 					popupWindow.dismiss();
 				}
 				
-				CatalogInfo info = catalogNames.get(position);
+				CatalogInfo info = catalogInfos.get(position);
 				Question nQuestion = DataUtil.getQuestionByCidQid(exam, info.getIndex(),1);
 				String nQuestionType = nQuestion.getType();
 				Intent intent = new Intent();
