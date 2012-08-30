@@ -251,7 +251,7 @@ public class DataUtil {
 		return null;
 	}
 	
-	public static int getFirstIndexOfCatalog(Examination exam,int catalogIndex){
+	public static int getFirstQuestionIndexOfCatalog(Examination exam,int catalogIndex){
 		int index = 1;
 		List<Catalog> catalogs = exam.getCatalogs();
 		for(Catalog catalog:catalogs){

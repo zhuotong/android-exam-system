@@ -42,7 +42,7 @@ public class PendQuestions extends BaseQuestion {
 	
 	public void loadComponents(){
 		homeTV = (TextView)findViewById(R.id.homeTV);
-		remainingTimeLabel = (TextView)findViewById(R.id.remainingTimeLabel);
+//		remainingTimeLabel = (TextView)findViewById(R.id.remainingTimeLabel);
 		remainingTime = (TextView)findViewById(R.id.remainingTime);
 		submitTV = (TextView)findViewById(R.id.submitTV);
 		
@@ -61,7 +61,7 @@ public class PendQuestions extends BaseQuestion {
 		homeTV.setText("Home");
 		
 		//set exam header(Center)
-		remainingTimeLabel.setText("Time Remaining: ");
+//		remainingTimeLabel.setText("Time Remaining: ");
 		remainingTime.setText(String.valueOf(exam.getTime())+" mins");
 		
 		//set exam header(Right)

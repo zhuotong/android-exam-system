@@ -41,7 +41,7 @@ public class SingleChoices extends BaseQuestion {
 		imgDownArrow = (ImageView) findViewById(R.id.imgDownArrow);
     	preBtn = (Button)findViewById(R.id.preBtn);//Button[Prev]
     	pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);//TextView[Pending([count])]
-    	remainingTimeLabel = (TextView)findViewById(R.id.remainingTimeLabel);//TextView[Time Label]
+//    	remainingTimeLabel = (TextView)findViewById(R.id.remainingTimeLabel);//TextView[Time Label]
 		remainingTime = (TextView)findViewById(R.id.remainingTime);//TextView[Time Value]
 		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
 		completedPercentage = (TextView)findViewById(R.id.completedPercentage);
@@ -54,8 +54,8 @@ public class SingleChoices extends BaseQuestion {
 		homeTV.setText(R.string.msg_header_tv_home);
 
         //set catalog bar(Center) 
-		catalogsTV.setText(String.valueOf(cCatalogIndex)+". "+ cCatalog.getDesc() + 
-				"(Q" + String.valueOf(cQuestionIndexOfExam)+" - " + "Q" + String.valueOf(cQuestionIndexOfExam+queSumOfCCatalog-1)+")");
+		catalogsTV.setText(String.valueOf(cCatalog1stQuestionIndex)+". "+ cCatalog.getDesc() + 
+				"(Q" + String.valueOf(cQuestionIndexOfExam)+" - " + "Q" + String.valueOf(cCataloglastQuestionIndex)+")");
 		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

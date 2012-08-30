@@ -12,7 +12,7 @@
 	    <TextView
 	        android:id="@+id/groupItem"
 	        android:textColor="@color/catalog_menu_text_color"
-	        android:textSize="25sp"
+	        android:textSize="22sp"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:gravity="left|center_vertical"
