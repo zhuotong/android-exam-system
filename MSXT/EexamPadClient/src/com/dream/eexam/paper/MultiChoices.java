@@ -377,7 +377,7 @@ public class MultiChoices extends BaseQuestion {
 			Choice choice = choices.get(position);
 			
 			holder.selected.setChecked(mChecked.get(position));
-			holder.selected.setText(choicesLabels[position]);
+//			holder.selected.setText(choicesLabels[position]);
 			holder.index.setText(choice.getLabel());
 			holder.choiceDesc.setText(choice.getContent());
 			

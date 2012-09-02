@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -118,6 +119,10 @@ public class SingleChoices extends BaseQuestion {
 //				}else{
 //					saveAnswer(mContext,cCatalogIndex,cQuestionIndex,cQuestion.getId(),answerLabels.toString());
 //				}
+        		
+				Message msg = new Message();
+				msg.what = 1;
+				handler.sendMessage(msg);
 			}      	
         });
         setFooter();
@@ -238,9 +243,9 @@ public class SingleChoices extends BaseQuestion {
     
     //save answer if not empty 
     public void relocationQuestion(){
-    	//clear answer first
-    	listItemID.clear();
-    	answerLabels.setLength(0);
+//    	//clear answer first
+//    	listItemID.clear();
+//    	answerLabels.setLength(0);
 
     	//get selection choice and assembly to string
 		
@@ -263,7 +268,6 @@ public class SingleChoices extends BaseQuestion {
 					.setPositiveButton("Yes",
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,int id) {
-//									clearAnswer(mContext,cCatalogIndex,cQuestionIndex);
 									gotoNewQuestion(mContext,cCatalogIndex,cQuestionIndex,moveDirect);
 								}
 							})
@@ -336,30 +340,16 @@ public class SingleChoices extends BaseQuestion {
 				holder.radioButton.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						Log.i(LOG_TAG,"==========pressed item position = "+String.valueOf(p)+"===========");
-						
-						
-//						RadioButton cb = (RadioButton)v;
-//						boolean oldStatus = cb.isChecked();
-//						Log.i(LOG_TAG,"oldStatus:"+String.valueOf(oldStatus));
-//						
-//						clearOldAnswer();
-//						
-//						cb.setChecked(!oldStatus);
-//						Log.i(LOG_TAG,"after setChecked");
-//						
-//						Log.i(LOG_TAG,"newStatus:"+String.valueOf(cb.isChecked()));
-//						mChecked.set(p,cb.isChecked());
-//						
-//		        		setAnswer(p,cb.isChecked());
-//		        		
-//		        		if(answerString.length()==0){
-//							clearAnswer(mContext,currentCatalogIndex,currentQuestionIndex);
-//						}else{
-//							saveAnswer(mContext,currentCatalogIndex,currentQuestionIndex,question.getQuestionId(),answerString.toString());
-//						}
+		        		clearOldAnswer();
 		        		
-		        		Log.i(LOG_TAG,"=====================");
+		        		RadioButton rb = (RadioButton)v;
+		        		mChecked.set(p, rb.isChecked());
+		        		
+		        		setAnswer(p,rb.isChecked());
+
+						Message msg = new Message();
+						msg.what = 1;
+						handler.sendMessage(msg);
 					}
 				});
 				view.setTag(holder);
@@ -371,7 +361,7 @@ public class SingleChoices extends BaseQuestion {
 			
 			Choice choice = choices.get(position);
 			holder.radioButton.setChecked(mChecked.get(position));
-			holder.radioButton.setText(choicesLabels[position]);
+//			holder.radioButton.setText(choicesLabels[position]);
 			holder.index.setText(choice.getLabel());
 			holder.choiceDesc.setText(choice.getContent());
 			
