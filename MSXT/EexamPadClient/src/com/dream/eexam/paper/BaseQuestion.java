@@ -129,7 +129,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
     
     public void loadPendingQuestions(DatabaseUtil dbUtil){
     	//load pending questions
-    	dbUtil.open();
+//    	dbUtil.open();
     	Cursor cursor = null;
 		for(Catalog catalog: cataLogs){
 			List<Question> questions = catalog.getQuestions();
@@ -206,6 +206,8 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		Log.i(LOG_TAG, "------------------------------onCreate()---------------------------------");
 		
 		questionTypes = getResources().getStringArray(R.array.question_types);
 		choicesLabels = getResources().getStringArray(R.array.display_choice_label);
@@ -307,17 +309,41 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		}
 	}
 	
-	public void updateCompletedSeekBar(){
-		Log.w(LOG_TAG, "updateCompletedSeekBar()...");
+	public void updateAllData(){
+		Log.i(LOG_TAG, "updateAllData()...");
 		
-		DatabaseUtil dbUtil = new DatabaseUtil(this);
+		DatabaseUtil dbUtil = new DatabaseUtil(mContext);
+		dbUtil.open();
+		
+		//save answers
+		if(answerLabels.length()==0){
+			clearAnswer(dbUtil,cCatalogIndex,cQuestionIndex);
+		}else{
+			saveAnswer(dbUtil,cCatalogIndex,cQuestionIndex,cQuestion.getId(),answerLabels.toString());
+		}
+		
+		//set exam progress bar
 		examAnsweredQuestionSum = dbUtil.fetchAllAnswersCount();
 		int per = 100 * examAnsweredQuestionSum/examQuestionSum;
 		completedSeekBar.setThumb(null);
 		completedSeekBar.setProgress(per);
 		completedSeekBar.setEnabled(false);
 		
-		Log.w(LOG_TAG, "updateCompletedSeekBar().");
+		//set exam progress text
+		completedPercentage.setText(String.valueOf(per)+"%");
+		
+		//set pending questions
+		pendQuestions.clear();
+		loadPendingQuestions(dbUtil);
+		pendQueNumber.setText("Pending("+Integer.valueOf(pendQuestions.size())+")");
+		
+		//set catalog list
+		catalogInfos.clear();
+		loadCatalogInfos(dbUtil);
+		
+		dbUtil.close();
+		
+		Log.i(LOG_TAG, "updateAllData().");
 	}
 	
 
@@ -325,7 +351,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		public void handleMessage(Message msg) {
 			switch(msg.what){
 				case 0:setCountDownTime();break;
-				case 1:updateCompletedSeekBar();break;
+				case 1:updateAllData();break;
 			}
 		}
 	};
@@ -338,6 +364,8 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		if(newQuestion!=null){
 			String newQuestionType = newQuestion.getType();
 			if(newQuestionType!=null){
+				finish();
+				
 				//move question
 				Intent intent = new Intent();
 				intent.putExtra("ccIndex",String.valueOf(DataUtil.getCidByQid(exam, newQuestion.getId())));
@@ -349,7 +377,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 				}else if(questionTypes[1].equals(newQuestionType)){
 					intent.setClass( context, SingleChoices.class);
 				}
-				finish();
+				
 				startActivity(intent);
 			}			
 		}else{
@@ -382,20 +410,20 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
     	Log.w(LOG_TAG, "getAllAnswers().");
     }
     
-    public void clearAnswer(Context context,Integer cid,Integer qid){
+    public void clearAnswer(DatabaseUtil dbUtil,Integer cid,Integer qid){
     	Log.i(LOG_TAG, "clearAnswer()...");
     	Log.i(LOG_TAG, "(cid="+String.valueOf(cid)+",qid="+String.valueOf(qid)+")");
-    	DatabaseUtil dbUtil = new DatabaseUtil(this);
-    	dbUtil.open();
+//    	DatabaseUtil dbUtil = new DatabaseUtil(this);
+//    	dbUtil.open();
     	dbUtil.deleteAnswer(cid,qid);
-    	dbUtil.close();
+//    	dbUtil.close();
     	Log.i(LOG_TAG, "end clearAnswer().");
     }
 	
-	public void saveAnswer(Context context,Integer cid,Integer qid,String qidStr,String answers){
+	public void saveAnswer(DatabaseUtil dbUtil,Integer cid,Integer qid,String qidStr,String answers){
     	Log.i(LOG_TAG, "saveAnswer()...");
-    	DatabaseUtil dbUtil = new DatabaseUtil(context);
-    	dbUtil.open();
+//    	DatabaseUtil dbUtil = new DatabaseUtil(context);
+//    	dbUtil.open();
     	Cursor cursor = dbUtil.fetchAnswer(cid,qid);
     	if(cursor != null && cursor.moveToNext()){
     		Log.i(LOG_TAG, "updateAnswer("+cid+","+qid+","+answers+")");
@@ -404,7 +432,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
     		Log.i(LOG_TAG, "createAnswer("+cid+","+qid+","+answers+")");
     		dbUtil.createAnswer(cid,qid,qidStr,answers);
     	}
-    	dbUtil.close();
+//    	dbUtil.close();
     	Log.i(LOG_TAG, "saveAnswer().");
     }
 
@@ -418,6 +446,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
+		Log.i(LOG_TAG, "------------------------------onDestroy()---------------------------------");
 	}
 
 	@Override
@@ -430,24 +459,29 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	protected void onRestart() {
 		// TODO Auto-generated method stub
 		super.onRestart();
+		Log.i(LOG_TAG, "------------------------------onRestart()---------------------------------");
 	}
 
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		
+		Log.i(LOG_TAG, "------------------------------onResume()---------------------------------");
 	}
 
 	@Override
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
+		Log.i(LOG_TAG, "------------------------------onStart()---------------------------------");
 	}
 
 	@Override
 	protected void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
+		Log.i(LOG_TAG, "------------------------------onStop()---------------------------------");
 	}
 
 	//----------------------------------define popupWindow-----------------------------
@@ -459,15 +493,35 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	protected void showWindow(View parent) {
 		Log.i(LOG_TAG, "showWindow()...");
 		if (popupWindow == null) {
+			//get components
 			LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			popupView = layoutInflater.inflate(R.layout.catalog_info_list, null);
 			lv_group = (ListView) popupView.findViewById(R.id.lvGroup);
+			
+			//get latest data and display in items
+			DatabaseUtil dbUtil = new DatabaseUtil(mContext);
+			dbUtil.open();
+			catalogInfos.clear();
+			loadCatalogInfos(dbUtil); 
+			dbUtil.close();
 			GroupAdapter groupAdapter = new GroupAdapter(this, catalogInfos);
 			lv_group.setAdapter(groupAdapter);
+			
 			int ppH = Integer.valueOf(getResources().getString(R.string.popup_window_height));
 			int ppW = Integer.valueOf(getResources().getString(R.string.popup_window_width));
+			
 			popupWindow = new PopupWindow(popupView,ppH, ppW);
 		}else{
+			//get latest data and display in items
+			DatabaseUtil dbUtil = new DatabaseUtil(mContext);
+			dbUtil.open();
+			catalogInfos.clear();
+			loadCatalogInfos(dbUtil);
+			dbUtil.close();
+			
+			GroupAdapter groupAdapter = new GroupAdapter(this, catalogInfos);
+			lv_group.setAdapter(groupAdapter);
+			
 			popupWindow.dismiss();
 		}
 

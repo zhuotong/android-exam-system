@@ -113,11 +113,11 @@ public class SingleChoices extends BaseQuestion {
         		
         		setAnswer(arg2,cb.isChecked());
         		
-        		if(answerLabels.length()==0){
-					clearAnswer(mContext,cCatalogIndex,cQuestionIndex);
-				}else{
-					saveAnswer(mContext,cCatalogIndex,cQuestionIndex,cQuestion.getId(),answerLabels.toString());
-				}
+//        		if(answerLabels.length()==0){
+//					clearAnswer(mContext,cCatalogIndex,cQuestionIndex);
+//				}else{
+//					saveAnswer(mContext,cCatalogIndex,cQuestionIndex,cQuestion.getId(),answerLabels.toString());
+//				}
 			}      	
         });
         setFooter();
@@ -263,7 +263,7 @@ public class SingleChoices extends BaseQuestion {
 					.setPositiveButton("Yes",
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,int id) {
-									clearAnswer(mContext,cCatalogIndex,cQuestionIndex);
+//									clearAnswer(mContext,cCatalogIndex,cQuestionIndex);
 									gotoNewQuestion(mContext,cCatalogIndex,cQuestionIndex,moveDirect);
 								}
 							})

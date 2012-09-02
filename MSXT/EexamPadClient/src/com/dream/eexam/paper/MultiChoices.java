@@ -48,7 +48,6 @@ public class MultiChoices extends BaseQuestion {
 	
 	public void loadComponents(){
 		homeTV = (TextView)findViewById(R.id.homeTV);
-//		remainingTimeLabel = (TextView)findViewById(R.id.remainingTimeLabel);
 		remainingTime = (TextView)findViewById(R.id.remainingTime);
 		submitTV = (TextView)findViewById(R.id.submitTV);
 		imgDownArrow = (ImageView) findViewById(R.id.imgDownArrow);
@@ -116,11 +115,7 @@ public class MultiChoices extends BaseQuestion {
 		    	listItemID.clear();
 		    	answerLabels.setLength(0);
 				setAnswer();
-				if(answerLabels.length()==0){
-					clearAnswer(mContext,cCatalogIndex,cQuestionIndex);
-				}else{
-					saveAnswer(mContext,cCatalogIndex,cQuestionIndex,cQuestion.getId(),answerLabels.toString());
-				}
+				
 				
 				Message msg = new Message();
 				msg.what = 1;
@@ -146,6 +141,9 @@ public class MultiChoices extends BaseQuestion {
         preBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+//				Button btn = (Button)v;
+//				btn.setEnabled(false);
+				
 				moveDirect = -1;
 				move2NewQuestion();
 			}
@@ -221,6 +219,10 @@ public class MultiChoices extends BaseQuestion {
         nextBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				
+				Button btn = (Button)v;
+				btn.setEnabled(false);
+				
 				moveDirect = 1;
 				move2NewQuestion();
 			}
@@ -357,11 +359,11 @@ public class MultiChoices extends BaseQuestion {
 				    	listItemID.clear();
 				    	answerLabels.setLength(0);
 						setAnswer();
-						if(answerLabels.length()==0){
-							clearAnswer(mContext,cCatalogIndex,cQuestionIndex);
-						}else{
-							saveAnswer(mContext,cCatalogIndex,cQuestionIndex,cQuestion.getId(),answerLabels.toString());
-						}
+//						if(answerLabels.length()==0){
+//							clearAnswer(mContext,cCatalogIndex,cQuestionIndex);
+//						}else{
+//							saveAnswer(mContext,cCatalogIndex,cQuestionIndex,cQuestion.getId(),answerLabels.toString());
+//						}
 					}
 				});
 				

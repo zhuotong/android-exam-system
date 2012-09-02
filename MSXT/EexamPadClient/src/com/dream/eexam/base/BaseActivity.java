@@ -42,7 +42,7 @@ public class BaseActivity extends Activity {
 		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
 		
 		//set Orientation to PORTRAIT
-		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		
 		//hide title bar
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);

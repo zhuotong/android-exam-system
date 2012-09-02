@@ -15,6 +15,7 @@
     <application android:icon="@drawable/ic_launcher" android:label="@string/app_name"
     			 android:name="com.dream.eexam.crash.CrashApplication">
         <activity android:name=".LoginActivity"
+        	      android:screenOrientation="portrait"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,18 +24,26 @@
         </activity>
         
      	<activity android:name=".ExamListActivity"
+     	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
 
+<!--      	<activity android:name="com.dream.eexam.paper.BaseQuestion"
+                  android:launchMode="singleTask">
+        </activity> -->
+        
      	<activity android:name="com.dream.eexam.paper.MultiChoices"
+     			  android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
         
  	    <activity android:name="com.dream.eexam.paper.SingleChoices"
+ 	    		  android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
  
  	    <activity android:name="com.dream.eexam.paper.PendQuestions"
+ 	     	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
         
