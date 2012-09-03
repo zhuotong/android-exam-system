@@ -1,5 +1,6 @@
 package com.dream.eexam.paper;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -10,10 +11,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -35,7 +45,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import com.dream.eexam.base.BaseActivity;
+import com.dream.eexam.base.ExamListActivity;
 import com.dream.eexam.base.GroupAdapter;
+import com.dream.eexam.base.LoginActivity;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.CatalogInfo;
 import com.dream.eexam.server.DataUtil;
@@ -45,6 +57,10 @@ import com.msxt.client.model.Examination;
 import com.msxt.client.model.Examination.Catalog;
 import com.msxt.client.model.Examination.Choice;
 import com.msxt.client.model.Examination.Question;
+import com.msxt.client.server.ServerProxy;
+import com.msxt.client.server.WebServerProxy;
+import com.msxt.client.server.ServerProxy.Result;
+import com.msxt.client.server.ServerProxy.STATUS;
 
 public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, OnGestureListener,OnTouchListener{
 	
@@ -390,11 +406,10 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 
     }
 
-    public void getAllAnswers(){
+    public Map<String, String> getAllAnswers(DatabaseUtil dbUtil){
     	Log.w(LOG_TAG, "getAllAnswers()...");
+    	
     	Map<String, String> answers = new HashMap<String,String>();
-    	DatabaseUtil dbUtil = new DatabaseUtil(this);
-    	dbUtil.open();
     	Cursor cursor = dbUtil.fetchAllAnswers();
     	while(cursor.moveToNext()){
 			String qidStr = cursor.getString(2);
@@ -406,8 +421,8 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 			}
 		}
     	cursor.close();
-    	dbUtil.close();
-    	Log.w(LOG_TAG, "getAllAnswers().");
+    	
+    	return answers;
     }
     
     public void clearAnswer(DatabaseUtil dbUtil,Integer cid,Integer qid){
@@ -437,10 +452,11 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
     }
 
 	public void submitAnswer(){
-		getAllAnswers();
-		Log.w(LOG_TAG, "submitAnswer()...");
-		ShowDialog("Submit Success!");
+//		getAllAnswers();
+		Log.i(LOG_TAG, "submitAnswer()...");
+//		ShowDialog("Submit Success!");
 	}
+	
 	
 	@Override
 	protected void onDestroy() {

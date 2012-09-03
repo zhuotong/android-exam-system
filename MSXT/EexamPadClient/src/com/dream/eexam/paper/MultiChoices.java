@@ -3,11 +3,14 @@ package com.dream.eexam.paper;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.method.ScrollingMovementMethod;
@@ -30,8 +33,15 @@ import android.widget.TextView;
 import android.widget.SeekBar;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+
+import com.dream.eexam.base.ExamListActivity;
 import com.dream.eexam.base.R;
+import com.dream.eexam.util.DatabaseUtil;
 import com.msxt.client.model.Examination.Choice;
+import com.msxt.client.server.ServerProxy;
+import com.msxt.client.server.WebServerProxy;
+import com.msxt.client.server.ServerProxy.Result;
+import com.msxt.client.server.ServerProxy.STATUS;
 
 public class MultiChoices extends BaseQuestion {
 	
@@ -199,7 +209,7 @@ public class MultiChoices extends BaseQuestion {
 							.setPositiveButton("Yes",
 									new DialogInterface.OnClickListener() {
 										public void onClick(DialogInterface dialog,int id) {
-											submitAnswer();
+											new SubmitAnswerTask().execute(exam.getId());
 										}
 									})
 							.setNegativeButton("Cancel",
@@ -210,7 +220,7 @@ public class MultiChoices extends BaseQuestion {
 									});
 					builder.show();
 				} else {
-					submitAnswer();
+					new SubmitAnswerTask().execute(exam.getId());
 				}
 			}
 		});
@@ -349,24 +359,15 @@ public class MultiChoices extends BaseQuestion {
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView,
 							boolean isChecked) {
-						
 						CheckBox cb = (CheckBox)buttonView;
 						mChecked.set(p, cb.isChecked());
-
-						
-						//set answer
 				    	//clear answer first
 				    	listItemID.clear();
 				    	answerLabels.setLength(0);
+				    	//set answer
 						setAnswer();
-//						if(answerLabels.length()==0){
-//							clearAnswer(mContext,cCatalogIndex,cQuestionIndex);
-//						}else{
-//							saveAnswer(mContext,cCatalogIndex,cQuestionIndex,cQuestion.getId(),answerLabels.toString());
-//						}
 					}
 				});
-				
 				view.setTag(holder);
 			}else{
 				Log.i(LOG_TAG,"position2 = "+position);
@@ -390,6 +391,45 @@ public class MultiChoices extends BaseQuestion {
     	CheckBox selected;
     	TextView index;
     	TextView choiceDesc;
+    }
+    
+
+    private class SubmitAnswerTask extends AsyncTask<String, Void, String> {
+    	ProgressDialog progressDialog;
+    	ServerProxy proxy;
+    	Result submitResult;
+    	
+    	@Override
+    	protected void onPreExecute() {
+    		Log.i(LOG_TAG, "onPreExecute() called");
+    		progressDialog = ProgressDialog.show(MultiChoices.this, null, "Download Exam data...", true, false);
+    		submitTV.setEnabled(false);
+    	}
+    	
+        @Override
+		protected String doInBackground(String... urls) {
+        	proxy =  WebServerProxy.Factroy.getCurrrentInstance();
+        	
+        	DatabaseUtil dbUtil = new DatabaseUtil(mContext);
+        	dbUtil.open();
+        	Map<String, String> answers =  getAllAnswers(dbUtil);
+        	dbUtil.close();
+        	
+        	submitResult = proxy.submitAnswer(urls[0],answers);
+			return null;
+		}
+
+        @Override
+        protected void onPostExecute(String result) {
+        	progressDialog.dismiss();
+        	submitTV.setEnabled(true);
+
+    		if( submitResult.getStatus() == STATUS.ERROR ) {
+    			ShowDialog(submitResult.getErrorMessage());
+        	} else {
+        		ShowDialog(submitResult.getSuccessMessage());
+        	}
+        }
     }
 
 
