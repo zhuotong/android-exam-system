@@ -33,8 +33,6 @@ import android.widget.TextView;
 import android.widget.SeekBar;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-
-import com.dream.eexam.base.ExamListActivity;
 import com.dream.eexam.base.R;
 import com.dream.eexam.util.DatabaseUtil;
 import com.msxt.client.model.Examination.Choice;
@@ -108,7 +106,8 @@ public class MultiChoices extends BaseQuestion {
         questionTV = (TextView)findViewById(R.id.questionTV);
         questionTV.setMovementMethod(ScrollingMovementMethod.getInstance()); 
         questionTV.setText(questionHint+ "\n"+ cQuestion.getContent());
-        questionTV.setTextColor(Color.BLACK);	
+        questionTV.setTextColor(Color.BLACK);
+        questionTV.setBackgroundColor(Color.argb(0, 0, 255, 0));
         
         //set List
         listView = (ListView)findViewById(R.id.lvChoices);
