@@ -150,9 +150,6 @@ public class MultiChoices extends BaseQuestion {
         preBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-//				Button btn = (Button)v;
-//				btn.setEnabled(false);
-				
 				moveDirect = -1;
 				move2NewQuestion();
 			}
@@ -288,9 +285,11 @@ public class MultiChoices extends BaseQuestion {
     public void setAnswer(){
     	Log.i(LOG_TAG, "setAnswer()...");
     	//get selection choice and assembly to string
-		for (int i = 0; i < adapter.mChecked.size(); i++) {
-			if (adapter.mChecked.get(i)) {
-				Choice choice = adapter.choices.get(i);
+    	List<Boolean> mCheckedList = adapter.mChecked;
+    	List<Choice> choices = adapter.choices;
+		for (int i = 0; i < mCheckedList.size(); i++) {
+			if (mCheckedList.get(i)) {
+				Choice choice = choices.get(i);
 				listItemID.add(String.valueOf(choice.getIndex()));
 				if(i>0){
 					answerLabels.append(",");
@@ -360,11 +359,16 @@ public class MultiChoices extends BaseQuestion {
 							boolean isChecked) {
 						CheckBox cb = (CheckBox)buttonView;
 						mChecked.set(p, cb.isChecked());
+						
 				    	//clear answer first
 				    	listItemID.clear();
 				    	answerLabels.setLength(0);
-				    	//set answer
 						setAnswer();
+
+						//send message
+						Message msg = new Message();
+						msg.what = 1;
+						handler.sendMessage(msg);
 					}
 				});
 				view.setTag(holder);

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Message;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.ListView;
@@ -88,8 +91,10 @@ public class SingleChoices extends BaseQuestion {
     	
         //set question text
         questionTV = (TextView)findViewById(R.id.questionTV);
+        questionTV.setMovementMethod(ScrollingMovementMethod.getInstance()); 
         questionTV.setText(questionHint+ "\n"+cQuestion.getContent());
         questionTV.setTextColor(Color.BLACK);
+        questionTV.setBackgroundColor(Color.argb(0, 0, 255, 0));
         
         //set List
         listView = (ListView)findViewById(R.id.lvChoices);
@@ -104,22 +109,19 @@ public class SingleChoices extends BaseQuestion {
         		//get old status
         		RadioButton cb = (RadioButton)view.findViewById(R.id.radioButton);
         		boolean oldStatus = cb.isChecked();
-        		Log.i(LOG_TAG, "oldStatus:"+String.valueOf(oldStatus));
+        		Log.i(LOG_TAG, "before clear:"+String.valueOf(oldStatus));
         		
+        		//clear answer first
         		clearOldAnswer();
+        		
+        		Log.i(LOG_TAG, "after clear:"+String.valueOf(cb.isChecked()));
+        		
         		cb.setChecked(!oldStatus);
         		
-        		Log.i(LOG_TAG, "after check...");
-        		Log.i(LOG_TAG, "newStatus:"+cb.isChecked());
-        		
+        		Log.i(LOG_TAG, "after set:"+String.valueOf(cb.isChecked()));
         		setAnswer(arg2,cb.isChecked());
         		
-//        		if(answerLabels.length()==0){
-//					clearAnswer(mContext,cCatalogIndex,cQuestionIndex);
-//				}else{
-//					saveAnswer(mContext,cCatalogIndex,cQuestionIndex,cQuestion.getId(),answerLabels.toString());
-//				}
-        		
+        		//send message
 				Message msg = new Message();
 				msg.what = 1;
 				handler.sendMessage(msg);
@@ -337,16 +339,46 @@ public class SingleChoices extends BaseQuestion {
 				final int p = position;
 				map.put(position, view);
 				
+				holder.radioButton.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+
+					@Override
+					public void onCheckedChanged(CompoundButton arg0,
+							boolean arg1) {
+						Log.i(LOG_TAG, "---------------radioButton.onCheckedChanged---------------");
+						
+					}
+					
+				});
 				holder.radioButton.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						
+						Log.i(LOG_TAG, "---------------radioButton.onClick---------------");
+//		        		clearOldAnswer();
+//		        		RadioButton rb = (RadioButton)v;
+//		        		mChecked.set(p, rb.isChecked());
+//		        		setAnswer(p,rb.isChecked());
+//						Message msg = new Message();
+//						msg.what = 1;
+//						handler.sendMessage(msg);
+						
+		        		//get old status
+						RadioButton rb = (RadioButton)v;
+		        		boolean oldStatus = rb.isChecked();
+		        		Log.i(LOG_TAG, "before clear:"+String.valueOf(oldStatus));
+		        		
+		        		//clear answer first
 		        		clearOldAnswer();
 		        		
-		        		RadioButton rb = (RadioButton)v;
-		        		mChecked.set(p, rb.isChecked());
+		        		Log.i(LOG_TAG, "after clear:"+String.valueOf(rb.isChecked()));
+		        		rb.setChecked(!oldStatus);
 		        		
+		        		Log.i(LOG_TAG, "after set:"+String.valueOf(rb.isChecked()));
+		        		
+		        		//set answer
 		        		setAnswer(p,rb.isChecked());
-
+		        		
+		        		//send message
 						Message msg = new Message();
 						msg.what = 1;
 						handler.sendMessage(msg);
@@ -354,7 +386,6 @@ public class SingleChoices extends BaseQuestion {
 				});
 				view.setTag(holder);
 			}else{
-//				Log.i(LOG_TAG,"position2 = "+position);
 				view = map.get(position);
 				holder = (ViewHolder)view.getTag();
 			}
