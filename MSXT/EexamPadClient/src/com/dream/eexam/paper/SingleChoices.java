@@ -146,6 +146,30 @@ public class SingleChoices extends BaseQuestion {
 		Log.i(LOG_TAG, "clearOldAnswer().");
 
     }
+
+    public void clearOldAnswer(int checkedIndex){
+    	Log.i(LOG_TAG, "clearOldAnswer()...");
+    	
+		listItemID.clear();
+    	answerLabels.setLength(0);
+		//initial all items background color
+		for(int i=0;i<cChoices.size();i++){
+			
+			RadioButton aRb =(RadioButton)adapter.getView(i, null, null).findViewById(R.id.radioButton);
+			if (i == checkedIndex){
+				aRb.setChecked(!aRb.isChecked());
+				adapter.mChecked.set(i, aRb.isChecked());	
+			}else{
+				aRb.setChecked(false);
+				adapter.mChecked.set(i, false);				
+			}
+
+			Log.i(LOG_TAG, String.valueOf(i)+":"+"false");
+		} 
+		
+		Log.i(LOG_TAG, "clearOldAnswer().");
+
+    }
     
     public void setAnswer(int location,boolean isChecked){
     	Log.i(LOG_TAG, "setAnswer()...");
@@ -362,18 +386,20 @@ public class SingleChoices extends BaseQuestion {
 //						msg.what = 1;
 //						handler.sendMessage(msg);
 						
+						clearOldAnswer(p);
+						
 		        		//get old status
 						RadioButton rb = (RadioButton)v;
-		        		boolean oldStatus = rb.isChecked();
-		        		Log.i(LOG_TAG, "before clear:"+String.valueOf(oldStatus));
+//		        		boolean oldStatus = rb.isChecked();
+//		        		Log.i(LOG_TAG, "before clear:"+String.valueOf(oldStatus));
 		        		
 		        		//clear answer first
-		        		clearOldAnswer();
 		        		
-		        		Log.i(LOG_TAG, "after clear:"+String.valueOf(rb.isChecked()));
-		        		rb.setChecked(!oldStatus);
 		        		
-		        		Log.i(LOG_TAG, "after set:"+String.valueOf(rb.isChecked()));
+//		        		Log.i(LOG_TAG, "after clear:"+String.valueOf(rb.isChecked()));
+//		        		rb.setChecked(!oldStatus);
+		        		
+//		        		Log.i(LOG_TAG, "after set:"+String.valueOf(rb.isChecked()));
 		        		
 		        		//set answer
 		        		setAnswer(p,rb.isChecked());
