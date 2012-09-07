@@ -47,5 +47,10 @@
                   android:launchMode="singleTask">
         </activity>
         
+ 	    <activity android:name=".ResultActivity"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        
     </application>
 </manifest>

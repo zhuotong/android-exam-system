@@ -15,6 +15,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.dream.eexam.base.R;
@@ -50,10 +51,10 @@ public class PendQuestions extends BaseQuestion {
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
 		pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);
 		
-    	preBtn = (Button)findViewById(R.id.preBtn);
+		backArrow = (ImageView)findViewById(R.id.backArrow);
 		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
 		completedPercentage = (TextView)findViewById(R.id.completedPercentage);   	
-    	nextBtn = (Button)findViewById(R.id.nextBtn);
+    	nextArrow = (ImageView)findViewById(R.id.nextArrow);
 	}
 	
 	public void setHeader(){

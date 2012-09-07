@@ -13,6 +13,8 @@
     <string name="msg_et_password_hint">Input Password</string>
     <string name="msg_btn_login">Login</string>
     <string name="msg_btn_reset">Reset</string> 
+    <string name="msg_tv_score">Score:</string>
+    <string name="msg_btn_quit">Quit:</string>
     <!-- Login Page End -->
     
     <!-- Exam List Page Start-->
@@ -52,7 +54,7 @@
     </string-array>
     
 <!--     <string name="host">192.168.241.45</string> -->
-    <string name="host">192.168.1.104</string>
+    <string name="host">192.168.240.70</string>
     <string name="port">8080</string>
     <string name="app_file_home">eExam</string>
     <string name="login_file_name">login_result.xml</string>

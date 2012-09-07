@@ -14,6 +14,7 @@ import com.msxt.client.model.Examination;
 import com.msxt.client.model.Examination.Question;
 import com.msxt.client.model.LoginSuccessResult;
 import com.msxt.client.model.Examination.Catalog;
+import com.msxt.client.model.SubmitSuccessResult;
 import com.msxt.client.model.transfer.Message2ModelTransfer;
 import com.msxt.client.server.ServerProxy.Result;
 
@@ -96,11 +97,9 @@ public class DataUtil {
 	 */
 	public static Examination getExam(FileInputStream is) {
 		DocumentBuilder db;
-//		ByteArrayInputStream is;
 		Document doc = null;
 		try {
 			db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-//			is = new ByteArrayInputStream(xmMsg.getBytes());
 			doc = db.parse(is);
 			is.close();
 		} catch (ParserConfigurationException e) {
@@ -114,7 +113,47 @@ public class DataUtil {
 		Examination exam = Message2ModelTransfer.Factory.getInstance().parseExamination(root);
 		return exam;
 	}
+
+	public static SubmitSuccessResult getSubmitSuccessResult(Result result) {
+		DocumentBuilder db;
+		ByteArrayInputStream is;
+		Document doc = null;
+		try {
+			db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			is = new ByteArrayInputStream(result.getSuccessMessage().getBytes());
+			doc = db.parse(is);
+			is.close();
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Element root = doc.getDocumentElement();
+		SubmitSuccessResult submitSuccResult = Message2ModelTransfer.Factory.getInstance().parseSubmitResult(root);
+		return submitSuccResult;
+	}
 	
+	public static SubmitSuccessResult getSubmitSuccessResult(FileInputStream is) {
+		DocumentBuilder db;
+		Document doc = null;
+		try {
+			db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			doc = db.parse(is);
+			is.close();
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Element root = doc.getDocumentElement();
+		SubmitSuccessResult submitSuccResult = Message2ModelTransfer.Factory.getInstance().parseSubmitResult(root);
+		
+		return submitSuccResult;
+	}
 	/**
 	 * 
 	 * @param exam

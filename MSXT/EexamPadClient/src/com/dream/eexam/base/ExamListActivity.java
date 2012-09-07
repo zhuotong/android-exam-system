@@ -2,17 +2,13 @@ package com.dream.eexam.base;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import com.dream.eexam.model.ExamBaseBean;
-import com.dream.eexam.model.LoginResultBean;
 import com.dream.eexam.paper.MultiChoices;
 import com.dream.eexam.paper.SingleChoices;
 import com.dream.eexam.server.DataUtil;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SystemConfig;
-import com.dream.eexam.util.XMLParseUtil;
 import com.msxt.client.model.Examination;
 import com.msxt.client.model.Examination.Question;
 import com.msxt.client.model.LoginSuccessResult;

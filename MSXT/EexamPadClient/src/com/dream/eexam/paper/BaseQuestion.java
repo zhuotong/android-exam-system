@@ -80,11 +80,13 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	protected SeekBar completedSeekBar= null;
 	protected TextView completedPercentage = null;
 	protected TextView pendQueNumber = null;
-	protected Button preBtn = null;
-	protected Button nextBtn = null;
+//	protected Button preBtn = null;
+//	protected Button nextBtn = null;
+	protected ImageView backArrow;
+	protected ImageView nextArrow;
 	
 	protected InputStream inputStream;
-	
+
 	//static data
 	protected String[] questionTypes;
 	protected String[] choicesLabels;
@@ -586,7 +588,8 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 			}
 		});
 	}
-
+	
+	
 	//----------------------------------define fling move------------------------------------
 	GestureDetector detector = null;
 	protected int verticalMinDistance = 5;

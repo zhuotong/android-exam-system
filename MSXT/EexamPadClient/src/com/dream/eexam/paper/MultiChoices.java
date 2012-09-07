@@ -25,7 +25,6 @@ import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ListView;
@@ -34,8 +33,11 @@ import android.widget.SeekBar;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.dream.eexam.base.R;
+import com.dream.eexam.base.ResultActivity;
+import com.dream.eexam.server.DataUtil;
 import com.dream.eexam.util.DatabaseUtil;
 import com.msxt.client.model.Examination.Choice;
+import com.msxt.client.model.SubmitSuccessResult;
 import com.msxt.client.server.ServerProxy;
 import com.msxt.client.server.WebServerProxy;
 import com.msxt.client.server.ServerProxy.Result;
@@ -61,10 +63,10 @@ public class MultiChoices extends BaseQuestion {
 		imgDownArrow = (ImageView) findViewById(R.id.imgDownArrow);
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
 		pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);
-    	preBtn = (Button)findViewById(R.id.preBtn);
+		backArrow = (ImageView)findViewById(R.id.backArrow);
 		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
 		completedPercentage = (TextView)findViewById(R.id.completedPercentage);   	
-    	nextBtn = (Button)findViewById(R.id.nextBtn);
+    	nextArrow = (ImageView)findViewById(R.id.nextArrow);
 	}
 	
 	public void setHeader(){
@@ -147,7 +149,7 @@ public class MultiChoices extends BaseQuestion {
     
     public void setFooter(){
     	//set preBtn
-        preBtn.setOnClickListener(new View.OnClickListener() {
+        backArrow.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				moveDirect = -1;
@@ -222,12 +224,9 @@ public class MultiChoices extends BaseQuestion {
 		});
         
 		//set nextBtn
-        nextBtn.setOnClickListener(new View.OnClickListener() {
+        nextArrow.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
-				Button btn = (Button)v;
-				btn.setEnabled(false);
 				
 				moveDirect = 1;
 				move2NewQuestion();
@@ -396,8 +395,7 @@ public class MultiChoices extends BaseQuestion {
     	TextView choiceDesc;
     }
     
-
-    private class SubmitAnswerTask extends AsyncTask<String, Void, String> {
+    class SubmitAnswerTask extends AsyncTask<String, Void, String> {
     	ProgressDialog progressDialog;
     	ServerProxy proxy;
     	Result submitResult;
@@ -405,7 +403,7 @@ public class MultiChoices extends BaseQuestion {
     	@Override
     	protected void onPreExecute() {
     		Log.i(LOG_TAG, "onPreExecute() called");
-    		progressDialog = ProgressDialog.show(MultiChoices.this, null, "Download Exam data...", true, false);
+    		progressDialog = ProgressDialog.show(MultiChoices.this, null, "Submit...", true, false);
     		submitTV.setEnabled(false);
     	}
     	
@@ -430,10 +428,18 @@ public class MultiChoices extends BaseQuestion {
     		if( submitResult.getStatus() == STATUS.ERROR ) {
     			ShowDialog(submitResult.getErrorMessage());
         	} else {
-        		ShowDialog(submitResult.getSuccessMessage());
+//        		ShowDialog(submitResult.getSuccessMessage());
+        		SubmitSuccessResult succResult = DataUtil.getSubmitSuccessResult(submitResult);
+        		
+				//move question
+				Intent intent = new Intent();
+				intent.putExtra("score", String.valueOf(succResult.getScore()));
+				intent.setClass( getBaseContext(), ResultActivity.class);
+				startActivity(intent);
         	}
         }
     }
+
 
 
 }

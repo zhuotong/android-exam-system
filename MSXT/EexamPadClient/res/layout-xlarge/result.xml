@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:id="@+id/layout1"
+	android:background="@drawable/bg_color_login" 
+	android:orientation="vertical">
+	
+	<!-- header -->
+    <include
+        android:id="@+id/baseHeader"
+        layout="@layout/base_header" 
+        android:layout_gravity="top"/>
+
+		<TableRow android:id="@+id/tableRow1" 
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content">
+			<TextView 
+			    android:text="@string/msg_tv_score"
+			    android:layout_width="fill_parent"
+				android:layout_height="wrap_content" 
+				android:layout_gravity="fill_horizontal|fill_vertical"
+				android:gravity="left|center_vertical"
+				android:layout_weight="1"
+				android:textColor="#000000"
+				android:textSize="25sp"/>
+			<TextView
+			    android:id="@+id/scoreTV" 
+			    android:layout_width="fill_parent"
+				android:layout_height="wrap_content" 
+				android:layout_gravity="fill_horizontal|fill_vertical"
+				android:gravity="left|center_vertical"
+				android:layout_weight="1"
+				android:textColor="#000000"
+				android:textSize="25sp"/>	
+		</TableRow>
+
+		<TableRow android:id="@+id/tableRow2" 
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content">
+			<Button 
+			    android:id="@+id/quitBtn" 
+			    android:text="@string/msg_btn_quit"
+			    android:layout_width="fill_parent"
+				android:layout_height="wrap_content" 
+				android:layout_gravity="center_horizontal|center_vertical"
+				android:gravity="center_horizontal|center_vertical"
+				android:textColor="#000000"
+				android:textSize="25sp"
+				android:background="@drawable/bg_color_login_tv"/>
+		</TableRow>
+</LinearLayout>
+

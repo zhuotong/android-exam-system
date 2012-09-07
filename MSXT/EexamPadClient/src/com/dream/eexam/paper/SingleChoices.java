@@ -3,11 +3,15 @@ package com.dream.eexam.paper;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.method.ScrollingMovementMethod;
@@ -17,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
@@ -27,7 +30,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import com.dream.eexam.base.R;
+import com.dream.eexam.util.DatabaseUtil;
 import com.msxt.client.model.Examination.Choice;
+import com.msxt.client.server.ServerProxy;
+import com.msxt.client.server.WebServerProxy;
+import com.msxt.client.server.ServerProxy.Result;
+import com.msxt.client.server.ServerProxy.STATUS;
 
 public class SingleChoices extends BaseQuestion {
 	
@@ -43,14 +51,14 @@ public class SingleChoices extends BaseQuestion {
 		homeTV = (TextView)findViewById(R.id.homeTV);//TextView[Home]
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
 		imgDownArrow = (ImageView) findViewById(R.id.imgDownArrow);
-    	preBtn = (Button)findViewById(R.id.preBtn);//Button[Prev]
     	pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);//TextView[Pending([count])]
-//    	remainingTimeLabel = (TextView)findViewById(R.id.remainingTimeLabel);//TextView[Time Label]
 		remainingTime = (TextView)findViewById(R.id.remainingTime);//TextView[Time Value]
-		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
-		completedPercentage = (TextView)findViewById(R.id.completedPercentage);
 		submitTV = (TextView)findViewById(R.id.submitTV);
-    	nextBtn = (Button)findViewById(R.id.nextBtn);//Button[Next]
+    	
+		backArrow = (ImageView)findViewById(R.id.backArrow);
+		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
+		completedPercentage = (TextView)findViewById(R.id.completedPercentage);   	
+    	nextArrow = (ImageView)findViewById(R.id.nextArrow);
 	}
 	
 	public void setHeader(){
@@ -187,7 +195,7 @@ public class SingleChoices extends BaseQuestion {
     
     public void setFooter(){
     	//set preBtn
-        preBtn.setOnClickListener(new View.OnClickListener() {
+        backArrow.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				moveDirect = -1;
@@ -238,7 +246,7 @@ public class SingleChoices extends BaseQuestion {
 							.setPositiveButton("Yes",
 									new DialogInterface.OnClickListener() {
 										public void onClick(DialogInterface dialog,int id) {
-											submitAnswer();
+											new SubmitAnswerTask().execute(exam.getId());
 										}
 									})
 							.setNegativeButton("Cancel",
@@ -249,7 +257,7 @@ public class SingleChoices extends BaseQuestion {
 									});
 					builder.show();
 				} else {
-					submitAnswer();
+					new SubmitAnswerTask().execute(exam.getId());
 				}
 			}
 		});
@@ -258,7 +266,7 @@ public class SingleChoices extends BaseQuestion {
 		completedPercentage.setText(String.valueOf(per)+"%");
 		
 		//set nextBtn
-        nextBtn.setOnClickListener(new View.OnClickListener() {
+        nextArrow.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				moveDirect = 1;
@@ -269,12 +277,6 @@ public class SingleChoices extends BaseQuestion {
     
     //save answer if not empty 
     public void relocationQuestion(){
-//    	//clear answer first
-//    	listItemID.clear();
-//    	answerLabels.setLength(0);
-
-    	//get selection choice and assembly to string
-		
 		//get selection
 		for (int i = 0; i < adapter.mChecked.size(); i++) {
 			if (adapter.mChecked.get(i)) {
@@ -431,5 +433,43 @@ public class SingleChoices extends BaseQuestion {
     	RadioButton radioButton;
     	TextView index;
     	TextView choiceDesc;
+    }
+    
+    class SubmitAnswerTask extends AsyncTask<String, Void, String> {
+    	ProgressDialog progressDialog;
+    	ServerProxy proxy;
+    	Result submitResult;
+    	
+    	@Override
+    	protected void onPreExecute() {
+    		Log.i(LOG_TAG, "onPreExecute() called");
+    		progressDialog = ProgressDialog.show(SingleChoices.this, null, "Submit...", true, false);
+    		submitTV.setEnabled(false);
+    	}
+    	
+        @Override
+		protected String doInBackground(String... urls) {
+        	proxy =  WebServerProxy.Factroy.getCurrrentInstance();
+        	
+        	DatabaseUtil dbUtil = new DatabaseUtil(mContext);
+        	dbUtil.open();
+        	Map<String, String> answers =  getAllAnswers(dbUtil);
+        	dbUtil.close();
+        	
+        	submitResult = proxy.submitAnswer(urls[0],answers);
+			return null;
+		}
+
+        @Override
+        protected void onPostExecute(String result) {
+        	progressDialog.dismiss();
+        	submitTV.setEnabled(true);
+
+    		if( submitResult.getStatus() == STATUS.ERROR ) {
+    			ShowDialog(submitResult.getErrorMessage());
+        	} else {
+        		ShowDialog(submitResult.getSuccessMessage());
+        	}
+        }
     }
 }
