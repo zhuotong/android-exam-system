@@ -5,8 +5,10 @@ import org.w3c.dom.NodeList;
 
 import com.msxt.client.model.Examination;
 import com.msxt.client.model.LoginSuccessResult;
+import com.msxt.client.model.SubmitSuccessResult;
 
 public class Message2ModelTransferImpl implements Message2ModelTransfer{
+	
     public LoginSuccessResult parseResult( Element root ) {
     	LoginSuccessResult lsr = new LoginSuccessResult();
     	String interviewer = root.getElementsByTagName( "interviewer" ).item(0).getTextContent();
@@ -112,5 +114,19 @@ public class Message2ModelTransferImpl implements Message2ModelTransfer{
 		ec.setContent( content );
 		
 		return ec;
+    }
+    
+    public SubmitSuccessResult parseSubmitResult( Element root ) {
+    	SubmitSuccessResult result = new SubmitSuccessResult();
+    	
+    	String examinationid = root.getElementsByTagName( "examinationid" ).item(0).getTextContent();
+    	String status = root.getElementsByTagName( "status" ).item(0).getTextContent();
+    	String score = root.getElementsByTagName( "score" ).item(0).getTextContent();
+    	
+    	result.setExamId(examinationid);
+    	result.setStatus(status);
+    	result.setScore(Double.valueOf(score));
+    	
+    	return result;
     }
 }
