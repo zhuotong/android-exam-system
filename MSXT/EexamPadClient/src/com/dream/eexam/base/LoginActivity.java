@@ -27,12 +27,16 @@ public class LoginActivity extends BaseActivity {
 
 	public final static String LOG_TAG = "LoginActivity";
 	
+	String saveHost = null;
+	
 	EditText idEt = null;
 	EditText passwordET = null;
 	String saveId = null;
 	String savePassword = null;
 	
 	Button loginBtn = null;
+	Button settingBtn = null;
+	
 	String loginResultFile = null;
 	String loginResultFilePath = null;
 	
@@ -46,6 +50,8 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.login);
         mContext = getApplicationContext();
 		
+        saveHost = sharedPreferences.getString("host", null);
+        
         idEt = (EditText) this.findViewById(R.id.idEt);
 		saveId = sharedPreferences.getString("id", null);
 		if(saveId!=null||!"".equals(saveId)){
@@ -60,6 +66,9 @@ public class LoginActivity extends BaseActivity {
 		
 		loginBtn = (Button) this.findViewById(R.id.loginBtn);
 		loginBtn.setOnClickListener(loginListener);
+		
+		settingBtn = (Button) this.findViewById(R.id.settingBtn);
+		settingBtn.setOnClickListener(settingListener);
 		
     }
 
@@ -88,6 +97,17 @@ public class LoginActivity extends BaseActivity {
         }  
     };
     
+    View.OnClickListener settingListener = new View.OnClickListener() {  
+        @Override  
+        public void onClick(View v) { 
+        	
+        	//go to examList page
+        	Intent intent = new Intent();
+			intent.setClass( LoginActivity.this, SettingActivity.class);
+			startActivity(intent);  	
+        }  
+    };
+    
     
     private class DownloadXmlTask extends AsyncTask<String, Void, String> {
     	ProgressDialog progressDialog;
@@ -102,9 +122,9 @@ public class LoginActivity extends BaseActivity {
     	
         @Override
 		protected String doInBackground(String... urls) {
-        	String host = mContext.getResources().getString(R.string.host);
+//        	String host = mContext.getResources().getString(R.string.host);
         	Integer port = Integer.valueOf(mContext.getResources().getString(R.string.port));
-        	proxy =  WebServerProxy.Factroy.createInstance(host, port);
+        	proxy =  WebServerProxy.Factroy.createInstance(saveHost, port);
     		loginResult = proxy.login(urls[0], urls[1]);
 			return null;
 		}

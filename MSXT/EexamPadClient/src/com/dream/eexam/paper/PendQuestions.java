@@ -29,12 +29,11 @@ public class PendQuestions extends BaseQuestion {
 	GridView gridList;
 	
     String qType = null;
-//    Integer cid = null;
     String qid = null;
 	
-	Button preBtn;
+//	Button preBtn;
 //	TextView questionIndex;
-	Button nextBtn;
+//	Button nextBtn;
 	
 	//data statement
 	MyListAdapter adapter;
@@ -154,7 +153,7 @@ public class PendQuestions extends BaseQuestion {
     
     public void setFooter(){
     	//set preBtn
-        preBtn.setOnClickListener(new View.OnClickListener() {
+    	backArrow.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				moveDirect = -1;
@@ -169,8 +168,10 @@ public class PendQuestions extends BaseQuestion {
 		completedSeekBar.setEnabled(false);
 		//set completedSeekBar label
 		completedPercentage.setText(String.valueOf(per)+"%");
+		
+		
 		//set nextBtn
-        nextBtn.setOnClickListener(new View.OnClickListener() {
+		nextArrow.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				moveDirect = 1;

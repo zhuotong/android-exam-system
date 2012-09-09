@@ -22,7 +22,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
+ 
+      	<activity android:name=".SettingActivity"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+               
      	<activity android:name=".ExamListActivity"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">

@@ -129,7 +129,7 @@
 		</Button>
 		
 		<Button android:text="@string/msg_btn_reset" 
-		    android:id="@+id/resetBtn"
+		    android:id="@+id/settingBtn"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"

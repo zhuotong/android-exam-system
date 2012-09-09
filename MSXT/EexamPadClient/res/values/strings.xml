@@ -11,12 +11,18 @@
     <string name="msg_tv_password">Password :</string>
     <string name="msg_et_id_hint">Input ID</string>
     <string name="msg_et_password_hint">Input Password</string>
-    <string name="msg_btn_login">Login</string>
-    <string name="msg_btn_reset">Reset</string> 
+    <string name="msg_btn_login">Sign In</string>
+    <string name="msg_btn_reset">Setting</string> 
     <string name="msg_tv_score">Score:</string>
     <string name="msg_btn_quit">Quit:</string>
     <!-- Login Page End -->
-    
+
+    <!-- Setting Page Start-->
+    <string name="msg_tv_host">Host:</string>
+    <string name="msg_btn_save">Save</string>
+    <string name="msg_btn_cancel">Cancel</string>
+    <!-- Setting Page End-->
+        
     <!-- Exam List Page Start-->
     <string name="tv_label_your_name">Your name:</string>
     <string name="tv_label_your_app_job">Your Applied Job:</string>
@@ -24,6 +30,10 @@
     <string name="btn_text_start">Start</string>
     <string name="btn_text_clear_history">Clear History</string>
     <!-- Exam List Page End-->
+    
+    <!-- Exam Result -->
+    <string name="tv_label_submit_success">Answers have been submitted successfully!</string>
+    <!-- Exam End -->
 
     <string name="msg_btn_start">Start</string>
     <string name="msg_btn_submit">Submit</string>
@@ -54,7 +64,7 @@
     </string-array>
     
 <!--     <string name="host">192.168.241.45</string> -->
-    <string name="host">192.168.240.70</string>
+    <string name="host">192.168.1.100</string>
     <string name="port">8080</string>
     <string name="app_file_home">eExam</string>
     <string name="login_file_name">login_result.xml</string>
