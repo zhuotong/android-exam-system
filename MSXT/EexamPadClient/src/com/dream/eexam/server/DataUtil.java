@@ -198,16 +198,31 @@ public class DataUtil {
 		List<Catalog> catalogs = exam.getCatalogs();
 		
 		//go to previous question
-	    if(mvDirect == -1 && qid==1){
-	    	cid --;
-			if(cid>0){
+	    if(mvDirect == -1){
+	    	if(qid==1){
+		    	int newCid = cid-1;
+				if(cid>0){
+					for(Catalog catalog:catalogs){
+						if(catalog.getIndex() == newCid){
+							List<Question> questions = catalog.getQuestions();
+							return questions.get(questions.size()-1);
+						}
+					}
+				}	    		
+	    	}else{
+	    		int newQid = qid-1;
 				for(Catalog catalog:catalogs){
 					if(catalog.getIndex() == cid){
 						List<Question> questions = catalog.getQuestions();
-						return questions.get(questions.size()-1);
+						for(Question question:questions){
+							if(question.getIndex() == newQid){
+								return question;
+							}
+						}
 					}
 				}
-			}
+	    	}
+
 		}
 	    
 	    //go to next question

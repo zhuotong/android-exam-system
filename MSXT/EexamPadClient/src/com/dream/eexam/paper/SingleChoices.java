@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Message;
@@ -30,7 +31,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import com.dream.eexam.base.R;
+import com.dream.eexam.base.ResultActivity;
+import com.dream.eexam.server.DataUtil;
 import com.dream.eexam.util.DatabaseUtil;
+import com.msxt.client.model.SubmitSuccessResult;
 import com.msxt.client.model.Examination.Choice;
 import com.msxt.client.server.ServerProxy;
 import com.msxt.client.server.WebServerProxy;
@@ -195,13 +199,18 @@ public class SingleChoices extends BaseQuestion {
     
     public void setFooter(){
     	//set preBtn
-        backArrow.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				moveDirect = -1;
-				relocationQuestion();
-			}
-		});
+    	if(cQuestionIndexOfExam == 1){
+        	Drawable firstQuestion = getResources().getDrawable(R.drawable.first_question_64);
+        	backArrow.setImageDrawable(firstQuestion);
+        }else{
+            backArrow.setOnClickListener(new View.OnClickListener() {
+    			@Override
+    			public void onClick(View v) {
+    				moveDirect = -1;
+    				relocationQuestion();
+    			}
+    		});       	
+        }
         
 		 //set catalog bar(Right) 
 		pendQueNumber.setText("Pending("+Integer.valueOf(pendQuestions.size())+")");
@@ -266,13 +275,19 @@ public class SingleChoices extends BaseQuestion {
 		completedPercentage.setText(String.valueOf(per)+"%");
 		
 		//set nextBtn
-        nextArrow.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				moveDirect = 1;
-				relocationQuestion();
-			}
-		});
+		if(cQuestionIndexOfExam == examQuestionSum){
+        	Drawable lastQuestion = getResources().getDrawable(R.drawable.last_question_64);
+        	nextArrow.setImageDrawable(lastQuestion);
+        }else{
+            nextArrow.setOnClickListener(new View.OnClickListener() {
+    			@Override
+    			public void onClick(View v) {
+    				moveDirect = 1;
+    				relocationQuestion();
+    			}
+    		});       	
+        }
+
     }
     
     //save answer if not empty 
@@ -468,8 +483,15 @@ public class SingleChoices extends BaseQuestion {
     		if( submitResult.getStatus() == STATUS.ERROR ) {
     			ShowDialog(submitResult.getErrorMessage());
         	} else {
-        		ShowDialog(submitResult.getSuccessMessage());
+        		SubmitSuccessResult succResult = DataUtil.getSubmitSuccessResult(submitResult);
+        		
+				//move question
+				Intent intent = new Intent();
+				intent.putExtra("score", String.valueOf(succResult.getScore()));
+				intent.setClass( getBaseContext(), ResultActivity.class);
+				startActivity(intent);
         	}
         }
+        
     }
 }

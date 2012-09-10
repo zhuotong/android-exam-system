@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Message;
@@ -149,13 +150,19 @@ public class MultiChoices extends BaseQuestion {
     
     public void setFooter(){
     	//set preBtn
-        backArrow.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				moveDirect = -1;
-				move2NewQuestion();
-			}
-		});
+    	
+        if(cQuestionIndexOfExam == 1){
+        	Drawable firstQuestion = getResources().getDrawable(R.drawable.first_question_64);
+        	backArrow.setImageDrawable(firstQuestion);
+        }else{
+            backArrow.setOnClickListener(new View.OnClickListener() {
+    			@Override
+    			public void onClick(View v) {
+    				moveDirect = -1;
+    				move2NewQuestion();
+    			}
+    		});        	
+        }
         
         //set text view pending[count]
 		pendQueNumber.setText("Pending("+Integer.valueOf(pendQuestions.size())+")");
@@ -223,15 +230,21 @@ public class MultiChoices extends BaseQuestion {
 			}
 		});
         
-		//set nextBtn
-        nextArrow.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				
-				moveDirect = 1;
-				move2NewQuestion();
-			}
-		});
+       //set nextBtn
+        if(cQuestionIndexOfExam == examQuestionSum){
+        	Drawable lastQuestion = getResources().getDrawable(R.drawable.last_question_64);
+        	nextArrow.setImageDrawable(lastQuestion);
+        }else{
+            nextArrow.setOnClickListener(new View.OnClickListener() {
+    			@Override
+    			public void onClick(View v) {
+    				
+    				moveDirect = 1;
+    				move2NewQuestion();
+    			}
+    		});        	
+        }
+
     }
     
     //save answer if not empty 

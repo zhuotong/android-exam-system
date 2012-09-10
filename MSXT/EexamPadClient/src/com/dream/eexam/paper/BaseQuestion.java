@@ -37,7 +37,6 @@ import android.view.GestureDetector.OnDoubleTapListener;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -45,9 +44,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import com.dream.eexam.base.BaseActivity;
-import com.dream.eexam.base.ExamListActivity;
 import com.dream.eexam.base.GroupAdapter;
-import com.dream.eexam.base.LoginActivity;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.CatalogInfo;
 import com.dream.eexam.server.DataUtil;
@@ -57,10 +54,6 @@ import com.msxt.client.model.Examination;
 import com.msxt.client.model.Examination.Catalog;
 import com.msxt.client.model.Examination.Choice;
 import com.msxt.client.model.Examination.Question;
-import com.msxt.client.server.ServerProxy;
-import com.msxt.client.server.WebServerProxy;
-import com.msxt.client.server.ServerProxy.Result;
-import com.msxt.client.server.ServerProxy.STATUS;
 
 public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, OnGestureListener,OnTouchListener{
 	
@@ -106,7 +99,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	protected int cCataloglastQuestionIndex;//current last question index
 	
 	protected int cQuestionIndex;//question index in catalog
-	protected int cQuestionIndexOfExam;//question index in catalog
+	protected int cQuestionIndexOfExam;//question index in exam
 	protected String examFileName = null;
 	protected String examFilePath = null;
 	protected int moveDirect = 0;
@@ -238,6 +231,9 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		cQuestionType  = bundle.getString("questionType");
 		cCatalogIndex  = Integer.valueOf(bundle.getString("ccIndex"));
 		cQuestionIndex  = Integer.valueOf(bundle.getString("cqIndex"));
+		
+		Log.i(LOG_TAG, "cQuestionIndex:" + String.valueOf(cQuestionIndex));
+		Log.i(LOG_TAG, "cCatalogIndex:" + String.valueOf(cCatalogIndex));
 		
 		//load old data from database
 		DatabaseUtil dbUtil = new DatabaseUtil(this);
