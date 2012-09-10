@@ -20,7 +20,9 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Window;
+import android.widget.Toast;
 
 public class BaseActivity extends Activity {
 
@@ -246,6 +248,22 @@ public class BaseActivity extends Activity {
 			Log.e(LOG_TAG, "an error occured while writing file...", e);
 		}
 		Log.i(LOG_TAG,"saveFile end.");
+	}
+	
+	private long exitTime = 0;
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
+	    	if((System.currentTimeMillis()-exitTime) > 2000){
+	    		Toast.makeText(getApplicationContext(), "Click again to quit", Toast.LENGTH_SHORT).show();                                exitTime = System.currentTimeMillis();
+	    	}else{
+			    finish();
+			    ActivityStackControlUtil.finishProgram();
+			    System.exit(0);
+		    }
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 
 

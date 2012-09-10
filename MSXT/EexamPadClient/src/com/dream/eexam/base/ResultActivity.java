@@ -1,5 +1,7 @@
 package com.dream.eexam.base;
 
+import com.dream.eexam.util.ActivityStackControlUtil;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,7 +36,9 @@ public class ResultActivity extends BaseActivity {
     View.OnClickListener quitListener = new View.OnClickListener() {  
         @Override  
         public void onClick(View v) { 
-        	finish();
+		    finish();
+		    ActivityStackControlUtil.finishProgram();
+		    System.exit(0);
         }  
     };
     
