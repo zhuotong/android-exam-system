@@ -1,6 +1,5 @@
 package com.dream.eexam.paper;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -11,19 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -41,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.SeekBar;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import com.dream.eexam.base.BaseActivity;
@@ -60,21 +51,19 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	public final static String LOG_TAG = "BaseQuestion";
 	
 	//set exam header(
-	protected TextView homeTV = null;//(Left)
-//	protected TextView remainingTimeLabel = null;//(Center 1)
-	protected TextView remainingTime = null;	//(Center 2)	
-	protected TextView submitTV = null;//(Right)
-	protected ImageView imgDownArrow = null;
-	//set catalog bar
+	protected ImageView imgHome = null;
+	protected TableLayout catalogsTL = null;
 	protected TextView catalogsTV = null;
 	protected TextView currentTV = null;
-	protected TextView waitTV = null;
+	
 	//set exam footer
+	protected TextView remainingTime = null;	
+	protected TextView submitTV = null;
+	protected ImageView imgDownArrow = null;
+	protected TextView waitTV = null;
 	protected SeekBar completedSeekBar= null;
 	protected TextView completedPercentage = null;
 	protected TextView pendQueNumber = null;
-//	protected Button preBtn = null;
-//	protected Button nextBtn = null;
 	protected ImageView backArrow;
 	protected ImageView nextArrow;
 	
@@ -546,7 +535,8 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 //		int xPos = windowManager.getDefaultDisplay().getWidth() / 3 ;
 //		Log.i(LOG_TAG, "xPos:" + xPos);
 
-		popupWindow.showAsDropDown(parent,0, 0);
+		popupWindow.showAsDropDown(parent,0, 20);
+		
 		lv_group.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view,

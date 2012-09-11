@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.ListView;
 import android.widget.SeekBar;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import com.dream.eexam.base.R;
@@ -46,19 +47,21 @@ public class SingleChoices extends BaseQuestion {
 	public final static String LOG_TAG = "SingleChoices";
 	
 	//components statement
+	
 	TextView questionTV = null;
 	ListView listView;
 	MyListAdapter adapter;
 	List<String> listItemID = new ArrayList<String>();
 
 	public void initialComponents(){
-		homeTV = (TextView)findViewById(R.id.homeTV);//TextView[Home]
+		imgHome = (ImageView) findViewById(R.id.imgHome);
+		catalogsTL = (TableLayout)findViewById(R.id.catalogsTL);
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
 		imgDownArrow = (ImageView) findViewById(R.id.imgDownArrow);
+		
     	pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);//TextView[Pending([count])]
 		remainingTime = (TextView)findViewById(R.id.remainingTime);//TextView[Time Value]
 		submitTV = (TextView)findViewById(R.id.submitTV);
-    	
 		backArrow = (ImageView)findViewById(R.id.backArrow);
 		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
 		completedPercentage = (TextView)findViewById(R.id.completedPercentage);   	
@@ -66,15 +69,29 @@ public class SingleChoices extends BaseQuestion {
 	}
 	
 	public void setHeader(){
-		//set exam header(Left)
-		homeTV.setText(R.string.msg_header_tv_home);
-
+		imgHome.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				goHome(getBaseContext());
+			}
+		});
+		
+		catalogsTL.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Log.i(LOG_TAG, "catalogsTL.onClick()...");
+				showWindow(v);
+			}
+		});
+		
         //set catalog bar(Center) 
 		catalogsTV.setText(String.valueOf(cCatalogIndex)+". "+ cCatalog.getDesc() + 
 				"(Q" + String.valueOf(cCatalog1stQuestionIndex)+" - " + "Q" + String.valueOf(cCataloglastQuestionIndex)+")");
-		catalogsTV.setOnClickListener(new View.OnClickListener() {
+		
+/*		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				Log.i(LOG_TAG, "catalogsTV.onClick()...");
 				showWindow(v);
 			}
 		});
@@ -82,9 +99,10 @@ public class SingleChoices extends BaseQuestion {
 		imgDownArrow.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				Log.i(LOG_TAG, "imgDownArrow.onClick()...");
 				showWindow(v);
 			}
-		});
+		});*/
 		
 	}
 	

@@ -29,6 +29,7 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.SeekBar;
 import android.widget.AdapterView.OnItemClickListener;
@@ -58,7 +59,8 @@ public class MultiChoices extends BaseQuestion {
 	Integer indexInExam;
 	
 	public void loadComponents(){
-		homeTV = (TextView)findViewById(R.id.homeTV);
+		imgHome = (ImageView) findViewById(R.id.imgHome);
+		catalogsTL = (TableLayout)findViewById(R.id.catalogsTL);
 		remainingTime = (TextView)findViewById(R.id.remainingTime);
 		submitTV = (TextView)findViewById(R.id.submitTV);
 		imgDownArrow = (ImageView) findViewById(R.id.imgDownArrow);
@@ -71,13 +73,25 @@ public class MultiChoices extends BaseQuestion {
 	}
 	
 	public void setHeader(){
-		//set exam header(Left)
-		homeTV.setText("Home");
+		imgHome.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				goHome(getBaseContext());
+			}
+		});
+		
+		catalogsTL.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Log.i(LOG_TAG, "catalogsTL.onClick()...");
+				showWindow(v);
+			}
+		});
 		
         //set catalog bar(Center) 
 		catalogsTV.setText(String.valueOf(cCatalogIndex)+". "+ cCatalog.getDesc() + 
 				"(Q" + String.valueOf(cCatalog1stQuestionIndex)+" - " + "Q" + String.valueOf(cCataloglastQuestionIndex)+")");
-		catalogsTV.setOnClickListener(new View.OnClickListener() {
+/*		catalogsTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				showWindow(v);
@@ -89,7 +103,7 @@ public class MultiChoices extends BaseQuestion {
 			public void onClick(View v) {
 				showWindow(v);
 			}
-		});
+		});*/
 		
 	}
 	

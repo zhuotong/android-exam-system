@@ -9,11 +9,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import com.dream.eexam.model.QuestionProgress;
+import com.dream.eexam.paper.PendQuestions;
 import com.dream.eexam.util.ActivityStackControlUtil;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -255,7 +257,8 @@ public class BaseActivity extends Activity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 	    if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
 	    	if((System.currentTimeMillis()-exitTime) > 2000){
-	    		Toast.makeText(getApplicationContext(), "Click again to quit", Toast.LENGTH_SHORT).show();                                exitTime = System.currentTimeMillis();
+	    		Toast.makeText(getApplicationContext(), "Click again to quit", Toast.LENGTH_SHORT).show();                                
+	    		exitTime = System.currentTimeMillis();
 	    	}else{
 			    finish();
 			    ActivityStackControlUtil.finishProgram();
@@ -266,5 +269,11 @@ public class BaseActivity extends Activity {
 		return super.onKeyDown(keyCode, event);
 	}
 
+	public void goHome(Context context){
+		Intent intent = new Intent();
+		intent.setClass( context, LoginActivity.class);
+		finish();
+		startActivity(intent);
+	}
 
 }

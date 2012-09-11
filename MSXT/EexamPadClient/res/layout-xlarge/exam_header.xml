@@ -4,9 +4,9 @@
     android:layout_height="60dp" 
     android:background="@drawable/bg_color_login_header">
 
-	<TableRow android:layout_width="fill_parent"
-		android:layout_height="fill_parent">
-    	<TextView
+<!-- 	<TableRow android:layout_width="fill_parent"
+		android:layout_height="fill_parent"> -->
+<!--     	<TextView
     	    android:id="@+id/homeTV"
 	        android:text="@string/msg_header_tv_home"
 	        android:layout_width="fill_parent"
@@ -15,31 +15,40 @@
 	        android:paddingLeft="8dp"
 	        android:layout_weight="1"
 	        android:textColor="#FFFFFF"
-	        android:textSize="30sp"/>
-    	<TableLayout android:layout_width="wrap_content"
-		        android:layout_height="fill_parent"
-		        android:layout_margin="5dp"
-		        android:background="@drawable/tv_sys">
+	        android:textSize="30sp"/> -->
+	   <ImageView android:id="@+id/imgHome"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_vertical|left"
+	        android:paddingLeft="8dp"
+					android:src="@drawable/home_64"
+					android:contentDescription="@string/msg_logo_desc">
+	   </ImageView>
+	   <TableLayout android:id="@+id/catalogsTL"
+	   				android:layout_width="wrap_content"
+			        android:layout_height="fill_parent"
+			        android:layout_gravity="center_vertical|right"
+			        android:layout_margin="5dp"
+			        android:background="@drawable/tv_sys"
+			        android:descendantFocusability="blocksDescendants">
     	    <TableRow
     	    	android:layout_width="wrap_content"
 		        android:layout_height="fill_parent">
 		 	    <TextView
-			    android:id="@+id/header_tv_catalogs"
-		        android:layout_width="wrap_content"
-		        android:layout_height="fill_parent"
-		        android:layout_gravity="center_vertical|right"
-		        android:gravity="center_vertical|center_horizontal"
-		        android:textColor="#000000"
-		        android:textSize="22sp"/>
+				    android:id="@+id/header_tv_catalogs"
+			        android:layout_width="wrap_content"
+			        android:layout_height="fill_parent"
+			        android:gravity="center_vertical"
+			        android:textColor="#000000"
+			        android:textSize="22sp"/>
 			    <ImageView android:id="@+id/imgDownArrow"
 			        android:layout_width="wrap_content" 
 					android:layout_height="wrap_content" 
-					android:layout_gravity="center_vertical|right"
-					android:src="@drawable/downarr"
+					android:src="@drawable/down_arrow"
 					android:contentDescription="@string/msg_logo_desc">
 				</ImageView>
-    	    </TableRow>
-    	</TableLayout>
+   	    	</TableRow> 
+	    </TableLayout> 
 
-    </TableRow>
+<!--     </TableRow> -->
 </FrameLayout>

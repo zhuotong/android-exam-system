@@ -30,12 +30,15 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 public class ExamListActivity extends BaseActivity {
 	private static final String LOG_TAG = "ExamListActivity";
 
+	ImageView imgHome = null;
+	
 	//declare components
 	private TextView nameTV = null;
 	private TextView jobTitleTV = null;
@@ -67,6 +70,14 @@ public class ExamListActivity extends BaseActivity {
 		Log.i(LOG_TAG,"onCreate()...");
 		mContext = getApplicationContext();
 		setContentView(R.layout.exam_list);
+		
+		imgHome = (ImageView) findViewById(R.id.imgHome);
+		imgHome.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				goHome(mContext);
+			}
+		});
 		
 		questionTypes = getResources().getStringArray(R.array.question_types);
 		
