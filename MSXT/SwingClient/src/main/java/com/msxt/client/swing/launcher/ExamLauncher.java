@@ -4,7 +4,6 @@ import com.msxt.client.model.Examination;
 import com.msxt.client.model.LoginSuccessResult;
 import com.msxt.client.swing.model.Question;
 import com.msxt.client.swing.panel.ExamPanel;
-import com.msxt.client.swing.panel.IntroPanel;
 import com.msxt.client.swing.panel.LoginPanel;
 import com.msxt.client.swing.panel.QuestionSelectorPanel;
 import com.msxt.client.swing.panel.RoundedPanel;
@@ -13,6 +12,7 @@ import com.msxt.client.swing.utilities.RoundedBorder;
 import com.msxt.client.swing.utilities.Utilities;
 
 import org.jdesktop.application.Action;
+import org.jdesktop.application.Application;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.View;
@@ -38,6 +38,8 @@ import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -130,7 +132,6 @@ public class ExamLauncher extends SingleFrameApplication  {
     private QuestionSelectorPanel questionSelectorPanel;
     private JPanel examContainer;
     private JComponent currentDemoPanel;
-    private JComponent demoPlaceholder;
     private ButtonGroup lookAndFeelRadioGroup;
     
     private JPopupMenu popup;
@@ -148,7 +149,6 @@ public class ExamLauncher extends SingleFrameApplication  {
         
         title = resourceMap.getString("mainFrame.title");
         runningPanelCache = new HashMap<String, JPanel>();
-        demoPlaceholder = new IntroPanel();
     }    
     
     protected PropertyChangeListener getDemoPropertyChangeListener() {
@@ -171,12 +171,21 @@ public class ExamLauncher extends SingleFrameApplication  {
         configureDefaults();
         
         View view = getMainView();
-        view.setComponent( new LoginPanel() );
         view.setMenuBar( createMenuBar() );
-        // application framework should handle this
-        getMainFrame().setIconImage(resourceMap.getImageIcon("Application.icon").getImage());
-        
+
+        JFrame mainFrame = getMainFrame();
+        mainFrame.setIconImage( resourceMap.getImageIcon("Application.icon").getImage() );
+        mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        mainFrame.setResizable(false);     //不能改变大小
         show( view );     
+             
+        LoginPanel lp = new LoginPanel();
+        lp.show( mainFrame );
+        if( lp.isLoginSuccess() ) {
+        	createSelectExamPanel( lp.getLoginSuccessResult() );
+        } else {
+        	System.exit( 0 );
+        }
     } 
     
     private void configureDefaults() {
@@ -234,13 +243,8 @@ public class ExamLauncher extends SingleFrameApplication  {
         
         mainPanel.add( examContainer, BorderLayout.CENTER );
         
-//      currentDemoPanel = demoPlaceholder;
-//      demoContainer.add(demoPlaceholder, BorderLayout.CENTER);
         JScrollPane epsp = new JScrollPane( new ExamPanel( exam ) );
         examContainer.add( epsp, BorderLayout.CENTER );
-        
-        // Create shareable popup menu for demo actions
-        popup = new JPopupMenu();
         
         getMainView().setComponent( mainPanel );
     }
