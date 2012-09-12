@@ -1,8 +1,10 @@
 package com.msxt.client.swing.panel;
 
+import java.awt.Frame;
 import java.io.ByteArrayInputStream;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -11,7 +13,6 @@ import javax.swing.JTextField;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.jdesktop.application.Application;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -20,7 +21,7 @@ import com.msxt.client.model.transfer.Message2ModelTransfer;
 import com.msxt.client.server.ServerProxy;
 import com.msxt.client.server.ServerProxy.Result;
 import com.msxt.client.server.ServerProxy.STATUS;
-import com.msxt.client.swing.launcher.ExamLauncher;
+import com.msxt.client.swing.utilities.RoundedBorder;
 
 /**
  *
@@ -28,6 +29,10 @@ import com.msxt.client.swing.launcher.ExamLauncher;
  */
 public class LoginPanel extends JPanel {
 	private static final long serialVersionUID = 7937348829738284679L;
+	
+	private boolean loginSuccess = false;
+	private LoginSuccessResult lsr = null;
+	
 	private JLabel serverLabel;
 	private JTextField serverTF;
 	
@@ -42,6 +47,7 @@ public class LoginPanel extends JPanel {
      * Creates new form LoginPanel
      */
     public LoginPanel() {
+    	this.setBorder( new RoundedBorder() );
         initComponents();
     }
 
@@ -162,8 +168,8 @@ public class LoginPanel extends JPanel {
 		        } else {
 		        	String conversation = root.getElementsByTagName( "conversation" ).item(0).getTextContent();
 		        	sp.setConversationId( conversation );
-		        	LoginSuccessResult lsr = Message2ModelTransfer.Factory.getInstance().parseResult( root );
-		        	((ExamLauncher)Application.getInstance()).createSelectExamPanel( lsr );
+		        	lsr = Message2ModelTransfer.Factory.getInstance().parseResult( root );
+		        	loginSuccess = true;
 		        }
     		} catch (Exception e) {
     			e.printStackTrace();
@@ -171,6 +177,22 @@ public class LoginPanel extends JPanel {
 			}
     	}
     }
-    
 
+	public boolean isLoginSuccess() {
+		return loginSuccess;
+	}
+	
+	public LoginSuccessResult getLoginSuccessResult(){
+		return lsr;
+	}
+	
+	public void show( Frame parent ) {
+		JDialog loginDialog = new JDialog( parent, true );
+        loginDialog.add( this );
+        loginDialog.pack();
+        loginDialog.setTitle( "登录" );
+        loginDialog.setLocationRelativeTo(null);
+        loginDialog.setVisible(true);
+        loginDialog.dispose();
+	}
 }
