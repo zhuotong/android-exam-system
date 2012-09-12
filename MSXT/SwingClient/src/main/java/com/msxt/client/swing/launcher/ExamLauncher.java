@@ -38,7 +38,6 @@ import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -127,14 +126,13 @@ public class ExamLauncher extends SingleFrameApplication  {
     private Question currentQuestion;
 
     // GUI components
-    private JPanel selectExamPanel;
     private JPanel mainPanel;
     private QuestionSelectorPanel questionSelectorPanel;
     private JPanel examContainer;
     private JComponent currentDemoPanel;
     private ButtonGroup lookAndFeelRadioGroup;
     
-    private JPopupMenu popup;
+    private SelectExamPanel selectExamPanel;
     
     // Properties
     private String lookAndFeel;
@@ -180,9 +178,11 @@ public class ExamLauncher extends SingleFrameApplication  {
         show( view );     
              
         LoginPanel lp = new LoginPanel();
-        lp.show( mainFrame );
+        lp.showDialog( mainFrame );
         if( lp.isLoginSuccess() ) {
-        	createSelectExamPanel( lp.getLoginSuccessResult() );
+        	selectExamPanel = new SelectExamPanel( lp.getLoginSuccessResult() );
+        	Examination exam = selectExamPanel.selectExamination( mainFrame );
+        	createMainPanel( exam );
         } else {
         	System.exit( 0 );
         }
@@ -406,27 +406,6 @@ public class ExamLauncher extends SingleFrameApplication  {
             }
         }
     }
-
-    // hook used to detect if any components in the demo have registered a
-    // code snippet key for the their creation code inside the source
-    private void registerPopups(Component component) {
-        
-        if (component instanceof Container) {
-            Component children[] = ((Container)component).getComponents();
-            for(Component child: children) {
-                if (child instanceof JComponent) {
-                    registerPopups(child);
-                }
-            }
-        }
-        if (component instanceof JComponent) {
-            JComponent jcomponent = (JComponent)component;
-            String snippetKey = (String)jcomponent.getClientProperty("snippetKey");
-            if (snippetKey != null) {
-                jcomponent.setComponentPopupMenu(popup);
-            }
-        }
-    }    
     
     private class QuestionSelectionListener implements PropertyChangeListener {
         public void propertyChange(PropertyChangeEvent event) {
@@ -449,7 +428,6 @@ public class ExamLauncher extends SingleFrameApplication  {
                 if (demoComponent != null) {
                     demoComponent.putClientProperty("swingset3.demo", demo);
                     demoComponent.addHierarchyListener(new DemoVisibilityListener());
-                    registerPopups(demoComponent);
                 }
             } 
         }
