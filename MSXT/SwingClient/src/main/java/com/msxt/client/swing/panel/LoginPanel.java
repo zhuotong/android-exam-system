@@ -43,6 +43,7 @@ public class LoginPanel extends JPanel {
     private JLabel passwordLabel;
     private JPasswordField passwordTF;
     
+    private JDialog loginDialog = null;
     /**
      * Creates new form LoginPanel
      */
@@ -170,6 +171,7 @@ public class LoginPanel extends JPanel {
 		        	sp.setConversationId( conversation );
 		        	lsr = Message2ModelTransfer.Factory.getInstance().parseResult( root );
 		        	loginSuccess = true;
+		        	loginDialog.setVisible( false );
 		        }
     		} catch (Exception e) {
     			e.printStackTrace();
@@ -186,13 +188,14 @@ public class LoginPanel extends JPanel {
 		return lsr;
 	}
 	
-	public void show( Frame parent ) {
-		JDialog loginDialog = new JDialog( parent, true );
+	public void showDialog( Frame parent ) {
+		loginSuccess = false;
+		loginDialog = new JDialog( parent, true );
         loginDialog.add( this );
         loginDialog.pack();
         loginDialog.setTitle( "登录" );
         loginDialog.setLocationRelativeTo(null);
         loginDialog.setVisible(true);
-        loginDialog.dispose();
+        loginDialog.dispose();        
 	}
 }
