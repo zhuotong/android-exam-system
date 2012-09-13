@@ -1,8 +1,7 @@
 package com.msxt.client.swing.launcher;
 
 import com.msxt.client.model.Examination;
-import com.msxt.client.model.LoginSuccessResult;
-import com.msxt.client.swing.model.Question;
+import com.msxt.client.swing.model.ExamBuildContext;
 import com.msxt.client.swing.panel.ExamPanel;
 import com.msxt.client.swing.panel.LoginPanel;
 import com.msxt.client.swing.panel.QuestionSelectorPanel;
@@ -12,21 +11,15 @@ import com.msxt.client.swing.utilities.RoundedBorder;
 import com.msxt.client.swing.utilities.Utilities;
 
 import org.jdesktop.application.Action;
-import org.jdesktop.application.Application;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.View;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Window;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.*;
@@ -37,7 +30,6 @@ import java.util.logging.Logger;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -45,7 +37,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -121,15 +112,12 @@ public class ExamLauncher extends SingleFrameApplication  {
     private ResourceMap resourceMap;
     
     // Application models
-    private PropertyChangeListener demoPropertyChangeListener;
     private Map<String, JPanel> runningPanelCache;
-    private Question currentQuestion;
 
     // GUI components
     private JPanel mainPanel;
     private QuestionSelectorPanel questionSelectorPanel;
     private JPanel examContainer;
-    private JComponent currentDemoPanel;
     private ButtonGroup lookAndFeelRadioGroup;
     
     private SelectExamPanel selectExamPanel;
@@ -148,13 +136,6 @@ public class ExamLauncher extends SingleFrameApplication  {
         title = resourceMap.getString("mainFrame.title");
         runningPanelCache = new HashMap<String, JPanel>();
     }    
-    
-    protected PropertyChangeListener getDemoPropertyChangeListener() {
-        if (demoPropertyChangeListener == null) {
-            demoPropertyChangeListener = new DemoPropertyChangeListener();
-        }
-        return demoPropertyChangeListener;
-    }
     
     @Override 
     protected void startup() {
@@ -221,30 +202,24 @@ public class ExamLauncher extends SingleFrameApplication  {
         
     } 
     
-    public void createSelectExamPanel( LoginSuccessResult lsr ) {
-    	selectExamPanel = new SelectExamPanel(lsr);
-    	getMainView().setComponent( selectExamPanel );
-    }
-    
     public void createMainPanel( Examination exam ) {
+    	ExamBuildContext ebc = new ExamBuildContext( exam );
         mainPanel = new JPanel();
         mainPanel.setLayout( new BorderLayout() );
-       
-        // Create demo selector panel on left
-        questionSelectorPanel = new QuestionSelectorPanel( exam );
+        
+        // Create question selector panel on left
+        questionSelectorPanel = new QuestionSelectorPanel( ebc );
         questionSelectorPanel.setPreferredSize(new Dimension(DEMO_SELECTOR_WIDTH, MAIN_FRAME_HEIGHT));
-        questionSelectorPanel.addPropertyChangeListener( new QuestionSelectionListener() );
-        mainPanel.add(questionSelectorPanel, BorderLayout.WEST);
         
         examContainer = new JPanel();
-        examContainer.setLayout(new BorderLayout());
-        examContainer.setBorder(PANEL_BORDER);
-        examContainer.setPreferredSize(new Dimension(DEMO_PANEL_WIDTH, DEMO_PANEL_HEIGHT));
-        
+        examContainer.setLayout( new BorderLayout() );
+        examContainer.setBorder( PANEL_BORDER );
+        examContainer.setPreferredSize( new Dimension(DEMO_PANEL_WIDTH, DEMO_PANEL_HEIGHT) );
+        JScrollPane epsp = new JScrollPane( new ExamPanel( ebc ) );
+        examContainer.add( epsp, BorderLayout.CENTER );
         mainPanel.add( examContainer, BorderLayout.CENTER );
         
-        JScrollPane epsp = new JScrollPane( new ExamPanel( exam ) );
-        examContainer.add( epsp, BorderLayout.CENTER );
+        mainPanel.add(questionSelectorPanel, BorderLayout.WEST);
         
         getMainView().setComponent( mainPanel );
     }
@@ -342,42 +317,18 @@ public class ExamLauncher extends SingleFrameApplication  {
                 JOptionPane.ERROR_MESSAGE);
                 
     }
-   
-    public void setCurrentQuestion(Question q) {
-        if (currentQuestion == q) {
-            return; // already there
-        }
-        Question oldCurrentDemo = currentQuestion;        
-        currentQuestion = q;
-        if (q != null) {
-            JPanel demoPanel = runningPanelCache.get(q.getName());
-            examContainer.remove(currentDemoPanel);
-            currentDemoPanel = demoPanel;
-            examContainer.add( currentDemoPanel, BorderLayout.CENTER) ;
-            examContainer.revalidate();
-            examContainer.repaint();
-            getMainFrame().validate();
-        }
           
-        firePropertyChange("currentDemo", oldCurrentDemo, currentQuestion);
-    }
-   
-    
-    public Question getCurrentDemo() {
-        return currentQuestion;
-    }
-    
     public void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException,
         InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
         
         String oldLookAndFeel = this.lookAndFeel;
         
-	if (oldLookAndFeel != lookAndFeel) {
-            UIManager.setLookAndFeel(lookAndFeel);
-            this.lookAndFeel = lookAndFeel;
-            updateLookAndFeel();
-            firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);                     
-	}
+		if (oldLookAndFeel != lookAndFeel) {
+	            UIManager.setLookAndFeel(lookAndFeel);
+	            this.lookAndFeel = lookAndFeel;
+	            updateLookAndFeel();
+	            firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);                     
+		}
     }
     
     @Action 
@@ -405,50 +356,5 @@ public class ExamLauncher extends SingleFrameApplication  {
                 SwingUtilities.updateComponentTreeUI(demoPanel);
             }
         }
-    }
-    
-    private class QuestionSelectionListener implements PropertyChangeListener {
-        public void propertyChange(PropertyChangeEvent event) {
-            if (event.getPropertyName().equals("selectedDemo")) {
-                setCurrentQuestion((Question)event.getNewValue());
-            }
-        }
-    }
-           
-    
-    // registered on Demo to detect when the demo component is instantiated.
-    // we need this because when we embed the demo inside an HTML description pane,
-    // we don't have control over the demo component's instantiation
-    private class DemoPropertyChangeListener implements PropertyChangeListener {
-        public void propertyChange(PropertyChangeEvent e) {
-            String propertyName = e.getPropertyName();
-            if (propertyName.equals("demoComponent")) {
-                Question demo = (Question)e.getSource();
-                JComponent demoComponent = (JComponent)e.getNewValue();
-                if (demoComponent != null) {
-                    demoComponent.putClientProperty("swingset3.demo", demo);
-                    demoComponent.addHierarchyListener(new DemoVisibilityListener());
-                }
-            } 
-        }
-    }
-    
-    private class DemoVisibilityListener implements HierarchyListener {
-        public void hierarchyChanged(HierarchyEvent event) {
-            if ((event.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) > 0) {
-                JComponent component = (JComponent)event.getComponent();
-                final Question demo = (Question)component.getClientProperty("swingset3.demo");
-                if (!component.isShowing()) {
-                    //demo.stop();
-                } else {
-                    examContainer.revalidate();
-                    EventQueue.invokeLater(new Runnable() {
-                        public void run() {
-                            //demo.start();
-                        }
-                    });
-                }
-            }            
-        }        
-    }    
+    }             
 }

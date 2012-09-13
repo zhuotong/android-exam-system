@@ -7,13 +7,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.msxt.client.model.Examination;
+import com.msxt.client.swing.component.QuestionButton;
+import com.msxt.client.swing.model.ExamBuildContext;
 import com.msxt.client.swing.utilities.GBC;
 
 public class CatalogPanel extends JPanel{
 
 	private static final long serialVersionUID = -5876976956518188963L;
 	
-	public CatalogPanel(Examination.Catalog ec){
+	public CatalogPanel(Examination.Catalog ec, ExamBuildContext ebc){
 		this.setLayout( new GridBagLayout() );
 		
 		List<Examination.Question> eqs = ec.getQuestions();
@@ -21,8 +23,12 @@ public class CatalogPanel extends JPanel{
 		add( new JLabel( ec.getDesc() ), new GBC(1, 0).setAnchor( GBC.WEST ).setInsets(0,0,10,0) );
 		for( int i=0; i<eqs.size(); i++ ) {
 			Examination.Question eq = eqs.get(i);			
-			JPanel qp = new SingleChoicePanel( eq );
+			QuestionPanel qp = new SingleChoicePanel( eq );
 			add( qp, new GBC(1, i + 1).setWeight(100, 100).setInsets(0,0,10,0).setFill( GBC.HORIZONTAL ) );
+			
+			QuestionButton qb = ebc.getButton( eq );
+			qb.getQuestion().setQuestionPanel( qp );
+			qp.addStateChangeListener( qb );
 		}
 	}
 }

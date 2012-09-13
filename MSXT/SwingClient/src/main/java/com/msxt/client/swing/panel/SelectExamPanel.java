@@ -60,8 +60,8 @@ public class SelectExamPanel extends JPanel {
         examCB = new JComboBox();
         start = new JButton("开始");
 
-        desc.setColumns(20);
-        desc.setRows(5);
+        desc.setColumns(50);
+        desc.setRows(10);
         jScrollPane1.setViewportView( desc );
         desc.setText( lsr.getExaminations().get(0).getDesc() );
         
@@ -79,7 +79,7 @@ public class SelectExamPanel extends JPanel {
 	    layout.setAutoCreateContainerGaps(true);
 	    
 	    SequentialGroup h1 = layout.createSequentialGroup();
-	    h1.addComponent( examCB ).addComponent( start );
+	    h1.addComponent( examCB, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE,  Short.MAX_VALUE).addComponent( start );
         
 	    ParallelGroup h = layout.createParallelGroup( javax.swing.GroupLayout.Alignment.LEADING ); 
 	    h.addGroup( h1 ).addComponent( jScrollPane1 );
@@ -137,7 +137,8 @@ public class SelectExamPanel extends JPanel {
          }
          // set title and show dialog
          dialog.setTitle( "选择试卷" );
-         dialog.setVisible(true);      
+         dialog.setLocationRelativeTo( null );
+         dialog.setVisible(true);  
          while( true ) {
         	 if( exam==null ) 
         		 dialog.setVisible(true);
