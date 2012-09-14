@@ -31,5 +31,9 @@ public abstract class QuestionPanel extends JPanel{
     	pcs.firePropertyChange("state", "FINISHED", "UNFINISH");
     }
     
+    public int getVerticalStartPosition(){
+    	return (int)(getParent().getBounds().getY()+getBounds().getY());
+    }
+    
 	public abstract String getAnswer();
 }

@@ -32,7 +32,7 @@ import javax.swing.border.MatteBorder;
 
 /**
  *
- * @author Administrator
+ * @author Felix Wu
  */
 public class QuestionSelectorPanel extends JPanel {    
 	private static final long serialVersionUID = 1L;
@@ -40,10 +40,9 @@ public class QuestionSelectorPanel extends JPanel {
 	private static final Border chiselBorder = new ChiselBorder();
     private static final Border panelBorder = new CompoundBorder(chiselBorder, new EmptyBorder(6,8,6,0));
     private static final Border categoryBorder = new CompoundBorder(chiselBorder, new EmptyBorder(0,0,10,0));    
-   
     
     private GradientPanel titlePanel;
-    private JLabel demoListLabel;
+    private JLabel examNameLabel;
     private JPanel viewPanel;
     private JScrollPane scrollPane;
     // need to track components that have defaults customizations
@@ -77,17 +76,15 @@ public class QuestionSelectorPanel extends JPanel {
                 UIManager.getColor(ExamLauncher.TITLE_GRADIENT_COLOR2_KEY));
         titlePanel.setLayout( new BorderLayout() );
         titlePanel.setBorder( panelBorder );
-        demoListLabel = new JLabel(demoSetTitle);
-        demoListLabel.setOpaque(false);
-        demoListLabel.setHorizontalAlignment( JLabel.LEADING );
-        titlePanel.add( demoListLabel, BorderLayout.CENTER );
+        examNameLabel = new JLabel(demoSetTitle);
+        examNameLabel.setOpaque(false);
+        examNameLabel.setHorizontalAlignment( JLabel.LEADING );
+        titlePanel.add( examNameLabel, BorderLayout.CENTER );
                 
-        
         // Add panel with view combobox
         viewPanel = new JPanel();
         viewPanel.setLayout(new BoxLayout(viewPanel, BoxLayout.X_AXIS));
-        viewPanel.setBorder(new CompoundBorder(chiselBorder,
-                new EmptyBorder(12,8,12,8)));
+        viewPanel.setBorder(new CompoundBorder(chiselBorder, new EmptyBorder(12,8,12,8)));
         JLabel viewLabel = new JLabel("View:");
         viewPanel.add(viewLabel);
         viewPanel.add(Box.createHorizontalStrut(6));
@@ -138,6 +135,7 @@ public class QuestionSelectorPanel extends JPanel {
             for( Examination.Question q : catalog.getQuestions() ) {
             	Question question = new Question(q);
 	            QuestionButton button = new QuestionButton( question );
+	            button.setExamScrollPane( ebc.getExamScrollPane() );
 	            categoryGridbag.addLayoutComponent(button, cc);
 	            cc.gridy++;
 	            group.add(button);
@@ -176,15 +174,13 @@ public class QuestionSelectorPanel extends JPanel {
                 UIManager.getColor(ExamLauncher.CONTROL_MID_SHADOW_KEY)));
         
         if (titlePanel != null) {
-            titlePanel.setGradientColor1(
-                UIManager.getColor(ExamLauncher.TITLE_GRADIENT_COLOR1_KEY));
-            titlePanel.setGradientColor2(
-                UIManager.getColor(ExamLauncher.TITLE_GRADIENT_COLOR2_KEY));
+            titlePanel.setGradientColor1( UIManager.getColor(ExamLauncher.TITLE_GRADIENT_COLOR1_KEY) );
+            titlePanel.setGradientColor2( UIManager.getColor(ExamLauncher.TITLE_GRADIENT_COLOR2_KEY) );
         }
 
-        if (demoListLabel != null) {
-           demoListLabel.setForeground(UIManager.getColor(ExamLauncher.TITLE_FOREGROUND_KEY));
-           demoListLabel.setFont(UIManager.getFont(ExamLauncher.TITLE_FONT_KEY));
+        if (examNameLabel != null) {
+           examNameLabel.setForeground( UIManager.getColor(ExamLauncher.TITLE_FOREGROUND_KEY) );
+           examNameLabel.setFont( UIManager.getFont(ExamLauncher.TITLE_FONT_KEY) );
         }
         if (viewPanel != null) {
             viewPanel.setBackground(UIManager.getColor(ExamLauncher.SUB_PANEL_BACKGROUND_KEY));

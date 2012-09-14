@@ -3,12 +3,15 @@ package com.msxt.client.swing.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JScrollPane;
+
 import com.msxt.client.model.Examination;
 import com.msxt.client.swing.component.QuestionButton;
 
 public class ExamBuildContext {
 	private Examination exam;
 	private Map<Examination.Question, QuestionButton> buttonMap;
+	private JScrollPane examScrollPane;
 	
 	public ExamBuildContext(Examination e){
 		exam = e;
@@ -29,5 +32,13 @@ public class ExamBuildContext {
 	
 	public void setButton(Examination.Question o, QuestionButton c){
 		buttonMap.put( o, c );
+	}
+
+	public JScrollPane getExamScrollPane() {
+		return examScrollPane;
+	}
+
+	public void setExamScrollPane(JScrollPane examScrollPane) {
+		this.examScrollPane = examScrollPane;
 	}
 }

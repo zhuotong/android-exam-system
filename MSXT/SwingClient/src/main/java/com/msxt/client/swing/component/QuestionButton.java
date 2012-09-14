@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -26,7 +27,8 @@ public class QuestionButton extends JToggleButton implements PropertyChangeListe
 	private final ActionListener demoActionListener = new DemoActionListener();
 	
 	private Question question;
-    
+    private JScrollPane examScrollPane;
+	
     public QuestionButton(Question q) {
         this.question = q;
         String demoName = q.getName();
@@ -82,8 +84,9 @@ public class QuestionButton extends JToggleButton implements PropertyChangeListe
     
     private class DemoActionListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
-            QuestionButton demoButton = (QuestionButton)event.getSource();
-            //setSelectedDemo(demoButton.getDemo());
+            QuestionButton button = (QuestionButton)event.getSource();
+            int posit = button.getQuestion().getQuestionPanel().getVerticalStartPosition();
+            examScrollPane.getVerticalScrollBar().setValue(posit);
         }
     }
 
@@ -95,5 +98,9 @@ public class QuestionButton extends JToggleButton implements PropertyChangeListe
 			question.setState(state);
 			repaint();
 		}
+	}
+
+	public void setExamScrollPane(JScrollPane examScrollPane) {
+		this.examScrollPane = examScrollPane;
 	}
 }

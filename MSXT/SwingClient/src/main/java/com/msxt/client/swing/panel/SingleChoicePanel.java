@@ -24,7 +24,7 @@ public class SingleChoicePanel extends QuestionPanel{
 	public SingleChoicePanel(Examination.Question question){
 		unFinish = true;
 		bg = new ButtonGroup();
-		
+		setOpaque( false );
 		this.setLayout( new GridBagLayout() );
 				
 		JLabel index = new JLabel( question.getIndex() + ". " );
@@ -37,6 +37,7 @@ public class SingleChoicePanel extends QuestionPanel{
 	
 	private JPanel createContentPanel(Examination.Question question){
 		JPanel panel = new JPanel();
+		panel.setOpaque( false );
 		panel.setLayout( new BorderLayout() );
 		
 		JLabel content = new JLabel();
@@ -47,6 +48,7 @@ public class SingleChoicePanel extends QuestionPanel{
 	
 	private JPanel createChoiceItemPanel(Examination.Question question){
 		JPanel panel = new JPanel();
+		panel.setOpaque( false );
 		panel.setLayout( new GridBagLayout() );
 		
 		List<Examination.Choice> choices = question.getChoices();

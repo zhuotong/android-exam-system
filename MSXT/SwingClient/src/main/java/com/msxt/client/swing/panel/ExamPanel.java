@@ -1,5 +1,6 @@
 package com.msxt.client.swing.panel;
 
+import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.util.List;
 
@@ -14,11 +15,13 @@ public class ExamPanel extends JPanel{
 	
 	public ExamPanel(ExamBuildContext ebc){
 		setLayout( new GridBagLayout() );
+		setBackground( Color.WHITE );
 		List<Examination.Catalog> ecs = ebc.getExam().getCatalogs();
 		for( int i=0; i<ecs.size(); i++ ) {
 			Examination.Catalog ec = ecs.get(i);		
-			JPanel qp = new CatalogPanel( ec, ebc );
-			add( qp, new GBC(0,i).setWeight(100, 100).setFill(10).setFill( GBC.HORIZONTAL ) );
+			JPanel cp = new CatalogPanel( ec, ebc );
+			cp.setOpaque( false );
+			add( cp, new GBC(0,i).setWeight(100, 100).setFill(10).setFill( GBC.HORIZONTAL ) );
 		}
 	}
 }

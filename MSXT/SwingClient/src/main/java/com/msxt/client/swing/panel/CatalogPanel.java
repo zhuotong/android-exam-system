@@ -24,6 +24,7 @@ public class CatalogPanel extends JPanel{
 		for( int i=0; i<eqs.size(); i++ ) {
 			Examination.Question eq = eqs.get(i);			
 			QuestionPanel qp = new SingleChoicePanel( eq );
+			qp.setOpaque( false );
 			add( qp, new GBC(1, i + 1).setWeight(100, 100).setInsets(0,0,10,0).setFill( GBC.HORIZONTAL ) );
 			
 			QuestionButton qb = ebc.getButton( eq );

@@ -77,7 +77,7 @@ public class ExamLauncher extends SingleFrameApplication  {
     public static final int DEMO_PANEL_WIDTH = MAIN_FRAME_WIDTH - DEMO_SELECTOR_WIDTH;
     
     private static final Border EMPTY_BORDER = new EmptyBorder(0, 0, 0, 0);
-    private static final Border PANEL_BORDER = new EmptyBorder(10, 10, 10, 10);
+    private static final Border PANEL_BORDER = new EmptyBorder(0, 5, 0, 0);
     
     static {
         // Property must be set *early* due to Apple Bug#3909714
@@ -195,7 +195,7 @@ public class ExamLauncher extends SingleFrameApplication  {
         UIManager.put(CODE_HIGHLIGHT_KEY,         Color.getHSBColor(hsb[0]-.005f, .20f, .95f));
        
         Font labelFont = UIManager.getFont("Label.font");
-        UIManager.put(TITLE_FONT_KEY, labelFont.deriveFont(Font.BOLD, labelFont.getSize()+4f));        
+        UIManager.put(TITLE_FONT_KEY, labelFont.deriveFont(Font.BOLD, labelFont.getSize()+0.5f));        
  
         Color panelColor = UIManager.getColor("Panel.background");
         UIManager.put(SUB_PANEL_BACKGROUND_KEY,   Utilities.deriveColorHSB(panelColor, 0, 0, -.06f));
@@ -203,8 +203,12 @@ public class ExamLauncher extends SingleFrameApplication  {
     } 
     
     public void createMainPanel( Examination exam ) {
+    	JScrollPane epsp = new JScrollPane();
+    	epsp.getVerticalScrollBar().setUnitIncrement(5);
     	ExamBuildContext ebc = new ExamBuildContext( exam );
-        mainPanel = new JPanel();
+    	ebc.setExamScrollPane( epsp );
+    	
+    	mainPanel = new JPanel();
         mainPanel.setLayout( new BorderLayout() );
         
         // Create question selector panel on left
@@ -215,7 +219,7 @@ public class ExamLauncher extends SingleFrameApplication  {
         examContainer.setLayout( new BorderLayout() );
         examContainer.setBorder( PANEL_BORDER );
         examContainer.setPreferredSize( new Dimension(DEMO_PANEL_WIDTH, DEMO_PANEL_HEIGHT) );
-        JScrollPane epsp = new JScrollPane( new ExamPanel( ebc ) );
+        epsp.setViewportView( new ExamPanel( ebc ) );
         examContainer.add( epsp, BorderLayout.CENTER );
         mainPanel.add( examContainer, BorderLayout.CENTER );
         
