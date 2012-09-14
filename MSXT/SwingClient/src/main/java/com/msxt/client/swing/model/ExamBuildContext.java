@@ -1,5 +1,6 @@
 package com.msxt.client.swing.model;
 
+import java.awt.Font;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +13,9 @@ public class ExamBuildContext {
 	private Examination exam;
 	private Map<Examination.Question, QuestionButton> buttonMap;
 	private JScrollPane examScrollPane;
+	private Font catalogTitleFont = new Font("Monospaced", Font.BOLD, 16);
+	private Font questionTitleFont = new Font("Monospaced", Font.BOLD, 15);;
+	private Font questionFont = new Font("Monospaced", Font.PLAIN, 14);
 	
 	public ExamBuildContext(Examination e){
 		exam = e;
@@ -40,5 +44,29 @@ public class ExamBuildContext {
 
 	public void setExamScrollPane(JScrollPane examScrollPane) {
 		this.examScrollPane = examScrollPane;
+	}
+
+	public Font getCatalogTitleFont() {
+		return catalogTitleFont;
+	}
+
+	public void setCatalogTitleFont(Font catalogTitleFont) {
+		this.catalogTitleFont = catalogTitleFont;
+	}
+
+	public Font getQuestionTitleFont() {
+		return questionTitleFont;
+	}
+
+	public void setQuestionTitleFont(Font questionTitleFont) {
+		this.questionTitleFont = questionTitleFont;
+	}
+
+	public Font getQuestionFont() {
+		return questionFont;
+	}
+
+	public void setQuestionFont(Font questionFont) {
+		this.questionFont = questionFont;
 	}
 }

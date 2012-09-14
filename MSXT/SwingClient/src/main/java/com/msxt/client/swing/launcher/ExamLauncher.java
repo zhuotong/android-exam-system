@@ -77,7 +77,7 @@ public class ExamLauncher extends SingleFrameApplication  {
     public static final int DEMO_PANEL_WIDTH = MAIN_FRAME_WIDTH - DEMO_SELECTOR_WIDTH;
     
     private static final Border EMPTY_BORDER = new EmptyBorder(0, 0, 0, 0);
-    private static final Border PANEL_BORDER = new EmptyBorder(0, 5, 0, 0);
+    private static final Border PANEL_BORDER = new EmptyBorder(1, 3, 1, 1);
     
     static {
         // Property must be set *early* due to Apple Bug#3909714
@@ -214,6 +214,7 @@ public class ExamLauncher extends SingleFrameApplication  {
         // Create question selector panel on left
         questionSelectorPanel = new QuestionSelectorPanel( ebc );
         questionSelectorPanel.setPreferredSize(new Dimension(DEMO_SELECTOR_WIDTH, MAIN_FRAME_HEIGHT));
+        mainPanel.add(questionSelectorPanel, BorderLayout.WEST);
         
         examContainer = new JPanel();
         examContainer.setLayout( new BorderLayout() );
@@ -221,9 +222,7 @@ public class ExamLauncher extends SingleFrameApplication  {
         examContainer.setPreferredSize( new Dimension(DEMO_PANEL_WIDTH, DEMO_PANEL_HEIGHT) );
         epsp.setViewportView( new ExamPanel( ebc ) );
         examContainer.add( epsp, BorderLayout.CENTER );
-        mainPanel.add( examContainer, BorderLayout.CENTER );
-        
-        mainPanel.add(questionSelectorPanel, BorderLayout.WEST);
+        mainPanel.add(examContainer, BorderLayout.CENTER );
         
         getMainView().setComponent( mainPanel );
     }
