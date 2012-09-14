@@ -18,19 +18,30 @@
     <!-- Login Page End -->
 
     <!-- Setting Page Start-->
+    <string-array name="msg_settings_invalid">
+        <item>Invalid IP Address!</item>
+    </string-array>
+    
     <string name="msg_tv_host">Host:</string>
     <string name="msg_btn_save">Save</string>
+    <string name="msg_btn_clear_history">Clear History</string>
     <string name="msg_btn_cancel">Cancel</string>
     <!-- Setting Page End-->
         
-    <!-- Exam List Page Start-->
+    <!-- Select Exam List Page Start-->
     <string name="tv_label_your_name">Your name:</string>
     <string name="tv_label_your_app_job">Your Applied Job:</string>
     <string name="tv_label_choose_exam">Choose 1 Exam from below:</string>
     <string name="btn_text_start">Start</string>
     <string name="btn_text_clear_history">Clear History</string>
-    <!-- Exam List Page End-->
-    
+    <!-- Select Exam List Page End-->
+
+    <!-- Continue Exam Page Start-->
+    <string name="tv_label_your_unfin_exam">Your Have Unfinished Exam:</string>
+    <string name="btn_text_continue">Continue</string>
+    <string name="btn_text_cancel">Cancel</string>
+    <!-- Continue Exam Page End-->
+        
     <!-- Exam Result -->
     <string name="tv_label_submit_success">Answers have been submitted successfully!</string>
     <!-- Exam End -->

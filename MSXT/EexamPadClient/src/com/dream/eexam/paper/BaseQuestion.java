@@ -12,6 +12,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -442,6 +443,13 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 //		getAllAnswers();
 		Log.i(LOG_TAG, "submitAnswer()...");
 //		ShowDialog("Submit Success!");
+	}
+	
+	public void saveExamStatus(){
+		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putString("exam_status", "end");
+		editor.commit();		
 	}
 	
 	

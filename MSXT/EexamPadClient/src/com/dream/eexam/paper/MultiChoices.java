@@ -456,6 +456,9 @@ public class MultiChoices extends BaseQuestion {
     			ShowDialog(submitResult.getErrorMessage());
         	} else {
 //        		ShowDialog(submitResult.getSuccessMessage());
+        		//make exam status to end
+        		saveExamStatus();
+        		
         		SubmitSuccessResult succResult = DataUtil.getSubmitSuccessResult(submitResult);
         		
 				//move question

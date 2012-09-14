@@ -10,23 +10,6 @@
         android:id="@+id/baseHeader"
         layout="@layout/base_header" /> 
 
-     <TableRow
-         android:layout_width="fill_parent"
-		 android:layout_height="wrap_content"
-		 android:layout_marginLeft="20dp"
-		 android:layout_marginRight="20dp"
-		 android:layout_marginTop="20dp">
- 		<TextView
- 		    android:id="@+id/valiMessage" 
-			android:layout_width="fill_parent" 
-			android:layout_height="wrap_content"
-			android:textSize="22sp"
-			android:textColor="#FF0000"
-			android:text="@string/msg_tv_host"
-			android:visibility="invisible">
-		</TextView>
-   	</TableRow>
-   	
     <TableRow
          android:layout_width="fill_parent"
 		 android:layout_height="wrap_content"
@@ -40,63 +23,90 @@
 			android:textSize="22sp"
 			android:textColor="#000000"
 			android:background="@drawable/style_examlist_tv_label"
-			android:text="@string/msg_tv_host">
+			android:text="@string/tv_label_your_name">
 		</TextView>
-		<EditText android:id="@+id/hostET"
+		<TextView android:id="@+id/nameTV"
 			android:layout_width="fill_parent" 
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:textSize="22sp"
 			android:textColor="#000000"
 			android:background="@drawable/style_examlist_tv_value">
-		</EditText>          
+		</TextView>          
    	</TableRow> 
- 
-	<TableRow
+   		
+    <TableRow
          android:layout_width="fill_parent"
 		 android:layout_height="wrap_content"
-		 android:layout_marginTop="80dp"
 		 android:layout_marginLeft="20dp"
 		 android:layout_marginRight="20dp">
-		
-		<Button android:id="@+id/saveBtn"
+ 		<TextView 
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:text="@string/tv_label_your_app_job"
+			android:background="@drawable/style_examlist_tv_label">
+		</TextView>
+		<TextView android:id="@+id/jobTitleTV"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:background="@drawable/style_examlist_tv_value">
+		</TextView>          
+   	</TableRow>
+
+  	<TextView 
+  			android:layout_width="fill_parent" 
+  			android:layout_height="wrap_content"
+  			android:layout_marginTop="20dp"
+  			android:layout_marginLeft="20dp" 
+  			android:layout_marginRight="20dp" 			
+  			android:textSize="22sp"
+  			android:textColor="#000000"
+  			android:background="@drawable/style_examlist_tv_label"
+  			android:text="@string/tv_label_your_unfin_exam">
+  	</TextView>
+  
+	<TextView android:id="@+id/continueExam"
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:layout_marginTop="5dp"
+		android:layout_marginLeft="20dp"
+		android:layout_marginRight="20dp"
+		android:textSize="20sp"
+		android:textColor="#000000"
+		android:background="@drawable/style_examlist_tv_value">
+	</TextView>
+
+    <TableRow
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginTop="30dp"
+		 android:layout_marginLeft="20dp"
+		 android:layout_marginRight="20dp">
+ 		<Button android:id="@+id/continueBtn"
 			android:layout_width="fill_parent" 
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:textSize="22sp"
 			android:textColor="#000000"
 			android:background="@drawable/btn_sys"
-			android:text="@string/msg_btn_save">
+			android:text="@string/btn_text_continue">
 		</Button>
-			
-	    <Button android:id="@+id/cancelBtn"
+		<Button android:id="@+id/cancelBtn"
 			android:layout_width="fill_parent" 
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
+			android:layout_marginLeft="5dp"
 			android:textSize="22sp"
 			android:textColor="#000000"
 			android:background="@drawable/btn_sys"
-			android:text="@string/msg_btn_cancel">
+			android:text="@string/btn_text_cancel">
 		</Button>          
    	</TableRow>
    	
-	<TableRow
-         android:layout_width="fill_parent"
-		 android:layout_height="wrap_content"
-		 android:layout_marginTop="80dp"
-		 android:layout_marginLeft="20dp"
-		 android:layout_marginRight="20dp">
-	
-		<Button android:id="@+id/clearBtn"
-			android:layout_width="fill_parent" 
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:textSize="22sp"
-			android:textColor="#000000"
-			android:background="@drawable/btn_sys"
-			android:text="@string/msg_btn_clear_history">
-		</Button>
-        
-   	</TableRow>
-   	  	
 </LinearLayout>

@@ -506,6 +506,9 @@ public class SingleChoices extends BaseQuestion {
     		if( submitResult.getStatus() == STATUS.ERROR ) {
     			ShowDialog(submitResult.getErrorMessage());
         	} else {
+        		
+        		saveExamStatus();
+        		
         		SubmitSuccessResult succResult = DataUtil.getSubmitSuccessResult(submitResult);
         		
 				//move question

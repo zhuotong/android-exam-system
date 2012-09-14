@@ -33,6 +33,11 @@
                   android:launchMode="singleTask">
         </activity>
 
+     	<activity android:name=".ExamContinueActivity"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        
 <!--      	<activity android:name="com.dream.eexam.paper.BaseQuestion"
                   android:launchMode="singleTask">
         </activity> -->

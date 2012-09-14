@@ -154,12 +154,24 @@ public class LoginActivity extends BaseActivity {
     		        	String conversation = root.getElementsByTagName( "conversation" ).item(0).getTextContent();
     		        	proxy.setConversationId( conversation );
     		        	
-    		        	//go to examList page
-    		        	Intent intent = new Intent();
-    	    			intent.putExtra("loginResultFile", loginResultFile);
-    	    			intent.putExtra("loginResultFilePath", loginResultFilePath);
-    	    			intent.setClass( mContext, ExamListActivity.class);
-    	    			startActivity(intent);   
+    		        	String examStatus = sharedPreferences.getString("exam_status", null);
+    		        	if(examStatus == null){
+        		        	//go to exam List page
+        		        	Intent intent = new Intent();
+        	    			intent.putExtra("loginResultFile", loginResultFile);
+        	    			intent.putExtra("loginResultFilePath", loginResultFilePath);
+        	    			intent.setClass( mContext, ExamListActivity.class);
+        	    			startActivity(intent);     		        		
+    		        	}else if("start".equals(examStatus)){
+        		        	//go to continue exam page
+        		        	Intent intent = new Intent();
+        	    			intent.putExtra("loginResultFile", loginResultFile);
+        	    			intent.putExtra("loginResultFilePath", loginResultFilePath);
+        	    			intent.setClass( mContext, ExamContinueActivity.class);
+        	    			startActivity(intent);   
+    		        	}else if("end".equals(examStatus)){
+    		        		ShowDialog("Your Exam is completed");
+    		        	}
     		        }
         		} catch (Exception e) {
         			ShowDialog("Invalid XML Data");

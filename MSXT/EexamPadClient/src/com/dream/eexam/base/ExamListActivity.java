@@ -225,6 +225,9 @@ public class ExamListActivity extends BaseActivity {
 					ShowDialog("Invalid qeustion type:"+fQuestionType);
 				}
 				
+				//save exam status
+				saveExamStatus();
+				
 				//save exam start time
 				saveStartTime();
 				   					
@@ -232,6 +235,17 @@ public class ExamListActivity extends BaseActivity {
 	    }
 	}
 
+	public void saveExamStatus(){
+		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
+		String examStatus = sharedPreferences.getString("exam_status", null);
+		//if its first time to do exam, save start exam time
+		if(examStatus==null){
+			SharedPreferences.Editor editor = sharedPreferences.edit();
+			editor.putString("exam_status", "start");
+			editor.commit();		
+		}
+	}
+	
 	public void saveStartTime(){
 		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
 		long startTime = sharedPreferences.getLong("starttime", 0);
