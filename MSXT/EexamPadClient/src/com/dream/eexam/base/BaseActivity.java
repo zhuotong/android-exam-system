@@ -5,11 +5,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-import com.dream.eexam.model.QuestionProgress;
-import com.dream.eexam.paper.PendQuestions;
 import com.dream.eexam.util.ActivityStackControlUtil;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -109,20 +104,20 @@ public class BaseActivity extends Activity {
 	 * @param sharedPreferences
 	 * @return
 	 */
-	public QuestionProgress getQuestionProgress(SharedPreferences sharedPreferences){
+/*	public QuestionProgress getQuestionProgress(SharedPreferences sharedPreferences){
 		Integer currentQueIndex = sharedPreferences.getInt("currentQueIndex", 0);
 		Integer quesCount = sharedPreferences.getInt("quesCount", 0);
 		String completedQueIdsString = sharedPreferences.getString("completedQueIdsString", null);
 		
 		return new QuestionProgress(currentQueIndex,quesCount,completedQueIdsString);
 	}
-
+*/
 	/**
 	 * 
 	 * @param sharedPreferences
 	 * @param qp
 	 */
-	public void saveQuestionProgress(SharedPreferences sharedPreferences,QuestionProgress qp){
+	/*public void saveQuestionProgress(SharedPreferences sharedPreferences,QuestionProgress qp){
 		SharedPreferences.Editor editor = sharedPreferences.edit();
 		Integer currentQueIndex = qp.getCurrentQueIndex();
 		if(currentQueIndex!=null){
@@ -138,7 +133,7 @@ public class BaseActivity extends Activity {
 		}
 	
 		editor.commit();
-	}
+	}*/
 	
 	/**
 	 * get question index you last view 
@@ -201,7 +196,7 @@ public class BaseActivity extends Activity {
 	 * @param urlString
 	 * @return
 	 */
-	public InputStream downloadUrl(String id,String password){
+	/*public InputStream downloadUrl(String id,String password){
 		Log.i(LOG_TAG,"------downloadUrl()...");
         HttpURLConnection conn;
         InputStream stream = null;
@@ -210,8 +205,8 @@ public class BaseActivity extends Activity {
 			Log.i(LOG_TAG,"URL:"+urlStr);
 			URL url = new URL(urlStr);
 			conn = (HttpURLConnection) url.openConnection();
-	        conn.setReadTimeout(10000 /* milliseconds */);
-	        conn.setConnectTimeout(15000 /* milliseconds */);
+	        conn.setReadTimeout(10000  milliseconds );
+	        conn.setConnectTimeout(15000  milliseconds );
 	        conn.setRequestMethod("GET");
 	        conn.setDoInput(true);
 	        
@@ -223,7 +218,7 @@ public class BaseActivity extends Activity {
 		}
 
         return stream;
-    }
+    }*/
 	
 	/**
 	 * 

@@ -88,7 +88,6 @@ public class ExamListActivity extends BaseActivity {
 		
 		try {
 	    	FileInputStream inputStream = new FileInputStream(new File(loginResultFilePath+ File.separator+loginResultFile));
-//	    	loginResultBean = XMLParseUtil.readLoginResult(inputStream);
 	    	succResult = DataUtil.getSuccessResult(inputStream);
 	    	
 		} catch (Exception e) {
@@ -138,9 +137,9 @@ public class ExamListActivity extends BaseActivity {
 		clearBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				Log.i(LOG_TAG,"onClick()...");
-				SharedPreferences.Editor editor = sharedPreferences.edit(); 
-				editor.clear();
-				editor.commit();
+//				SharedPreferences.Editor editor = sharedPreferences.edit(); 
+//				editor.clear();
+//				editor.commit();
 				
 				DatabaseUtil dbUtil = new DatabaseUtil(mContext);
 				dbUtil.open();
@@ -244,6 +243,7 @@ public class ExamListActivity extends BaseActivity {
 			long currentTime = Calendar.getInstance().getTimeInMillis();
 			Log.i(LOG_TAG, "startTime="+String.valueOf(startTime));
 			editor.putLong("starttime", currentTime);
+			
 			editor.commit();		
 		}
 	}

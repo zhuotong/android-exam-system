@@ -17,9 +17,11 @@ import android.os.Bundle;
 import android.os.Message;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.GestureDetector.OnGestureListener;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
@@ -158,6 +160,9 @@ public class SingleChoices extends BaseQuestion {
 			}      	
         });
         setFooter();
+        
+        //set GestureDetector
+        detector = new GestureDetector((OnGestureListener) this);
     }
     
     public void clearOldAnswer(){
