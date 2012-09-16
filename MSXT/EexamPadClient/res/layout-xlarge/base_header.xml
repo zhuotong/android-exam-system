@@ -3,19 +3,11 @@
     android:layout_width="fill_parent"
     android:layout_height="60dp" 
     android:background="@drawable/bg_color_login_header">
-<!--     <TextView
-        android:text="@string/msg_header_tv_home"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical"
-        android:textColor="#FFFFFF"
-        android:textSize="22sp"
-        android:paddingLeft="5dp"/> -->
         
     	<ImageView android:id="@+id/imgHome"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="5dp"
 	        android:layout_gravity="center_vertical|left"
 	        android:paddingLeft="8dp"
 					android:src="@drawable/home_64"

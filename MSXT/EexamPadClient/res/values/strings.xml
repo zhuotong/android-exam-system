@@ -4,24 +4,21 @@
     <string name="msg_header_tv_home">Home</string>
 
     <!-- Login Page Start-->
-    <string name="msg_logo_desc">eExam</string>
-    <string name="msg_chb_save_password">Save Password</string>
-    <string name="msg_chb_save_id">Save ID</string>
-    <string name="msg_tv_id">ID:</string>
-    <string name="msg_tv_password">Password :</string>
-    <string name="msg_et_id_hint">Input ID</string>
-    <string name="msg_et_password_hint">Input Password</string>
-    <string name="msg_btn_login">Sign In</string>
-    <string name="msg_btn_reset">Setting</string> 
-    <string name="msg_tv_score">Score:</string>
-    <string name="msg_btn_quit">Quit:</string>
+	<string name="msg_logo_desc">eExam</string>
+	<string name="label_tv_username">Username:</string>
+	<string name="label_et_username_hint">Input Username</string>
+    <string name="label_tv_password">Password :</string>
+    <string name="label_et_password_hint">Input Password</string>
+	<string name="label_chb_save_id">Save Username</string>
+    <string name="label_chb_save_password">Save Password</string>
+    <string name="label_btn_login">Sign In</string>
+    <string name="label_btn_reset">Setting</string>
     <!-- Login Page End -->
-
+    
     <!-- Setting Page Start-->
     <string-array name="msg_settings_invalid">
         <item>Invalid IP Address!</item>
     </string-array>
-    
     <string name="msg_tv_host">Host:</string>
     <string name="msg_btn_save">Save</string>
     <string name="msg_btn_clear_history">Clear History</string>
@@ -29,23 +26,20 @@
     <!-- Setting Page End-->
         
     <!-- Select Exam List Page Start-->
-    <string name="tv_label_your_name">Your name:</string>
-    <string name="tv_label_your_app_job">Your Applied Job:</string>
-    <string name="tv_label_choose_exam">Choose 1 Exam from below:</string>
-    <string name="btn_text_start">Start</string>
-    <string name="btn_text_clear_history">Clear History</string>
+    <string name="label_tv_your_name">Your name:</string>
+    <string name="label_tv_your_applied_job">Your Applied Job:</string>
+    <string name="label_tv_choose_exam">Choose 1 Exam from below:</string>
+    <string name="label_btn_start">Start</string>
+    <string name="label_btn_clear_history">Clear History</string>
     <!-- Select Exam List Page End-->
 
     <!-- Continue Exam Page Start-->
-    <string name="tv_label_your_unfin_exam">Your Have Unfinished Exam:</string>
-    <string name="btn_text_continue">Continue</string>
-    <string name="btn_text_cancel">Cancel</string>
+    <string name="label_tv_unfinished_exam">Your Have Unfinished Exam:</string>
+    <string name="label_btn_continue">Continue</string>
+    <string name="label_btn_cancel">Cancel</string>
     <!-- Continue Exam Page End-->
-        
-    <!-- Exam Result -->
-    <string name="tv_label_submit_success">Answers have been submitted successfully!</string>
-    <!-- Exam End -->
-
+    
+    <!-- Exam Page(MultiChoice,SingChoice,PendingChoice) Start-->
     <string name="msg_btn_start">Start</string>
     <string name="msg_btn_submit">Submit</string>
     <string name="msg_btn_pre">Prev</string>
@@ -54,13 +48,20 @@
     <string name="connection_error">Unable to load content. Check your network connection.</string>
     <string name="xml_error">Error parsing XML.</string>
     <string name="popup_window_height">300</string>
-    <string name="popup_window_width">280</string>
+    <string name="popup_window_width">280</string>    
+    <!-- Exam Page(MultiChoice,SingChoice,PendingChoice) END-->
+        
+    <!-- Exam Result Page Start -->
+    <string name="msg_tv_score">Score:</string>
+    <string name="msg_btn_quit">Quit:</string>
+    <string name="tv_label_submit_success">Answers have been submitted successfully!</string>
+    <!-- Exam End Page End -->
 
+	<!-- Other -->
  	<string-array name="question_types">
         <item>Multiple Choice</item>
         <item>Single Choice</item>
     </string-array>
-        
     <string-array name="display_choice_label">
         <item>A</item>
         <item>B</item>
@@ -73,12 +74,10 @@
         <item>I</item>
         <item>J</item>
     </string-array>
-    
-<!--     <string name="host">192.168.241.45</string> -->
     <string name="host">192.168.1.100</string>
     <string name="port">8080</string>
     <string name="app_file_home">eExam</string>
     <string name="login_file_name">login_result.xml</string>
     <string name="exam_file_name">download_exam.xml</string>
-    
+    <!-- Other -->
 </resources>

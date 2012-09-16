@@ -139,10 +139,11 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 				if(cursor.moveToNext()){
 					continue;
 				}
+				cursor.close();
 				pendQuestions.add(question);
 			}
 		}
-		cursor.close();
+//		cursor.close();
     }
     
     public void loadCatalogInfos(DatabaseUtil dbUtil){
@@ -167,16 +168,14 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 					DataUtil.getFirstQuestionIndexOfCatalog(exam, catalog.getIndex()),totalQuestions,answeredQuetions));
 			catalogCursor.close();
 		}
-		catalogCursor.close();
+//		catalogCursor.close();
     }
 	
     public void loadAnswerHistory(int cid,int qid,DatabaseUtil dbUtil){
     	Log.i(LOG_TAG, "loadAnswer()...");
 		Log.i(LOG_TAG, "cid = " + cid + " qid = " + qid);
-		
 		//load label(s) of answer
     	
-    	dbUtil.open();
     	Cursor cursor = dbUtil.fetchAnswer(cid,qid);
 		if (cursor != null && cursor.moveToNext()) {
 			Log.i(LOG_TAG, "find answer...");
@@ -184,6 +183,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
     		answerLabels.setLength(0);
     		answerLabels.append(cursor.getString(3));
 		}
+		cursor.close();
 		
 		//load answered question number of current catalog
 		int sum = 0;
@@ -227,6 +227,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		
 		//load old data from database
 		DatabaseUtil dbUtil = new DatabaseUtil(this);
+		dbUtil.open();
 		loadAnswerHistory(cCatalogIndex,cQuestionIndex,dbUtil);
 		loadDownLoadExam(dbUtil);//load exam with local file
 		dbUtil.close();

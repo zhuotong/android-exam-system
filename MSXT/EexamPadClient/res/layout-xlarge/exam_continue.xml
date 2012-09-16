@@ -23,7 +23,7 @@
 			android:textSize="22sp"
 			android:textColor="#000000"
 			android:background="@drawable/style_examlist_tv_label"
-			android:text="@string/tv_label_your_name">
+			android:text="@string/label_tv_your_name">
 		</TextView>
 		<TextView android:id="@+id/nameTV"
 			android:layout_width="fill_parent" 
@@ -46,7 +46,7 @@
 			android:layout_weight="1"
 			android:textSize="22sp"
 			android:textColor="#000000"
-			android:text="@string/tv_label_your_app_job"
+			android:text="@string/label_tv_your_applied_job"
 			android:background="@drawable/style_examlist_tv_label">
 		</TextView>
 		<TextView android:id="@+id/jobTitleTV"
@@ -68,7 +68,7 @@
   			android:textSize="22sp"
   			android:textColor="#000000"
   			android:background="@drawable/style_examlist_tv_label"
-  			android:text="@string/tv_label_your_unfin_exam">
+  			android:text="@string/label_tv_unfinished_exam">
   	</TextView>
   
 	<TextView android:id="@+id/continueExam"
@@ -95,7 +95,7 @@
 			android:textSize="22sp"
 			android:textColor="#000000"
 			android:background="@drawable/btn_sys"
-			android:text="@string/btn_text_continue">
+			android:text="@string/label_btn_continue">
 		</Button>
 		<Button android:id="@+id/cancelBtn"
 			android:layout_width="fill_parent" 
@@ -105,7 +105,7 @@
 			android:textSize="22sp"
 			android:textColor="#000000"
 			android:background="@drawable/btn_sys"
-			android:text="@string/btn_text_cancel">
+			android:text="@string/label_btn_cancel">
 		</Button>          
    	</TableRow>
    	
