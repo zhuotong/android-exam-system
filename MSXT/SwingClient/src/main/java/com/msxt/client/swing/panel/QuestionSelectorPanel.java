@@ -7,14 +7,20 @@ import com.msxt.client.swing.component.QuestionButton;
 import com.msxt.client.swing.launcher.ExamLauncher;
 import com.msxt.client.swing.model.ExamBuildContext;
 import com.msxt.client.swing.model.Question;
+import com.msxt.client.swing.model.Question.State;
 import com.msxt.client.swing.utilities.ArrowIcon;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+
+import javax.swing.AbstractButton;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -45,6 +51,7 @@ public class QuestionSelectorPanel extends JPanel {
     private JLabel examNameLabel;
     private JPanel viewPanel;
     private JScrollPane scrollPane;
+    private TimePanel timePanel;
     // need to track components that have defaults customizations
     private final List<CollapsiblePanel> collapsePanels = new ArrayList<CollapsiblePanel>();
     private Icon expandedIcon;
@@ -58,7 +65,7 @@ public class QuestionSelectorPanel extends JPanel {
         
         group = new ButtonGroup();
         // create title area at top
-        add( createTitleArea( ebc.getExam().getName()), BorderLayout.NORTH );
+        add( createTitleArea( ebc ), BorderLayout.NORTH );
         
         // create scrollable question panel at bottom
         JComponent selector = createQuestionSelector( ebc );
@@ -69,31 +76,42 @@ public class QuestionSelectorPanel extends JPanel {
         applyDefaults();
     }
     
-    protected JComponent createTitleArea(String demoSetTitle) {
+    protected JComponent createTitleArea(ExamBuildContext ebc) {
         
         titlePanel = new GradientPanel(
                 UIManager.getColor(ExamLauncher.TITLE_GRADIENT_COLOR1_KEY),
                 UIManager.getColor(ExamLauncher.TITLE_GRADIENT_COLOR2_KEY));
         titlePanel.setLayout( new BorderLayout() );
         titlePanel.setBorder( panelBorder );
-        examNameLabel = new JLabel(demoSetTitle);
+        examNameLabel = new JLabel( ebc.getExam().getName() );
         examNameLabel.setOpaque(false);
         examNameLabel.setHorizontalAlignment( JLabel.LEADING );
         titlePanel.add( examNameLabel, BorderLayout.CENTER );
                 
         // Add panel with view combobox
-        viewPanel = new JPanel();
-        viewPanel.setLayout(new BoxLayout(viewPanel, BoxLayout.X_AXIS));
-        viewPanel.setBorder(new CompoundBorder(chiselBorder, new EmptyBorder(12,8,12,8)));
         JLabel viewLabel = new JLabel("View:");
-        viewPanel.add(viewLabel);
-        viewPanel.add(Box.createHorizontalStrut(6));
-        JComboBox viewComboBox = new JComboBox();
+        final JComboBox<String> viewComboBox = new JComboBox<String>();
         viewComboBox.addItem("全部");
         viewComboBox.addItem("完成");
-        viewComboBox.addItem("为完成");
-        viewPanel.add(viewComboBox);
+        viewComboBox.addItem("未完成");
+        viewComboBox.addActionListener( new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				filterQuestionButton( viewComboBox.getSelectedIndex() );
+			}
+		});
         
+        timePanel = new TimePanel( ebc.getExam().getTime() );
+        
+        viewPanel = new JPanel();
+        viewPanel.setLayout( new BoxLayout(viewPanel, BoxLayout.X_AXIS) );
+        viewPanel.setBorder( new CompoundBorder(chiselBorder, new EmptyBorder(12,8,12,8)) );
+        viewPanel.add( timePanel );
+        viewPanel.add( Box.createHorizontalStrut(12) );
+        viewPanel.add( viewLabel );
+        viewPanel.add( Box.createHorizontalStrut(6) );
+        viewPanel.add( viewComboBox);
+
         JPanel titleAreaPanel = new JPanel(new BorderLayout());
         titleAreaPanel.add(titlePanel, BorderLayout.NORTH);
         titleAreaPanel.add(viewPanel, BorderLayout.CENTER);
@@ -165,13 +183,10 @@ public class QuestionSelectorPanel extends JPanel {
         
     protected void applyDefaults() {
         
-        expandedIcon = new ArrowIcon(ArrowIcon.SOUTH,
-                UIManager.getColor(ExamLauncher.TITLE_FOREGROUND_KEY));
-        collapsedIcon = new ArrowIcon(ArrowIcon.EAST,
-                UIManager.getColor(ExamLauncher.TITLE_FOREGROUND_KEY));
+        expandedIcon  = new ArrowIcon(ArrowIcon.SOUTH, UIManager.getColor(ExamLauncher.TITLE_FOREGROUND_KEY));
+        collapsedIcon = new ArrowIcon(ArrowIcon.EAST, UIManager.getColor(ExamLauncher.TITLE_FOREGROUND_KEY));
         
-        setBorder(new MatteBorder(0,0,0,1, 
-                UIManager.getColor(ExamLauncher.CONTROL_MID_SHADOW_KEY)));
+        setBorder( new MatteBorder(0,0,0,1, UIManager.getColor(ExamLauncher.CONTROL_MID_SHADOW_KEY)) );
         
         if (titlePanel != null) {
             titlePanel.setGradientColor1( UIManager.getColor(ExamLauncher.TITLE_GRADIENT_COLOR1_KEY) );
@@ -195,5 +210,29 @@ public class QuestionSelectorPanel extends JPanel {
             }
         }
         revalidate();
+    }
+
+    private void filterQuestionButton( int type ){
+    	Enumeration<AbstractButton> en = group.getElements();
+    	while( en.hasMoreElements() ) {
+    		QuestionButton qb = (QuestionButton)en.nextElement();
+    		if( type==0 ) {//全部
+    			qb.setVisible( true );
+    		} else if( type==1 ) {//完成
+    			if( qb.getQuestion().getState() == State.FINISHED ) {
+    				qb.setVisible( true );
+    			} else {
+    				qb.setVisible( false );
+    			}
+    		} else if ( type==2 ) {//未完成
+    			if( qb.getQuestion().getState() == State.UNFINISH ) {
+    				qb.setVisible( true );
+    			} else {
+    				qb.setVisible( false );
+    			}
+    		}
+    		
+    		revalidate();
+    	}
     }
 }

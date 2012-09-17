@@ -9,7 +9,10 @@ import org.jdesktop.animation.timing.interpolation.PropertySetter;
  * @author Amy Fowler
  */
 public class AnimatingSplitPane extends JSplitPane {
-    private boolean firstExpanded = false;
+
+	private static final long serialVersionUID = 3293949501946701866L;
+
+	private boolean firstExpanded = false;
     
     private int lastDividerLocation = -1;
     

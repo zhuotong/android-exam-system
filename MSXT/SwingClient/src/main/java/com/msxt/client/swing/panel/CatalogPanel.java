@@ -28,7 +28,7 @@ public class CatalogPanel extends JPanel{
 		JLabel cindex = new JLabel( ec.getIndex()+". ");
 		cindex.setFont( ebc.getCatalogTitleFont() );
 		
-		JLabel cdesc = new JLabel( ec.getDesc() );
+		JLabel cdesc = new JLabel( "<html>"+ec.getName()+"<br/>"+ec.getDesc() + "</html>" );
 		cdesc.setFont( ebc.getCatalogTitleFont() );
 		
 		add( cindex, new GBC(0, 0, 1, eqs.size()+1 ).setAnchor( GBC.NORTHEAST )  );

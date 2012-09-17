@@ -23,8 +23,6 @@ import java.awt.Window;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.logging.Logger;
 
@@ -111,8 +109,6 @@ public class ExamLauncher extends SingleFrameApplication  {
     
     private ResourceMap resourceMap;
     
-    // Application models
-    private Map<String, JPanel> runningPanelCache;
 
     // GUI components
     private JPanel mainPanel;
@@ -134,7 +130,6 @@ public class ExamLauncher extends SingleFrameApplication  {
         resourceMap = getContext().getResourceMap();
         
         title = resourceMap.getString("mainFrame.title");
-        runningPanelCache = new HashMap<String, JPanel>();
     }    
     
     @Override 
@@ -199,7 +194,6 @@ public class ExamLauncher extends SingleFrameApplication  {
  
         Color panelColor = UIManager.getColor("Panel.background");
         UIManager.put(SUB_PANEL_BACKGROUND_KEY,   Utilities.deriveColorHSB(panelColor, 0, 0, -.06f));
-        
     } 
     
     public void createMainPanel( Examination exam ) {
@@ -232,16 +226,22 @@ public class ExamLauncher extends SingleFrameApplication  {
         JMenuBar menubar = new JMenuBar();
         menubar.setName("menubar");
         
-        // File menu
+        // exam menu
         JMenu fileMenu = new JMenu();
-        fileMenu.setName("file");
+        fileMenu.setName("exam");
         menubar.add(fileMenu);
         
+        // Examination -> Submit
+        JMenuItem submitItem = new JMenuItem();
+        submitItem.setName("exam.submit");
+        submitItem.setAction( getAction("exam.submit") );
+        fileMenu.add(submitItem);
+        
         // File -> Quit
-        if (!runningOnMac()) {
+        if ( !runningOnMac() ) {
             JMenuItem quitItem = new JMenuItem();
             quitItem.setName("quit");
-            quitItem.setAction(getAction("quit"));
+            quitItem.setAction( getAction("quit") );
             fileMenu.add(quitItem);
         }
        
@@ -278,12 +278,12 @@ public class ExamLauncher extends SingleFrameApplication  {
     protected JRadioButtonMenuItem createLookAndFeelItem(String lafName, String lafClassName) {
         JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem();
 
-        lafItem.setSelected(lafClassName.equals(lookAndFeel));
-        lafItem.setHideActionText(true);
-        lafItem.setAction(getAction("setLookAndFeel"));
-        lafItem.setText(lafName);
-        lafItem.setActionCommand(lafClassName);
-        lookAndFeelRadioGroup.add(lafItem);
+        lafItem.setSelected( lafClassName.equals(lookAndFeel) );
+        lafItem.setHideActionText( true );
+        lafItem.setAction( getAction("setLookAndFeel") );
+        lafItem.setText( lafName );
+        lafItem.setActionCommand( lafClassName );
+        lookAndFeelRadioGroup.add( lafItem );
         
         return lafItem;
     }
@@ -355,9 +355,7 @@ public class ExamLauncher extends SingleFrameApplication  {
 
         for(Window window : windows) {
             SwingUtilities.updateComponentTreeUI(window);
-            for(JPanel demoPanel : runningPanelCache.values()) {
-                SwingUtilities.updateComponentTreeUI(demoPanel);
-            }
+          //SwingUtilities.updateComponentTreeUI(examContainer);
         }
     }             
 }
