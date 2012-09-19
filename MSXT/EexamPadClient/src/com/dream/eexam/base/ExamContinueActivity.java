@@ -139,7 +139,7 @@ public class ExamContinueActivity extends BaseActivity {
 		int examAnsweredQuestionSum = dbUtil.fetchAllAnswersCount();
 		int examQuestionSum = DataUtil.getExamQuestionSum(exam);
 		int per = 100 * examAnsweredQuestionSum/examQuestionSum;
-		continueExamInfo = "("+String.valueOf(per)+" Completed)";
+		continueExamInfo = "  ("+String.valueOf(per)+"% "+getResources().getString(R.string.msg_complete)+")";
 		
 		dbUtil.close();
 		

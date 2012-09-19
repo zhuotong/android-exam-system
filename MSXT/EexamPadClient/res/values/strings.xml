@@ -13,6 +13,7 @@
     <string name="label_chb_save_password">Save Password</string>
     <string name="label_btn_login">Sign In</string>
     <string name="label_btn_reset">Setting</string>
+    <string name="msg_login_server">Login to server...</string>
     <!-- Login Page End -->
     
     <!-- Setting Page Start-->
@@ -37,6 +38,9 @@
     <string name="label_tv_unfinished_exam">Your Have Unfinished Exam:</string>
     <string name="label_btn_continue">Continue</string>
     <string name="label_btn_cancel">Cancel</string>
+    
+    <string name="msg_complete">Complete</string>
+    
     <!-- Continue Exam Page End-->
     
     <!-- Exam Page(MultiChoice,SingChoice,PendingChoice) Start-->

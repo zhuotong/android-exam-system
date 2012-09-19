@@ -117,7 +117,7 @@ public class LoginActivity extends BaseActivity {
     	@Override
     	protected void onPreExecute() {
     		Log.i(LOG_TAG, "onPreExecute() called");
-    		progressDialog = ProgressDialog.show(LoginActivity.this, null, "Login to server...", true, false); 
+    		progressDialog = ProgressDialog.show(LoginActivity.this, null,mContext.getResources().getString(R.string.msg_login_server), true, false); 
     	}
     	
         @Override
