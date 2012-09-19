@@ -20,10 +20,11 @@
     <string-array name="msg_settings_invalid">
         <item>Invalid IP Address!</item>
     </string-array>
-    <string name="msg_tv_host">Host:</string>
-    <string name="msg_btn_save">Save</string>
-    <string name="msg_btn_clear_history">Clear History</string>
-    <string name="msg_btn_cancel">Cancel</string>
+    <string name="label_tv_host">Server Address:</string>
+    <string name="label_btn_save">Save</string>
+    <!-- <string name="label_btn_cancel">Cancel</string> -->
+    <string name="label_btn_clear_history">Clear History</string>
+    <string name="msg_history_be_cleared">History is cleared</string>
     <!-- Setting Page End-->
         
     <!-- Select Exam List Page Start-->
@@ -31,7 +32,6 @@
     <string name="label_tv_your_applied_job">Your Applied Job:</string>
     <string name="label_tv_choose_exam">Choose 1 Exam from below:</string>
     <string name="label_btn_start">Start</string>
-    <string name="label_btn_clear_history">Clear History</string>
     <!-- Select Exam List Page End-->
 
     <!-- Continue Exam Page Start-->
@@ -44,11 +44,13 @@
     <!-- Continue Exam Page End-->
     
     <!-- Exam Page(MultiChoice,SingChoice,PendingChoice) Start-->
-    <string name="msg_btn_start">Start</string>
-    <string name="msg_btn_submit">Submit</string>
-    <string name="msg_btn_pre">Prev</string>
-    <string name="msg_tv_time">Time:</string>
-    <string name="msg_btn_next">Next</string>
+    
+    <string name="label_tv_waiting">Pending</string>
+    <string name="label_tv_submit">Submit</string>
+    <string name="label_tv_time_remaning">Time Remaining:</string>
+ 	<string name="msg_submiting">Submitting answer,please waiting...</string>
+ 	
+    
     <string name="connection_error">Unable to load content. Check your network connection.</string>
     <string name="xml_error">Error parsing XML.</string>
     <string name="popup_window_height">300</string>
@@ -62,6 +64,10 @@
     <!-- Exam End Page End -->
 
 	<!-- Other -->
+	<string name="warning_go_home">Exam not submitted yet, still quit?</string>
+	<string name="warning_go_home_yes">Yes</string>
+	<string name="warning_go_home_cancel">Cancel</string>
+	
  	<string-array name="question_types">
         <item>Multiple Choice</item>
         <item>Single Choice</item>

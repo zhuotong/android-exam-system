@@ -47,7 +47,7 @@ public class ExamListActivity extends BaseActivity {
 	
 	//buttons
 	private Button startBtn;
-	private Button clearBtn;
+//	private Button clearBtn;
 	
 	LoginSuccessResult succResult = new LoginSuccessResult();
 	List<com.msxt.client.model.LoginSuccessResult.Examination> examinations;
@@ -132,15 +132,12 @@ public class ExamListActivity extends BaseActivity {
 			}			
 		});
 		
-		clearBtn = (Button) findViewById(R.id.clearBtn);
+/*		clearBtn = (Button) findViewById(R.id.clearBtn);
 		clearBtn.setText("Clear History");
 		clearBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				Log.i(LOG_TAG,"onClick()...");
-//				SharedPreferences.Editor editor = sharedPreferences.edit(); 
-//				editor.clear();
-//				editor.commit();
-				
+
 				DatabaseUtil dbUtil = new DatabaseUtil(mContext);
 				dbUtil.open();
 				dbUtil.deleteAllAnswers();
@@ -148,7 +145,7 @@ public class ExamListActivity extends BaseActivity {
 				
 				ShowDialog("History is cleared!");
 			}			
-		});
+		});*/
 	}
 	
 	class SpinnerSelectedListener implements OnItemSelectedListener{

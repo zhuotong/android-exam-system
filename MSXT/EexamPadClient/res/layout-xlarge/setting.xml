@@ -22,7 +22,7 @@
 			android:layout_height="wrap_content"
 			android:textSize="22sp"
 			android:textColor="#FF0000"
-			android:text="@string/msg_tv_host"
+			android:text="@string/label_tv_host"
 			android:visibility="invisible">
 		</TextView>
    	</TableRow>
@@ -32,15 +32,15 @@
 		 android:layout_height="wrap_content"
 		 android:layout_marginLeft="20dp"
 		 android:layout_marginRight="20dp"
-		 android:layout_marginTop="20dp">
+		 android:layout_marginTop="20dp"
+		 android:layout_margin="10dp">
  		<TextView 
 			android:layout_width="fill_parent" 
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:textSize="22sp"
 			android:textColor="#000000"
-			android:background="@drawable/style_examlist_tv_label"
-			android:text="@string/msg_tv_host">
+			android:text="@string/label_tv_host">
 		</TextView>
 		<EditText android:id="@+id/hostET"
 			android:layout_width="fill_parent" 
@@ -48,7 +48,7 @@
 			android:layout_weight="1"
 			android:textSize="22sp"
 			android:textColor="#000000"
-			android:background="@drawable/style_examlist_tv_value">
+			android:background="@drawable/common_et">
 		</EditText>          
    	</TableRow> 
  
@@ -57,26 +57,27 @@
 		 android:layout_height="wrap_content"
 		 android:layout_marginTop="80dp"
 		 android:layout_marginLeft="20dp"
-		 android:layout_marginRight="20dp">
+		 android:layout_marginRight="20dp"
+		 android:layout_margin="10dp">
 		
 		<Button android:id="@+id/saveBtn"
 			android:layout_width="fill_parent" 
-			android:layout_height="wrap_content"
+			android:layout_height="50dp"
 			android:layout_weight="1"
 			android:textSize="22sp"
 			android:textColor="#000000"
-			android:background="@drawable/btn_sys"
-			android:text="@string/msg_btn_save">
+			android:background="@drawable/common_button"
+			android:text="@string/label_btn_save">
 		</Button>
 			
 	    <Button android:id="@+id/cancelBtn"
 			android:layout_width="fill_parent" 
-			android:layout_height="wrap_content"
+			android:layout_height="50dp"
 			android:layout_weight="1"
 			android:textSize="22sp"
 			android:textColor="#000000"
-			android:background="@drawable/btn_sys"
-			android:text="@string/msg_btn_cancel">
+			android:background="@drawable/common_button"
+			android:text="@string/label_btn_cancel">
 		</Button>          
    	</TableRow>
    	
@@ -85,16 +86,17 @@
 		 android:layout_height="wrap_content"
 		 android:layout_marginTop="80dp"
 		 android:layout_marginLeft="20dp"
-		 android:layout_marginRight="20dp">
+		 android:layout_marginRight="20dp"		 
+		 android:layout_gravity="center_horizontal"
+		 android:gravity="center_horizontal">
 	
 		<Button android:id="@+id/clearBtn"
-			android:layout_width="fill_parent" 
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
+			android:layout_width="300dp" 
+			android:layout_height="50dp"
 			android:textSize="22sp"
 			android:textColor="#000000"
-			android:background="@drawable/btn_sys"
-			android:text="@string/msg_btn_clear_history">
+			android:background="@drawable/common_button"
+			android:text="@string/label_btn_clear_history">
 		</Button>
         
    	</TableRow>

@@ -74,7 +74,22 @@ public class SingleChoices extends BaseQuestion {
 		imgHome.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				goHome(getBaseContext());
+				AlertDialog.Builder builder = new AlertDialog.Builder(SingleChoices.this);
+				builder.setMessage(mContext.getResources().getString(R.string.warning_go_home))
+						.setCancelable(false)
+						.setPositiveButton(mContext.getResources().getString(R.string.warning_go_home_yes),
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,int id) {
+										goHome(mContext);
+									}
+								})
+						.setNegativeButton(mContext.getResources().getString(R.string.warning_go_home_cancel),
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,int id) {
+										dialog.cancel();
+									}
+								});
+				builder.show();
 			}
 		});
 		
@@ -90,21 +105,6 @@ public class SingleChoices extends BaseQuestion {
 		catalogsTV.setText(String.valueOf(cCatalogIndex)+". "+ cCatalog.getDesc() + 
 				"(Q" + String.valueOf(cCatalog1stQuestionIndex)+" - " + "Q" + String.valueOf(cCataloglastQuestionIndex)+")");
 		
-/*		catalogsTV.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Log.i(LOG_TAG, "catalogsTV.onClick()...");
-				showWindow(v);
-			}
-		});
-		
-		imgDownArrow.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Log.i(LOG_TAG, "imgDownArrow.onClick()...");
-				showWindow(v);
-			}
-		});*/
 		
 	}
 	
@@ -236,7 +236,7 @@ public class SingleChoices extends BaseQuestion {
         }
         
 		 //set catalog bar(Right) 
-		pendQueNumber.setText("Pending("+Integer.valueOf(pendQuestions.size())+")");
+		pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_waiting)+"("+Integer.valueOf(pendQuestions.size())+")");
 		pendQueNumber.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -265,7 +265,7 @@ public class SingleChoices extends BaseQuestion {
 		completedSeekBar.setEnabled(false);
 		
 		//set exam header(Right)
-		submitTV.setText("Submit");
+		submitTV.setText(mContext.getResources().getString(R.string.label_tv_submit));
         submitTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

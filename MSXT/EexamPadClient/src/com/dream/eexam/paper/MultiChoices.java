@@ -76,7 +76,22 @@ public class MultiChoices extends BaseQuestion {
 		imgHome.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				goHome(getBaseContext());
+				AlertDialog.Builder builder = new AlertDialog.Builder(MultiChoices.this);
+				builder.setMessage(mContext.getResources().getString(R.string.warning_go_home))
+						.setCancelable(false)
+						.setPositiveButton(mContext.getResources().getString(R.string.warning_go_home_yes),
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,int id) {
+										goHome(mContext);
+									}
+								})
+						.setNegativeButton(mContext.getResources().getString(R.string.warning_go_home_cancel),
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,int id) {
+										dialog.cancel();
+									}
+								});
+				builder.show();
 			}
 		});
 		
@@ -179,7 +194,7 @@ public class MultiChoices extends BaseQuestion {
         }
         
         //set text view pending[count]
-		pendQueNumber.setText("Pending("+Integer.valueOf(pendQuestions.size())+")");
+		pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_waiting)+"("+Integer.valueOf(pendQuestions.size())+")");
 		pendQueNumber.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -215,7 +230,7 @@ public class MultiChoices extends BaseQuestion {
 
         
 		//set exam header(Right)
-		submitTV.setText("Submit");
+		submitTV.setText(mContext.getResources().getString(R.string.label_tv_submit));
         submitTV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

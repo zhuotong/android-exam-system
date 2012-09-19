@@ -5,8 +5,8 @@
 
     <!-- 登陆页面开始-->
 	<string name="msg_logo_desc">eExam</string>
-	<string name="label_tv_username">用户名:</string>
-	<string name="label_et_username_hint">输入用户名</string>
+	<string name="label_tv_username">账号:</string>
+	<string name="label_et_username_hint">输入账号</string>
     <string name="label_tv_password">密码 :</string>
     <string name="label_et_password_hint">输入密码</string>
 	<string name="label_chb_save_id">保存用户名</string>
@@ -20,10 +20,11 @@
     <string-array name="msg_settings_invalid">
         <item>无效的IP地址!</item>
     </string-array>
-    <string name="msg_tv_host">主机:</string>
-    <string name="msg_btn_save">保存</string>
-    <string name="msg_btn_clear_history">清空历史记录</string>
-    <string name="msg_btn_cancel">取消</string>
+    <string name="label_tv_host">服务器地址</string>
+    <string name="label_btn_save">保存</string>
+    <!-- <string name="label_btn_cancel">取消</string> -->
+    <string name="label_btn_clear_history">清空历史记录</string>
+    <string name="msg_history_be_cleared">历史记录已被清空</string>
     <!-- 结束设置页面-->
         
     <!-- 开始选择试卷页面 -->
@@ -31,7 +32,6 @@
     <string name="label_tv_your_applied_job">你申请的职位:</string>
     <string name="label_tv_choose_exam">请从以下列表中选择一张试卷:</string>
     <string name="label_btn_start">开始答题</string>
-    <string name="label_btn_clear_history">Clear History</string>
     <!-- 结束选择试卷页面 -->
 
     <!-- 开始继续考试页面-->
@@ -43,24 +43,23 @@
     <!-- 结束继续考试页面-->
     
     <!-- Exam Page(MultiChoice,SingChoice,PendingChoice) Start-->
-    <string name="msg_btn_start">Start</string>
-    
-    <string name="label_btn_pending">等待</string>
-    <string name="msg_btn_submit">提交试卷</string>
-    <string name="msg_btn_pre">前一题</string>
-    <string name="msg_tv_time">剩余时间:</string>
-    <string name="msg_btn_next">后一题</string>
-    
-    <string name="connection_error">Unable to load content. Check your network connection.</string>
-    <string name="xml_error">Error parsing XML.</string>
+    <string name="label_tv_waiting">等待</string>
+    <string name="label_tv_submit">提交试卷</string>
+    <string name="label_tv_time_remaning">剩余时间:</string>
+ 	<string name="msg_submiting">正在提交试卷,请耐性等待...</string>
+ 	<string name="warning_go_home">试卷没有提交,仍然要离开?</string>
+	<string name="warning_go_home_yes">是</string>
+	<string name="warning_go_home_cancel">取消</string>
     <string name="popup_window_height">300</string>
-    <string name="popup_window_width">280</string>   
+    <string name="popup_window_width">280</string>
+    <string name="connection_error">无法连接,请检查你的网络设置</string>
+    <string name="xml_error">无法解析数据</string>   
     <!-- Exam Page(MultiChoice,SingChoice,PendingChoice) END-->
         
     <!-- Exam Result Page Start -->
-    <string name="msg_tv_score">得分:</string>
+    <string name="msg_tv_score">你的得分:</string>
     <string name="msg_btn_quit">退出</string>
-    <string name="tv_label_submit_success">答案提交成功</string>
+    <string name="tv_label_submit_success">答案提交成功!</string>
     <string name="tv_label_submit_failure">答案提交失败</string>
     <!-- Exam End Page End -->
 
@@ -83,8 +82,6 @@
     </string-array>
     
     
-    <string name="host">192.168.1.100</string>
-    <string name="port">8080</string>
     <string name="app_file_home">eExam</string>
     <string name="login_file_name">login_result.xml</string>
     <string name="exam_file_name">download_exam.xml</string>

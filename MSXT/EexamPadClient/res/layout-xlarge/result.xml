@@ -15,28 +15,26 @@
   	<TextView 
   			android:layout_width="fill_parent" 
   			android:layout_height="wrap_content"
-  			android:layout_marginTop="20dp"
-  			android:layout_marginLeft="20dp" 
-  			android:layout_marginRight="20dp" 			
+  			android:layout_marginTop="100dp"
+  			android:layout_marginLeft="50dp" 
+  			android:layout_marginRight="50dp" 			
   			android:textSize="22sp"
   			android:textColor="#000000"
-  			android:background="@drawable/style_examlist_tv_label"
   			android:text="@string/tv_label_submit_success">
   	</TextView>    
   	
       <TableRow
          android:layout_width="fill_parent"
 		 android:layout_height="wrap_content"
-		 android:layout_marginLeft="20dp"
-		 android:layout_marginRight="20dp"
-		 android:layout_marginTop="20dp">
+		 android:layout_marginLeft="50dp"
+		 android:layout_marginRight="50dp"
+		 android:layout_marginTop="50dp">
  		<TextView 
 			android:layout_width="fill_parent" 
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:textSize="22sp"
 			android:textColor="#000000"
-			android:background="@drawable/style_examlist_tv_label"
 			android:text="@string/msg_tv_score">
 		</TextView>
 		<TextView android:id="@+id/scoreTV"
@@ -45,27 +43,23 @@
 			android:layout_weight="1"
 			android:textSize="22sp"
 			android:textColor="#000000"
-			android:background="@drawable/style_examlist_tv_value">
+			android:background="@drawable/common_tv_value">
 		</TextView>          
    	</TableRow>
-   	
-     
 	
 	<TableRow
          android:layout_width="fill_parent"
 		 android:layout_height="wrap_content"
-		 android:layout_marginTop="30dp"
-		 android:layout_marginLeft="20dp"
-		 android:layout_marginRight="20dp"
+		 android:layout_marginTop="100dp"
 		 android:layout_gravity="center_horizontal"
-		 android:gravity="center_horizontal">"
+		 android:gravity="center_horizontal">
 		<Button android:id="@+id/quitBtn"
 			android:layout_width="300dp" 
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal"
 			android:textSize="22sp"
 			android:textColor="#000000"
-			android:background="@drawable/btn_sys"
+			android:background="@drawable/common_button"
 			android:text="@string/msg_btn_quit">
 		</Button>          
    	</TableRow>

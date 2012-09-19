@@ -94,7 +94,7 @@ public class SettingActivity extends BaseActivity {
         	dbUtil.deleteAllAnswers();
         	dbUtil.close();
         	
-        	ShowDialog("History is cleared!");	
+        	ShowDialog(mContext.getResources().getString(R.string.msg_login_server));	
         }  
     };   
     

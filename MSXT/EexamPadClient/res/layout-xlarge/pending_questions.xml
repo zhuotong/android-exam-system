@@ -29,17 +29,6 @@
 		    <include layout="@layout/exam_footer" /> 
 		</RelativeLayout>
 				   
-<!-- 		<ListView
-	     	android:id="@+id/lvChoices"
-	     	android:layout_width="fill_parent"
-	     	android:layout_height="fill_parent" 
-	     	android:layout_below="@id/listHeader"
-	  		android:layout_above="@id/listFooter"
-	  		android:layout_marginLeft="2dp"
-	  		android:layout_marginRight="2dp"
-	  		android:background="#000000"
-	  		/> -->
-		
 		<GridView android:id="@+id/gridview"
 		    android:layout_width="fill_parent" 
 		    android:layout_height="fill_parent"

@@ -108,7 +108,7 @@ public class PendQuestions extends BaseQuestion {
 		});
 		
 		 //set catalog bar(Right) 
-		pendQueNumber.setText("Pending("+Integer.valueOf(pendQuestions.size())+")");
+		pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_waiting)+"("+Integer.valueOf(pendQuestions.size())+")");
 		pendQueNumber.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
