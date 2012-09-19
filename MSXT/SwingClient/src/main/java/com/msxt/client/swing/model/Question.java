@@ -36,6 +36,10 @@ public class Question {
         shortDescription = gerQuestion.getName() + " " + gerQuestion.getScore() + "分";
     }
     
+    public boolean isFinished(){
+    	return state == State.FINISHED;
+    }
+    
     public String getName() {
         return gerQuestion.getName();
     }

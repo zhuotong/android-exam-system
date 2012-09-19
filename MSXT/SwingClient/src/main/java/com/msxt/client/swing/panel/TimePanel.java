@@ -9,8 +9,15 @@ import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
+import org.jdesktop.application.Application;
+import org.jdesktop.application.ResourceMap;
+import org.jdesktop.application.SingleFrameApplication;
+
+import com.msxt.client.swing.launcher.ExamLauncher;
 
 /**
  * 
@@ -18,8 +25,9 @@ import javax.swing.Timer;
  *
  */
 public class TimePanel extends JPanel {
-
 	private static final long serialVersionUID = 1L;
+	
+	private ResourceMap resourceMap = Application.getInstance().getContext().getResourceMap();
 	private int time;
 	private int usedTime = 0;
 	private Timer timer;
@@ -47,8 +55,13 @@ public class TimePanel extends JPanel {
 				usedTime++;
 				setToolTipText( "Total Time: " + time + "minutes; Used: "+ usedTime +" minutes" );
 				repaint();
-				if( usedTime==time )
+				if( (time-usedTime)==5 ) {
+					JOptionPane.showMessageDialog( ((SingleFrameApplication)Application.getInstance()).getMainFrame(), resourceMap.getString("submit.auto.note", 5));
+				}
+				if( usedTime==time ) {
 					timer.stop();
+					((ExamLauncher)Application.getInstance()).doSubmit();
+				}	
 			}
 		});
 		timer.start();

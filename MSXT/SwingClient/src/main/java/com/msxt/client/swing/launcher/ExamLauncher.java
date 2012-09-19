@@ -1,9 +1,14 @@
 package com.msxt.client.swing.launcher;
 
 import com.msxt.client.model.Examination;
+import com.msxt.client.server.ServerProxy;
+import com.msxt.client.server.ServerProxy.Result;
+import com.msxt.client.swing.component.QuestionButton;
 import com.msxt.client.swing.model.ExamBuildContext;
+import com.msxt.client.swing.model.Question;
 import com.msxt.client.swing.panel.ExamPanel;
 import com.msxt.client.swing.panel.LoginPanel;
+import com.msxt.client.swing.panel.ProcessingNotePanel;
 import com.msxt.client.swing.panel.QuestionSelectorPanel;
 import com.msxt.client.swing.panel.RoundedPanel;
 import com.msxt.client.swing.panel.SelectExamPanel;
@@ -14,6 +19,9 @@ import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.View;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -22,10 +30,17 @@ import java.awt.Frame;
 import java.awt.Window;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 import javax.swing.JFrame;
@@ -44,13 +59,15 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
  *
  * @author Felix
  */
 public class ExamLauncher extends SingleFrameApplication  {
-    static final Logger logger = Logger.getLogger(ExamLauncher.class.getName());
+    private static final Logger logger = Logger.getLogger(ExamLauncher.class.getName());
     
     private static final ServiceLoader<LookAndFeel> LOOK_AND_FEEL_LOADER = ServiceLoader.load(LookAndFeel.class); 
     
@@ -82,16 +99,6 @@ public class ExamLauncher extends SingleFrameApplication  {
         if (System.getProperty("os.name").equals("Mac OS X")) {
             System.setProperty("apple.laf.useScreenMenuBar", "true"); 
         }
-        
-        // temporary workaround for problem with Nimbus classname
-        UIManager.LookAndFeelInfo lafInfo[] = UIManager.getInstalledLookAndFeels();
-        for(int i = 0; i < lafInfo.length; i++) {
-            if (lafInfo[i].getName().equals("Nimbus")) {
-                lafInfo[i] = new UIManager.LookAndFeelInfo("Nimbus", "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-                break;
-            }
-        }
-        UIManager.setInstalledLookAndFeels(lafInfo);
         UIManager.put("swing.boldMetal", Boolean.FALSE);
     }
     
@@ -107,25 +114,25 @@ public class ExamLauncher extends SingleFrameApplication  {
         return UIManager.getLookAndFeel().getName().equals("Nimbus");
     }
     
-    private ResourceMap resourceMap;
-    
-
     // GUI components
     private JPanel mainPanel;
     private QuestionSelectorPanel questionSelectorPanel;
     private JPanel examContainer;
     private ButtonGroup lookAndFeelRadioGroup;
-    
     private SelectExamPanel selectExamPanel;
+    private JFrame mainFrame;
     
     // Properties
     private String lookAndFeel;
+    private ResourceMap resourceMap;
+    private Examination currentExam;
     
     @Override
     protected void initialize(String args[]) {        
         try {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (Exception ex) {
+        	logger.log( Level.SEVERE, ex.getMessage(), ex);
         }
         resourceMap = getContext().getResourceMap();
         
@@ -147,7 +154,7 @@ public class ExamLauncher extends SingleFrameApplication  {
         View view = getMainView();
         view.setMenuBar( createMenuBar() );
 
-        JFrame mainFrame = getMainFrame();
+        mainFrame = getMainFrame();
         mainFrame.setIconImage( resourceMap.getImageIcon("Application.icon").getImage() );
         mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         mainFrame.setResizable(false);     //不能改变大小
@@ -157,12 +164,19 @@ public class ExamLauncher extends SingleFrameApplication  {
         lp.showDialog( mainFrame );
         if( lp.isLoginSuccess() ) {
         	selectExamPanel = new SelectExamPanel( lp.getLoginSuccessResult() );
-        	Examination exam = selectExamPanel.selectExamination( mainFrame );
-        	createMainPanel( exam );
+        	doSelectExam();
         } else {
         	System.exit( 0 );
         }
     } 
+    
+    private void doSelectExam(){
+    	currentExam = selectExamPanel.selectExamination( mainFrame );
+    	if( currentExam == null )
+    		System.exit( 0 );
+    	else
+    		createMainPanel( currentExam );
+    }
     
     private void configureDefaults() {
         
@@ -176,7 +190,7 @@ public class ExamLauncher extends SingleFrameApplication  {
         UIManager.put(CONTROL_DARK_SHADOW_KEY,       Utilities.deriveColorHSB(controlColor, 0, 0, -0.32f));
         
         // Calculate gradient colors for title panels
-        Color titleColor = UIManager.getColor(usingNimbus()? "nimbusBase" : "activeCaption");
+        Color titleColor = UIManager.getColor( usingNimbus()? "nimbusBase" : "activeCaption" );
 
         // Some LAFs (e.g. GTK) don't contain "activeCaption" 
         if (titleColor == null) {
@@ -288,49 +302,16 @@ public class ExamLauncher extends SingleFrameApplication  {
         return lafItem;
     }
     
-    private javax.swing.Action getAction(String actionName) {
-        return getContext().getActionMap().get(actionName);
-    }
-       
-    // For displaying error messages to user
-    protected void displayErrorMessage(String message, Exception ex) {
-        JPanel messagePanel = new JPanel(new BorderLayout());       
-        JLabel label = new JLabel(message);
-        messagePanel.add(label);
-        if (ex != null) {
-            RoundedPanel panel = new RoundedPanel(new BorderLayout());
-            panel.setBorder(new RoundedBorder());
-            
-            // remind(aim): provide way to allow user to see exception only if desired
-            StringWriter writer = new StringWriter();
-            ex.printStackTrace(new PrintWriter(writer));
-            JTextArea exceptionText = new JTextArea();
-            exceptionText.setText("Cause of error:\n" + writer.getBuffer().toString());
-            exceptionText.setBorder( new RoundedBorder() );
-            exceptionText.setOpaque( false );
-            exceptionText.setBackground( Utilities.deriveColorHSB(UIManager.getColor("Panel.background"), 0, 0, -.2f) );
-            JScrollPane scrollpane = new JScrollPane( exceptionText );
-            scrollpane.setBorder( EMPTY_BORDER );
-            scrollpane.setPreferredSize( new Dimension(600, 240) );
-            panel.add(scrollpane);
-            messagePanel.add(panel, BorderLayout.SOUTH);            
-        }
-        JOptionPane.showMessageDialog(getMainFrame(), messagePanel, 
-                resourceMap.getString("error.title"),
-                JOptionPane.ERROR_MESSAGE);
-                
-    }
-          
     public void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException,
         InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
         
         String oldLookAndFeel = this.lookAndFeel;
         
-		if (oldLookAndFeel != lookAndFeel) {
-	            UIManager.setLookAndFeel(lookAndFeel);
-	            this.lookAndFeel = lookAndFeel;
-	            updateLookAndFeel();
-	            firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);                     
+		if ( !oldLookAndFeel.equals(lookAndFeel) ) {
+            UIManager.setLookAndFeel(lookAndFeel);
+            this.lookAndFeel = lookAndFeel;
+            updateLookAndFeel();
+            firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);                     
 		}
     }
     
@@ -341,21 +322,119 @@ public class ExamLauncher extends SingleFrameApplication  {
         try {
             setLookAndFeel(lookAndFeelName);
         } catch (Exception ex) {
-            displayErrorMessage(resourceMap.getString("error.unableToChangeLookAndFeel") +
-                    "to "+lookAndFeelName, ex);
+            displayErrorMessage(resourceMap.getString("error.unableToChangeLookAndFeel") + "to "+lookAndFeelName, ex);
         }
+    }
+    
+    @Action(name="exam.submit")
+    public void submit(){
+    	Enumeration<AbstractButton> buttonEnum = questionSelectorPanel.getButtonGroup().getElements();
+    	
+    	while( buttonEnum.hasMoreElements() ) {
+    		QuestionButton qb = (QuestionButton)buttonEnum.nextElement();
+    		if( !qb.getQuestion().isFinished() ) {
+    			int i = JOptionPane.showConfirmDialog( getMainFrame(), 
+    					                       resourceMap.getString("submit.unfinished.note"),
+    					                       resourceMap.getString("submit.confirm"),
+    					                       JOptionPane.YES_NO_OPTION);
+    			if( i == 1 )
+    				return;
+    			else
+    				break;
+    		}
+    	}
+    	doSubmit();
     }
     
     public String getLookAndFeel() {
         return lookAndFeel;
     }
 
+    private void displayErrorMessage(String title, String message) {
+        JPanel messagePanel = new JPanel( new BorderLayout() );       
+        JLabel label = new JLabel(title);
+        messagePanel.add( label );
+       
+        RoundedPanel panel = new RoundedPanel( new BorderLayout() );
+        panel.setBorder(new RoundedBorder());
+       
+        JTextArea exceptionText = new JTextArea();
+        exceptionText.setText("Cause of error:\n" + message);
+        exceptionText.setBorder( new RoundedBorder() );
+        exceptionText.setOpaque( false );
+        exceptionText.setBackground( Utilities.deriveColorHSB(UIManager.getColor("Panel.background"), 0, 0, -.2f) );
+        JScrollPane scrollpane = new JScrollPane( exceptionText );
+        scrollpane.setBorder( EMPTY_BORDER );
+        scrollpane.setPreferredSize( new Dimension(600, 240) );
+        panel.add(scrollpane);
+        
+        messagePanel.add( panel, BorderLayout.SOUTH );            
+        
+        JOptionPane.showMessageDialog( getMainFrame(), messagePanel, resourceMap.getString("error.title"), JOptionPane.ERROR_MESSAGE ); 
+    }
+    
+    // For displaying error messages to user
+    private void displayErrorMessage(String title, Exception ex) {
+        StringWriter writer = new StringWriter();
+        ex.printStackTrace(new PrintWriter(writer));
+        String msg = writer.getBuffer().toString();
+        displayErrorMessage( title, msg );
+    }
+    
     private void updateLookAndFeel() {
         Window windows[] = Frame.getWindows();
-
         for(Window window : windows) {
             SwingUtilities.updateComponentTreeUI(window);
           //SwingUtilities.updateComponentTreeUI(examContainer);
         }
-    }             
+    }
+    
+    public void doSubmit(){
+    	ProcessingNotePanel pnp = new ProcessingNotePanel( resourceMap.getString("submit.processing") );
+    	pnp.showProcessing( getMainFrame() );
+    	
+    	Enumeration<AbstractButton> buttonEnum = questionSelectorPanel.getButtonGroup().getElements();
+    	Map<String, String> answerMap = new HashMap<String, String>();
+    	while( buttonEnum.hasMoreElements() ) {
+    		QuestionButton qb = (QuestionButton)buttonEnum.nextElement();
+    		Question q = qb.getQuestion();
+    		if( q.isFinished() ) {
+    			String id = qb.getQuestion().getOriginalQuestion().getId();
+    			String answer = qb.getQuestion().getQuestionPanel().getAnswer();
+    			answerMap.put(id, answer);
+    		}
+    	}
+    	
+    	ServerProxy sp = ServerProxy.Factroy.getCurrrentInstance();
+    	Result r = sp.submitAnswer( currentExam.getId(), answerMap );
+    	
+    	pnp.cancelShowProcessing();
+    	
+    	if( r.isSuccess() ) {
+    		try{
+	    		DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		        ByteArrayInputStream is = new ByteArrayInputStream( r.getSuccessMessage().getBytes() );
+		        Document doc = db.parse( is );
+		        is.close();
+		        Element root = doc.getDocumentElement();
+		        String status = root.getElementsByTagName("status").item(0).getTextContent();
+		        if( status.equals( "success" ) ) {
+		        	String score = root.getElementsByTagName("score").item(0).getTextContent();
+		        	JOptionPane.showMessageDialog( getMainFrame(), resourceMap.getString("submit.success", score) );
+		        	doSelectExam();
+		        } else {
+		        	String desc = root.getElementsByTagName("desc").item(0).getTextContent();
+		        	displayErrorMessage("Submit failed", desc );
+		        }
+    		} catch (Exception e){
+    			displayErrorMessage("Process Response Failed", e );
+    		}
+    	} else {
+    		displayErrorMessage("Submit failed", r.getErrorMessage() );
+    	}
+    }
+    
+    private javax.swing.Action getAction(String actionName) {
+        return getContext().getActionMap().get(actionName);
+    }
 }

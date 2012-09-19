@@ -56,7 +56,7 @@ public class QuestionSelectorPanel extends JPanel {
     private final List<CollapsiblePanel> collapsePanels = new ArrayList<CollapsiblePanel>();
     private Icon expandedIcon;
     private Icon collapsedIcon;
-   
+    
     private ButtonGroup group;
     private int buttonHeight = 0;
     
@@ -74,6 +74,10 @@ public class QuestionSelectorPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
         
         applyDefaults();
+    }
+    
+    public ButtonGroup getButtonGroup(){
+    	return group;
     }
     
     protected JComponent createTitleArea(ExamBuildContext ebc) {

@@ -21,6 +21,8 @@ import javax.swing.SwingUtilities;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.jdesktop.application.Application;
+import org.jdesktop.application.ResourceMap;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -36,6 +38,7 @@ import com.msxt.client.server.ServerProxy.Result;
  */
 public class SelectExamPanel extends JPanel {
 	private static final long serialVersionUID = 7525308717614863623L;
+	private ResourceMap resourceMap = Application.getInstance().getContext().getResourceMap();
 	
 	private LoginSuccessResult lsr;
 	
@@ -43,8 +46,8 @@ public class SelectExamPanel extends JPanel {
     private JComboBox examCB;
     private javax.swing.JScrollPane jScrollPane1;
     private JTextArea desc;
-	private Examination exam = null; 
-    
+	private Examination currentExam = null; 
+	
     private JDialog dialog = null;
     /**
      * Creates new form SelectExam
@@ -58,7 +61,7 @@ public class SelectExamPanel extends JPanel {
         jScrollPane1 = new JScrollPane();
         desc = new JTextArea();
         examCB = new JComboBox();
-        start = new JButton("开始");
+        start = new JButton( resourceMap.getString("exam.start") );
 
         desc.setColumns(50);
         desc.setRows(10);
@@ -93,61 +96,45 @@ public class SelectExamPanel extends JPanel {
 	    v.addGroup( v1 ).addComponent( jScrollPane1 );
 	    
 	    layout.setVerticalGroup( v );
-	    
-//        layout.setHorizontalGroup(
-//            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-//            .addGroup(layout.createSequentialGroup()
-//                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-//                    .addGroup(layout.createSequentialGroup()
-//                        .addGap(59, 59, 59)
-//                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-//                            .addComponent(jScrollPane1)
-//                            .addComponent(examCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-//                    .addGroup(layout.createSequentialGroup()
-//                        .addGap(150, 150, 150)
-//                        .addComponent(start)))
-//                .addContainerGap(79, Short.MAX_VALUE))
-//        );
-//        layout.setVerticalGroup(
-//            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-//            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-//                .addContainerGap(53, Short.MAX_VALUE)
-//                .addComponent(examCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-//                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-//                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-//                .addGap(18, 18, 18)
-//                .addComponent(start)
-//                .addGap(80, 80, 80))
-//        );
     }
     
     public Examination selectExamination( Frame parent ) {
-         // locate the owner frame
-         Frame owner;
-         if (parent instanceof Frame)
-            owner = (Frame) parent;
-         else 
-            owner = (Frame) SwingUtilities.getAncestorOfClass(Frame.class, parent);
-
-         // if first time, or if owner has changed, make new dialog
-         if ( dialog == null || dialog.getOwner() != owner ) {      
-            dialog = new JDialog(owner, true);
-            dialog.add(this);
-            dialog.pack();
-         }
-         // set title and show dialog
-         dialog.setTitle( "选择试卷" );
-         dialog.setLocationRelativeTo( null );
-         dialog.setVisible(true);  
-         while( true ) {
-        	 if( exam==null ) 
-        		 dialog.setVisible(true);
-        	 else
-        		 break;
-         }
-         return exam;
-	}
+    	DefaultComboBoxModel model = (DefaultComboBoxModel)examCB.getModel();
+    	
+    	if( currentExam != null ) {
+        	model.removeElement( model.getSelectedItem() );
+        	currentExam = null;
+        }
         
+        if( model.getSize()==0 ) 
+        	return null;
+        
+    	// locate the owner frame
+		Frame owner;
+		if (parent instanceof Frame)
+		   owner = (Frame) parent;
+		else 
+		   owner = (Frame) SwingUtilities.getAncestorOfClass(Frame.class, parent);
+		
+		// if first time, or if owner has changed, make new dialog
+		if ( dialog == null || dialog.getOwner() != owner ) {      
+		   dialog = new JDialog(owner, true);
+		   dialog.add(this);
+		   dialog.pack();
+		}
+		// set title and show dialog
+		dialog.setTitle( resourceMap.getString( "exam.select" ) );
+		dialog.setLocationRelativeTo( null );
+		dialog.setVisible(true);  
+		while( true ) {
+			if( currentExam==null ) 
+				dialog.setVisible(true);
+			else
+				break;
+		}
+		return currentExam;
+	}
+    
     private ComboBoxModel getCBModel(){
     	DefaultComboBoxModel model = new DefaultComboBoxModel();
     	for( LoginSuccessResult.Examination le : lsr.getExaminations() )
@@ -170,14 +157,14 @@ public class SelectExamPanel extends JPanel {
 		        Element root = doc.getDocumentElement();
 		        if( root.getTagName().equals( "error" ) ) {
 		        	String desc = root.getElementsByTagName("desc").item(0).getTextContent();
-		        	JOptionPane.showMessageDialog(this, desc, "登录失败", JOptionPane.ERROR_MESSAGE);
+		        	JOptionPane.showMessageDialog(this, desc, resourceMap.getString( "exam.getexam.failed" ), JOptionPane.ERROR_MESSAGE);
 		        } else {
-		        	exam = Message2ModelTransfer.Factory.getInstance().parseExamination( root );
+		        	currentExam = Message2ModelTransfer.Factory.getInstance().parseExamination( root );
 		        	dialog.setVisible( false );
 		        }
     		} catch (Exception e) {
     			e.printStackTrace();
-    			JOptionPane.showMessageDialog(this, "错误消息格式");
+    			JOptionPane.showMessageDialog(this, resourceMap.getString("error.badmessageformat") );
 			}
     	}
     }
