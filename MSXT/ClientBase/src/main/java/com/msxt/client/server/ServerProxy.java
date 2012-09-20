@@ -21,6 +21,10 @@ public interface ServerProxy {
 		private String errorMessage;
 		private String successMessage;
 		
+		public boolean isSuccess(){
+			return status == STATUS.SUCCESS;
+		}
+		
 		public STATUS getStatus() {
 			return status;
 		}
