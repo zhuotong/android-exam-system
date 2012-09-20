@@ -172,9 +172,10 @@ public class ExamLauncher extends SingleFrameApplication  {
     
     private void doSelectExam(){
     	currentExam = selectExamPanel.selectExamination( mainFrame );
-    	if( currentExam == null )
+    	if( currentExam == null ) {
+    		JOptionPane.showMessageDialog( getMainFrame(), resourceMap.getString("exam.allfinished") );
     		System.exit( 0 );
-    	else
+    	} else
     		createMainPanel( currentExam );
     }
     

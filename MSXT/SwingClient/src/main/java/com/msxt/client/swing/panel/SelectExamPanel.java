@@ -43,7 +43,7 @@ public class SelectExamPanel extends JPanel {
 	private LoginSuccessResult lsr;
 	
 	private JButton start;
-    private JComboBox examCB;
+    private JComboBox<LoginSuccessResult.Examination> examCB;
     private javax.swing.JScrollPane jScrollPane1;
     private JTextArea desc;
 	private Examination currentExam = null; 
@@ -60,7 +60,7 @@ public class SelectExamPanel extends JPanel {
     private void initComponents() {
         jScrollPane1 = new JScrollPane();
         desc = new JTextArea();
-        examCB = new JComboBox();
+        examCB = new JComboBox<LoginSuccessResult.Examination>();
         start = new JButton( resourceMap.getString("exam.start") );
 
         desc.setColumns(50);
@@ -99,7 +99,7 @@ public class SelectExamPanel extends JPanel {
     }
     
     public Examination selectExamination( Frame parent ) {
-    	DefaultComboBoxModel model = (DefaultComboBoxModel)examCB.getModel();
+    	DefaultComboBoxModel<LoginSuccessResult.Examination> model = (DefaultComboBoxModel<LoginSuccessResult.Examination>)examCB.getModel();
     	
     	if( currentExam != null ) {
         	model.removeElement( model.getSelectedItem() );
@@ -135,8 +135,8 @@ public class SelectExamPanel extends JPanel {
 		return currentExam;
 	}
     
-    private ComboBoxModel getCBModel(){
-    	DefaultComboBoxModel model = new DefaultComboBoxModel();
+    private ComboBoxModel<LoginSuccessResult.Examination> getCBModel(){
+    	DefaultComboBoxModel<LoginSuccessResult.Examination> model = new DefaultComboBoxModel<LoginSuccessResult.Examination>();
     	for( LoginSuccessResult.Examination le : lsr.getExaminations() )
     		model.addElement( le );
     	return model;
