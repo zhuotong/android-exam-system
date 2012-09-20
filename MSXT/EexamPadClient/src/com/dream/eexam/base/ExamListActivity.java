@@ -183,7 +183,14 @@ public class ExamListActivity extends BaseActivity {
 			if(STATUS.SUCCESS.equals(examResult.getStatus())){
 				
 				Examination exam = DataUtil.getExam(examResult);
-				Question fQuestion = DataUtil.getQuestionByCidQid(exam, 1, 1);
+				int ccIndex = 1;
+				int cqIndex = 1;
+				if(getccIndex()>0 && getcqIndex()>0){
+					ccIndex = getccIndex();
+					cqIndex = getcqIndex();
+				}
+				
+				Question fQuestion = DataUtil.getQuestionByCidQid(exam, ccIndex, cqIndex);
 				if(fQuestion==null){
 					ShowDialog("Can not get question!");
 					this.cancel(true);
@@ -194,8 +201,8 @@ public class ExamListActivity extends BaseActivity {
 	
 				//move question
 				Intent intent = new Intent();
-				intent.putExtra("ccIndex", String.valueOf(getccIndex()));
-				intent.putExtra("cqIndex", String.valueOf(getcqIndex()));
+				intent.putExtra("ccIndex", String.valueOf(ccIndex));
+				intent.putExtra("cqIndex", String.valueOf(cqIndex));
 				intent.putExtra("questionType",fQuestionType);
 				
 				if(questionTypes[0].equals(fQuestionType)){

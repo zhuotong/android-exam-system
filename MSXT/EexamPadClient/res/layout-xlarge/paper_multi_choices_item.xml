@@ -2,26 +2,29 @@
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
-  android:layout_height="fill_parent"
+  android:layout_height="wrap_content"
   android:descendantFocusability="blocksDescendants">
 
 	  <CheckBox
 	     android:id="@+id/list.select"
 	     android:layout_width="wrap_content"
-	     android:layout_height="wrap_content"/>
+	     android:layout_height="wrap_content"
+	     android:layout_marginLeft="4dp"/>
+	     
 	  <TextView
 	     android:id="@+id/list.index"
-	     android:layout_width="wrap_content"
+	     android:layout_width="50dp"
 	     android:layout_height="wrap_content"
 	     android:textSize="18sp"
-	     android:textColor="#FFFFFF"
-	     android:layout_weight="1"/>
+	     android:textColor="#FFFFFF"/>
+	     
 	  <TextView
 	     android:id="@+id/list.choiceDesc"
 	     android:layout_width="wrap_content"
 	     android:layout_height="wrap_content"
+	     android:singleLine="false"
 	     android:layout_marginLeft="3dp"
 	     android:textSize="18sp"
 	     android:textColor="#FFFFFF"
-	     android:layout_weight="4"/>
+	     android:background="@drawable/tv_layout_question"/>
 </LinearLayout>

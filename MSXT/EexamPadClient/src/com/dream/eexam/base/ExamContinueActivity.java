@@ -93,7 +93,14 @@ public class ExamContinueActivity extends BaseActivity {
 		continueBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 	        	
-				Question fQuestion = DataUtil.getQuestionByCidQid(exam, 1, 1);
+				int ccIndex = 1;
+				int cqIndex = 1;
+				if(getccIndex()>0 && getcqIndex()>0){
+					ccIndex = getccIndex();
+					cqIndex = getcqIndex();
+				}
+				
+				Question fQuestion = DataUtil.getQuestionByCidQid(exam, ccIndex, cqIndex);
 				if(fQuestion==null){
 					ShowDialog("Can not get question!");
 					return;
@@ -103,8 +110,8 @@ public class ExamContinueActivity extends BaseActivity {
 	
 				//move question
 				Intent intent = new Intent();
-				intent.putExtra("ccIndex", String.valueOf(getccIndex()));
-				intent.putExtra("cqIndex", String.valueOf(getcqIndex()));
+				intent.putExtra("ccIndex", String.valueOf(ccIndex));
+				intent.putExtra("cqIndex", String.valueOf(cqIndex));
 				intent.putExtra("questionType",fQuestionType);
 				
 				if(questionTypes[0].equals(fQuestionType)){

@@ -9,10 +9,6 @@
     <include
 	       android:id="@+id/baseHeader"
 	       layout="@layout/exam_header" /> 
-
-<!--     <include
-       	   android:id="@+id/catalogNav"
-           layout="@layout/catalog_nav" /> -->
     	       
 	<RelativeLayout 
 	    android:orientation="vertical"
@@ -53,8 +49,6 @@
 	     	android:layout_height="fill_parent" 
 	     	android:layout_below="@id/listHeader"
 	  		android:layout_above="@id/listFooter"
-	  		android:layout_marginLeft="2dp"
-	  		android:layout_marginRight="2dp"
 	  		android:background="#000000"
 	  		/>
 	</RelativeLayout>
