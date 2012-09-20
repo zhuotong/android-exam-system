@@ -100,42 +100,6 @@ public class BaseActivity extends Activity {
 	}
 	
 	/**
-	 * 
-	 * @param sharedPreferences
-	 * @return
-	 */
-/*	public QuestionProgress getQuestionProgress(SharedPreferences sharedPreferences){
-		Integer currentQueIndex = sharedPreferences.getInt("currentQueIndex", 0);
-		Integer quesCount = sharedPreferences.getInt("quesCount", 0);
-		String completedQueIdsString = sharedPreferences.getString("completedQueIdsString", null);
-		
-		return new QuestionProgress(currentQueIndex,quesCount,completedQueIdsString);
-	}
-*/
-	/**
-	 * 
-	 * @param sharedPreferences
-	 * @param qp
-	 */
-	/*public void saveQuestionProgress(SharedPreferences sharedPreferences,QuestionProgress qp){
-		SharedPreferences.Editor editor = sharedPreferences.edit();
-		Integer currentQueIndex = qp.getCurrentQueIndex();
-		if(currentQueIndex!=null){
-			editor.putInt("currentQueIndex", currentQueIndex);  
-		}
-		Integer quesCount = qp.getQuesCount();
-		if(currentQueIndex!=null){
-			editor.putInt("quesCount", quesCount);  
-		}
-		String completedQueIdsString = qp.getCompletedQueIdsString();
-		if(currentQueIndex!=null){
-			editor.putString("completedQueIdsString", completedQueIdsString);  
-		}
-	
-		editor.commit();
-	}*/
-	
-	/**
 	 * get question index you last view 
 	 * @return
 	 */
@@ -193,35 +157,6 @@ public class BaseActivity extends Activity {
 	
 	/**
 	 * 
-	 * @param urlString
-	 * @return
-	 */
-	/*public InputStream downloadUrl(String id,String password){
-		Log.i(LOG_TAG,"------downloadUrl()...");
-        HttpURLConnection conn;
-        InputStream stream = null;
-		try {
-			String urlStr = "http://192.168.1.101:8080/msxt/runinterview/loginAction/login?loginName="+id+"&loginPassword="+password;
-			Log.i(LOG_TAG,"URL:"+urlStr);
-			URL url = new URL(urlStr);
-			conn = (HttpURLConnection) url.openConnection();
-	        conn.setReadTimeout(10000  milliseconds );
-	        conn.setConnectTimeout(15000  milliseconds );
-	        conn.setRequestMethod("GET");
-	        conn.setDoInput(true);
-	        
-	        // Starts the query
-	        conn.connect();
-	        stream = conn.getInputStream();
-		} catch (IOException e) {
-			Log.i(LOG_TAG,"IOException:" + e.getMessage());
-		}
-
-        return stream;
-    }*/
-	
-	/**
-	 * 
 	 * @param path
 	 * @param fileName
 	 * @param content
@@ -252,7 +187,7 @@ public class BaseActivity extends Activity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 	    if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
 	    	if((System.currentTimeMillis()-exitTime) > 2000){
-	    		Toast.makeText(getApplicationContext(), "Click again to quit", Toast.LENGTH_SHORT).show();                                
+	    		Toast.makeText(getApplicationContext(), this.getResources().getString(R.string.msg_submiting_warning), Toast.LENGTH_SHORT).show();                                
 	    		exitTime = System.currentTimeMillis();
 	    	}else{
 			    finish();

@@ -75,7 +75,7 @@ public class PendQuestions extends BaseQuestion {
 				 
 				if (waitQuestions> 0) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(PendQuestions.this);
-					builder.setMessage(String.valueOf(waitQuestions) + " question(s) are not answered, still submit?")
+					builder.setMessage(String.valueOf(waitQuestions) + " " + mContext.getResources().getString(R.string.msg_submiting_warning))
 							.setCancelable(false)
 							.setPositiveButton("Yes",
 									new DialogInterface.OnClickListener() {

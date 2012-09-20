@@ -130,7 +130,6 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
     
     public void loadPendingQuestions(DatabaseUtil dbUtil){
     	//load pending questions
-//    	dbUtil.open();
     	Cursor cursor = null;
 		for(Catalog catalog: cataLogs){
 			List<Question> questions = catalog.getQuestions();
@@ -143,7 +142,6 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 				pendQuestions.add(question);
 			}
 		}
-//		cursor.close();
     }
     
     public void loadCatalogInfos(DatabaseUtil dbUtil){
@@ -168,7 +166,6 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 					DataUtil.getFirstQuestionIndexOfCatalog(exam, catalog.getIndex()),totalQuestions,answeredQuetions));
 			catalogCursor.close();
 		}
-//		catalogCursor.close();
     }
 	
     public void loadAnswerHistory(int cid,int qid,DatabaseUtil dbUtil){
@@ -340,7 +337,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		//set pending questions
 		pendQuestions.clear();
 		loadPendingQuestions(dbUtil);
-		pendQueNumber.setText("Pending("+Integer.valueOf(pendQuestions.size())+")");
+		pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_waiting)+"("+Integer.valueOf(pendQuestions.size())+")");
 		
 		//set catalog list
 		catalogInfos.clear();
@@ -417,17 +414,12 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
     public void clearAnswer(DatabaseUtil dbUtil,Integer cid,Integer qid){
     	Log.i(LOG_TAG, "clearAnswer()...");
     	Log.i(LOG_TAG, "(cid="+String.valueOf(cid)+",qid="+String.valueOf(qid)+")");
-//    	DatabaseUtil dbUtil = new DatabaseUtil(this);
-//    	dbUtil.open();
     	dbUtil.deleteAnswer(cid,qid);
-//    	dbUtil.close();
     	Log.i(LOG_TAG, "end clearAnswer().");
     }
 	
 	public void saveAnswer(DatabaseUtil dbUtil,Integer cid,Integer qid,String qidStr,String answers){
     	Log.i(LOG_TAG, "saveAnswer()...");
-//    	DatabaseUtil dbUtil = new DatabaseUtil(context);
-//    	dbUtil.open();
     	Cursor cursor = dbUtil.fetchAnswer(cid,qid);
     	if(cursor != null && cursor.moveToNext()){
     		Log.i(LOG_TAG, "updateAnswer("+cid+","+qid+","+answers+")");
@@ -436,14 +428,11 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
     		Log.i(LOG_TAG, "createAnswer("+cid+","+qid+","+answers+")");
     		dbUtil.createAnswer(cid,qid,qidStr,answers);
     	}
-//    	dbUtil.close();
     	Log.i(LOG_TAG, "saveAnswer().");
     }
 
 	public void submitAnswer(){
-//		getAllAnswers();
 		Log.i(LOG_TAG, "submitAnswer()...");
-//		ShowDialog("Submit Success!");
 	}
 	
 	public void saveExamStatus(){

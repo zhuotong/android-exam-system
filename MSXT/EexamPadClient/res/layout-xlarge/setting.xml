@@ -21,7 +21,7 @@
 			android:layout_width="fill_parent" 
 			android:layout_height="wrap_content"
 			android:textSize="22sp"
-			android:textColor="#FF0000"
+			android:textColor="@color/failure_message_color"
 			android:text="@string/label_tv_host"
 			android:visibility="invisible">
 		</TextView>

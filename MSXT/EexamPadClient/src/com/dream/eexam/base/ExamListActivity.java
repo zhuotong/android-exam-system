@@ -119,7 +119,6 @@ public class ExamListActivity extends BaseActivity {
 		examDesc = (TextView) this.findViewById(R.id.examDesc);
 		
 		startBtn = (Button) findViewById(R.id.startBtn);
-		startBtn.setText("Start");
 		startBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				Log.i(LOG_TAG,"onClick()...");
@@ -131,21 +130,7 @@ public class ExamListActivity extends BaseActivity {
 
 			}			
 		});
-		
-/*		clearBtn = (Button) findViewById(R.id.clearBtn);
-		clearBtn.setText("Clear History");
-		clearBtn.setOnClickListener(new Button.OnClickListener() {
-			public void onClick(View v) {
-				Log.i(LOG_TAG,"onClick()...");
 
-				DatabaseUtil dbUtil = new DatabaseUtil(mContext);
-				dbUtil.open();
-				dbUtil.deleteAllAnswers();
-				dbUtil.close();
-				
-				ShowDialog("History is cleared!");
-			}			
-		});*/
 	}
 	
 	class SpinnerSelectedListener implements OnItemSelectedListener{
@@ -175,7 +160,8 @@ public class ExamListActivity extends BaseActivity {
 		@Override
 		protected void onPreExecute() {
 			Log.i(LOG_TAG, "onPreExecute() called");
-			progressDialog = ProgressDialog.show(ExamListActivity.this, null, "Download Exam data...", true, false); 
+			String displayMessage = mContext.getResources().getString(R.string.msg_download_exam)+"...";
+			progressDialog = ProgressDialog.show(ExamListActivity.this, null,displayMessage, true, false); 
 		}
 		
 	    @Override

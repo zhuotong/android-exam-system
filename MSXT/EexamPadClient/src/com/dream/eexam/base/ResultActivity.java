@@ -2,17 +2,24 @@ package com.dream.eexam.base;
 
 import com.dream.eexam.util.ActivityStackControlUtil;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ResultActivity extends BaseActivity {
 
 	public final static String LOG_TAG = "ResultActivity";
 	
-	TextView scoreTV = null;
+    Context mContext;
+	
+    ImageView imgHome = null;
+    TextView scoreTV = null;
 	Button quitBtn = null;
 	
 	/** Called when the activity is first created. */
@@ -21,11 +28,16 @@ public class ResultActivity extends BaseActivity {
     	Log.i(LOG_TAG,"onCreate...");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.result);
+        
+        mContext = getApplicationContext();
 		
 		Bundle bundle = this.getIntent().getExtras();
 		String score  = bundle.getString("score");
 		
-        scoreTV = (TextView) this.findViewById(R.id.scoreTV);
+		imgHome = (ImageView) findViewById(R.id.imgHome);
+		imgHome.setOnClickListener(goHomeListener);
+		
+        scoreTV = (TextView) this.findViewById(R.id.yourScoreTV);
         scoreTV.setText(score);
         
 		quitBtn = (Button) this.findViewById(R.id.quitBtn);
@@ -36,11 +48,34 @@ public class ResultActivity extends BaseActivity {
     View.OnClickListener quitListener = new View.OnClickListener() {  
         @Override  
         public void onClick(View v) { 
-		    finish();
-		    ActivityStackControlUtil.finishProgram();
-		    System.exit(0);
+		    
+			AlertDialog.Builder builder = new AlertDialog.Builder(ResultActivity.this);
+			builder.setMessage(mContext.getResources().getString(R.string.warning_quit_eexam))
+					.setCancelable(false)
+					.setPositiveButton(mContext.getResources().getString(R.string.warning_quit_eexam_yes),
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,int id) {
+								    finish();
+								    ActivityStackControlUtil.finishProgram();
+								    System.exit(0);
+								}
+							})
+					.setNegativeButton(mContext.getResources().getString(R.string.warning_quit_eexam_cancel),
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,int id) {
+									dialog.cancel();
+								}
+							});
+			builder.show();
         }  
     };
+    
+    View.OnClickListener goHomeListener = new View.OnClickListener(){
+		@Override
+		public void onClick(View v) {
+			goHome(mContext);
+		}
+	};
     
     
     @Override

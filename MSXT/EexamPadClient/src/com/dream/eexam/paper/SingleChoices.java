@@ -273,7 +273,7 @@ public class SingleChoices extends BaseQuestion {
 		    	int waitQuestions = examQuestionSum - examAnsweredQuestionSum;
 				if (waitQuestions> 0) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(SingleChoices.this);
-					builder.setMessage(String.valueOf(waitQuestions) + " question(s) are not answered, still submit?")
+					builder.setMessage(String.valueOf(waitQuestions) + " " + mContext.getResources().getString(R.string.msg_submiting_warning))
 							.setCancelable(false)
 							.setPositiveButton("Yes",
 									new DialogInterface.OnClickListener() {
@@ -481,7 +481,9 @@ public class SingleChoices extends BaseQuestion {
     	@Override
     	protected void onPreExecute() {
     		Log.i(LOG_TAG, "onPreExecute() called");
-    		progressDialog = ProgressDialog.show(SingleChoices.this, null, "Submit...", true, false);
+    		
+    		String displayMessage =  mContext.getResources().getString(R.string.msg_submiting);
+    		progressDialog = ProgressDialog.show(SingleChoices.this, null, displayMessage, true, false);
     		submitTV.setEnabled(false);
     	}
     	

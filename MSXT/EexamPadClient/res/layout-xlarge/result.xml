@@ -13,17 +13,19 @@
         android:layout_gravity="top"/>
 
   	<TextView 
-  			android:layout_width="fill_parent" 
+  			android:layout_width="wrap_content" 
   			android:layout_height="wrap_content"
   			android:layout_marginTop="100dp"
   			android:layout_marginLeft="50dp" 
-  			android:layout_marginRight="50dp" 			
+  			android:layout_marginRight="50dp" 
+  			android:layout_gravity="center_vertical|center_horizontal"
+  			android:gravity="center_vertical|center_horizontal"
   			android:textSize="22sp"
-  			android:textColor="#000000"
+  			android:textColor="@color/success_message_color"
   			android:text="@string/tv_label_submit_success">
   	</TextView>    
-  	
-      <TableRow
+
+  	<TableRow
          android:layout_width="fill_parent"
 		 android:layout_height="wrap_content"
 		 android:layout_marginLeft="50dp"
@@ -35,9 +37,33 @@
 			android:layout_weight="1"
 			android:textSize="22sp"
 			android:textColor="#000000"
-			android:text="@string/msg_tv_score">
+			android:text="@string/label_tv_exam_score">
 		</TextView>
-		<TextView android:id="@+id/scoreTV"
+		<TextView android:id="@+id/examScoreTV"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:background="@drawable/common_tv_value">
+		</TextView>          
+   	</TableRow>
+   		
+      <TableRow
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginLeft="50dp"
+		 android:layout_marginRight="50dp"
+		 android:layout_marginTop="10dp">
+ 		<TextView 
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:text="@string/lavel_tv_your_score">
+		</TextView>
+		<TextView android:id="@+id/yourScoreTV"
 			android:layout_width="fill_parent" 
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
