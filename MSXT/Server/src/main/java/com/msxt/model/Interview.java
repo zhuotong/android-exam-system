@@ -169,8 +169,8 @@ public class Interview {
 	public void setConversationId(String conversationId) {
 		this.conversationId = conversationId;
 	}
-
+	
 	public static enum STATUS{
-		WAITING, DOING, FINISH, ABSENT
+		UNFINISH_WAITING, UNFINISH_ABSENT, GOING, FINISH 
 	}
 }

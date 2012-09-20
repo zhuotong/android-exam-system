@@ -37,18 +37,18 @@ public class LoginAction {
     	Root<Interview> rp = cq.from( Interview.class );
     	cq.select( rp ).where( cb.equal(rp.get(Interview_.loginName), name), cb.equal(rp.get(Interview_.loginPassword), password) );
     	
+    	String des = "Invalid login name or login password";
 		List<Interview> ivs = em.createQuery( cq ).getResultList();
-		boolean isFinish = false;
-		boolean isNotStart = false;
-		boolean isOverdue = false; 
 		if( ivs !=null && ivs.size()>0 ) {
 			Interview iv = ivs.get(0); 
 			
-			if( iv.getStatus().equals( Interview.STATUS.WAITING.name() ) || iv.getStatus().equals( Interview.STATUS.DOING.name() ) ) 
+			if( iv.getStatus().equals( Interview.STATUS.UNFINISH_WAITING.name() ) ) {
 				if( iv.getStart().compareTo( DateUtil.getTodayStart() ) == -1 ) {
-					isOverdue = true;
-				} else if ( iv.getStart().compareTo( DateUtil.getTodayEnd() ) >-1 ) {
-					isNotStart = true;
+					iv.setStatus( Interview.STATUS.UNFINISH_ABSENT.name() );
+					em.persist( iv );
+					des = "Interview is over due";				
+				} else if ( iv.getStart().compareTo( DateUtil.getTodayEnd() ) >-1 ) {//limit to today
+					des = "Interview is not doing on today";
 				} else {
 					String conversation = UUID.randomUUID().toString();
 					StringBuffer sb = new StringBuffer();
@@ -59,20 +59,23 @@ public class LoginAction {
 					sb.append( "<jobtitle>" ).append( iv.getApplyPosition().getName() ).append( "</jobtitle>" );
 					sb.append( "<examinations>" );
 					
-					for( InterviewExamination exam : iv.getExaminations() ) {
+					for( InterviewExamination ie : iv.getExaminations() ) {
+						if( ie.getStatus() == InterviewExamination.STATUS.SUBMITTED )
+							continue;
+						
 						sb.append( "<examination>" );
-						sb.append( "<id>").append( exam.getId() ).append( "</id>" );
-						sb.append( "<name>").append( exam.getExam().getName() ).append( "</name>" );
+						sb.append( "<id>").append( ie.getId() ).append( "</id>" );
+						sb.append( "<name>").append( ie.getExam().getName() ).append( "</name>" );
 						
 						int totalScore = 0;
 						int totalQuestion = 0;
-						for( ExaminationCatalog ec : exam.getExam().getCatalogs() ) {
+						for( ExaminationCatalog ec : ie.getExam().getCatalogs() ) {
 							for( ExaminationCatalogQuestion eq : ec.getQuestions() ) {
 								totalScore += eq.getScore();
 								totalQuestion++;
 							}
 						}
-						sb.append( "<desc><![CDATA[Catalog count:").append( exam.getExam().getCatalogs().size() )
+						sb.append( "<desc><![CDATA[Catalog count:").append( ie.getExam().getCatalogs().size() )
 						  .append( " Total question count : " ).append( totalQuestion )
 						  .append( " Total score : ").append( totalScore )
 						  .append( "]]></desc>" );
@@ -81,23 +84,22 @@ public class LoginAction {
 					sb.append( "</examinations>" );
 					sb.append( "</login>" );
 					
-					iv.setStatus( Interview.STATUS.DOING.name() );
+					iv.setStatus( Interview.STATUS.GOING.name() );
 					iv.setConversationId( conversation );
+					
 					return sb.toString();
 				}
-			else
-				isFinish = true;
-		} 
-
-		String des = "Invalid login name or login password";
-		if( isNotStart ) {
-			des = "Interview is not doing on today";
-		} else if (isOverdue) {
-			des = "Interview is over due";
-		} else if (isFinish) {
-			des = "Interview is finished";
+			} else if( iv.getStatus().equals( Interview.STATUS.UNFINISH_ABSENT.name() ) ) {
+				des = "Interview is over due";
+			} else if( iv.getStatus().equals( Interview.STATUS.GOING.name() ) ) {
+				des = "This interview already login. If you want relogin, please request administrator reset status!";
+			} else {
+				des = "Interview is finished";
+			}
+		} else {
+			des = "Invalid login name or login password";
 		}
-	
+
 		return "<login><status>failed</status><desc>"+des+"</desc></login>";
 	}
 }

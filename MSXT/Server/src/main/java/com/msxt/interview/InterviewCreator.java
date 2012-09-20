@@ -78,7 +78,7 @@ public class InterviewCreator {
         	newInterview.setApplyPosition( applyPosition );
         	
         	newInterview.setCreateOn( new Date() );
-        	newInterview.setStatus( Interview.STATUS.WAITING.name() );
+        	newInterview.setStatus( Interview.STATUS.UNFINISH_WAITING.name() );
         	
             em.persist( newInterview );
             

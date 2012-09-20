@@ -77,28 +77,30 @@
                             <f:facet name="header">Date</f:facet>
                             #{_interview.start}
                         </h:column>
+                        <h:column>
+                            <f:facet name="header">Status</f:facet>
+                            #{_interview.status}
+                        </h:column>
                         <h:column id="actCol">
                             <f:facet id="actFct" name="header">Action</f:facet>
-                            <h:button id="view" value="View" outcome="/interview/view" style="white-space: nowrap;">
+                            <h:button id="view" value="View" outcome="/interview/view">
                                 <f:param name="id" value="#{_interview.id}"/>
                             </h:button>
                             &nbsp;
-                            <h:button id="edit" value="Edit" outcome="/interview/edit" style="white-space: nowrap;">
+                            <h:button id="edit" value="Edit" outcome="/interview/edit" rendered="#{_interview.status ne 'FINISH'}">
                                 <f:param name="id" value="#{_interview.id}"/>
                             </h:button>
                             &nbsp;
-                     		<h:commandButton id="delete" value="Delete" action="#{interviewAgent.delete(_interview.id)}"/>
+                     		<h:commandButton id="delete" value="Delete" action="#{interviewAgent.delete(_interview.id)}" rendered="#{_interview.status ne 'FINISH'}"/>
                         </h:column>
                     </h:dataTable>
                 </h:form>
                 <h:form id="paginationForm">
-                    <h:commandButton id="previousResults" value="Previous page" action="#{interviewSearcher.previousPage}"
-                                     rendered="#{interviewSearcher.previousPageAvailable}">
+                    <h:commandButton id="previousResults" value="Previous page" action="#{interviewSearcher.previousPage}" rendered="#{interviewSearcher.previousPageAvailable}">
                         <f:ajax render=":searchResults" onevent="controlSpinner"/>
                     </h:commandButton>
                     &nbsp;
-                    <h:commandButton id="moreResults" value="Next Page" action="#{interviewerSearch.nextPage}"
-                                     rendered="#{interviewSearcher.nextPageAvailable}">
+                    <h:commandButton id="moreResults" value="Next Page" action="#{interviewerSearch.nextPage}" rendered="#{interviewSearcher.nextPageAvailable}">
                         <f:ajax render=":searchResults" onevent="controlSpinner"/>
                     </h:commandButton>
                 </h:form>

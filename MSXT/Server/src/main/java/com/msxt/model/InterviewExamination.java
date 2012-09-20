@@ -115,4 +115,23 @@ public class InterviewExamination {
 		this.endTime = endTime;
 	}
 	
+	public static enum STATUS{
+		UNSTART, STARTED_UNOVERTIME, STARTED_OVERTIME, SUBMITTED 
+	}
+	
+	public STATUS getStatus(){
+		if( getStartTime() == null ) 
+			return STATUS.UNSTART;
+		else { 
+			if( getEndTime() == null ) {
+				Long span = System.currentTimeMillis() - getStartTime().getTime();
+				if( span < (getExam().getTime()+10)*60*1000 )
+					return STATUS.STARTED_UNOVERTIME;
+				else
+					return STATUS.STARTED_OVERTIME;
+			} else {
+				return STATUS.SUBMITTED;
+			}
+		}	
+	}
 }

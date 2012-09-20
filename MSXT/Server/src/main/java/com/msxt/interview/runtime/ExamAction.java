@@ -37,20 +37,20 @@ public class ExamAction {
 		String conversation = request.getParameter( "conversation" );
 		String examId = request.getParameter( "examId" );
 		
-		InterviewExamination exam = em.find( InterviewExamination.class, examId );
+		InterviewExamination ie = em.find( InterviewExamination.class, examId );
 		
-		String csId = exam.getInterview().getConversationId();
-		if( csId==null || csId.isEmpty() || !exam.getInterview().getConversationId().equals(conversation) ) 
+		String csId = ie.getInterview().getConversationId();
+		if( csId==null || csId.isEmpty() || !ie.getInterview().getConversationId().equals(conversation) ) 
 			return "<error><code>201</code><desc>Invalid Conversation</desc></error>";
 					
 		StringBuffer sb = new StringBuffer();
 		sb.append( "<examination>" ); 
-		sb.append( "<examinationid>" ).append( exam.getId() ).append( "</examinationid>" );
-		sb.append( "<name>" ).append( exam.getExam().getName() ).append( "</name>" );
-		sb.append( "<time>" ).append( exam.getExam().getTime() ).append( "</time>" );
-		sb.append( "<confuse>" ).append( exam.getExamConfuse()==1 ? true : false ).append( "</confuse>" );
+		sb.append( "<examinationid>" ).append( ie.getId() ).append( "</examinationid>" );
+		sb.append( "<name>" ).append( ie.getExam().getName() ).append( "</name>" );
+		sb.append( "<time>" ).append( ie.getExam().getTime() ).append( "</time>" );
+		sb.append( "<confuse>" ).append( ie.getExamConfuse()==1 ? true : false ).append( "</confuse>" );
 		sb.append( "<catalogs>" );
-		for( ExaminationCatalog ec : exam.getExam().getCatalogs() ) {
+		for( ExaminationCatalog ec : ie.getExam().getCatalogs() ) {
 			sb.append( "<catalog>");  
 			sb.append( "<index>" ).append( ec.getIndex() ).append("</index>");
 			sb.append( "<name>" ).append( ec.getName() ).append("</name>");
@@ -82,7 +82,8 @@ public class ExamAction {
 		sb.append( "</catalogs>" );
 		sb.append("</examination>" );
 		
-		exam.setStartTime( new Date() );
+		ie.setStartTime( new Date() );
+		em.persist( ie );
 		return sb.toString();
 	}
 	
@@ -152,6 +153,7 @@ public class ExamAction {
     	else
     		sb.append( "<score>"+ score +"</score>" );
         sb.append( "</submitresult>" );
+        
         return sb.toString();
 	}
 	
@@ -177,15 +179,15 @@ public class ExamAction {
     	if( ie==null )
         	return "can't find examination";  
     	
-		if( !Interview.STATUS.DOING.name().equals(ie.getInterview().getStatus() ) ) 
+		if( !Interview.STATUS.GOING.name().equals(ie.getInterview().getStatus() ) ) 
 			return "This interview is not going";
 		
-		if( ie.getExam().getTime()>0 ) {
-			Long span = System.currentTimeMillis() - ie.getStartTime().getTime();
-			if( span > (ie.getExam().getTime()+30)*60*1000 )
-				return "examination is over time";
-		}
+		if( ie.getStatus() == InterviewExamination.STATUS.SUBMITTED )
+			return "examination is submitted, can't resubmit";
 		
+		if( ie.getStatus() == InterviewExamination.STATUS.STARTED_OVERTIME )
+			return "examination is overtime, if you really need to submit please request administrator reset this examination";
+			
 		NodeList nl = examanswerE.getElementsByTagName( "conversation" );
         if( nl.getLength()==0 )
         	return "can't set conversation value";  

@@ -174,12 +174,29 @@
                  				</td>
 	                		</tr>
 	                		<tr>
+	                			<td align="right">Status:</td>
+	                			<td>
+		                			<h:selectOneMenu id="interview_status" value="#{interviewAgent.selectedInterview.status}">
+					                   <f:selectItem itemValue="#{'UNFINISH_WAITING'}" itemLabel="UNFINISH_WAITING"/>
+					                   <f:selectItem itemValue="#{'UNFINISH_ABSENT'}" itemLabel="UNFINISH_ABSENT"/>
+					                   <f:selectItem itemValue="#{'GOING'}" itemLabel="GOING"/>
+					                   <f:selectItem itemValue="#{'FINISH'}" itemLabel="FINISH"/>
+					                </h:selectOneMenu>	
+                 				</td>
+	                		</tr>
+	                		<tr>
 	                			<td align="right">Examination:</td>
 	                			<td align="right">
 	                				<h:inputHidden id="examinationIds" value="#{interviewAgent.examinationIds}"/>
 	                				<input type="button" value="Select Examination" onclick="openSelectExaminationWin();"/>
 	                				<div id="exams">
 	                					<table>
+	                						<tr>
+	                							<td>Examination Name</td>
+	                							<td>Position Name of Examination</td>
+	                							<td>Is Confuse</td>
+	                							<td>Action</td>
+	                						</tr>
 	                						<ui:repeat var="ie" value="#{interviewAgent.selectedInterview.examinations}">
 	                						<tr>
 	                							<td>${ie.exam.name}</td>
