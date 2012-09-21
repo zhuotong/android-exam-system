@@ -60,7 +60,7 @@ public class TimePanel extends JPanel {
 				}
 				if( usedTime==time ) {
 					timer.stop();
-					((ExamLauncher)Application.getInstance()).doSubmit();
+					((ExamLauncher)Application.getInstance()).disableEditAndSubmit();
 				}	
 			}
 		});

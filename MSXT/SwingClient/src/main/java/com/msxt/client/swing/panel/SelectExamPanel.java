@@ -65,8 +65,9 @@ public class SelectExamPanel extends JPanel {
 
         desc.setColumns(50);
         desc.setRows(10);
+        if( lsr.getExaminations().size()>0 )
+        	desc.setText( lsr.getExaminations().get(0).getDesc() );
         jScrollPane1.setViewportView( desc );
-        desc.setText( lsr.getExaminations().get(0).getDesc() );
         
         examCB.setModel( getCBModel() );
         

@@ -4,28 +4,26 @@ import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Enumeration;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.AbstractButton;
-import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 
 import com.msxt.client.model.Examination;
 import com.msxt.client.swing.model.ExamBuildContext;
 import com.msxt.client.swing.utilities.GBC;
 
-public class SingleChoicePanel extends QuestionPanel{
+public class MultiChoicePanel extends QuestionPanel{
 	private static final long serialVersionUID = -3380325920299172267L;
 	
-	private boolean unFinish;
-	private ButtonGroup bg;
+	private boolean lastFinishStatus;
+	private List<JCheckBox> bg;
 	
-	public SingleChoicePanel(Examination.Question question, ExamBuildContext ebc){
-		unFinish = true;
-		bg = new ButtonGroup();
+	public MultiChoicePanel(Examination.Question question, ExamBuildContext ebc){
+		lastFinishStatus = false;
+		bg = new ArrayList<JCheckBox>();
 		setOpaque( false );
 		this.setLayout( new GridBagLayout() );
 				
@@ -57,26 +55,35 @@ public class SingleChoicePanel extends QuestionPanel{
 		List<Examination.Choice> choices = question.getChoices();
 		for( int i=0; i<choices.size(); i++ ) {
 			Examination.Choice c = choices.get(i);			
-			JRadioButton l = new JRadioButton( c.getLabel() + ". " );
-			l.setFont( ebc.getQuestionFont() );
-			l.setActionCommand( c.getLabel() );
-			l.addActionListener( new ActionListener() {
+			JCheckBox cb = new JCheckBox( c.getLabel() + ". " );
+			cb.setFont( ebc.getQuestionFont() );
+			cb.setActionCommand( c.getLabel() );
+			cb.addActionListener( new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if( unFinish ) {
-						fireFinished();
-						unFinish = false;
+					boolean finishStatus = false;
+					for(JCheckBox cb : bg){
+						if( cb.isSelected() ) {
+							finishStatus = true;
+							break;
+						}
 					}
-					
+					if( finishStatus != lastFinishStatus ) {
+						if( finishStatus )
+							fireFinished();
+						else
+							fireUnfinish();
+						lastFinishStatus = finishStatus;
+					}
 				}
 			});
-			bg.add( l );
+			bg.add( cb );
 			
 			JLabel item = new JLabel();
 			item.setFont( ebc.getQuestionFont() );
 			item.setText( "<html>"+c.getContent().replaceAll("\n", "<br>")+"</html>" );
 
-			panel.add( l, new GBC(0, i).setAnchor( GBC.NORTHEAST ) );
+			panel.add( cb, new GBC(0, i).setAnchor( GBC.NORTHEAST ) );
 			panel.add( item, new GBC(1, i).setAnchor( GBC.WEST ).setWeight(100,  100).setInsets(1, 5, 0, 0).setFill( GBC.HORIZONTAL ) );
 		}
 		return panel;
@@ -84,15 +91,19 @@ public class SingleChoicePanel extends QuestionPanel{
 
 	@Override
 	public String getAnswer() {
-		return bg.getSelection().getActionCommand();
+		StringBuffer sb = new StringBuffer("");
+		for(JCheckBox cb : bg){
+			if( cb.isSelected() ) {
+				sb.append( cb.getActionCommand() );
+			}
+		}
+		return sb.toString();
 	}
-
+	
 	@Override
 	public void disableEdit() {
-		Enumeration<AbstractButton>  en = bg.getElements();
-		while( en.hasMoreElements() ) {
-			AbstractButton ab = en.nextElement();
-			ab.setEnabled( false );
+		for( JCheckBox cb : bg ) {
+			cb.setEnabled( false );
 		}
 	}
 }

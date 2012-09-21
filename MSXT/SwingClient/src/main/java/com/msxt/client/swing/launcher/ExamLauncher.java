@@ -6,6 +6,7 @@ import com.msxt.client.server.ServerProxy.Result;
 import com.msxt.client.swing.component.QuestionButton;
 import com.msxt.client.swing.model.ExamBuildContext;
 import com.msxt.client.swing.model.Question;
+import com.msxt.client.swing.model.ValueFuture;
 import com.msxt.client.swing.panel.ExamPanel;
 import com.msxt.client.swing.panel.LoginPanel;
 import com.msxt.client.swing.panel.ProcessingNotePanel;
@@ -350,6 +351,17 @@ public class ExamLauncher extends SingleFrameApplication  {
     public String getLookAndFeel() {
         return lookAndFeel;
     }
+    
+    public void disableEditAndSubmit(){
+    	Enumeration<AbstractButton> buttonEnum = questionSelectorPanel.getButtonGroup().getElements();
+    	while( buttonEnum.hasMoreElements() ) {
+    		QuestionButton qb = (QuestionButton)buttonEnum.nextElement();
+    		Question q = qb.getQuestion();
+    		q.getQuestionPanel().disableEdit();
+    	}
+    	
+    	doSubmit();
+    }
 
     private void displayErrorMessage(String title, String message) {
         JPanel messagePanel = new JPanel( new BorderLayout() );       
@@ -390,27 +402,41 @@ public class ExamLauncher extends SingleFrameApplication  {
         }
     }
     
-    public void doSubmit(){
-    	ProcessingNotePanel pnp = new ProcessingNotePanel( resourceMap.getString("submit.processing") );
+    private void doSubmit(){
+    	final ProcessingNotePanel pnp = new ProcessingNotePanel( resourceMap.getString("submit.processing") );
+    	final ValueFuture<Result> vf = new ValueFuture<Result>();
+    	new Thread(){
+    		public void run() {
+    			Enumeration<AbstractButton> buttonEnum = questionSelectorPanel.getButtonGroup().getElements();
+    	    	Map<String, String> answerMap = new HashMap<String, String>();
+    	    	while( buttonEnum.hasMoreElements() ) {
+    	    		QuestionButton qb = (QuestionButton)buttonEnum.nextElement();
+    	    		Question q = qb.getQuestion();
+    	    		String id = q.getOriginalQuestion().getId();
+    	    		if( q.isFinished() ) {
+    	    			String answer = q.getQuestionPanel().getAnswer();
+    	    			answerMap.put(id, answer);
+    	    		} else {
+    	    			answerMap.put(id, "");
+    	    		}
+    	    	}
+    	    	
+    	    	ServerProxy sp = ServerProxy.Factroy.getCurrrentInstance();
+    	    	Result r = sp.submitAnswer( currentExam.getId(), answerMap );
+    	    	vf.set( r );
+    	    	while( !pnp.isVisible() ) {
+    	    		try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+    	    	}
+    	    	pnp.cancelShowProcessing();
+    		}
+    	}.start();	
     	pnp.showProcessing( getMainFrame() );
     	
-    	Enumeration<AbstractButton> buttonEnum = questionSelectorPanel.getButtonGroup().getElements();
-    	Map<String, String> answerMap = new HashMap<String, String>();
-    	while( buttonEnum.hasMoreElements() ) {
-    		QuestionButton qb = (QuestionButton)buttonEnum.nextElement();
-    		Question q = qb.getQuestion();
-    		if( q.isFinished() ) {
-    			String id = qb.getQuestion().getOriginalQuestion().getId();
-    			String answer = qb.getQuestion().getQuestionPanel().getAnswer();
-    			answerMap.put(id, answer);
-    		}
-    	}
-    	
-    	ServerProxy sp = ServerProxy.Factroy.getCurrrentInstance();
-    	Result r = sp.submitAnswer( currentExam.getId(), answerMap );
-    	
-    	pnp.cancelShowProcessing();
-    	
+    	Result r = vf.get();
     	if( r.isSuccess() ) {
     		try{
 	    		DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();

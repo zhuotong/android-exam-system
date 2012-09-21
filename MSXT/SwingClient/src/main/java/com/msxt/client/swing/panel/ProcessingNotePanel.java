@@ -41,7 +41,6 @@ public class ProcessingNotePanel extends JPanel{
         else 
            owner = (Frame) SwingUtilities.getAncestorOfClass(Frame.class, parent);
         String title = Application.getInstance().getContext().getResourceMap().getString("processing"); 
-        		
         
         dialog = new JDialog(owner, true);
       //dialog.setUndecorated( true );
@@ -50,18 +49,14 @@ public class ProcessingNotePanel extends JPanel{
         dialog.pack();
         dialog.setLocationRelativeTo( null );
         
-        new Thread(){
-        	public void run(){
-        		dialog.setVisible(true); 
-        		while( !isCanceled ) {
-        			dialog.setVisible( true );
-        		}
-        	}
-        }.start();
+		dialog.setVisible(true); 
+		while( !isCanceled ) 
+			dialog.setVisible( true );
 	}
 	
 	public void cancelShowProcessing(){
 		isCanceled = true;
 		dialog.setVisible( false );
+		dialog.dispose();
 	}
 }

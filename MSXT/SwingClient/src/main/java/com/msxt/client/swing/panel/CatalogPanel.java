@@ -34,8 +34,16 @@ public class CatalogPanel extends JPanel{
 		add( cindex, new GBC(0, 0, 1, eqs.size()+1 ).setAnchor( GBC.NORTHEAST )  );
 		add( cdesc, new GBC(1, 0).setAnchor( GBC.WEST ).setInsets(0,0,10,0) );
 		for( int i=0; i<eqs.size(); i++ ) {
-			Examination.Question eq = eqs.get(i);			
-			QuestionPanel qp = new SingleChoicePanel( eq, ebc );
+			Examination.Question eq = eqs.get(i);	
+			
+			QuestionPanel qp = null;
+			
+			if( eq.getType().equals( "Single Choice" ) ) {
+				qp = new SingleChoicePanel( eq, ebc );
+	        } else if( eq.getType().equals( "Multiple Choice" ) ) {
+	        	qp = new MultiChoicePanel( eq, ebc );
+	        }
+			
 			qp.setOpaque( false );
 			add( qp, new GBC(1, i + 1).setWeight(100, 100).setInsets(0,0,10,0).setFill( GBC.HORIZONTAL ) );
 			

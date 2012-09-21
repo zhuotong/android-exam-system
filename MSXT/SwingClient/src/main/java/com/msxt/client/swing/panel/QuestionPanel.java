@@ -36,4 +36,6 @@ public abstract class QuestionPanel extends JPanel{
     }
     
 	public abstract String getAnswer();
+	
+	public abstract void disableEdit();
 }
