@@ -12,12 +12,14 @@
 <catalogs>
 	<catalog>
 		<index>0</index>
+		<name>Single Select</name>
 		<catalogdesc>
 			<![CDATA[ Test for JavaSE base knowlege ]]>
 		</catalogdesc>
 		<questions>
 			<question>
 				<index>0</index>
+				<name>Exception Test</name>
 				<questionid>0</questionid>
 				<type>Multi Select</type>			
 				<score>5</score>
