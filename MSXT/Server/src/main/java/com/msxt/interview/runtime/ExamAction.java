@@ -211,7 +211,7 @@ public class ExamAction {
 			ExaminationCatalogQuestionAnswer ecqa = new ExaminationCatalogQuestionAnswer();
 			ecqa.setInterviewExamination( ie );
 			ecqa.setExamQuestion( ecq );
-			ecqa.setAnswer( content );
+			ecqa.setAnswer( content.isEmpty() ? null : content );
 			
 			Question q = ecq.getQuestion();
 			String questionTypeId = q.getQuestionType().getId();
