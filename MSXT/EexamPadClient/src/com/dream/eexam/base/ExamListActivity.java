@@ -171,7 +171,8 @@ public class ExamListActivity extends BaseActivity {
     		if(STATUS.SUCCESS.equals(examResult.getStatus())){
     			saveFile(downloadExamFilePath, downloadExamFile, examResult.getSuccessMessage());
     		}else if(STATUS.ERROR.equals(examResult.getStatus())){
-    			ShowDialog(examResult.getErrorMessage());
+    			ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+    					examResult.getErrorMessage());
     			this.cancel(true);
     		}
 	        return "success";
@@ -192,7 +193,8 @@ public class ExamListActivity extends BaseActivity {
 				
 				Question fQuestion = DataUtil.getQuestionByCidQid(exam, ccIndex, cqIndex);
 				if(fQuestion==null){
-					ShowDialog("Can not get question!");
+					ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+							"Can not get question!");
 					this.cancel(true);
 					return;
 				}
@@ -212,7 +214,8 @@ public class ExamListActivity extends BaseActivity {
 					intent.setClass( getBaseContext(), SingleChoices.class);
 					startActivity(intent);
 				}else{
-					ShowDialog("Invalid qeustion type:"+fQuestionType);
+					ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+							"Invalid qeustion type:"+fQuestionType);
 				}
 				
 				//save exam status

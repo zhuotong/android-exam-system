@@ -41,19 +41,20 @@ public class PendQuestions extends BaseQuestion {
 	Integer indexInExam;
 	
 	public void loadComponents(){
-//		homeTV = (TextView)findViewById(R.id.homeTV);
-//		remainingTimeLabel = (TextView)findViewById(R.id.remainingTimeLabel);
-		remainingTime = (TextView)findViewById(R.id.remainingTime);
-		submitTV = (TextView)findViewById(R.id.submitTV);
-		
-//		questionIndex = (TextView)findViewById(R.id.questionIndex);
+		//header components
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
-		pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);
 		
+		//footer components
 		backArrow = (ImageView)findViewById(R.id.backArrow);
+		pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);
+		remainingTime = (TextView)findViewById(R.id.remainingTime);
+		
 		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
 		completedPercentage = (TextView)findViewById(R.id.completedPercentage);   	
-    	nextArrow = (ImageView)findViewById(R.id.nextArrow);
+    	
+		submitTV = (TextView)findViewById(R.id.submitTV);
+		nextArrow = (ImageView)findViewById(R.id.nextArrow);
+    	
 	}
 	
 	public void setHeader(){
@@ -62,7 +63,9 @@ public class PendQuestions extends BaseQuestion {
 		
 		//set exam header(Center)
 //		remainingTimeLabel.setText("Time Remaining: ");
-		remainingTime.setText(String.valueOf(exam.getTime())+" mins");
+		
+		
+//		remainingTime.setText(String.valueOf(exam.getTime())+" mins");
 		
 		//set exam header(Right)
 		submitTV.setText("Submit");
@@ -153,14 +156,43 @@ public class PendQuestions extends BaseQuestion {
     
     public void setFooter(){
     	//set preBtn
-    	backArrow.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				moveDirect = -1;
-				gotoNewQuestion(mContext,cCatalogIndex,cQuestionIndex,moveDirect);
-			}
-		});
-        
+//    	backArrow.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				moveDirect = -1;
+//				gotoNewQuestion(mContext,cCatalogIndex,cQuestionIndex,moveDirect);
+//			}
+//		});
+//        
+//		//set completedSeekBar
+//		int per = 100 * examAnsweredQuestionSum/examQuestionSum;
+//		completedSeekBar.setThumb(null);
+//		completedSeekBar.setProgress(per);
+//		completedSeekBar.setEnabled(false);
+//		//set completedSeekBar label
+//		completedPercentage.setText(String.valueOf(per)+"%");
+//		
+//		
+//		//set nextBtn
+//		nextArrow.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				moveDirect = 1;
+//				gotoNewQuestion(mContext,cCatalogIndex,cQuestionIndex,moveDirect);
+//			}
+//		});
+    	
+    	backArrow.setVisibility(View.INVISIBLE);
+		pendQueNumber.setVisibility(View.INVISIBLE);
+//		remainingTime.setVisibility(View.INVISIBLE);
+		StringBuffer timeSB = new StringBuffer();
+		if(lMinutes<10) timeSB.append("0");
+		timeSB.append(String.valueOf(lMinutes));
+		timeSB.append(String.valueOf(":"));
+		if(lSeconds<10) timeSB.append("0");
+		timeSB.append(String.valueOf(lSeconds));
+		remainingTime.setText(timeSB.toString());
+		
 		//set completedSeekBar
 		int per = 100 * examAnsweredQuestionSum/examQuestionSum;
 		completedSeekBar.setThumb(null);
@@ -169,15 +201,8 @@ public class PendQuestions extends BaseQuestion {
 		//set completedSeekBar label
 		completedPercentage.setText(String.valueOf(per)+"%");
 		
-		
-		//set nextBtn
-		nextArrow.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				moveDirect = 1;
-				gotoNewQuestion(mContext,cCatalogIndex,cQuestionIndex,moveDirect);
-			}
-		});
+		submitTV.setVisibility(View.INVISIBLE);
+		nextArrow.setVisibility(View.INVISIBLE);
     }
     
     class MyListAdapter extends BaseAdapter{
@@ -242,7 +267,8 @@ public class PendQuestions extends BaseQuestion {
     				}else if(questionTypes[1].equals(nQuestion.getType())){
     					intent.setClass( mContext, SingleChoices.class);
     				}else{
-    					ShowDialog("Invalid qeustion type:"+cQuestionType);
+    					ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+    							"Invalid qeustion type:"+cQuestionType);
     				}
     				finish();
     				startActivity(intent);

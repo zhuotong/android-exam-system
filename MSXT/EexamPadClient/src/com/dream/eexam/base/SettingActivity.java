@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class SettingActivity extends BaseActivity {
@@ -18,6 +19,9 @@ public class SettingActivity extends BaseActivity {
 	public final static String LOG_TAG = "LoginActivity";
 	
 	Context mContext;
+	
+	ImageView imgHome = null;
+	
 	TextView valiMessageTV = null;
 	String[] valiMessageArray = null;
 	EditText hostET = null;
@@ -35,6 +39,9 @@ public class SettingActivity extends BaseActivity {
         setContentView(R.layout.setting);
         
         mContext = getApplicationContext();
+        
+		imgHome = (ImageView) findViewById(R.id.imgHome);
+		imgHome.setOnClickListener(cancelListener);
 		
         valiMessageTV = (TextView) this.findViewById(R.id.valiMessage);
         valiMessageArray = getResources().getStringArray(R.array.msg_settings_invalid);
@@ -94,7 +101,8 @@ public class SettingActivity extends BaseActivity {
         	dbUtil.deleteAllAnswers();
         	dbUtil.close();
         	
-        	ShowDialog(mContext.getResources().getString(R.string.msg_login_server));	
+        	ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+        			mContext.getResources().getString(R.string.msg_history_be_cleared));	
         }  
     };   
     

@@ -256,7 +256,8 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		long cosumeTime = (currentTime - starttime)/1000;//second
 	    long examTime = exam.getTime() * 60;//second
 	    if(cosumeTime>examTime){
-	    	ShowDialog("Exam Time Out!");
+	    	ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+	    			"Exam Time Out!");
 	    }else{
 	    	long leftTime = examTime - cosumeTime;
 	    	lMinutes = Integer.valueOf((int)(leftTime/60));
@@ -337,7 +338,12 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		//set pending questions
 		pendQuestions.clear();
 		loadPendingQuestions(dbUtil);
-		pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_waiting)+"("+Integer.valueOf(pendQuestions.size())+")");
+		if(pendQuestions.size()>0){
+			pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_waiting)+"("+Integer.valueOf(pendQuestions.size())+")");	
+		}else{
+			pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_complete));
+		}
+		
 		
 		//set catalog list
 		catalogInfos.clear();
@@ -384,9 +390,11 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 			}			
 		}else{
 			if(diret==1){
-				ShowDialog("This question is the last question in Exam!");
+				ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+						"This question is the last question in Exam!");
 			}else if(diret==-1){
-				ShowDialog("This question is the first question in Exam!");
+				ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+						"This question is the first question in Exam!");
 			}
 		}
 
@@ -565,7 +573,8 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 					intent.putExtra("questionType", "Single Select");
 					intent.setClass( mContext, SingleChoices.class);
 				}else{
-					ShowDialog("Wrong Question Type: " + cQuestionType);
+					ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+							"Wrong Question Type: " + cQuestionType);
 				}
 				finish();
 				startActivity(intent);

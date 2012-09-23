@@ -91,7 +91,8 @@ public class LoginActivity extends BaseActivity {
         	if (getWifiIP() != null && getWifiIP().trim().length() > 0 && !getWifiIP().trim().equals("0.0.0.0")){
         		new DownloadXmlTask().execute(new String[]{id,password});
         	}else{
-        		ShowDialog("Your mobile is not in a available NetWork!");
+        		ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+        				mContext.getResources().getString(R.string.msg_network_error));
         	}
         	
         }  
@@ -135,7 +136,8 @@ public class LoginActivity extends BaseActivity {
         	loginBtn.setEnabled(true);
 
     		if( loginResult.getStatus() == STATUS.ERROR ) {
-    			ShowDialog(loginResult.getErrorMessage());
+    			ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+    					loginResult.getErrorMessage());
         	} else {
         		saveFile(loginResultFilePath, loginResultFile, loginResult.getSuccessMessage());
         		
@@ -149,7 +151,8 @@ public class LoginActivity extends BaseActivity {
     		        String status = root.getElementsByTagName("status").item(0).getTextContent();
     		        if( status.equals("failed") ) {
     		        	String desc = root.getElementsByTagName("desc").item(0).getTextContent();
-    		        	ShowDialog(desc);
+    		        	ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+    		        			desc);
     		        } else {
     		        	String conversation = root.getElementsByTagName( "conversation" ).item(0).getTextContent();
     		        	proxy.setConversationId( conversation );
@@ -170,11 +173,11 @@ public class LoginActivity extends BaseActivity {
         	    			intent.setClass( mContext, ExamContinueActivity.class);
         	    			startActivity(intent);   
     		        	}else if("end".equals(examStatus)){
-    		        		ShowDialog("Your Exam is completed");
+    		        		ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Your Exam is completed");
     		        	}
     		        }
         		} catch (Exception e) {
-        			ShowDialog("Invalid XML Data");
+        			ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Invalid XML Data");
     			}
         	}
         }

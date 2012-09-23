@@ -102,7 +102,7 @@ public class ExamContinueActivity extends BaseActivity {
 				
 				Question fQuestion = DataUtil.getQuestionByCidQid(exam, ccIndex, cqIndex);
 				if(fQuestion==null){
-					ShowDialog("Can not get question!");
+					ShowDialog(getResources().getString(R.string.exam_file_name),"Can not get question!");
 					return;
 				}
 				
@@ -121,7 +121,8 @@ public class ExamContinueActivity extends BaseActivity {
 					intent.setClass( ExamContinueActivity.this, SingleChoices.class);
 					startActivity(intent);
 				}else{
-					ShowDialog("Invalid qeustion type:"+fQuestionType);
+					ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+							"Invalid qeustion type:"+fQuestionType);
 				}
 			}			
 		});

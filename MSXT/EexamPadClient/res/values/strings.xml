@@ -14,6 +14,8 @@
     <string name="label_btn_login">Sign In</string>
     <string name="label_btn_reset">Setting</string>
     <string name="msg_login_server">Login to server...</string>
+    <string name="msg_network_error">Your mobile is not in a available NetWork!</string>
+    
     <!-- Login Page End -->
     
     <!-- Setting Page Start-->
@@ -44,13 +46,23 @@
     
     <!-- Exam Page(MultiChoice,SingChoice,PendingChoice) Start-->
     <string name="label_tv_waiting">Pending</string>
+    <string name="label_tv_complete">Completed</string>
     <string name="label_tv_submit">Submit</string>
     <string name="label_tv_time_remaning">Time Remaining:</string>
+    
     <string name="msg_submiting_warning">question(s) are not answered, still submit?</string>
+    <string name="msg_submiting_warning_yes">Yes</string>
+    <string name="msg_submiting_warning_cancel">Cancel</string>
+    
  	<string name="msg_submiting">Submitting answer,please waiting...</string>
+ 	
 	<string name="warning_go_home">Exam not submitted yet, still quit?</string>
 	<string name="warning_go_home_yes">Yes</string>
-	<string name="warning_go_home_cancel">Cancel</string> 	
+	<string name="warning_go_home_cancel">Cancel</string> 
+	
+	<string name="warning_answer_later">Answer this question later?</string>
+	<string name="warning_answer_later_yes">Yes</string>
+	<string name="warning_answer_later_cancel">Cancel</string> 		
     
     <string name="connection_error">Unable to load content. Check your network connection.</string>
     <string name="xml_error">Error parsing XML.</string>
@@ -69,7 +81,7 @@
     <!-- Exam End Page End -->
 
 	<!-- Other -->
-	
+	<string name="dialog_note">Note</string>
  	<string-array name="question_types">
         <item>Multiple Choice</item>
         <item>Single Choice</item>

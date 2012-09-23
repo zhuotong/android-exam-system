@@ -194,23 +194,29 @@ public class MultiChoices extends BaseQuestion {
         }
         
         //set text view pending[count]
-		pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_waiting)+"("+Integer.valueOf(pendQuestions.size())+")");
-		pendQueNumber.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent();
-				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
-				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
-				intent.putExtra("questionType", cQuestionType);
-				if(questionTypes[0].equals(cQuestionType)){
-					intent.setClass( getBaseContext(), PendQuestions.class);
-				}else if(questionTypes[1].equals(cQuestionType)){
-					intent.setClass( getBaseContext(), PendQuestions.class);
-				}
-				finish();
-				startActivity(intent);
-			}
-		});
+        
+        if(pendQuestions.size()>0){
+    		pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_waiting)+"("+Integer.valueOf(pendQuestions.size())+")");
+    		pendQueNumber.setOnClickListener(new View.OnClickListener() {
+    			@Override
+    			public void onClick(View v) {
+    				Intent intent = new Intent();
+    				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
+    				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
+    				intent.putExtra("questionType", cQuestionType);
+    				if(questionTypes[0].equals(cQuestionType)){
+    					intent.setClass( getBaseContext(), PendQuestions.class);
+    				}else if(questionTypes[1].equals(cQuestionType)){
+    					intent.setClass( getBaseContext(), PendQuestions.class);
+    				}
+    				finish();
+    				startActivity(intent);
+    			}
+    		});        	
+        }else{
+        	pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_complete));
+        }
+
         
 		StringBuffer timeSB = new StringBuffer();
 		if(lMinutes<10) timeSB.append("0");
@@ -240,13 +246,13 @@ public class MultiChoices extends BaseQuestion {
 					AlertDialog.Builder builder = new AlertDialog.Builder(MultiChoices.this);
 					builder.setMessage(String.valueOf(waitQuestions)+ " " + mContext.getResources().getString(R.string.msg_submiting_warning))
 							.setCancelable(false)
-							.setPositiveButton("Yes",
+							.setPositiveButton(mContext.getResources().getString(R.string.msg_submiting_warning_yes),
 									new DialogInterface.OnClickListener() {
 										public void onClick(DialogInterface dialog,int id) {
 											new SubmitAnswerTask().execute(exam.getId());
 										}
 									})
-							.setNegativeButton("Cancel",
+							.setNegativeButton(mContext.getResources().getString(R.string.msg_submiting_warning_cancel),
 									new DialogInterface.OnClickListener() {
 										public void onClick(DialogInterface dialog,int id) {
 											dialog.cancel();
@@ -280,15 +286,15 @@ public class MultiChoices extends BaseQuestion {
     public void move2NewQuestion(){
 		if (listItemID.size() == 0) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(MultiChoices.this);
-			builder.setMessage("Answer this question late?")
+			builder.setMessage(mContext.getResources().getString(R.string.warning_answer_later))
 					.setCancelable(false)
-					.setPositiveButton("Yes",
+					.setPositiveButton(mContext.getResources().getString(R.string.warning_answer_later_yes),
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,int id) {
 									gotoNewQuestion(mContext,cCatalogIndex,cQuestionIndex,moveDirect);
 								}
 							})
-					.setNegativeButton("Cancel",
+					.setNegativeButton(mContext.getResources().getString(R.string.warning_answer_later_cancel),
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,int id) {
 									dialog.cancel();
@@ -469,7 +475,8 @@ public class MultiChoices extends BaseQuestion {
         	submitTV.setEnabled(true);
 
     		if( submitResult.getStatus() == STATUS.ERROR ) {
-    			ShowDialog(submitResult.getErrorMessage());
+    			ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+    					submitResult.getErrorMessage());
         	} else {
 //        		ShowDialog(submitResult.getSuccessMessage());
         		//make exam status to end

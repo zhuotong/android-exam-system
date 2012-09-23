@@ -82,8 +82,8 @@ public class BaseActivity extends Activity {
 		super.onStop();
 	}
 	
-	public void ShowDialog(String msg) {
-		new AlertDialog.Builder(this).setTitle("Note").setMessage(msg)
+	public void ShowDialog(String title,String msg) {
+		new AlertDialog.Builder(this).setTitle(title).setMessage(msg)
 				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 					}
@@ -187,7 +187,7 @@ public class BaseActivity extends Activity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 	    if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
 	    	if((System.currentTimeMillis()-exitTime) > 2000){
-	    		Toast.makeText(getApplicationContext(), this.getResources().getString(R.string.msg_submiting_warning), Toast.LENGTH_SHORT).show();                                
+	    		Toast.makeText(getApplicationContext(), this.getResources().getString(R.string.msg_exit_hint), Toast.LENGTH_SHORT).show();                                
 	    		exitTime = System.currentTimeMillis();
 	    	}else{
 			    finish();

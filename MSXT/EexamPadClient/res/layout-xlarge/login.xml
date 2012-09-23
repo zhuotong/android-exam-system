@@ -11,7 +11,7 @@
         layout="@layout/base_header" 
         android:layout_gravity="top"/>
         
-    <ImageView 
+<!--     <ImageView 
         android:layout_width="wrap_content" 
 	    android:id="@+id/imageView1"
 		android:layout_height="wrap_content" 
@@ -20,7 +20,7 @@
 		android:layout_marginTop="60dp"
 		android:layout_marginBottom="20dp"
 		android:contentDescription="@string/msg_logo_desc">
-	</ImageView>
+	</ImageView> -->
 	
 	<TableLayout android:id="@+id/tableLayout1"
 		android:layout_width="fill_parent"
@@ -28,7 +28,7 @@
 		android:padding="1dp"
 		android:layout_marginLeft="100dp"
 		android:layout_marginRight="100dp"
-		android:layout_marginTop="20dp">
+		android:layout_marginTop="300dp">
 
 		<TableRow android:id="@+id/tableRow1" 
 			android:layout_width="fill_parent"

@@ -45,13 +45,24 @@
     
     <!-- Exam Page(MultiChoice,SingChoice,PendingChoice) Start-->
     <string name="label_tv_waiting">等待</string>
+    <string name="label_tv_complete">全部完成</string>
     <string name="label_tv_submit">提交试卷</string>
     <string name="label_tv_time_remaning">剩余时间:</string>
+    
+    <string name="msg_submiting">正在提交试卷,请耐性等待...</string>
+    
     <string name="msg_submiting_warning">个问题没有回答，仍然提交试卷？</string>
- 	<string name="msg_submiting">正在提交试卷,请耐性等待...</string>
+    <string name="msg_submiting_warning_yes">是</string>
+    <string name="msg_submiting_warning_cancel">取消</string>
+ 	
  	<string name="warning_go_home">试卷没有提交,仍然要离开?</string>
 	<string name="warning_go_home_yes">是</string>
 	<string name="warning_go_home_cancel">取消</string>
+	
+	<string name="warning_answer_later">稍后再回答这个问题?</string>
+	<string name="warning_answer_later_yes">是</string>
+	<string name="warning_answer_later_cancel">取消</string> 	
+	
     <string name="popup_window_height">300</string>
     <string name="popup_window_width">280</string>
     <string name="connection_error">无法连接,请检查你的网络设置</string>
@@ -70,6 +81,7 @@
     <!-- Exam End Page End -->
 
 	<!-- Other -->
+	<string name="dialog_note">通知</string>
  	<string-array name="question_types">
         <item>Multiple Choice</item>
         <item>Single Choice</item>
@@ -86,8 +98,7 @@
         <item>I</item>
         <item>J</item>
     </string-array>
-    
-    
+    <string name="port">8080</string>
     <string name="app_file_home">eExam</string>
     <string name="login_file_name">login_result.xml</string>
     <string name="exam_file_name">download_exam.xml</string>
