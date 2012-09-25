@@ -79,7 +79,7 @@ public class Examination {
 		private int index;
 		private String name;
 		private String id;
-		private String type;			
+		private QUESTION_TYPE type;			
 		private float score;
 		private String content;
 		
@@ -109,11 +109,11 @@ public class Examination {
 			this.id = id;
 		}
 
-		public String getType() {
+		public QUESTION_TYPE getType() {
 			return type;
 		}
 
-		public void setType(String type) {
+		public void setType(QUESTION_TYPE type) {
 			this.type = type;
 		}
 
@@ -142,12 +142,18 @@ public class Examination {
 		public void setChoices(List<Choice> choices) {
 			this.choices = choices;
 		}
+		
+		public String toString(){
+			return "index:" + index + ", name:" + name + ", choices: " + choices ;
+		}
 	}
 	
 	public static class Choice{
 		private int index;
 		private String label;
+		private String actualLabel; 
 		private String content;
+		
 		public int getIndex() {
 			return index;
 		}
@@ -160,11 +166,21 @@ public class Examination {
 		public void setLabel(String label) {
 			this.label = label;
 		}
+		public String getActualLabel() {
+			return actualLabel;
+		}
+		public void setActualLabel(String actualLabel) {
+			this.actualLabel = actualLabel;
+		}
 		public String getContent() {
 			return content;
 		}
 		public void setContent(String content) {
 			this.content = content;
+		}
+		
+		public String toString(){
+			return "label: " +  label +", actualLabel" + actualLabel + ", content" + content;
 		}
 	}
 }
