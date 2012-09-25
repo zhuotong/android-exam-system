@@ -157,6 +157,11 @@ public class Message2ModelTransferImpl implements Message2ModelTransfer{
 			if( i != si ) {
 				Question oq = qs.get(i);
 				Question nc = qs.get(si);
+				
+				int tmpIndex = oq.getIndex();
+				oq.setIndex( nc.getIndex() );
+				nc.setIndex( tmpIndex );
+				
 				qs.set( i, nc );
 				qs.set( si, oq );
 			}
