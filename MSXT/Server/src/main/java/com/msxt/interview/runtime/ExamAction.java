@@ -61,7 +61,7 @@ public class ExamAction {
 				sb.append( "<index>" ).append( ecq.getIndex() ).append( "</index>" );
 				sb.append( "<name>" ).append( ecq.getQuestion().getName() ).append("</name>");
 				sb.append( "<questionid>" ).append( ecq.getId() ).append( "</questionid>" );
-				sb.append( "<type>" ).append( ecq.getQuestion().getQuestionType().getName() ).append( "</type>" );
+				sb.append( "<type>" ).append( ecq.getQuestion().getQuestionType().getId() ).append( "</type>" );
 				sb.append( "<score>" ).append( ecq.getScore() ).append( "</score>" );
 				sb.append( "<content><![CDATA[" ).append( ecq.getQuestion().getContent() ).append( "]]></content>");	
 				if( ecq.getQuestion().getQuestionType().getId().equals("1") || ecq.getQuestion().getQuestionType().getId().equals("2") )
