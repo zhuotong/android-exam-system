@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.msxt.client.model.Examination;
+import com.msxt.client.model.QUESTION_TYPE;
 import com.msxt.client.swing.component.QuestionButton;
 import com.msxt.client.swing.model.ExamBuildContext;
 import com.msxt.client.swing.utilities.GBC;
@@ -38,9 +39,9 @@ public class CatalogPanel extends JPanel{
 			
 			QuestionPanel qp = null;
 			
-			if( eq.getType().equals( "Single Choice" ) ) {
+			if( eq.getType() == QUESTION_TYPE.SINGLE_CHOICE ) {
 				qp = new SingleChoicePanel( eq, ebc );
-	        } else if( eq.getType().equals( "Multiple Choice" ) ) {
+	        } else if( eq.getType()== QUESTION_TYPE.MULTIPLE_CHOICE ) {
 	        	qp = new MultiChoicePanel( eq, ebc );
 	        }
 			

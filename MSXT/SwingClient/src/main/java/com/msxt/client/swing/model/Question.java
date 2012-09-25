@@ -5,6 +5,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import com.msxt.client.model.Examination;
+import com.msxt.client.model.QUESTION_TYPE;
 import com.msxt.client.swing.panel.QuestionPanel;
 
 public class Question {
@@ -24,9 +25,9 @@ public class Question {
     	state = State.UNFINISH;
         
         String iconPath = null;
-        if( gerQuestion.getType().equals( "Single Choice" ) ) {
+        if( gerQuestion.getType() == QUESTION_TYPE.SINGLE_CHOICE ) {
         	iconPath = "/images/single_choice.gif";
-        } else if( gerQuestion.getType().equals( "Multiple Choice" ) ) {
+        } else if( gerQuestion.getType() == QUESTION_TYPE.MULTIPLE_CHOICE ) {
         	iconPath = "/images/multiple_choice.gif";
         }
         
