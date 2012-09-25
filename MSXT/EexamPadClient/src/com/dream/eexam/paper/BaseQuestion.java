@@ -338,12 +338,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		//set pending questions
 		pendQuestions.clear();
 		loadPendingQuestions(dbUtil);
-		if(pendQuestions.size()>0){
-			pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_waiting)+"("+Integer.valueOf(pendQuestions.size())+")");	
-		}else{
-			pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_complete));
-		}
-		
+		pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_waiting)+"("+Integer.valueOf(pendQuestions.size())+")");
 		
 		//set catalog list
 		catalogInfos.clear();

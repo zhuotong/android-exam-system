@@ -176,10 +176,31 @@ public class BaseActivity extends Activity {
 	            fos.write(content.getBytes());  
 	            fos.close();  
 	        }  
+	        
+			SharedPreferences.Editor editor = sharedPreferences.edit();
+			editor.putString("examPath", path);  
+			editor.putString("examFile", fileName); 
+			editor.commit();
+			
 		} catch (Exception e) {
 			Log.e(LOG_TAG, "an error occured while writing file...", e);
 		}
 		Log.i(LOG_TAG,"saveFile end.");
+	}
+	
+	public void deleteFile(String path, String fileName) {
+		Log.i(LOG_TAG,"deleteFile...");
+		try {
+	        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {  
+	            File file = new File(path+File.separator+fileName);  
+	            if (file.exists()) {  
+	                file.delete();  
+	            } 
+	        }  
+		} catch (Exception e) {
+			Log.e(LOG_TAG, "an error occured while writing file...", e);
+		}
+		Log.i(LOG_TAG,"deleteFile end.");
 	}
 	
 	private long exitTime = 0;

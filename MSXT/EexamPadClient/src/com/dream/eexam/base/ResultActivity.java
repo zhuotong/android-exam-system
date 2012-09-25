@@ -1,11 +1,15 @@
 package com.dream.eexam.base;
 
+import java.io.File;
+
 import com.dream.eexam.util.ActivityStackControlUtil;
+import com.dream.eexam.util.SystemConfig;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -43,6 +47,9 @@ public class ResultActivity extends BaseActivity {
 		quitBtn = (Button) this.findViewById(R.id.quitBtn);
 		quitBtn.setOnClickListener(quitListener);
 		
+		String downloadExamFile = SystemConfig.getInstance().getPropertyValue("Download_Exam");
+    	String downloadExamFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + "eExam";
+    	deleteFile(downloadExamFilePath,downloadExamFile);
     }
 
     View.OnClickListener quitListener = new View.OnClickListener() {  

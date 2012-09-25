@@ -77,22 +77,34 @@ public class LoginActivity extends BaseActivity {
         public void onClick(View v) { 
         	Button lBtn = (Button)v;
         	lBtn.setEnabled(false);
-        	
-        	String id = idEt.getText().toString();
-        	String password = passwordET.getText().toString();
-        	
-			SharedPreferences.Editor editor = sharedPreferences.edit();
-			editor.putString("id", id);
-			editor.putString("password", password);
-			editor.commit();		
-    		
+
         	loginResultFile = SystemConfig.getInstance().getPropertyValue("Login_Result");
         	loginResultFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + "eExam";
-        	if (getWifiIP() != null && getWifiIP().trim().length() > 0 && !getWifiIP().trim().equals("0.0.0.0")){
-        		new DownloadXmlTask().execute(new String[]{id,password});
+        	
+        	String examPath = sharedPreferences.getString("examPath", null);
+        	String examFile = sharedPreferences.getString("examFile", null);
+        	String examStatus = sharedPreferences.getString("exam_status", null);
+        	if("start".equals(examStatus)&& new File(examPath+File.separator+examFile).exists()){
+	        	//go to continue exam page
+	        	Intent intent = new Intent();
+    			intent.putExtra("loginResultFile", loginResultFile);
+    			intent.putExtra("loginResultFilePath", loginResultFilePath);
+    			intent.setClass( mContext, ExamContinueActivity.class);
+    			startActivity(intent);  
         	}else{
-        		ShowDialog(mContext.getResources().getString(R.string.dialog_note),
-        				mContext.getResources().getString(R.string.msg_network_error));
+        		//go to exam list page
+            	String id = idEt.getText().toString();
+            	String password = passwordET.getText().toString();
+    			SharedPreferences.Editor editor = sharedPreferences.edit();
+    			editor.putString("id", id);
+    			editor.putString("password", password);
+    			editor.commit();		
+            	if (getWifiIP() != null && getWifiIP().trim().length() > 0 && !getWifiIP().trim().equals("0.0.0.0")){
+            		new DownloadXmlTask().execute(new String[]{id,password});
+            	}else{
+            		ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+            				mContext.getResources().getString(R.string.msg_network_error));
+            	}       		
         	}
         	
         }  

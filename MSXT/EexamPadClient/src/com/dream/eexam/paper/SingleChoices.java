@@ -236,30 +236,33 @@ public class SingleChoices extends BaseQuestion {
         }
         
     	//set catalog bar(Right) 
-    	if(pendQuestions.size()>0){
+//    	if(pendQuestions.size()>0){
     		pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_waiting)+"("+Integer.valueOf(pendQuestions.size())+")");
     		pendQueNumber.setOnClickListener(new View.OnClickListener() {
     			@Override
     			public void onClick(View v) {
-    				Intent intent = new Intent();
-    				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
-    				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
-    				intent.putExtra("questionType", cQuestionType);
-    				if(questionTypes[0].equals(cQuestionType)){
-    					intent.setClass( getBaseContext(), PendQuestions.class);
-    				}else if(questionTypes[1].equals(cQuestionType)){
-    					intent.setClass( getBaseContext(), PendQuestions.class);
+    				if(pendQuestions.size()>0){
+        				Intent intent = new Intent();
+        				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
+        				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
+        				intent.putExtra("questionType", cQuestionType);
+        				if(questionTypes[0].equals(cQuestionType)){
+        					intent.setClass( getBaseContext(), PendQuestions.class);
+        				}else if(questionTypes[1].equals(cQuestionType)){
+        					intent.setClass( getBaseContext(), PendQuestions.class);
+        				}
+        				finish();
+        				startActivity(intent);   					
+    				}else{
+    					ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+    							mContext.getResources().getString(R.string.message_tv_no_question));			
     				}
-    				finish();
-    				startActivity(intent);
+
     			}
     		});   		
-    	}else{
-    		pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_complete));
-    	}
-		 
-
-		
+//    	}else{
+//    		pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_complete));
+//    	}
 		
 		//set exam header(Center)
 		remainingTime.setText(String.valueOf(exam.getTime())+" mins");

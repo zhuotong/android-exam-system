@@ -45,7 +45,7 @@
     
     <!-- Exam Page(MultiChoice,SingChoice,PendingChoice) Start-->
     <string name="label_tv_waiting">等待</string>
-    <string name="label_tv_complete">全部完成</string>
+    <string name="message_tv_no_question">没有未完成的题目</string>
     <string name="label_tv_submit">提交试卷</string>
     <string name="label_tv_time_remaning">剩余时间:</string>
     

@@ -46,7 +46,7 @@
     
     <!-- Exam Page(MultiChoice,SingChoice,PendingChoice) Start-->
     <string name="label_tv_waiting">Pending</string>
-    <string name="label_tv_complete">Completed</string>
+    <string name="message_tv_no_question">No question Pending</string>
     <string name="label_tv_submit">Submit</string>
     <string name="label_tv_time_remaning">Time Remaining:</string>
     
