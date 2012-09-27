@@ -118,7 +118,13 @@ public class SingleChoices extends BaseQuestion {
         initialComponents();
         setHeader();
         
-        String questionHint = "Q"+String.valueOf(cQuestionIndexOfExam)+" (Score:"+String.valueOf(cQuestion.getScore())+")\n";
+		String questionHint = "Q"
+				+ String.valueOf(cQuestionIndexOfExam)
+				+ " ("
+				+ mContext.getResources().getString(
+						R.string.msg_question_score) + ":"
+				+ String.valueOf(cQuestion.getScore()) + ")\n";
+        
         Log.i(LOG_TAG, "questionHint:"+questionHint);
     	
         //set question text
@@ -282,7 +288,7 @@ public class SingleChoices extends BaseQuestion {
 		    	int waitQuestions = examQuestionSum - examAnsweredQuestionSum;
 				if (waitQuestions> 0) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(SingleChoices.this);
-					builder.setMessage(String.valueOf(waitQuestions) + " " + mContext.getResources().getString(R.string.msg_submiting_warning))
+					builder.setMessage(String.valueOf(waitQuestions) + " " + mContext.getResources().getString(R.string.msg_submiting_warning)+"...")
 							.setCancelable(false)
 							.setPositiveButton(mContext.getResources().getString(R.string.msg_submiting_warning_yes),
 									new DialogInterface.OnClickListener() {

@@ -14,6 +14,7 @@
     <string name="label_btn_login">登录</string>
     <string name="label_btn_reset">设置</string>
     <string name="msg_login_server">正在登录...</string>
+    <string name="msg_network_error">你的网络存在问题</string>
     <!-- 登陆页面结束 -->
     
     <!-- 开始设置页面-->
@@ -44,12 +45,12 @@
     <!-- 结束继续考试页面-->
     
     <!-- Exam Page(MultiChoice,SingChoice,PendingChoice) Start-->
+    <string name="msg_question_score">分数</string>
     <string name="label_tv_waiting">等待</string>
     <string name="message_tv_no_question">没有未完成的题目</string>
     <string name="label_tv_submit">提交试卷</string>
     <string name="label_tv_time_remaning">剩余时间:</string>
-    
-    <string name="msg_submiting">正在提交试卷,请耐性等待...</string>
+    <string name="msg_submiting">正在提交试卷,请耐性等待</string>
     
     <string name="msg_submiting_warning">个问题没有回答，仍然提交试卷？</string>
     <string name="msg_submiting_warning_yes">是</string>
@@ -82,10 +83,14 @@
 
 	<!-- Other -->
 	<string name="dialog_note">通知</string>
+
  	<string-array name="question_types">
-        <item>Multiple Choice</item>
-        <item>Single Choice</item>
+        <item>M</item>
+        <item>S</item>
+        <item>F</item>
+        <item>E</item>
     </string-array>
+ 
     <string-array name="display_choice_label">
         <item>A</item>
         <item>B</item>

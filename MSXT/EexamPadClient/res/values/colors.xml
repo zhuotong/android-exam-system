@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?> 
 <resources> 
-<color name="catalog_menu_bg">#F1ABF9</color>
-<color name="catalog_menu_text_color">#000000</color>
-<color name="success_message_color">#5326FF</color>
-<color name="failure_message_color">#FF0000</color>
+	<color name="catalog_menu_bg">#F1ABF9</color>
+	<color name="catalog_menu_text_color">#000000</color>
+	<color name="success_message_color">#5326FF</color>
+	<color name="failure_message_color">#FF0000</color>
 </resources>

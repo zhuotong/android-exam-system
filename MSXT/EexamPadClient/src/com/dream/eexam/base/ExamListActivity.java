@@ -33,6 +33,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import com.msxt.client.model.QUESTION_TYPE;
 
 public class ExamListActivity extends BaseActivity {
 	private static final String LOG_TAG = "ExamListActivity";
@@ -61,7 +62,7 @@ public class ExamListActivity extends BaseActivity {
 	String downloadExamFile = null;
 	String downloadExamFilePath = null;
 	
-	String fQuestionType = null;
+	QUESTION_TYPE fQuestionType = null;
 	String[] questionTypes;
 	
 	@Override
@@ -205,17 +206,16 @@ public class ExamListActivity extends BaseActivity {
 				Intent intent = new Intent();
 				intent.putExtra("ccIndex", String.valueOf(ccIndex));
 				intent.putExtra("cqIndex", String.valueOf(cqIndex));
-				intent.putExtra("questionType",fQuestionType);
-				
-				if(questionTypes[0].equals(fQuestionType)){
+				if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(fQuestionType)){
+					intent.putExtra("questionType",questionTypes[0]);
 					intent.setClass( getBaseContext(), MultiChoices.class);
 					startActivity(intent);
-				}else if(questionTypes[1].equals(fQuestionType)){
+				}else if(QUESTION_TYPE.SINGLE_CHOICE.equals(fQuestionType)){
+					intent.putExtra("questionType",questionTypes[1]);
 					intent.setClass( getBaseContext(), SingleChoices.class);
 					startActivity(intent);
 				}else{
-					ShowDialog(mContext.getResources().getString(R.string.dialog_note),
-							"Invalid qeustion type:"+fQuestionType);
+					ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Invalid qeustion type.");
 				}
 				
 				//save exam status

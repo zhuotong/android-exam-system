@@ -45,6 +45,7 @@
     <!-- Continue Exam Page End-->
     
     <!-- Exam Page(MultiChoice,SingChoice,PendingChoice) Start-->
+    <string name="msg_question_score">Score</string>
     <string name="label_tv_waiting">Pending</string>
     <string name="message_tv_no_question">No question Pending</string>
     <string name="label_tv_submit">Submit</string>
@@ -54,7 +55,7 @@
     <string name="msg_submiting_warning_yes">Yes</string>
     <string name="msg_submiting_warning_cancel">Cancel</string>
     
- 	<string name="msg_submiting">Submitting answer,please waiting...</string>
+ 	<string name="msg_submiting">Submitting answer,please waiting</string>
  	
 	<string name="warning_go_home">Exam not submitted yet, still quit?</string>
 	<string name="warning_go_home_yes">Yes</string>
@@ -83,8 +84,10 @@
 	<!-- Other -->
 	<string name="dialog_note">Note</string>
  	<string-array name="question_types">
-        <item>Multiple Choice</item>
-        <item>Single Choice</item>
+        <item>M</item>
+        <item>S</item>
+        <item>F</item>
+        <item>E</item>
     </string-array>
     <string-array name="display_choice_label">
         <item>A</item>
@@ -98,7 +101,6 @@
         <item>I</item>
         <item>J</item>
     </string-array>
-    <string name="host">192.168.1.100</string>
     <string name="port">8080</string>
     <string name="app_file_home">eExam</string>
     <string name="login_file_name">login_result.xml</string>

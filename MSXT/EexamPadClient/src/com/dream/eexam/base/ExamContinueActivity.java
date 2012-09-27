@@ -10,6 +10,7 @@ import com.dream.eexam.server.FileUtil;
 import com.dream.eexam.util.DatabaseUtil;
 import com.msxt.client.model.Examination;
 import com.msxt.client.model.LoginSuccessResult;
+import com.msxt.client.model.QUESTION_TYPE;
 import com.msxt.client.model.Examination.Question;
 
 import android.content.Context;
@@ -43,6 +44,7 @@ public class ExamContinueActivity extends BaseActivity {
 	private Button continueBtn;
 	private Button cancelBtn;
 	
+	QUESTION_TYPE fQuestionType = null;
 	String[] questionTypes;
 	
 	@Override
@@ -106,23 +108,22 @@ public class ExamContinueActivity extends BaseActivity {
 					return;
 				}
 				
-				String fQuestionType = fQuestion.getType();
-	
+				fQuestionType = fQuestion.getType();
+				
 				//move question
 				Intent intent = new Intent();
 				intent.putExtra("ccIndex", String.valueOf(ccIndex));
 				intent.putExtra("cqIndex", String.valueOf(cqIndex));
-				intent.putExtra("questionType",fQuestionType);
-				
-				if(questionTypes[0].equals(fQuestionType)){
-					intent.setClass( ExamContinueActivity.this, MultiChoices.class);
+				if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(fQuestionType)){
+					intent.putExtra("questionType",questionTypes[0]);
+					intent.setClass( getBaseContext(), MultiChoices.class);
 					startActivity(intent);
-				}else if(questionTypes[1].equals(fQuestionType)){
-					intent.setClass( ExamContinueActivity.this, SingleChoices.class);
+				}else if(QUESTION_TYPE.SINGLE_CHOICE.equals(fQuestionType)){
+					intent.putExtra("questionType",questionTypes[1]);
+					intent.setClass( getBaseContext(), SingleChoices.class);
 					startActivity(intent);
 				}else{
-					ShowDialog(mContext.getResources().getString(R.string.dialog_note),
-							"Invalid qeustion type:"+fQuestionType);
+					ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Invalid qeustion type.");
 				}
 			}			
 		});

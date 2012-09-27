@@ -20,6 +20,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import com.dream.eexam.base.R;
 import com.dream.eexam.server.DataUtil;
+import com.msxt.client.model.QUESTION_TYPE;
 import com.msxt.client.model.Examination.Question;
 
 public class PendQuestions extends BaseQuestion {
@@ -260,15 +261,15 @@ public class PendQuestions extends BaseQuestion {
     				Intent intent = new Intent();
     				intent.putExtra("ccIndex", String.valueOf(DataUtil.getCidByQid(exam, nQuestion.getId())));
     				intent.putExtra("cqIndex", String.valueOf(nQuestion.getIndex()));
-    				intent.putExtra("questionType", nQuestion.getType());
     				
-    				if(questionTypes[0].equals(nQuestion.getType())){
+    				if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(nQuestion.getType())){
+    					intent.putExtra("questionType", questionTypes[0]);
     					intent.setClass( mContext, MultiChoices.class);
-    				}else if(questionTypes[1].equals(nQuestion.getType())){
+    				}else if(QUESTION_TYPE.SINGLE_CHOICE.equals(nQuestion.getType())){
+    					intent.putExtra("questionType", questionTypes[1]);
     					intent.setClass( mContext, SingleChoices.class);
     				}else{
-    					ShowDialog(mContext.getResources().getString(R.string.dialog_note),
-    							"Invalid qeustion type:"+cQuestionType);
+    					ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Invalid qeustion type!");
     				}
     				finish();
     				startActivity(intent);

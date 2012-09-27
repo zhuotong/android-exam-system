@@ -13,6 +13,7 @@ import java.util.TimerTask;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -46,6 +47,7 @@ import com.msxt.client.model.Examination;
 import com.msxt.client.model.Examination.Catalog;
 import com.msxt.client.model.Examination.Choice;
 import com.msxt.client.model.Examination.Question;
+import com.msxt.client.model.QUESTION_TYPE;
 
 public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, OnGestureListener,OnTouchListener{
 	
@@ -328,9 +330,18 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		//set exam progress bar
 		examAnsweredQuestionSum = dbUtil.fetchAllAnswersCount();
 		int per = 100 * examAnsweredQuestionSum/examQuestionSum;
+		
 		completedSeekBar.setThumb(null);
 		completedSeekBar.setProgress(per);
 		completedSeekBar.setEnabled(false);
+		
+/*		TypedArray colors = getResources().obtainTypedArray(R.array.completed_seekbar_colors);
+		switch (per/25){
+		case 0:completedSeekBar.setBackgroundColor(colors.getColor(0, 0));break;
+		case 1:completedSeekBar.setBackgroundColor(colors.getColor(1, 0));break;
+		case 2:completedSeekBar.setBackgroundColor(colors.getColor(2, 0));break;
+		case 3:completedSeekBar.setBackgroundColor(colors.getColor(3, 0));break;
+		}*/
 		
 		//set exam progress text
 		completedPercentage.setText(String.valueOf(per)+"%");
@@ -365,7 +376,9 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		Question newQuestion = DataUtil.getNewQuestionByCidQid(exam, cid, qid,diret);
 		
 		if(newQuestion!=null){
-			String newQuestionType = newQuestion.getType();
+//			String newQuestionType = newQuestion.getType();
+			QUESTION_TYPE newQuestionType = newQuestion.getType();
+			
 			if(newQuestionType!=null){
 				finish();
 				
@@ -373,11 +386,13 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 				Intent intent = new Intent();
 				intent.putExtra("ccIndex",String.valueOf(DataUtil.getCidByQid(exam, newQuestion.getId())));
 				intent.putExtra("cqIndex",String.valueOf(newQuestion.getIndex()));
-				intent.putExtra("questionType", newQuestionType);
 				
-				if(questionTypes[0].equals(newQuestionType)){
+				
+				if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(newQuestionType)){
+					intent.putExtra("questionType", questionTypes[0]);
 					intent.setClass( context, MultiChoices.class);
-				}else if(questionTypes[1].equals(newQuestionType)){
+				}else if(QUESTION_TYPE.SINGLE_CHOICE.equals(newQuestionType)){
+					intent.putExtra("questionType", questionTypes[1]);
 					intent.setClass( context, SingleChoices.class);
 				}
 				
@@ -557,15 +572,15 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 				
 				CatalogInfo info = catalogInfos.get(position);
 				Question nQuestion = DataUtil.getQuestionByCidQid(exam, info.getIndex(),1);
-				String nQuestionType = nQuestion.getType();
+				QUESTION_TYPE nQuestionType = nQuestion.getType();
 				Intent intent = new Intent();
 				intent.putExtra("ccIndex", String.valueOf(info.getIndex()));
 				intent.putExtra("cqIndex", String.valueOf(nQuestion.getIndex()));
-				if(questionTypes[0].equals(nQuestionType)){
-					intent.putExtra("questionType", "Multi Select");
+				if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(nQuestionType)){
+					intent.putExtra("questionType", questionTypes[0]);
 					intent.setClass( mContext, MultiChoices.class);
-				}else if(questionTypes[1].equals(nQuestionType)){
-					intent.putExtra("questionType", "Single Select");
+				}else if(QUESTION_TYPE.SINGLE_CHOICE.equals(nQuestionType)){
+					intent.putExtra("questionType", questionTypes[1]);
 					intent.setClass( mContext, SingleChoices.class);
 				}else{
 					ShowDialog(mContext.getResources().getString(R.string.dialog_note),
