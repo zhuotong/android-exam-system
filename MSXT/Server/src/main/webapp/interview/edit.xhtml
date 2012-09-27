@@ -201,7 +201,12 @@
 	                						<tr>
 	                							<td>${ie.exam.name}</td>
 	                							<td>${ie.exam.position.name}</td>
-	                							<td><select name="exam_confuse"><option value="0" selected="#{ie.examConfuse==0?'selected':''}">NO</option><option value="1" selected="#{ie.examConfuse==1?'selected':''}">YES</option></select></td>
+	                							<td>
+	                								<select name="exam_confuse">
+	                									<option value="0" selected="#{ie.examConfuse==0?'selected':''}">NO</option>
+	                									<option value="1" selected="#{ie.examConfuse==1?'selected':''}">YES</option>
+	                								</select>
+	                							</td>
 	                							<td><input type="button" value="View" onclick="viewExam(this)"/>&nbsp;&nbsp;<input type="button" value="Delete" onclick="deleteExam(this)"/><input type="hidden" name="exam_id" id="${ie.exam.id}" value="${ie.exam.id}"/></td>
 	                						</tr>
 	                						</ui:repeat>
