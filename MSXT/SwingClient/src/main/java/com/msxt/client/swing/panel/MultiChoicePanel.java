@@ -57,7 +57,7 @@ public class MultiChoicePanel extends QuestionPanel{
 			Examination.Choice c = choices.get(i);			
 			JCheckBox cb = new JCheckBox( c.getLabel() + ". " );
 			cb.setFont( ebc.getQuestionFont() );
-			cb.setActionCommand( c.getLabel() );
+			cb.setActionCommand( c.getActualLabel() );
 			cb.addActionListener( new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {

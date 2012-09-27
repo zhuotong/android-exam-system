@@ -59,7 +59,7 @@ public class SingleChoicePanel extends QuestionPanel{
 			Examination.Choice c = choices.get(i);			
 			JRadioButton l = new JRadioButton( c.getLabel() + ". " );
 			l.setFont( ebc.getQuestionFont() );
-			l.setActionCommand( c.getLabel() );
+			l.setActionCommand( c.getActualLabel() );
 			l.addActionListener( new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
