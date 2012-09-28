@@ -15,14 +15,14 @@
 	<packaging>jar</packaging>
 	
 	<build>
-		<scriptSourceDirectory>main/src/scripts</scriptSourceDirectory>
+		<scriptSourceDirectory>src/main/scripts</scriptSourceDirectory>
 		<plugins>	
 			<plugin>
 			    <artifactId>maven-assembly-plugin</artifactId>
 			    <version>2.2.1</version>
 			    <configuration>
 			        <descriptors>
-			            <descriptor>main/assembly/bin.xml</descriptor>
+			            <descriptor>src/assembly/bin.xml</descriptor>
 			        </descriptors>
 			    </configuration>
 			    <executions>
