@@ -47,6 +47,7 @@ public class ResultActivity extends BaseActivity {
 		quitBtn = (Button) this.findViewById(R.id.quitBtn);
 		quitBtn.setOnClickListener(quitListener);
 		
+		//clear exam answer history
 		String downloadExamFile = SystemConfig.getInstance().getPropertyValue("Download_Exam");
     	String downloadExamFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + "eExam";
     	deleteFile(downloadExamFilePath,downloadExamFile);
