@@ -2,10 +2,15 @@ package com.dream.eexam.base;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.util.Iterator;
+import java.util.Map;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SystemConfig;
 import com.msxt.client.server.ServerProxy;
 import com.msxt.client.server.WebServerProxy;
@@ -15,6 +20,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -42,6 +48,39 @@ public class LoginActivity extends BaseActivity {
 	
 	private Context mContext;
 	
+	public void printStoredDataInSP(){
+		
+		Log.i(LOG_TAG,"----------------data in sharedPreferences-----------------");
+		//print all stored data in sharedPreferences
+		Map<String, ?> dataInSP = sharedPreferences.getAll();
+		Iterator it = dataInSP.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry entry = (Map.Entry) it.next();
+			Object key = entry.getKey();
+			Object value = entry.getValue();
+			Log.i(LOG_TAG,"key=" + key + " value=" + value);
+		}
+	}
+	
+	public void printStoredDataInDB(){
+		
+		Log.i(LOG_TAG,"----------------data in SQLLite-----------------");
+		
+		DatabaseUtil dbUtil = new DatabaseUtil(mContext);
+		dbUtil.open();
+		
+    	Cursor cursor = dbUtil.fetchAllAnswers();
+    	while(cursor.moveToNext()){
+    		int cid = cursor.getInt(0);
+    		int qid = cursor.getInt(1);
+			String qidStr = cursor.getString(2);
+			String answer = cursor.getString(3);
+			Log.i(LOG_TAG, "cid="+String.valueOf(cid)+" qid="+String.valueOf(qid)+" qidStr="+qidStr+" answer="+answer);
+		}
+    	cursor.close();
+    	dbUtil.close();
+	}
+	
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,6 +88,9 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         mContext = getApplicationContext();
+        
+        printStoredDataInSP();
+        printStoredDataInDB();
 		
         saveHost = sharedPreferences.getString("host", null);
         
