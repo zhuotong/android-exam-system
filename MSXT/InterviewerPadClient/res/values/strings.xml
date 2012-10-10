@@ -1,3 +1,25 @@
-<resources>
-    <string name="app_name">InterviewerPadClient</string>
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<!-- Common Start-->
+    <string name="app_name">EexamClient</string>
+    <string name="msg_header_tv_home">Home</string>
+    <string name="msg_exit_hint">Click again to exit</string> 
+    <string name="port">8080</string>  
+    <!-- Common End-->
+
+    <!-- Login Page Start-->
+	<string name="msg_logo_desc">Easy Interview</string>
+	<string name="label_tv_username">Username:</string>
+	<string name="label_et_username_hint">Input Username</string>
+    <string name="label_tv_password">Password :</string>
+    <string name="label_et_password_hint">Input Password</string>
+	<string name="label_chb_save_id">Save Username</string>
+    <string name="label_chb_save_password">Save Password</string>
+    <string name="label_btn_login">Sign In</string>
+    <string name="label_btn_reset">Setting</string>
+    <string name="msg_login_server">Login to server...</string>
+    <string name="msg_network_error">Your mobile is not in a available NetWork!</string>
+    <!-- Login Page End -->
+    
 </resources>
