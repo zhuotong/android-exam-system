@@ -3,9 +3,7 @@
 
 	<!-- Common Start-->
     <string name="app_name">EexamClient</string>
-    <string name="msg_header_tv_home">Home</string>
     <string name="msg_exit_hint">Click again to exit</string> 
-    <string name="port">8080</string>  
     <!-- Common End-->
 
     <!-- Login Page Start-->
@@ -14,12 +12,20 @@
 	<string name="label_et_username_hint">Input Username</string>
     <string name="label_tv_password">Password :</string>
     <string name="label_et_password_hint">Input Password</string>
-	<string name="label_chb_save_id">Save Username</string>
-    <string name="label_chb_save_password">Save Password</string>
     <string name="label_btn_login">Sign In</string>
     <string name="label_btn_reset">Setting</string>
-    <string name="msg_login_server">Login to server...</string>
-    <string name="msg_network_error">Your mobile is not in a available NetWork!</string>
     <!-- Login Page End -->
+    
+    <!-- candidate_list_title -->
+    <string name="label_candidate_title_time">Time</string>
+    <string name="label_candidate_title_position">Position</string>
+    <string name="label_candidate_title_name">Name</string>
+    
+    <!-- candidate resume -->
+    <string name="label_resume_name">name</string>
+    <string name="label_resume_gender">gender</string>
+    <string name="label_resume_age">age</string>
+    <string name="label_resume_education">education</string>
+    <string name="label_resume_experience">experience</string>
     
 </resources>

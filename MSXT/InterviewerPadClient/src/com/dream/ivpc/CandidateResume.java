@@ -1,54 +1,57 @@
 package com.dream.ivpc;
 
+import com.dream.ivpc.model.CandiateDetailBean;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
 
-public class LoginActivity extends BaseActivity {
+public class CandidateResume extends BaseActivity {
 	public final static String LOG_TAG = "LoginActivity";
 	
-	String saveHost = null;
-	EditText idEt = null;
-	EditText passwordET = null;
-	String saveId = null;
-	String savePassword = null;
-	Button loginBtn = null;
-	Button settingBtn = null;
-	String loginResultFile = null;
-	String loginResultFilePath = null;
 	Context mContext;
+	TextView name;
+	TextView gender;
+	TextView age;
+	TextView education;
+	TextView experience;
+
+	public CandiateDetailBean getCandiateDetailBean(){
+		CandiateDetailBean bean = new CandiateDetailBean();
+		bean.setName("Timothy");
+		bean.setGender("Male");
+		bean.setAge("30");
+		bean.setEducation("Bachor");
+		bean.setExperience("...........\n...........\n...........\n...........\n");
+		
+		return bean;
+	}
 	
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	Log.i(LOG_TAG,"onCreate...");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
+        setContentView(R.layout.candidate_resume);
         mContext = getApplicationContext();
         
-        saveHost = sharedPreferences.getString("host", null);
         
-        idEt = (EditText) this.findViewById(R.id.idEt);
-		saveId = sharedPreferences.getString("id", null);
-		if(saveId!=null||!"".equals(saveId)){
-			idEt.setText(saveId);
-		}
-		
-		passwordET = (EditText) this.findViewById(R.id.passwordET);
-		savePassword = sharedPreferences.getString("password", null);
-		if(savePassword!=null||!"".equals(savePassword)){
-			passwordET.setText(savePassword);
-		}
-		
-		loginBtn = (Button) this.findViewById(R.id.loginBtn);
-		loginBtn.setOnClickListener(loginListener);
-		
-		settingBtn = (Button) this.findViewById(R.id.settingBtn);
-		
+        name = (TextView) this.findViewById(R.id.name);
+        gender = (TextView) this.findViewById(R.id.gender);
+        age = (TextView) this.findViewById(R.id.age);
+        education = (TextView) this.findViewById(R.id.education);
+        experience = (TextView) this.findViewById(R.id.experience);
+        
+        CandiateDetailBean bean = getCandiateDetailBean();
+        name.setText(bean.getName());
+        gender.setText(bean.getGender());
+        age.setText(bean.getAge());
+        education.setText(bean.getEducation());
+        experience.setText(bean.getExperience());
+
     }
 
     View.OnClickListener loginListener = new View.OnClickListener() {  

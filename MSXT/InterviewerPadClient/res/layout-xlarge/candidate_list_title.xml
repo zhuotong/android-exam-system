@@ -5,29 +5,26 @@
   android:layout_height="wrap_content"
   android:descendantFocusability="blocksDescendants">
 
-      <TextView
-	     android:id="@+id/time"
+	  <TextView
+	     android:layout_width="50dp"
+	     android:layout_height="wrap_content"
+	     android:textSize="18sp"
+	     android:textColor="#FFFFFF"
+	     android:text="@string/label_candidate_title_time"/>
+	     
+	  <TextView
+	     android:layout_width="50dp"
+	     android:layout_height="wrap_content"
+	     android:textSize="18sp"
+	     android:textColor="#FFFFFF"
+	     android:text="@string/label_candidate_title_position"/>
+	     
+	  <TextView
 	     android:layout_width="wrap_content"
 	     android:layout_height="wrap_content"
 	     android:singleLine="false"
 	     android:layout_marginLeft="3dp"
 	     android:textSize="18sp"
-	     android:textColor="#FFFFFF"/>
-    	  
-	  <TextView
-	     android:id="@+id/name"
-	     android:layout_width="50dp"
-	     android:layout_height="wrap_content"
-	     android:textSize="18sp"
-	     android:textColor="#FFFFFF"/>
-	     
-	  <TextView
-	     android:id="@+id/position"
-	     android:layout_width="50dp"
-	     android:layout_height="wrap_content"
-	     android:textSize="18sp"
-	     android:textColor="#FFFFFF"/>
-	     
-
+	     android:text="@string/label_candidate_title_name"/>
 	  
 </LinearLayout>

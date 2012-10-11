@@ -3,19 +3,15 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_margin="1dip"
-    android:background="@drawable/bg_color_multichoices">
+    android:layout_margin="1dip">
 
-    <include
-	       android:id="@+id/baseHeader"
-	       layout="@layout/exam_header" /> 
+    <include layout="@layout/candidate_list_header" /> 
+    <include layout="@layout/candidate_list_title" /> 	       
 				   
 	<ListView
      	android:id="@+id/candidate_list"
      	android:layout_width="fill_parent"
      	android:layout_height="fill_parent" 
-     	android:layout_below="@id/listHeader"
-  		android:layout_above="@id/listFooter"
   		android:background="#000000"
   		/>
 </LinearLayout>
