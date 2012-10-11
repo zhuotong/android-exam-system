@@ -60,9 +60,10 @@ public class CandidateListAdapter extends BaseAdapter {
 		
 		CandiateBean bean = candiateList.get(position);
 		
-		holder.name.setText(bean.getName());
-		holder.position.setText(bean.getPosition());
 		holder.time.setText(bean.getTime());
+		holder.position.setText(bean.getPosition());
+		holder.name.setText(bean.getName());
+		
 		
 		return view;
 	}

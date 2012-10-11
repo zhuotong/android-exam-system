@@ -1,21 +1,33 @@
 package com.dream.ivpc.model;
 
 public class CandiateBean extends BaseBean {
-	private String name;
-	private String position;
 	private String time;
-
+	private String position;
+	private String name;
+	
 	public CandiateBean() {
 		super();
 	}
-
-	public CandiateBean(String name, String position, String time) {
+	
+	public CandiateBean(String time, String position, String name) {
 		super();
-		this.name = name;
+		this.time = time;
 		this.position = position;
+		this.name = name;
+	}
+
+	public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
 		this.time = time;
 	}
-	
+	public String getPosition() {
+		return position;
+	}
+	public void setPosition(String position) {
+		this.position = position;
+	}
 	public String getName() {
 		return name;
 	}
@@ -23,17 +35,6 @@ public class CandiateBean extends BaseBean {
 		this.name = name;
 	}
 	
-	public String getPosition() {
-		return position;
-	}
-	public void setPosition(String position) {
-		this.position = position;
-	}
-	public String getTime() {
-		return time;
-	}
-	public void setTime(String time) {
-		this.time = time;
-	}
+
 	
 }

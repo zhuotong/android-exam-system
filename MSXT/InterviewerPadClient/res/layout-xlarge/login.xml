@@ -3,7 +3,8 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	android:id="@+id/layout1"
-	android:background="@drawable/bg_color_login" android:orientation="vertical">
+	android:background="@drawable/commom_bg_color" 
+	android:orientation="vertical">
 	
 	<!-- header -->
     <include

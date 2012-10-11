@@ -7,10 +7,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class CandidateResume extends BaseActivity {
 	public final static String LOG_TAG = "LoginActivity";
+	
+	ImageView imgGoBack = null;
 	
 	Context mContext;
 	TextView name;
@@ -38,6 +41,8 @@ public class CandidateResume extends BaseActivity {
         setContentView(R.layout.candidate_resume);
         mContext = getApplicationContext();
         
+        imgGoBack = (ImageView) findViewById(R.id.imgGoBack);
+        imgGoBack.setOnClickListener(goBackListener);
         
         name = (TextView) this.findViewById(R.id.name);
         gender = (TextView) this.findViewById(R.id.gender);
@@ -54,7 +59,7 @@ public class CandidateResume extends BaseActivity {
 
     }
 
-    View.OnClickListener loginListener = new View.OnClickListener() {  
+    View.OnClickListener goBackListener = new View.OnClickListener() {  
         @Override  
         public void onClick(View v) { 
         	Intent intent = new Intent();
@@ -62,6 +67,7 @@ public class CandidateResume extends BaseActivity {
 			startActivity(intent);  
         }  
     };
+    
     
     @Override
 	public void finish() {

@@ -3,7 +3,8 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_margin="1dip">
+    android:layout_margin="1dip"
+    android:background="@drawable/commom_bg_color">
 
     <include layout="@layout/candidate_list_header" /> 
     <include layout="@layout/candidate_list_title" /> 	       
@@ -12,6 +13,5 @@
      	android:id="@+id/candidate_list"
      	android:layout_width="fill_parent"
      	android:layout_height="fill_parent" 
-  		android:background="#000000"
   		/>
 </LinearLayout>

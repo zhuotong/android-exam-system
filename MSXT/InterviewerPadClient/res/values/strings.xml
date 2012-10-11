@@ -2,7 +2,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<!-- Common Start-->
-    <string name="app_name">EexamClient</string>
+    <string name="app_name">EasyInterview</string>
     <string name="msg_exit_hint">Click again to exit</string> 
     <!-- Common End-->
 
@@ -22,10 +22,12 @@
     <string name="label_candidate_title_name">Name</string>
     
     <!-- candidate resume -->
-    <string name="label_resume_name">name</string>
-    <string name="label_resume_gender">gender</string>
-    <string name="label_resume_age">age</string>
-    <string name="label_resume_education">education</string>
-    <string name="label_resume_experience">experience</string>
+    <string name="msg_logo_go_back">Go back to candidate list</string>
+    
+    <string name="label_resume_name">Name</string>
+    <string name="label_resume_gender">Gender</string>
+    <string name="label_resume_age">Age</string>
+    <string name="label_resume_education">Education</string>
+    <string name="label_resume_experience">Experience</string>
     
 </resources>

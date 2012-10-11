@@ -4,13 +4,13 @@
     android:layout_height="60dp" 
     android:background="@drawable/bg_color_login_header">
         
-    	<ImageView android:id="@+id/imgHome"
+    	<ImageView android:id="@+id/imgGoBack"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginLeft="5dp"
 	        android:layout_gravity="center_vertical|left"
 	        android:paddingLeft="8dp"
-					android:src="@drawable/home_64"
-					android:contentDescription="@string/msg_logo_desc">
+			android:src="@drawable/goback_64"
+			android:contentDescription="@string/msg_logo_go_back">
 	   </ImageView>
 </FrameLayout>

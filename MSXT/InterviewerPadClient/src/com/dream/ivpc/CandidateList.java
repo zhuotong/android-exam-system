@@ -2,18 +2,20 @@ package com.dream.ivpc;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.dream.ivpc.model.CandiateBean;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class CandidateList extends Activity {
+public class CandidateList extends BaseActivity {
+	
+	ImageView imgHome = null;
+	
 	protected Context mContext;
 	protected ListView listView;
 	CandidateListAdapter adapter;
@@ -37,6 +39,9 @@ public class CandidateList extends Activity {
         setContentView(R.layout.candidate_list);
         mContext = getApplicationContext();
 
+		imgHome = (ImageView) findViewById(R.id.imgHome);
+		imgHome.setOnClickListener(goHomeListener);
+		
         //getCandiateList
         List<CandiateBean> candiateList = getCandiateList();
         
@@ -56,4 +61,11 @@ public class CandidateList extends Activity {
 
         
     }
+    
+    View.OnClickListener goHomeListener = new View.OnClickListener(){
+		@Override
+		public void onClick(View v) {
+			goHome(mContext);
+		}
+	};
 }
