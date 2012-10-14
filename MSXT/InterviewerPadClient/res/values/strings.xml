@@ -24,10 +24,12 @@
     <!-- candidate resume -->
     <string name="msg_logo_go_back">Go back to candidate list</string>
     
+    <string name="label_resume_title_base_info">Base Info</string>
     <string name="label_resume_name">Name</string>
     <string name="label_resume_gender">Gender</string>
     <string name="label_resume_age">Age</string>
     <string name="label_resume_education">Education</string>
     <string name="label_resume_experience">Experience</string>
+    <string name="label_resume_title_experience">Experience</string>
     
 </resources>

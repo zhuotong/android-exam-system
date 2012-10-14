@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class CandidateResume extends BaseActivity {
+public class CandidateInfoResume extends BaseActivity {
 	public final static String LOG_TAG = "LoginActivity";
 	
 	ImageView imgGoBack = null;
@@ -38,7 +38,7 @@ public class CandidateResume extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
     	Log.i(LOG_TAG,"onCreate...");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.candidate_resume);
+        setContentView(R.layout.candidate_info_resume);
         mContext = getApplicationContext();
         
         imgGoBack = (ImageView) findViewById(R.id.imgGoBack);

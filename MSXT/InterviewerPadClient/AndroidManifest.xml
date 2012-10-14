@@ -33,7 +33,17 @@
                   android:launchMode="singleTask">
         </activity>
 
-        <activity android:name=".CandidateResume"
+        <activity android:name=".CandidateInfoResume"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        
+        <activity android:name=".CandidateInfoExamRpt"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        
+        <activity android:name=".CandidateInfoExamDetail"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>

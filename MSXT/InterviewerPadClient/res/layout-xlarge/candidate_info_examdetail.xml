@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:id="@+id/layout1"
+	android:background="@drawable/commom_bg_color" 
+	android:orientation="vertical">
+	
+    <include
+        layout="@layout/candidate_header" 
+        android:layout_gravity="top"/>
+	
+    <include
+        layout="@layout/candidate_footer" 
+        android:layout_gravity="bottom"/>
+        
+</LinearLayout>
+

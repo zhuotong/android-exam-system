@@ -23,12 +23,12 @@ public class CandidateList extends BaseActivity {
 	public List<CandiateBean> getCandiateList(){
 		List<CandiateBean> candiateList = new ArrayList<CandiateBean>();
 		
-		candiateList.add(new CandiateBean("2012-10-12 09:00","Java Engineer","Timothy"));
-		candiateList.add(new CandiateBean("2012-10-12 09:00","Java Engineer","Jack"));
-		candiateList.add(new CandiateBean("2012-10-12 09:00","Java Engineer","Tom"));
+		candiateList.add(new CandiateBean("2012-10-12 09:00","Timothy","Java Engineer"));
+		candiateList.add(new CandiateBean("2012-10-12 09:00","Jack","Java Engineer"));
+		candiateList.add(new CandiateBean("2012-10-12 09:00","Tom","Java Engineer"));
 		
-		candiateList.add(new CandiateBean("2012-10-13 09:00","Java Designer","LiLei"));
-		candiateList.add(new CandiateBean("2012-10-13 09:00","Java Tester","Hanmeimei"));
+		candiateList.add(new CandiateBean("2012-10-13 09:00","LiLei","Java Designer"));
+		candiateList.add(new CandiateBean("2012-10-13 09:00","Hanmeimei","Java Tester"));
 		
 		return candiateList;
 	}
@@ -54,7 +54,7 @@ public class CandidateList extends BaseActivity {
 			public void onItemClick(AdapterView<?> adapter, View view, int arg2,
 					long arg3) {
             	Intent intent = new Intent();
-    			intent.setClass( mContext, CandidateResume.class);
+    			intent.setClass( mContext, CandidateInfoResume.class);
     			startActivity(intent);  
 			}      	
         });
