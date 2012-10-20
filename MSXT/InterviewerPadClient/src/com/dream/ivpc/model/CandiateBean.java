@@ -1,5 +1,6 @@
 package com.dream.ivpc.model;
 
+
 public class CandiateBean extends BaseBean {
 	private String time;
 	private String position;
@@ -35,6 +36,5 @@ public class CandiateBean extends BaseBean {
 		this.name = name;
 	}
 	
-
 	
 }
