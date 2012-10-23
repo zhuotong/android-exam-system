@@ -51,7 +51,6 @@
 				        android:layout_height="wrap_content"
 				        android:layout_gravity="center_vertical|left"
 				        android:paddingLeft="8dp"
-						android:src="@drawable/down_32"
 						android:contentDescription="@string/msg_logo_desc">
 				  </ImageView>
 	  	   </TableRow> 
@@ -79,7 +78,6 @@
 				        android:layout_height="wrap_content"
 				        android:layout_gravity="center_vertical|left"
 				        android:paddingLeft="8dp"
-						android:src="@drawable/down_32"
 						android:contentDescription="@string/msg_logo_desc">
 				  </ImageView>
 	  	   </TableRow> 

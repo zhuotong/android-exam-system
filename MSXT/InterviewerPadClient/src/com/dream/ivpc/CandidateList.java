@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import com.dream.ivpc.model.CandiateBean;
-import com.dream.ivpc.model.ComparatorName;
-import com.dream.ivpc.model.ComparatorTime;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +21,10 @@ public class CandidateList extends BaseActivity {
 	ImageView timeSortIcon = null;
 	ImageView positionSortIcon = null;
 	ImageView nameSortIcon = null;
+	
+	int timeSortFlag = -1;
+	int positionSortFlag = -1;
+	int nameSortFlag = -1;
 	
 	protected Context mContext;
 	protected ListView listView;
@@ -69,11 +71,12 @@ public class CandidateList extends BaseActivity {
 		
         //getCandiateList
         candiateList = getCandiateList();
-        Collections.sort(candiateList,new Comparator<CandiateBean>(){  
+		Collections.sort(candiateList,new Comparator<CandiateBean>(){  
             public int compare(CandiateBean arg0, CandiateBean arg1) {  
-                return arg0.getTime().compareTo(arg1.getTime());  
+                return arg1.getTime().compareTo(arg0.getTime());  
             }  
-        }); 
+        });
+		timeSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.down_32));
         
         //set List
         listView = (ListView)findViewById(R.id.candidate_list);
@@ -104,24 +107,9 @@ public class CandidateList extends BaseActivity {
 		public void onClick(View v) {
 //			ImageView view = (ImageView)v;
 			switch(v.getId()){
-				case(R.id.timeSortIcon):
-					Collections.sort(candiateList,new Comparator<CandiateBean>(){  
-			            public int compare(CandiateBean arg0, CandiateBean arg1) {  
-			                return arg0.getTime().compareTo(arg1.getTime());  
-			            }  
-			        }); break;
-				case(R.id.positionSortIcon):
-					Collections.sort(candiateList,new Comparator<CandiateBean>(){  
-			            public int compare(CandiateBean arg0, CandiateBean arg1) {  
-			                return arg0.getPosition().compareTo(arg1.getPosition());  
-			            }  
-			        }); break;
-				case(R.id.nameSortIcon):
-					Collections.sort(candiateList,new Comparator<CandiateBean>(){  
-			            public int compare(CandiateBean arg0, CandiateBean arg1) {  
-			                return arg0.getName().compareTo(arg1.getName());  
-			            }  
-			        }); 
+				case(R.id.timeSortIcon): sortByTime(); break;
+				case(R.id.positionSortIcon):sortByPosition();break;
+				case(R.id.nameSortIcon):sortByName();
 			}
 			
 	        adapter = new CandidateListAdapter(candiateList,mContext);
@@ -129,5 +117,74 @@ public class CandidateList extends BaseActivity {
 			
 		}
 	};
+	
+	public void sortByTime(){
+		switch(timeSortFlag){
+			case -1:
+				Collections.sort(candiateList,new Comparator<CandiateBean>(){  
+		            public int compare(CandiateBean arg0, CandiateBean arg1) {  
+		                return arg0.getTime().compareTo(arg1.getTime());  
+		            }  
+		        });	
+				timeSortFlag = 1;	
+				timeSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.up_32));
+				break;
+			case 1:
+				Collections.sort(candiateList,new Comparator<CandiateBean>(){  
+		            public int compare(CandiateBean arg0, CandiateBean arg1) {  
+		                return arg1.getTime().compareTo(arg0.getTime());  
+		            }  
+		        });
+				timeSortFlag = -1;
+				timeSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.down_32));
+		}
+		
+		positionSortIcon.setImageDrawable(null);
+		nameSortIcon.setImageDrawable(null);
+	}
+	
+	public void sortByPosition(){
+		switch(positionSortFlag){
+			case -1:
+				Collections.sort(candiateList,new Comparator<CandiateBean>(){  
+		            public int compare(CandiateBean arg0, CandiateBean arg1) {  
+		                return arg0.getPosition().compareTo(arg1.getPosition());  
+		            }  
+		        });	
+				positionSortFlag = 1;	
+				positionSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.up_32));
+				break;
+			case 1:
+				Collections.sort(candiateList,new Comparator<CandiateBean>(){  
+		            public int compare(CandiateBean arg0, CandiateBean arg1) {  
+		                return arg1.getPosition().compareTo(arg0.getPosition());  
+		            }  
+		        });
+				positionSortFlag = -1;
+				positionSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.down_32));
+		}
+	}
+	
+	public void sortByName(){
+		switch(nameSortFlag){
+			case -1:
+				Collections.sort(candiateList,new Comparator<CandiateBean>(){  
+		            public int compare(CandiateBean arg0, CandiateBean arg1) {  
+		                return arg0.getName().compareTo(arg1.getName());  
+		            }  
+		        });	
+				nameSortFlag = 1;	
+				nameSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.up_32));
+				break;
+			case 1:
+				Collections.sort(candiateList,new Comparator<CandiateBean>(){  
+		            public int compare(CandiateBean arg0, CandiateBean arg1) {  
+		                return arg1.getName().compareTo(arg0.getName());  
+		            }  
+		        });
+				nameSortFlag = -1;
+				nameSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.down_32));
+		}
+	}
 
 }
