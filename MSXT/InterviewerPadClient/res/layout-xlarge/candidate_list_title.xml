@@ -5,11 +5,12 @@
   android:layout_height="wrap_content"
   android:descendantFocusability="blocksDescendants">
   
-  	   <TableLayout 
+  	   <TableLayout android:id="@+id/timeSortTable"
 		    android:layout_width="0dp"
 		    android:layout_height="wrap_content"
 		    android:layout_weight="1"
-	        android:background="@drawable/bg_sub_title">
+	        android:background="@drawable/bg_sub_title"
+	        android:onClick="sortEvent">
 	   	    <TableRow
 	   	    	android:layout_width="wrap_content"
 		        android:layout_height="wrap_content">
@@ -30,12 +31,13 @@
 	  	   </TableRow> 
 	   </TableLayout> 
 
-  	   <TableLayout 
+  	   <TableLayout android:id="@+id/positionSortTable"
 		    android:layout_width="0dp"
 		    android:layout_height="wrap_content"
 		    android:layout_weight="1"
 	        android:layout_gravity="center_vertical|right"
-	        android:background="@drawable/bg_sub_title">
+	        android:background="@drawable/bg_sub_title"
+	        android:onClick="sortEvent">
 	   	    <TableRow
 	   	    	android:layout_width="wrap_content"
 		        android:layout_height="wrap_content">
@@ -57,12 +59,13 @@
 	   </TableLayout>	     
 
 
-  	   <TableLayout 
+  	   <TableLayout android:id="@+id/nameSortTable"
 		    android:layout_width="0dp"
 		    android:layout_height="wrap_content"
 		    android:layout_weight="1"
 	        android:layout_gravity="center_vertical|right"
-	        android:background="@drawable/bg_sub_title">
+	        android:background="@drawable/bg_sub_title"
+	        android:onClick="sortEvent">
 	   	    <TableRow
 	   	    	android:layout_width="wrap_content"
 		        android:layout_height="wrap_content">

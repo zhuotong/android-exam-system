@@ -65,9 +65,9 @@ public class CandidateList extends BaseActivity {
 		positionSortIcon = (ImageView) findViewById(R.id.positionSortIcon);
 		nameSortIcon = (ImageView) findViewById(R.id.nameSortIcon);
 		
-		timeSortIcon.setOnClickListener(sortListener);
-		positionSortIcon.setOnClickListener(sortListener);
-		nameSortIcon.setOnClickListener(sortListener);
+//		timeSortIcon.setOnClickListener(sortListener);
+//		positionSortIcon.setOnClickListener(sortListener);
+//		nameSortIcon.setOnClickListener(sortListener);
 		
         //getCandiateList
         candiateList = getCandiateList();
@@ -102,10 +102,9 @@ public class CandidateList extends BaseActivity {
 		}
 	};
 	
-    View.OnClickListener sortListener = new View.OnClickListener(){
+/*    View.OnClickListener sortListener = new View.OnClickListener(){
 		@Override
 		public void onClick(View v) {
-//			ImageView view = (ImageView)v;
 			switch(v.getId()){
 				case(R.id.timeSortIcon): sortByTime(); break;
 				case(R.id.positionSortIcon):sortByPosition();break;
@@ -116,7 +115,18 @@ public class CandidateList extends BaseActivity {
 	        listView.setAdapter(adapter);
 			
 		}
-	};
+	};*/
+	
+	public void sortEvent(View view){
+		switch(view.getId()){
+			case(R.id.timeSortTable): sortByTime(); break;
+			case(R.id.positionSortTable):sortByPosition();break;
+			case(R.id.nameSortTable):sortByName();
+		}
+	
+	    adapter = new CandidateListAdapter(candiateList,mContext);
+	    listView.setAdapter(adapter);
+	}
 	
 	public void sortByTime(){
 		switch(timeSortFlag){
@@ -163,6 +173,9 @@ public class CandidateList extends BaseActivity {
 				positionSortFlag = -1;
 				positionSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.down_32));
 		}
+		
+		timeSortIcon.setImageDrawable(null);
+		nameSortIcon.setImageDrawable(null);
 	}
 	
 	public void sortByName(){
@@ -185,6 +198,9 @@ public class CandidateList extends BaseActivity {
 				nameSortFlag = -1;
 				nameSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.down_32));
 		}
+		
+		timeSortIcon.setImageDrawable(null);
+		positionSortIcon.setImageDrawable(null);
 	}
 
 }

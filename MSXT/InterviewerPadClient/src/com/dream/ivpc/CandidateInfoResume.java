@@ -28,7 +28,7 @@ public class CandidateInfoResume extends BaseActivity {
 		bean.setGender("Male");
 		bean.setAge("30");
 		bean.setEducation("Bachor");
-		bean.setExperience("...........\n...........\n...........\n...........\n");
+		bean.setExperience("............................................\n..");
 		
 		return bean;
 	}
