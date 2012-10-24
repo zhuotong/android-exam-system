@@ -3,136 +3,150 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent" android:orientation="vertical">
 
-	<include
-	      layout="@layout/candidate_header" 
-	      android:layout_gravity="top"/>
+	<include layout="@layout/candidate_header" />
 
-	<TableLayout 
-	      android:layout_width="fill_parent"
-	      android:layout_height="fill_parent">
-	   <TableRow 
-	   	    android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:background="@drawable/common_tv_title">
-			<TextView
-			     android:layout_width="fill_parent"
-			     android:layout_height="wrap_content"
-			     android:textColor="#000000"
-			     android:textSize="22sp"
-			     android:text="@string/label_resume_title_base_info"
-			     />
-		</TableRow>	
-		<TableRow android:id="@+id/tableRow1" 
-	         android:layout_width="fill_parent"
-			 android:layout_height="wrap_content">
-		     <TextView
-			     android:layout_width="fill_parent"
-			     android:layout_height="wrap_content"
-			     android:layout_weight="1"
-			     android:textColor="#000000"
-			     android:textSize="22sp"
-			     android:text="@string/label_resume_name"
-			     android:background="@drawable/common_tv_label"/>
-		     <TextView
-			     android:id="@+id/name"
-			     android:layout_width="fill_parent"
-			     android:layout_height="wrap_content"
-			     android:layout_weight="1"
-			     android:textColor="#000000"
-			     android:textSize="22sp"
-			     android:background="@drawable/common_tv_value"/>	
-		</TableRow>
-		<TableRow android:id="@+id/tableRow2" 
-	         android:layout_width="fill_parent"
-			 android:layout_height="wrap_content">
-		     <TextView
-			     android:layout_width="fill_parent"
-			     android:layout_height="wrap_content"
-			     android:layout_weight="1"
-			     android:textColor="#000000"
-			     android:textSize="22sp"
-			     android:text="@string/label_resume_gender"
-			     android:background="@drawable/common_tv_label"/>
-		     <TextView
-			     android:id="@+id/gender"
-			     android:layout_width="fill_parent"
-			     android:layout_height="wrap_content"
-			     android:layout_weight="1"
-			     android:textColor="#000000"
-			     android:textSize="22sp"
-			     android:background="@drawable/common_tv_value"/>	
-		</TableRow>
-		<TableRow android:id="@+id/tableRow3" 
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content">
-		     <TextView
-			     android:layout_width="fill_parent"
-			     android:layout_height="wrap_content"
-			     android:layout_weight="1"
-			     android:textColor="#000000"
-			     android:textSize="22sp"
-			     android:text="@string/label_resume_age"
-			     android:background="@drawable/common_tv_label"/>
-		     <TextView
-			     android:id="@+id/age"
-			     android:layout_width="fill_parent"
-			     android:layout_height="wrap_content"
-			     android:layout_weight="1"
-			     android:textColor="#000000"
-			     android:textSize="22sp"
-			     android:background="@drawable/common_tv_value"/>	
-		</TableRow>
-		<TableRow android:id="@+id/tableRow4" 
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content">
-		     <TextView
-			     android:layout_width="fill_parent"
-			     android:layout_height="wrap_content"
-			     android:layout_weight="1"
-			     android:textColor="#000000"
-			     android:textSize="22sp"
-			     android:text="@string/label_resume_education"
-			     android:background="@drawable/common_tv_label"/>
-		     <TextView
-			     android:id="@+id/education"
-			     android:layout_width="fill_parent"
-			     android:layout_height="wrap_content"
-			     android:layout_weight="1"
-			     android:textColor="#000000"
-			     android:textSize="22sp"
-			     android:background="@drawable/common_tv_value"/>	
-		</TableRow>
+    <ScrollView
+    	android:id="@+id/candidate_resume_detail" 
+    	android:layout_width="fill_parent"
+    	android:layout_height="0dip"
+    	android:layout_weight="1"
+    	android:scrollbars="vertical"
+    	android:fadingEdge="none">
 		
-		<TableRow android:id="@+id/tableRow5" 
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:background="@drawable/common_tv_title">
-			<TextView
-			     android:layout_width="fill_parent"
-			     android:layout_height="wrap_content"
+		<TableLayout 
+		      android:layout_width="fill_parent"
+		      android:layout_height="wrap_content">
+		      <TableRow 
+		   	    android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:background="@drawable/common_tv_title">
+				<TextView
+				     android:layout_width="fill_parent"
+				     android:layout_height="wrap_content"
+				     android:textColor="#000000"
+				     android:textSize="22sp"
+				     android:text="@string/label_resume_title_base_info"
+				     />
+			</TableRow>	
+			<TableRow android:id="@+id/tableRow1" 
+		         android:layout_width="fill_parent"
+				 android:layout_height="wrap_content">
+			     <TextView
+				     android:layout_width="fill_parent"
+				     android:layout_height="wrap_content"
+				     android:layout_weight="1"
+				     android:textColor="#000000"
+				     android:textSize="22sp"
+				     android:text="@string/label_resume_name"
+				     android:background="@drawable/common_tv_label"/>
+			     <TextView
+				     android:id="@+id/name"
+				     android:layout_width="fill_parent"
+				     android:layout_height="wrap_content"
+				     android:layout_weight="1"
+				     android:textColor="#000000"
+				     android:textSize="22sp"
+				     android:background="@drawable/common_tv_value"/>	
+			</TableRow>
+			<TableRow android:id="@+id/tableRow2" 
+		         android:layout_width="fill_parent"
+				 android:layout_height="wrap_content">
+			     <TextView
+				     android:layout_width="fill_parent"
+				     android:layout_height="wrap_content"
+				     android:layout_weight="1"
+				     android:textColor="#000000"
+				     android:textSize="22sp"
+				     android:text="@string/label_resume_gender"
+				     android:background="@drawable/common_tv_label"/>
+			     <TextView
+				     android:id="@+id/gender"
+				     android:layout_width="fill_parent"
+				     android:layout_height="wrap_content"
+				     android:layout_weight="1"
+				     android:textColor="#000000"
+				     android:textSize="22sp"
+				     android:background="@drawable/common_tv_value"/>	
+			</TableRow>
+			<TableRow android:id="@+id/tableRow3" 
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content">
+			     <TextView
+				     android:layout_width="fill_parent"
+				     android:layout_height="wrap_content"
+				     android:layout_weight="1"
+				     android:textColor="#000000"
+				     android:textSize="22sp"
+				     android:text="@string/label_resume_age"
+				     android:background="@drawable/common_tv_label"/>
+			     <TextView
+				     android:id="@+id/age"
+				     android:layout_width="fill_parent"
+				     android:layout_height="wrap_content"
+				     android:layout_weight="1"
+				     android:textColor="#000000"
+				     android:textSize="22sp"
+				     android:background="@drawable/common_tv_value"/>	
+			</TableRow>
+			<TableRow android:id="@+id/tableRow4" 
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content">
+			     <TextView
+				     android:layout_width="fill_parent"
+				     android:layout_height="wrap_content"
+				     android:layout_weight="1"
+				     android:textColor="#000000"
+				     android:textSize="22sp"
+				     android:text="@string/label_resume_education"
+				     android:background="@drawable/common_tv_label"/>
+			     <TextView
+				     android:id="@+id/education"
+				     android:layout_width="fill_parent"
+				     android:layout_height="wrap_content"
+				     android:layout_weight="1"
+				     android:textColor="#000000"
+				     android:textSize="22sp"
+				     android:background="@drawable/common_tv_value"/>	
+			</TableRow>
+			
+			<TableRow android:id="@+id/tableRow5" 
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:background="@drawable/common_tv_title">
+				<TextView
+				     android:layout_width="fill_parent"
+				     android:layout_height="wrap_content"
+				     android:textColor="#000000"
+				     android:textSize="22sp"
+				     android:text="@string/label_resume_title_experience"/>
+			</TableRow>
+			
+ 			<TableRow android:id="@+id/tableRow6" 
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent">
+				<TextView
+			     android:id="@+id/experience"
+			     android:layout_width="match_parent"
+			     android:layout_height="match_parent"
 			     android:textColor="#000000"
 			     android:textSize="22sp"
-			     android:text="@string/label_resume_title_experience"/>
-		</TableRow>
-		<TableRow android:id="@+id/tableRow6" 
+			     android:background="@drawable/common_tv_value"/>
+			</TableRow> 
+		</TableLayout>
+		
+<!-- 		<RelativeLayout 
 			android:layout_width="fill_parent"
-			android:layout_height="fill_parent">
-			<TextView
-		     android:id="@+id/experience"
-		     android:layout_width="match_parent"
-		     android:layout_height="match_parent"
-		     android:textColor="#000000"
-		     android:textSize="22sp"
-		     android:background="@drawable/common_tv_value"/>
-			
-		</TableRow>
-	</TableLayout>
+			android:layout_height="wrap_content">
+				<TextView
+			     android:id="@+id/experience"
+			     android:layout_width="match_parent"
+			     android:layout_height="match_parent"
+			     android:textColor="#000000"
+			     android:textSize="22sp"
+			     android:background="@drawable/common_tv_value"/>
+		</RelativeLayout> -->
+	</ScrollView>	
 	
-	<include 
-		android:layout_height="wrap_content" 
-		android:id="@+id/include1" 
-		layout="@layout/candidate_footer" 
-		android:layout_width="wrap_content">
-	</include>
+	<include layout="@layout/candidate_footer" />
 </LinearLayout>
 

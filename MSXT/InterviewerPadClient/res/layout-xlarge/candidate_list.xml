@@ -7,11 +7,12 @@
     android:background="@drawable/commom_bg_color">
 
     <include layout="@layout/candidate_list_header" /> 
-    <include layout="@layout/candidate_list_title" /> 	       
-				   
+    <include layout="@layout/candidate_list_title" /> 
+    	    
 	<ListView
      	android:id="@+id/candidate_list"
      	android:layout_width="fill_parent"
      	android:layout_height="fill_parent" 
   		/>
+
 </LinearLayout>

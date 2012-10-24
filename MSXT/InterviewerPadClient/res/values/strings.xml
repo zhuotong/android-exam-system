@@ -32,4 +32,10 @@
     <string name="label_resume_experience">Experience</string>
     <string name="label_resume_title_experience">Experience</string>
     
+    <string name="label_footer_resume">Resume</string>
+    
+    <string name="label_footer_exam_report">Exam Report</string>
+    
+    <string name="label_footer_exam_detail">Exam Detail</string>
+    
 </resources>
