@@ -1,9 +1,6 @@
 package com.dream.ivpc.chart;
 
 import java.util.List;
-
-import com.dream.ivpc.model.CoordinateBean;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -28,8 +25,8 @@ public class Bar2DVerView extends BaseChartView {
 		//draw bar List 
 		for(Chart chart:chartList){
 			Bar2D bar2D = (Bar2D)chart;
-			CoordinateBean startC = bar2D.getStartC();
-			CoordinateBean endC = bar2D.getEndC();
+			Coordinate startC = bar2D.getStartC();
+			Coordinate endC = bar2D.getEndC();
 			
 			mPaint.setColor(Color.parseColor(bar2D.getBgColor()));
 			

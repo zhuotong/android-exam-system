@@ -4,12 +4,14 @@
     android:layout_height="60dp" 
     android:background="@drawable/bg_color_login_header">
         
-    <include
-        layout="@layout/candidate_header" 
-        android:layout_gravity="top"/>
-	
-    <include
-        layout="@layout/candidate_footer" 
-        android:layout_gravity="bottom"/>
+	<include layout="@layout/candidate_header" />
+
+	<com.dream.ivpc.chart.Bar2DVerView
+	    android:id="@+id/bar2DVerView"
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent">
+	</com.dream.ivpc.chart.Bar2DVerView>
+		
+	<include layout="@layout/candidate_footer" />
         
 </FrameLayout>

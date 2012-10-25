@@ -1,8 +1,18 @@
-package com.dream.ivpc.model;
+package com.dream.ivpc.chart;
 
-public class CoordinateBean {
+public class Coordinate {
 	int coordinateX;
 	int coordinateY;
+
+	public Coordinate() {
+		super();
+	}
+
+	public Coordinate(int coordinateX, int coordinateY) {
+		super();
+		this.coordinateX = coordinateX;
+		this.coordinateY = coordinateY;
+	}
 	
 	public int getCoordinateX() {
 		return coordinateX;

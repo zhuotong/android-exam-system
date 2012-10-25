@@ -12,7 +12,8 @@
         android:textColor="#FFFFFF"
         android:textSize="22sp"
         android:gravity="center_horizontal|center_vertical"
-        android:background="#444444">
+        android:background="#444444"
+        android:onClick="go2Resume">
    </TextView>
    
    <TextView android:id="@+id/examrpt"
@@ -24,7 +25,8 @@
         android:textSize="22sp"
         android:layout_marginLeft="0.5dp"
         android:gravity="center_horizontal|center_vertical"
-        android:background="#444444">
+        android:background="#444444"
+        android:onClick="go2Report">
    </TextView>
    
    <TextView android:id="@+id/examdetail"
@@ -36,6 +38,7 @@
         android:textSize="22sp"
         android:layout_marginLeft="0.5dp"
         android:gravity="center_horizontal|center_vertical"
-        android:background="#444444">
+        android:background="#444444"
+        android:onClick="go2Detail">
    </TextView>
 </LinearLayout>

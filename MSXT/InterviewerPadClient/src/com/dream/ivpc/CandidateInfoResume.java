@@ -2,7 +2,6 @@ package com.dream.ivpc;
 
 import com.dream.ivpc.model.CandiateDetailBean;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,12 +9,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class CandidateInfoResume extends BaseActivity {
+public class CandidateInfoResume extends CandidateInfoBase {
 	public final static String LOG_TAG = "LoginActivity";
 	
 	ImageView imgGoBack = null;
 	
-	Context mContext;
+//	Context mContext;
 	TextView name;
 	TextView gender;
 	TextView age;

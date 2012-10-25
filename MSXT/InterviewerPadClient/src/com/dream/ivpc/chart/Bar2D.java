@@ -1,21 +1,29 @@
 package com.dream.ivpc.chart;
 
-import com.dream.ivpc.model.CoordinateBean;
-
 public class Bar2D extends Chart{
-	CoordinateBean startC;
-	CoordinateBean endC;
+	Coordinate startC;
+	Coordinate endC;
 	
-	public CoordinateBean getStartC() {
+	public Bar2D() {
+		super();
+	}
+
+	public Bar2D(Coordinate startC, Coordinate endC) {
+		super();
+		this.startC = startC;
+		this.endC = endC;
+	}
+
+	public Coordinate getStartC() {
 		return startC;
 	}
-	public void setStartC(CoordinateBean startC) {
+	public void setStartC(Coordinate startC) {
 		this.startC = startC;
 	}
-	public CoordinateBean getEndC() {
+	public Coordinate getEndC() {
 		return endC;
 	}
-	public void setEndC(CoordinateBean endC) {
+	public void setEndC(Coordinate endC) {
 		this.endC = endC;
 	}
 	

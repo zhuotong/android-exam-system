@@ -3,8 +3,8 @@ package com.dream.ivpc;
 import android.os.Bundle;
 import android.util.Log;
 
-public class CandidateInfoExamDetail extends BaseActivity {
-	public final static String LOG_TAG = "LoginActivity";
+public class CandidateInfoExamDetail extends CandidateInfoBase {
+	public final static String LOG_TAG = "CandidateInfoExamDetail";
 	
 	/** Called when the activity is first created. */
     @Override
