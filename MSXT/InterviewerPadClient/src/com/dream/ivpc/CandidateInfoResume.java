@@ -2,15 +2,13 @@ package com.dream.ivpc;
 
 import com.dream.ivpc.model.CandiateDetailBean;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class CandidateInfoResume extends CandidateInfoBase {
-	public final static String LOG_TAG = "LoginActivity";
+	public final static String LOG_TAG = "CandidateInfoResume";
 	
 	ImageView imgGoBack = null;
 	
@@ -58,14 +56,6 @@ public class CandidateInfoResume extends CandidateInfoBase {
 
     }
 
-    View.OnClickListener goBackListener = new View.OnClickListener() {  
-        @Override  
-        public void onClick(View v) { 
-        	Intent intent = new Intent();
-			intent.setClass( mContext, CandidateList.class);
-			startActivity(intent);  
-        }  
-    };
     
     
     @Override

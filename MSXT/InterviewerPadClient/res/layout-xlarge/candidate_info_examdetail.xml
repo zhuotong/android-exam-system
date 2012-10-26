@@ -6,13 +6,9 @@
 	android:background="@drawable/commom_bg_color" 
 	android:orientation="vertical">
 	
-    <include
-        layout="@layout/candidate_header" 
-        android:layout_gravity="top"/>
-	
-    <include
-        layout="@layout/candidate_footer" 
-        android:layout_gravity="bottom"/>
+	<include layout="@layout/candidate_header" />
+
+ 	<include layout="@layout/candidate_footer" />
         
 </LinearLayout>
 

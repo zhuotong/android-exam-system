@@ -10,9 +10,13 @@ import com.dream.ivpc.chart.Coordinate;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 
 public class CandidateInfoExamRpt extends CandidateInfoBase {
+	
 	public final static String LOG_TAG = "CandidateInfoExamRpt";
+	
+	ImageView imgGoBack = null;
 	
 	Bar2DVerView bar2DVerView;
 	List<Chart> chartList;
@@ -21,11 +25,15 @@ public class CandidateInfoExamRpt extends CandidateInfoBase {
 		chartList = new ArrayList<Chart>();
 		Coordinate c1 = new Coordinate(100,100);
 		Coordinate c2 = new Coordinate(200,200);
-		chartList.add(new Bar2D(c1,c2));
+		Bar2D bar1 = new Bar2D(c1,c2);
+		bar1.setBgColor("#FF2200");
+		chartList.add(bar1);
 		
-		Coordinate c3 = new Coordinate(100,100);
-		Coordinate c4 = new Coordinate(200,200);
-		chartList.add(new Bar2D(c3,c4));
+		Coordinate c3 = new Coordinate(300,100);
+		Coordinate c4 = new Coordinate(400,300);
+		Bar2D bar2 = new Bar2D(c3,c4);
+		bar2.setBgColor("#FFAE00");
+		chartList.add(bar2);
 	}
 	
 	/** Called when the activity is first created. */
@@ -35,14 +43,17 @@ public class CandidateInfoExamRpt extends CandidateInfoBase {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.candidate_info_examrpt);
         
+        mContext = getApplicationContext();
+        
+        imgGoBack = (ImageView) findViewById(R.id.imgGoBack);
+        imgGoBack.setOnClickListener(goBackListener);
+        
         getChartData();
         
 		//get bar2DVerView and set bar2DVerView
 		bar2DVerView = (Bar2DVerView) this.findViewById(R.id.bar2DVerView);
-//		bar2DVerView.setLongClickable(true);
 		bar2DVerView.setSaveEnabled(false);
 		bar2DVerView.setChartList(chartList);
-//		bar2DVerView.setPage(1);
     }
 
     @Override

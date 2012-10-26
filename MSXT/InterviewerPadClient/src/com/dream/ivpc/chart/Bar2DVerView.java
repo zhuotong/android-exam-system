@@ -20,6 +20,8 @@ public class Bar2DVerView extends BaseChartView {
 			Integer page, Integer screenSize) {
 		//get canvas and paint
 		Canvas canvas = sfh.lockCanvas();
+		canvas.drawColor(Color.WHITE);
+		
 		Paint mPaint = new Paint();
 		
 		//draw bar List 

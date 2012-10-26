@@ -4,7 +4,7 @@
     android:layout_height="60dp"
     android:background="@drawable/bg_color_login_header">
     
-   <TextView android:id="@+id/resume"
+   <Button android:id="@+id/resume"
 	    android:layout_width="0dp"
 	    android:layout_height="fill_parent"
         android:layout_weight="1"
@@ -14,9 +14,9 @@
         android:gravity="center_horizontal|center_vertical"
         android:background="#444444"
         android:onClick="go2Resume">
-   </TextView>
+   </Button>
    
-   <TextView android:id="@+id/examrpt"
+   <Button android:id="@+id/examrpt"
 	    android:layout_width="0dp"
 	    android:layout_height="fill_parent"
         android:layout_weight="1"
@@ -27,9 +27,9 @@
         android:gravity="center_horizontal|center_vertical"
         android:background="#444444"
         android:onClick="go2Report">
-   </TextView>
+   </Button>
    
-   <TextView android:id="@+id/examdetail"
+   <Button android:id="@+id/examdetail"
 	    android:layout_width="0dp"
 	    android:layout_height="fill_parent"
         android:layout_weight="1"
@@ -40,5 +40,5 @@
         android:gravity="center_horizontal|center_vertical"
         android:background="#444444"
         android:onClick="go2Detail">
-   </TextView>
+   </Button>
 </LinearLayout>

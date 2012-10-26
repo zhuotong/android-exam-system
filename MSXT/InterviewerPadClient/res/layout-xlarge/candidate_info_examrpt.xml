@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="60dp" 
-    android:background="@drawable/bg_color_login_header">
+	android:layout_height="fill_parent" 
+	android:orientation="vertical">
         
 	<include layout="@layout/candidate_header" />
 
-	<com.dream.ivpc.chart.Bar2DVerView
-	    android:id="@+id/bar2DVerView"
-		android:layout_width="fill_parent" 
-		android:layout_height="fill_parent">
-	</com.dream.ivpc.chart.Bar2DVerView>
-		
-	<include layout="@layout/candidate_footer" />
+<!-- 	<ScrollView
+    	android:id="@+id/candidate_resume_detail" 
+    	android:layout_width="fill_parent"
+    	android:layout_height="0dip"
+    	android:layout_weight="1"
+    	android:scrollbars="vertical"> -->
+    	
+	 	<com.dream.ivpc.chart.Bar2DVerView
+		    android:id="@+id/bar2DVerView"
+			android:layout_width="fill_parent" 
+			android:layout_height="900dp">
+		</com.dream.ivpc.chart.Bar2DVerView> 
+<!--  	</ScrollView> -->
+
+ 	<include layout="@layout/candidate_footer" />
         
-</FrameLayout>
+</LinearLayout>

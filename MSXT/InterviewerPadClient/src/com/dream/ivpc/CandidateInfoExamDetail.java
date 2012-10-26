@@ -11,7 +11,7 @@ public class CandidateInfoExamDetail extends CandidateInfoBase {
     public void onCreate(Bundle savedInstanceState) {
     	Log.i(LOG_TAG,"onCreate...");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.candidate_info_examrpt);
+        setContentView(R.layout.candidate_info_examdetail);
     }
 
     @Override

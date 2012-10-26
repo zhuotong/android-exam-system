@@ -34,6 +34,15 @@ public class CandidateInfoBase extends BaseActivity {
 		startActivity(intent); 
 	}
 	
+    View.OnClickListener goBackListener = new View.OnClickListener() {  
+        @Override  
+        public void onClick(View v) { 
+        	Intent intent = new Intent();
+			intent.setClass( mContext, CandidateList.class);
+			startActivity(intent);  
+        }  
+    };
+	
 	@Override
 	protected void onDestroy() {
 		Log.i(LOG_TAG,"onDestroy()...");

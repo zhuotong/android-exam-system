@@ -19,23 +19,10 @@ public abstract class BaseChartView extends SurfaceView implements SurfaceHolder
 	
 	public BaseChartView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		Log.i(LOG_TAG, "Bar2DVerView(Context context, AttributeSet attrs)...");
 		mHolder = getHolder();
 		mHolder.addCallback(this);
 	}
 
-	public void setScreenSize(Integer screenSize) {
-		this.screenSize = screenSize;
-	}
-
-	public void setPage(Integer page) {
-		this.page = page;
-	}
-	
-	public Integer getPage() {
-		return page;
-	}
-	
 	public List<Chart> getChartList() {
 		return chartList;
 	}
