@@ -2,12 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:id="@+id/layout1"
-	android:background="@drawable/commom_bg_color" 
 	android:orientation="vertical">
 	
 	<include layout="@layout/candidate_header" />
 
+	<ListView
+    	android:id="@+id/question_list"
+		android:layout_width="fill_parent" 
+		android:layout_height="850dp" 
+ 		/>
+		
  	<include layout="@layout/candidate_footer" />
         
 </LinearLayout>

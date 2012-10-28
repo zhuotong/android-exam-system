@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="wrap_content"
+  android:descendantFocusability="blocksDescendants"
+  android:background="@drawable/bg_color_candidate_even"
+  android:layout_margin="8dp">
+
+      <TextView
+	     android:id="@+id/index"
+		 android:layout_width="0dp"
+	     android:layout_height="wrap_content"
+	     android:layout_weight="1"
+	     android:padding="10dp"
+	     android:textSize="25sp"/>
+
+	  <TextView
+	     android:id="@+id/catalog"
+	     android:layout_width="0dp"
+	     android:layout_height="wrap_content"
+	     android:layout_weight="1"
+	     android:padding="10dp"
+	     android:textSize="25sp"/>
+	         	  
+	  <TextView
+	     android:id="@+id/questionName"
+	     android:layout_width="0dp"
+	     android:layout_height="wrap_content"
+	     android:layout_weight="1"
+	     android:padding="10dp"
+	     android:textSize="25sp"/>
+
+	  <ImageView
+	     android:id="@+id/resultView"
+	     android:layout_width="0dp"
+	     android:layout_height="wrap_content"
+	     android:layout_weight="1"
+	     android:padding="10dp"
+	     android:textSize="25sp"
+	     android:contentDescription="@string/msg_logo_desc"
+	     />
+	  	  	  
+</LinearLayout>
