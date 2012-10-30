@@ -32,10 +32,22 @@
     <string name="label_resume_experience">Experience</string>
     <string name="label_resume_title_experience">Experience</string>
     
+    <!-- candidate exam info detail -->
+    <string name="label_candidate_title_index">Index</string>
+    <string name="label_candidate_title_catalog">Catalog</string>
+    <string name="label_candidate_title_qname">Name</string>
+    <string name="label_candidate_title_qresult">Result</string>
+    
+    <!-- candidate question detail -->
+    <string name="label_question_exam_name">Exam Name</string>
+    <string name="label_question_index">Index</string>
+    <string name="label_question_catalog">Catalog</string>
+    <string name="label_question_name">Question Name</string>
+    <string name="label_question_content">Question Content</string>
+    <string name="label_question_answer">Index</string>
+    
     <string name="label_footer_resume">Resume</string>
-    
     <string name="label_footer_exam_report">Exam Report</string>
-    
     <string name="label_footer_exam_detail">Exam Detail</string>
     
 </resources>

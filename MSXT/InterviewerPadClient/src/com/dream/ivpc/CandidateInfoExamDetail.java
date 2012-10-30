@@ -1,6 +1,8 @@
 package com.dream.ivpc;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import com.dream.ivpc.model.QuestionBean;
 import android.os.Bundle;
@@ -15,6 +17,17 @@ public class CandidateInfoExamDetail extends CandidateInfoBase {
 	public final static String LOG_TAG = "CandidateInfoExamDetail";
 
 	ImageView imgGoBack = null;
+	
+	
+	ImageView indexSortIcon = null;
+	ImageView catalogSortIcon = null;
+	ImageView qnameSortIcon = null;
+	ImageView qresultSortIcon = null;
+	
+	int indexSortFlag = -1;
+	int catalogSortFlag = -1;
+	int qnameSortFlag = -1;
+	int qresultSortFlag = -1;
 	
 	List<QuestionBean> questionList = new ArrayList<QuestionBean>();
 	ListView listView;
@@ -34,12 +47,12 @@ public class CandidateInfoExamDetail extends CandidateInfoBase {
 		QuestionBean q10= new QuestionBean(10,"Catalog 4","Question 10",false);
 		QuestionBean q11= new QuestionBean(11,"Catalog 4","Question 11",true);
 		QuestionBean q12= new QuestionBean(12,"Catalog 4","Question 12",true);
-		QuestionBean q13= new QuestionBean(13,"Catalog 5","Question 13",true);
-		QuestionBean q14= new QuestionBean(14,"Catalog 5","Question 14",true);
-		QuestionBean q15= new QuestionBean(15,"Catalog 5","Question 15",false);
-		QuestionBean q16= new QuestionBean(16,"Catalog 6","Question 16",true);
-		QuestionBean q17= new QuestionBean(17,"Catalog 6","Question 17",true);
-		QuestionBean q18= new QuestionBean(18,"Catalog 6","Question 18",true);
+//		QuestionBean q13= new QuestionBean(13,"Catalog 5","Question 13",true);
+//		QuestionBean q14= new QuestionBean(14,"Catalog 5","Question 14",true);
+//		QuestionBean q15= new QuestionBean(15,"Catalog 5","Question 15",false);
+//		QuestionBean q16= new QuestionBean(16,"Catalog 6","Question 16",true);
+//		QuestionBean q17= new QuestionBean(17,"Catalog 6","Question 17",true);
+//		QuestionBean q18= new QuestionBean(18,"Catalog 6","Question 18",true);
 		
 		questionList.add(q1);
 		questionList.add(q2);
@@ -75,7 +88,17 @@ public class CandidateInfoExamDetail extends CandidateInfoBase {
         imgGoBack = (ImageView) findViewById(R.id.imgGoBack);
         imgGoBack.setOnClickListener(goBackListener);
         
+        indexSortIcon = (ImageView) findViewById(R.id.indexSortIcon);
+        catalogSortIcon = (ImageView) findViewById(R.id.catalogSortIcon);
+        qnameSortIcon = (ImageView) findViewById(R.id.qnameSortIcon);
+        qresultSortIcon = (ImageView) findViewById(R.id.qresultSortIcon);
+        
         questionList = getQuestionList();
+		Collections.sort(questionList,new Comparator<QuestionBean>(){  
+            public int compare(QuestionBean arg0, QuestionBean arg1) {  
+                return Integer.valueOf(arg0.getIndex()).compareTo(Integer.valueOf(arg1.getIndex()));  
+            }  
+        });
         
         //set List
         listView = (ListView)findViewById(R.id.question_list);
@@ -91,6 +114,121 @@ public class CandidateInfoExamDetail extends CandidateInfoBase {
 			}      	
         });
     }
+    
+	public void sortEvent(View view){
+		switch(view.getId()){
+			case(R.id.indexSortTable): sortByIndex(); break;
+			case(R.id.catalogSortTable): sortByCatalog(); break;
+			case(R.id.qnameSortTable):sortByQname();break;
+			case(R.id.qresultSortTable):sortByQresult();
+		}
+	    adapter = new QuestionListAdapter(questionList,mContext);
+	    listView.setAdapter(adapter);
+	}
+
+	public void sortByIndex(){
+		switch(indexSortFlag){
+			case -1:
+				Collections.sort(questionList,new Comparator<QuestionBean>(){  
+		            public int compare(QuestionBean arg0, QuestionBean arg1) {  
+		                return Integer.valueOf(arg0.getIndex()).compareTo(Integer.valueOf(arg1.getIndex()));  
+		            }  
+		        });	
+				indexSortFlag = 1;	
+				indexSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.up_32));
+				break;
+			case 1:
+				Collections.sort(questionList,new Comparator<QuestionBean>(){  
+		            public int compare(QuestionBean arg0, QuestionBean arg1) {  
+		                return Integer.valueOf(arg1.getIndex()).compareTo(Integer.valueOf(arg0.getIndex()));  
+		            }  
+		        });
+				indexSortFlag = -1;
+				indexSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.down_32));
+		}
+		
+		catalogSortIcon.setImageDrawable(null);
+		qnameSortIcon.setImageDrawable(null);
+		qresultSortIcon.setImageDrawable(null);
+	}
+	
+	public void sortByCatalog(){
+		switch(catalogSortFlag){
+			case -1:
+				Collections.sort(questionList,new Comparator<QuestionBean>(){  
+		            public int compare(QuestionBean arg0, QuestionBean arg1) {  
+		                return arg0.getCatalog().compareTo(arg1.getCatalog());  
+		            }  
+		        });	
+				catalogSortFlag = 1;	
+				catalogSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.up_32));
+				break;
+			case 1:
+				Collections.sort(questionList,new Comparator<QuestionBean>(){  
+		            public int compare(QuestionBean arg0, QuestionBean arg1) {  
+		                return arg1.getCatalog().compareTo(arg0.getCatalog());  
+		            }  
+		        });
+				catalogSortFlag = -1;
+				catalogSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.down_32));
+		}
+		
+		indexSortIcon.setImageDrawable(null);
+		qnameSortIcon.setImageDrawable(null);
+		qresultSortIcon.setImageDrawable(null);
+	}
+	
+	public void sortByQname(){
+		switch(qnameSortFlag){
+			case -1:
+				Collections.sort(questionList,new Comparator<QuestionBean>(){  
+		            public int compare(QuestionBean arg0, QuestionBean arg1) {  
+		                return arg0.getQuestionName().compareTo(arg1.getQuestionName());  
+		            }  
+		        });	
+				qnameSortFlag = 1;	
+				qnameSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.up_32));
+				break;
+			case 1:
+				Collections.sort(questionList,new Comparator<QuestionBean>(){  
+		            public int compare(QuestionBean arg0, QuestionBean arg1) {  
+		                return arg1.getQuestionName().compareTo(arg0.getQuestionName());  
+		            }  
+		        });
+				qnameSortFlag = -1;
+				qnameSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.down_32));
+		}
+		
+		indexSortIcon.setImageDrawable(null);
+		catalogSortIcon.setImageDrawable(null);
+		qresultSortIcon.setImageDrawable(null);
+	}
+	
+	public void sortByQresult(){
+		switch(qresultSortFlag){
+			case -1:
+				Collections.sort(questionList,new Comparator<QuestionBean>(){  
+		            public int compare(QuestionBean arg0, QuestionBean arg1) {  
+		                return Boolean.valueOf(arg0.isResult()).compareTo(Boolean.valueOf(arg1.isResult()));  
+		            }  
+		        });	
+				qresultSortFlag = 1;	
+				qresultSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.up_32));
+				break;
+			case 1:
+				Collections.sort(questionList,new Comparator<QuestionBean>(){  
+		            public int compare(QuestionBean arg0, QuestionBean arg1) {  
+		                return Boolean.valueOf(arg1.isResult()).compareTo(Boolean.valueOf(arg0.isResult()));  
+		            }  
+		        });
+				qresultSortFlag = -1;
+				qresultSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.down_32));
+		}
+		
+		indexSortIcon.setImageDrawable(null);
+		catalogSortIcon.setImageDrawable(null);
+		qnameSortIcon.setImageDrawable(null);
+	}
 
     @Override
 	public void finish() {

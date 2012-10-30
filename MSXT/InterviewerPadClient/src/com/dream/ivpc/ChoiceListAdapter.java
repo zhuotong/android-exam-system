@@ -3,6 +3,8 @@ package com.dream.ivpc;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import com.dream.ivpc.model.ChoiceBean;
 import com.dream.ivpc.model.QuestionBean;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,24 +14,24 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class QuestionListAdapter extends BaseAdapter {
+public class ChoiceListAdapter extends BaseAdapter {
 	Context mContext;
-	List<QuestionBean> questionList = new ArrayList<QuestionBean>();
+	List<ChoiceBean> choiceList = new ArrayList<ChoiceBean>();
 	HashMap<Integer,View> map = new HashMap<Integer,View>(); 
 	
-	public QuestionListAdapter(List<QuestionBean> questionList,Context mContext){
-		this.questionList = questionList;
+	public ChoiceListAdapter(List<ChoiceBean> choiceList,Context mContext){
+		this.choiceList = choiceList;
 		this.mContext = mContext;
 	}
 
 	@Override
 	public int getCount() {
-		return questionList.size();
+		return choiceList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return questionList.get(position);
+		return choiceList.get(position);
 	}
 
 	@Override
@@ -50,8 +52,6 @@ public class QuestionListAdapter extends BaseAdapter {
 			//set 3 component 
 			holder.index = (TextView)view.findViewById(R.id.index);
 			holder.catalog = (TextView)view.findViewById(R.id.catalog);
-			holder.questionName = (TextView)view.findViewById(R.id.questionName);
-			holder.resultView = (ImageView) view.findViewById(R.id.resultView);
 			
 			map.put(position, view);
 			view.setTag(holder);
@@ -60,25 +60,17 @@ public class QuestionListAdapter extends BaseAdapter {
 			holder = (ViewHolder)view.getTag();
 		}
 		
-		QuestionBean bean = questionList.get(position);
+		ChoiceBean bean = choiceList.get(position);
 		
-		holder.index.setText(String.valueOf(bean.getIndex()));
-		holder.catalog.setText(bean.getCatalog());
-		holder.questionName.setText(bean.getQuestionName());
-		if(bean.isResult()){
-			holder.resultView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.true_32));
-		}else{
-			holder.resultView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.false_32));
-		}
+		holder.label.setText(bean.getLabel());
+		holder.content.setText(bean.getContent());
 		
 		return view;
 	}
 	
 	static class ViewHolder{
-		TextView index;
-		TextView catalog;
-		TextView questionName;
-		ImageView resultView;
+		TextView label;
+		TextView content;
 	}
 	
 
