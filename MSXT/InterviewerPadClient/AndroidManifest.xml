@@ -47,6 +47,11 @@
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
+        
+        <activity android:name=".ChoiceList"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
     </application>
 
 </manifest>

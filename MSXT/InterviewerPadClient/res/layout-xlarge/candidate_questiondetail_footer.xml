@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="wrap_content"
+  android:layout_weight="1"
+  android:background="@drawable/common_tv_value">
+  
+	  <TextView
+	     android:layout_width="wrap_content"
+	     android:layout_height="wrap_content"
+	     android:textSize="25sp"
+	     android:textColor="#000000"
+	     android:text="@string/label_answer"/>
+	
+	 <TextView
+	     android:id="@+id/qanswer"
+	     android:layout_width="wrap_content"
+	     android:layout_height="wrap_content"
+	     android:layout_marginLeft="5dp"
+	     android:textSize="25sp"
+	     android:textColor="#000000"/>
+	  	  
+</LinearLayout>

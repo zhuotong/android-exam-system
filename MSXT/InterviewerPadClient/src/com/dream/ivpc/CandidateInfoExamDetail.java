@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import com.dream.ivpc.model.QuestionBean;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -108,9 +110,9 @@ public class CandidateInfoExamDetail extends CandidateInfoBase {
         	@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int arg2,
 					long arg3) {
-//            	Intent intent = new Intent();
-//    			intent.setClass( mContext, CandidateInfoResume.class);
-//    			startActivity(intent);  
+            	Intent intent = new Intent();
+    			intent.setClass( mContext, ChoiceList.class);
+    			startActivity(intent);  
 			}      	
         });
     }

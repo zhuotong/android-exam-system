@@ -45,9 +45,11 @@
     <string name="label_question_name">Question Name</string>
     <string name="label_question_content">Question Content</string>
     <string name="label_question_answer">Index</string>
+    <string name="label_answer">Answer:</string>
     
     <string name="label_footer_resume">Resume</string>
     <string name="label_footer_exam_report">Exam Report</string>
     <string name="label_footer_exam_detail">Exam Detail</string>
+    
     
 </resources>

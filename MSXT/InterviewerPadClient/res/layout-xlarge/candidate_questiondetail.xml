@@ -6,14 +6,16 @@
 	
 	<include layout="@layout/candidate_header" />
 	<include layout="@layout/candidate_questiondetail_title" />
-	
+	
 	<ListView
-    	android:id="@+id/choice_list"
-		android:layout_width="fill_parent" 
-		android:layout_height="500dp" 
- 		/>
+	    android:id="@+id/choice_list"
+	    android:layout_width="fill_parent"
+	    android:layout_height="0dip"
+	    android:layout_marginBottom="10dp"
+	    android:layout_marginTop="10dp"
+	    android:layout_weight="29031.44" />
 		
- 	<include layout="@layout/candidate_footer" />
-        
+    <include layout="@layout/candidate_questiondetail_footer"/>
+    
 </LinearLayout>
 
