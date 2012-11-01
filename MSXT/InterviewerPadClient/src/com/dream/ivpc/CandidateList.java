@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import com.dream.ivpc.adapter.CandidateListAdapter;
 import com.dream.ivpc.model.CandiateBean;
 
 import android.content.Context;

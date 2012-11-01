@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import com.dream.ivpc.adapter.QuestionListAdapter;
 import com.dream.ivpc.model.QuestionBean;
 
 import android.content.Intent;
@@ -11,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -35,6 +38,8 @@ public class CandidateInfoExamDetail extends CandidateInfoBase {
 	ListView listView;
 	QuestionListAdapter adapter;	
 	
+	Button examdetail;
+	
 	public List<QuestionBean> getQuestionList(){
 		List<QuestionBean> questionList = new ArrayList<QuestionBean>();
 		QuestionBean q1= new QuestionBean(1,"Catalog 1","Question 1",true);
@@ -49,12 +54,12 @@ public class CandidateInfoExamDetail extends CandidateInfoBase {
 		QuestionBean q10= new QuestionBean(10,"Catalog 4","Question 10",false);
 		QuestionBean q11= new QuestionBean(11,"Catalog 4","Question 11",true);
 		QuestionBean q12= new QuestionBean(12,"Catalog 4","Question 12",true);
-//		QuestionBean q13= new QuestionBean(13,"Catalog 5","Question 13",true);
-//		QuestionBean q14= new QuestionBean(14,"Catalog 5","Question 14",true);
-//		QuestionBean q15= new QuestionBean(15,"Catalog 5","Question 15",false);
-//		QuestionBean q16= new QuestionBean(16,"Catalog 6","Question 16",true);
-//		QuestionBean q17= new QuestionBean(17,"Catalog 6","Question 17",true);
-//		QuestionBean q18= new QuestionBean(18,"Catalog 6","Question 18",true);
+		QuestionBean q13= new QuestionBean(13,"Catalog 5","Question 13",true);
+		QuestionBean q14= new QuestionBean(14,"Catalog 5","Question 14",true);
+		QuestionBean q15= new QuestionBean(15,"Catalog 5","Question 15",false);
+		QuestionBean q16= new QuestionBean(16,"Catalog 6","Question 16",true);
+		QuestionBean q17= new QuestionBean(17,"Catalog 6","Question 17",true);
+		QuestionBean q18= new QuestionBean(18,"Catalog 6","Question 18",true);
 		
 		questionList.add(q1);
 		questionList.add(q2);
@@ -68,12 +73,12 @@ public class CandidateInfoExamDetail extends CandidateInfoBase {
 		questionList.add(q10);
 		questionList.add(q11);
 		questionList.add(q12);
-//		questionList.add(q13);
-//		questionList.add(q14);
-//		questionList.add(q15);
-//		questionList.add(q16);
-//		questionList.add(q17);
-//		questionList.add(q18);
+		questionList.add(q13);
+		questionList.add(q14);
+		questionList.add(q15);
+		questionList.add(q16);
+		questionList.add(q17);
+		questionList.add(q18);
 		
 		return questionList;
 	}
@@ -89,6 +94,9 @@ public class CandidateInfoExamDetail extends CandidateInfoBase {
         
         imgGoBack = (ImageView) findViewById(R.id.imgGoBack);
         imgGoBack.setOnClickListener(goBackListener);
+        
+        examdetail = (Button) findViewById(R.id.examdetail);
+        examdetail.setBackgroundResource(R.drawable.bg_footer_button_select);
         
         indexSortIcon = (ImageView) findViewById(R.id.indexSortIcon);
         catalogSortIcon = (ImageView) findViewById(R.id.catalogSortIcon);

@@ -10,6 +10,7 @@ import com.dream.ivpc.chart.Coordinate;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 
 public class CandidateInfoExamRpt extends CandidateInfoBase {
@@ -20,6 +21,7 @@ public class CandidateInfoExamRpt extends CandidateInfoBase {
 	
 	Bar2DVerView bar2DVerView;
 	List<Chart> chartList;
+	Button examrpt;
 	
 	public void getChartData(){
 		chartList = new ArrayList<Chart>();
@@ -47,6 +49,9 @@ public class CandidateInfoExamRpt extends CandidateInfoBase {
         
         imgGoBack = (ImageView) findViewById(R.id.imgGoBack);
         imgGoBack.setOnClickListener(goBackListener);
+        
+        examrpt = (Button) findViewById(R.id.examrpt);
+        examrpt.setBackgroundResource(R.drawable.bg_footer_button_select);
         
         getChartData();
         

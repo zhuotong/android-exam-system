@@ -12,7 +12,7 @@
         android:textColor="#FFFFFF"
         android:textSize="22sp"
         android:gravity="center_horizontal|center_vertical"
-        android:background="#444444"
+        android:background="@drawable/bg_footer_button"
         android:onClick="go2Resume">
    </Button>
    
@@ -25,7 +25,7 @@
         android:textSize="22sp"
         android:layout_marginLeft="0.5dp"
         android:gravity="center_horizontal|center_vertical"
-        android:background="#444444"
+        android:background="@drawable/bg_footer_button"
         android:onClick="go2Report">
    </Button>
    
@@ -38,7 +38,7 @@
         android:textSize="22sp"
         android:layout_marginLeft="0.5dp"
         android:gravity="center_horizontal|center_vertical"
-        android:background="#444444"
+        android:background="@drawable/bg_footer_button"
         android:onClick="go2Detail">
    </Button>
 </LinearLayout>

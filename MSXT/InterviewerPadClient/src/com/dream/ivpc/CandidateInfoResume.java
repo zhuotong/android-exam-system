@@ -1,33 +1,33 @@
 package com.dream.ivpc;
 
-import com.dream.ivpc.model.CandiateDetailBean;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.dream.ivpc.adapter.ResumeAdapter;
+import com.dream.ivpc.model.ResumeBean;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ListView;
 
 public class CandidateInfoResume extends CandidateInfoBase {
 	public final static String LOG_TAG = "CandidateInfoResume";
 	
 	ImageView imgGoBack = null;
+	Button resume;
 	
-//	Context mContext;
-	TextView name;
-	TextView gender;
-	TextView age;
-	TextView education;
-	TextView experience;
+	List<ResumeBean> resumeInfo = new ArrayList<ResumeBean>();
+	ListView listView;
+	ResumeAdapter adapter;	
 
-	public CandiateDetailBean getCandiateDetailBean(){
-		CandiateDetailBean bean = new CandiateDetailBean();
-		bean.setName("Timothy");
-		bean.setGender("Male");
-		bean.setAge("30");
-		bean.setEducation("Bachor");
-		bean.setExperience("............................................\n..");
-		
-		return bean;
+	public List<ResumeBean> getResumeInfo(){
+		List<ResumeBean> resumeInfo = new ArrayList<ResumeBean>();
+		resumeInfo.add(new ResumeBean("Name", "Timothy"));
+		resumeInfo.add(new ResumeBean("Gender", "Male"));
+		resumeInfo.add(new ResumeBean("Age", "30"));
+		resumeInfo.add(new ResumeBean("Education", "Bachelor"));
+		return resumeInfo;
 	}
 	
 	/** Called when the activity is first created. */
@@ -41,62 +41,21 @@ public class CandidateInfoResume extends CandidateInfoBase {
         imgGoBack = (ImageView) findViewById(R.id.imgGoBack);
         imgGoBack.setOnClickListener(goBackListener);
         
-        name = (TextView) this.findViewById(R.id.name);
-        gender = (TextView) this.findViewById(R.id.gender);
-        age = (TextView) this.findViewById(R.id.age);
-        education = (TextView) this.findViewById(R.id.education);
-        experience = (TextView) this.findViewById(R.id.experience);
+        resume = (Button) findViewById(R.id.resume);
+        resume.setBackgroundResource(R.drawable.bg_footer_button_select);
         
-        CandiateDetailBean bean = getCandiateDetailBean();
-        name.setText(bean.getName());
-        gender.setText(bean.getGender());
-        age.setText(bean.getAge());
-        education.setText(bean.getEducation());
-        experience.setText(bean.getExperience());
+        resumeInfo = getResumeInfo();
+/*		Collections.sort(resumeInfo,new Comparator<ResumeBean>(){  
+            public int compare(ResumeBean arg0, ResumeBean arg1) {  
+                return Integer.valueOf(arg0.getLabel()).compareTo(Integer.valueOf(arg1.getLabel()));  
+            }  
+        });*/
+        
+        //set List
+        listView = (ListView)findViewById(R.id.resume_info);
+        adapter = new ResumeAdapter(resumeInfo,mContext);
+        listView.setAdapter(adapter);
 
     }
-
-    
-    
-    @Override
-	public void finish() {
-		// TODO Auto-generated method stub
-		super.finish();
-	}
-
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-	}
-
-	@Override
-	protected void onPause() {
-		// TODO Auto-generated method stub
-		super.onPause();
-	}
-
-	@Override
-	protected void onRestart() {
-		// TODO Auto-generated method stub
-		super.onRestart();
-	}
-
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-	}
-
-	@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-	}
-
-	@Override
-	protected void onStop() {
-		// TODO Auto-generated method stub
-		super.onStop();
-	}
+  
 }

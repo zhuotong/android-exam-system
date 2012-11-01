@@ -6,11 +6,16 @@
         
 	<include layout="@layout/candidate_header" />
 
- 	<com.dream.ivpc.chart.Bar2DVerView
-	    android:id="@+id/bar2DVerView"
-		android:layout_width="fill_parent" 
-		android:layout_height="850dp">
-	</com.dream.ivpc.chart.Bar2DVerView> 
+	<FrameLayout
+		android:layout_width="fill_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1">
+	 	<com.dream.ivpc.chart.Bar2DVerView
+		    android:id="@+id/bar2DVerView"
+			android:layout_width="fill_parent" 
+			android:layout_height="fill_parent">
+		</com.dream.ivpc.chart.Bar2DVerView> 
+	</FrameLayout>
 
  	<include layout="@layout/candidate_footer" />
         
