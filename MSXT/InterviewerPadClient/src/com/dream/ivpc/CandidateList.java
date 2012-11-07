@@ -89,7 +89,7 @@ public class CandidateList extends BaseActivity {
 			public void onItemClick(AdapterView<?> adapter, View view, int arg2,
 					long arg3) {
             	Intent intent = new Intent();
-    			intent.setClass( mContext, CandidateInfoResume.class);
+    			intent.setClass( mContext, CandidateInfoResumePdf.class);
     			startActivity(intent);  
 			}      	
         });

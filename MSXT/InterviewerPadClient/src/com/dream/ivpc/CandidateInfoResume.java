@@ -38,23 +38,18 @@ public class CandidateInfoResume extends CandidateInfoBase {
         setContentView(R.layout.candidate_info_resume);
         mContext = getApplicationContext();
         
-        imgGoBack = (ImageView) findViewById(R.id.imgGoBack);
+/*        imgGoBack = (ImageView) findViewById(R.id.imgGoBack);
         imgGoBack.setOnClickListener(goBackListener);
         
         resume = (Button) findViewById(R.id.resume);
         resume.setBackgroundResource(R.drawable.bg_footer_button_select);
         
         resumeInfo = getResumeInfo();
-/*		Collections.sort(resumeInfo,new Comparator<ResumeBean>(){  
-            public int compare(ResumeBean arg0, ResumeBean arg1) {  
-                return Integer.valueOf(arg0.getLabel()).compareTo(Integer.valueOf(arg1.getLabel()));  
-            }  
-        });*/
-        
+
         //set List
         listView = (ListView)findViewById(R.id.resume_info);
         adapter = new ResumeAdapter(resumeInfo,mContext);
-        listView.setAdapter(adapter);
+        listView.setAdapter(adapter);*/
 
     }
   

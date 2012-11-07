@@ -6,7 +6,7 @@
 
 	<include layout="@layout/candidate_header" />
 
-	<FrameLayout
+<!-- 	<FrameLayout
 		android:layout_width="fill_parent"
 		android:layout_height="0dp"
 		android:layout_weight="1">	
@@ -16,7 +16,29 @@
 			android:layout_height="fill_parent" 
 			android:cacheColorHint="#000000"
 	 		/>
-	</FrameLayout>	
+	</FrameLayout> -->
+	
+<!-- 	<WebView android:id="@+id/webView" 
+	    android:layout_width="fill_parent"
+		android:layout_height="fill_parent" 
+		/>	 -->
+		<FrameLayout
+		android:layout_width="fill_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1">	
+	    <Button
+			android:id="@+id/btnSave"
+		  	android:layout_width="wrap_content" 
+		    android:layout_height="wrap_content"
+			android:text="保存图片"
+		    />
+		<ImageView
+			android:id="@+id/imgSource"
+		  	android:layout_width="wrap_content" 
+		    android:layout_height="wrap_content" 
+		    android:adjustViewBounds="true"
+		    />
+	</FrameLayout>
 	
 	<include layout="@layout/candidate_footer" />
 </LinearLayout>

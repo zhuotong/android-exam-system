@@ -33,7 +33,12 @@
                   android:launchMode="singleTask">
         </activity>
 
-        <activity android:name=".CandidateInfoResume"
+<!--         <activity android:name=".CandidateInfoResume"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity> -->
+        
+        <activity android:name=".CandidateInfoResumePdf"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>

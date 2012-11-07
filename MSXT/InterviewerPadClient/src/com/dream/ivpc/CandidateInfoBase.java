@@ -18,7 +18,7 @@ public class CandidateInfoBase extends BaseActivity {
 	
 	public void go2Resume(View view){
 		Intent intent = new Intent();
-		intent.setClass( mContext, CandidateInfoResume.class);
+		intent.setClass( mContext, CandidateInfoResumePdf.class);
 		startActivity(intent); 
 	}
 	
