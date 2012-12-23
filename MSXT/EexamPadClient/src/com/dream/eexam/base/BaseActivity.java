@@ -5,9 +5,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Iterator;
-import java.util.Map;
-
 import com.dream.eexam.util.ActivityStackControlUtil;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -39,11 +36,12 @@ public class BaseActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.i(LOG_TAG,"onCreate()...");
-		ActivityStackControlUtil.add(this);
-		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
 		
-		//set Orientation to PORTRAIT
-//		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		//add Activity to ActivityStackControlUtil to manage
+		ActivityStackControlUtil.add(this);
+		
+		//get SharedPreferences Object
+		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
 		
 		//hide title bar
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -127,20 +125,7 @@ public class BaseActivity extends Activity {
 			return 1;
 		}		
 	}
-	
-	/**
-	 * save question index you current view 
-	 * @param cqIndex
-	 */
-	public void saveccIndexcqIndex(Integer ccIndex,Integer cqIndex){
-		SharedPreferences.Editor editor = sharedPreferences.edit();
-		editor.putInt("ccIndex", ccIndex);  
-		editor.putInt("cqIndex", cqIndex); 
-		editor.commit();
-		Log.i(LOG_TAG,"saveccIndexcqIndex()...");
-		Log.i(LOG_TAG,"ccIndex="+String.valueOf(ccIndex));
-		Log.i(LOG_TAG,"cqIndex="+String.valueOf(cqIndex));
-	}
+
 	
 	/**
 	 * 
@@ -158,17 +143,11 @@ public class BaseActivity extends Activity {
 		return baos.toString();
 	}
 	
-	/**
-	 * 
-	 * @param path
-	 * @param fileName
-	 * @param content
-	 */
 	public void saveFile(String path, String fileName,String content) {
-		Log.i(LOG_TAG,"saveFile...");
-		Log.i(LOG_TAG,"path:"+path);
-		Log.i(LOG_TAG,"fileName:"+fileName);
-		Log.i(LOG_TAG,"content:"+content);
+//		Log.i(LOG_TAG,"saveFile...");
+//		Log.i(LOG_TAG,"path:"+path);
+//		Log.i(LOG_TAG,"fileName:"+fileName);
+//		Log.i(LOG_TAG,"content:"+content);
 		try {
 	        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {  
 	            File dir = new File(path);  
@@ -206,6 +185,7 @@ public class BaseActivity extends Activity {
 		Log.i(LOG_TAG,"deleteFile end.");
 	}
 	
+	//
 	private long exitTime = 0;
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

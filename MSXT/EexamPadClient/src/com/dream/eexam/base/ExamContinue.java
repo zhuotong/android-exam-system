@@ -23,7 +23,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ExamContinueActivity extends BaseActivity {
+public class ExamContinue extends BaseActivity {
 	private static final String LOG_TAG = "ExamListActivity";
 
 	ImageView imgHome = null;
@@ -133,7 +133,7 @@ public class ExamContinueActivity extends BaseActivity {
 			public void onClick(View v) {
 	        	//go to login page
 	        	Intent intent = new Intent();
-				intent.setClass( ExamContinueActivity.this, LoginActivity.class);
+				intent.setClass( ExamContinue.this, LoginActivity.class);
 				startActivity(intent);  
 			}			
 		});

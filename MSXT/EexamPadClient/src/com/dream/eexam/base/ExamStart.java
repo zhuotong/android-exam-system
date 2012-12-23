@@ -35,7 +35,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import com.msxt.client.model.QUESTION_TYPE;
 
-public class ExamListActivity extends BaseActivity {
+public class ExamStart extends BaseActivity {
 	private static final String LOG_TAG = "ExamListActivity";
 
 	ImageView imgHome = null;
@@ -162,7 +162,7 @@ public class ExamListActivity extends BaseActivity {
 		protected void onPreExecute() {
 			Log.i(LOG_TAG, "onPreExecute() called");
 			String displayMessage = mContext.getResources().getString(R.string.msg_download_exam)+"...";
-			progressDialog = ProgressDialog.show(ExamListActivity.this, null,displayMessage, true, false); 
+			progressDialog = ProgressDialog.show(ExamStart.this, null,displayMessage, true, false); 
 		}
 		
 	    @Override

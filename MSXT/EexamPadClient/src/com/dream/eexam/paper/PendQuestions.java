@@ -32,10 +32,6 @@ public class PendQuestions extends BaseQuestion {
     String qType = null;
     String qid = null;
 	
-//	Button preBtn;
-//	TextView questionIndex;
-//	Button nextBtn;
-	
 	//data statement
 	MyListAdapter adapter;
 	List<String> listItemID = new ArrayList<String>();

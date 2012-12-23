@@ -32,24 +32,18 @@ import android.widget.EditText;
 public class LoginActivity extends BaseActivity {
 
 	public final static String LOG_TAG = "LoginActivity";
-	
 	String saveHost = null;
-	
 	EditText idEt = null;
 	EditText passwordET = null;
 	String saveId = null;
 	String savePassword = null;
-	
 	Button loginBtn = null;
 	Button settingBtn = null;
-	
 	String loginResultFile = null;
 	String loginResultFilePath = null;
-	
 	private Context mContext;
 	
 	public void printStoredDataInSP(){
-		
 		Log.i(LOG_TAG,"----------------data in sharedPreferences-----------------");
 		//print all stored data in sharedPreferences
 		Map<String, ?> dataInSP = sharedPreferences.getAll();
@@ -63,12 +57,9 @@ public class LoginActivity extends BaseActivity {
 	}
 	
 	public void printStoredDataInDB(){
-		
 		Log.i(LOG_TAG,"----------------data in SQLLite-----------------");
-		
 		DatabaseUtil dbUtil = new DatabaseUtil(mContext);
 		dbUtil.open();
-		
     	Cursor cursor = dbUtil.fetchAllAnswers();
     	while(cursor.moveToNext()){
     		int cid = cursor.getInt(0);
@@ -121,20 +112,23 @@ public class LoginActivity extends BaseActivity {
         	lBtn.setEnabled(false);
 
         	loginResultFile = SystemConfig.getInstance().getPropertyValue("Login_Result");
-        	loginResultFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + "eExam";
+        	loginResultFilePath = Environment.getExternalStorageDirectory().getPath() 
+        	+ File.separator + getResources().getString(R.string.app_file_home)
+        	+ File.separator + idEt.getText().toString();
         	
         	String examPath = sharedPreferences.getString("examPath", null);
         	String examFile = sharedPreferences.getString("examFile", null);
         	String examStatus = sharedPreferences.getString("exam_status", null);
+        	
         	if("start".equals(examStatus)&& new File(examPath+File.separator+examFile).exists()){
 	        	//go to continue exam page
 	        	Intent intent = new Intent();
     			intent.putExtra("loginResultFile", loginResultFile);
     			intent.putExtra("loginResultFilePath", loginResultFilePath);
-    			intent.setClass( mContext, ExamContinueActivity.class);
+    			intent.setClass( mContext, ExamContinue.class);
     			startActivity(intent);  
         	}else{
-        		//go to exam list page
+        		//go to start exam page
             	String id = idEt.getText().toString();
             	String password = passwordET.getText().toString();
     			SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -142,7 +136,7 @@ public class LoginActivity extends BaseActivity {
     			editor.putString("password", password);
     			editor.commit();		
             	if (getWifiIP() != null && getWifiIP().trim().length() > 0 && !getWifiIP().trim().equals("0.0.0.0")){
-            		new DownloadXmlTask().execute(new String[]{id,password});
+            		new LoginTask().execute(new String[]{id,password});
             	}else{
             		ShowDialog(mContext.getResources().getString(R.string.dialog_note),
             				mContext.getResources().getString(R.string.msg_network_error));
@@ -155,7 +149,6 @@ public class LoginActivity extends BaseActivity {
     View.OnClickListener settingListener = new View.OnClickListener() {  
         @Override  
         public void onClick(View v) { 
-        	
         	//go to examList page
         	Intent intent = new Intent();
 			intent.setClass( LoginActivity.this, SettingActivity.class);
@@ -164,7 +157,7 @@ public class LoginActivity extends BaseActivity {
     };
     
     
-    private class DownloadXmlTask extends AsyncTask<String, Void, String> {
+    private class LoginTask extends AsyncTask<String, Void, String> {
     	ProgressDialog progressDialog;
     	ServerProxy proxy;
     	Result loginResult;
@@ -217,14 +210,14 @@ public class LoginActivity extends BaseActivity {
         		        	Intent intent = new Intent();
         	    			intent.putExtra("loginResultFile", loginResultFile);
         	    			intent.putExtra("loginResultFilePath", loginResultFilePath);
-        	    			intent.setClass( mContext, ExamListActivity.class);
+        	    			intent.setClass( mContext, ExamStart.class);
         	    			startActivity(intent);     		        		
     		        	}else if("start".equals(examStatus)){
         		        	//go to continue exam page
         		        	Intent intent = new Intent();
         	    			intent.putExtra("loginResultFile", loginResultFile);
         	    			intent.putExtra("loginResultFilePath", loginResultFilePath);
-        	    			intent.setClass( mContext, ExamContinueActivity.class);
+        	    			intent.setClass( mContext, ExamContinue.class);
         	    			startActivity(intent);   
     		        	}else if("end".equals(examStatus)){
     		        		ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Your Exam is completed");
@@ -236,48 +229,6 @@ public class LoginActivity extends BaseActivity {
         	}
         }
     }
-    
-    @Override
-	public void finish() {
-		// TODO Auto-generated method stub
-		super.finish();
-	}
-
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-	}
-
-	@Override
-	protected void onPause() {
-		// TODO Auto-generated method stub
-		super.onPause();
-	}
-
-	@Override
-	protected void onRestart() {
-		// TODO Auto-generated method stub
-		super.onRestart();
-	}
-
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-	}
-
-	@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-	}
-
-	@Override
-	protected void onStop() {
-		// TODO Auto-generated method stub
-		super.onStop();
-	}
 
 
 }

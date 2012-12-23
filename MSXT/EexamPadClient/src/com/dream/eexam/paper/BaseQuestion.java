@@ -267,6 +267,20 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 	    }
 	}
 	
+	/**
+	 * save question index you current view 
+	 * @param cqIndex
+	 */
+	public void saveccIndexcqIndex(Integer ccIndex,Integer cqIndex){
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putInt("ccIndex", ccIndex);  
+		editor.putInt("cqIndex", cqIndex); 
+		editor.commit();
+		Log.i(LOG_TAG,"saveccIndexcqIndex()...");
+		Log.i(LOG_TAG,"ccIndex="+String.valueOf(ccIndex));
+		Log.i(LOG_TAG,"cqIndex="+String.valueOf(cqIndex));
+	}
+	
 	protected void setCountDownTime() {
 		if (lMinutes == 0) {
 			if (lSeconds == 0) {

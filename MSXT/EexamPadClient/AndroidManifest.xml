@@ -28,12 +28,12 @@
                   android:launchMode="singleTask">
         </activity>
                
-     	<activity android:name=".ExamListActivity"
+     	<activity android:name=".ExamStart"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
 
-     	<activity android:name=".ExamContinueActivity"
+     	<activity android:name=".ExamContinue"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
