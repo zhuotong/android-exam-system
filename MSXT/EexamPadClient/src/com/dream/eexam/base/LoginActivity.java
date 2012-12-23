@@ -116,6 +116,11 @@ public class LoginActivity extends BaseActivity {
         	+ File.separator + getResources().getString(R.string.app_file_home)
         	+ File.separator + idEt.getText().toString();
         	
+        	//save user file home path to sharedPreferences
+			sharedPreferences.edit().putString("userFileHome", loginResultFilePath);
+			sharedPreferences.edit().commit();
+			
+        	
         	String examPath = sharedPreferences.getString("examPath", null);
         	String examFile = sharedPreferences.getString("examFile", null);
         	String examStatus = sharedPreferences.getString("exam_status", null);

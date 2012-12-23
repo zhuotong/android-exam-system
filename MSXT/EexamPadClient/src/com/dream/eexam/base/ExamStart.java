@@ -123,9 +123,10 @@ public class ExamStart extends BaseActivity {
 		startBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				Log.i(LOG_TAG,"onClick()...");
-				
 				downloadExamFile = SystemConfig.getInstance().getPropertyValue("Download_Exam");
-	        	downloadExamFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + "eExam";
+	        	downloadExamFilePath = sharedPreferences.getString("userFileHome", null);
+	        	
+	        	Log.i(LOG_TAG, "downloadExamFilePath:"+downloadExamFilePath);
 	        	
 	        	new DownloadExamTask().execute(examIdString);
 
