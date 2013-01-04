@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<examination>
+<examinationid>1213213</examinationid>
+<name>Java Engineer</name>
+<time>60</time><!-- minutes(-1 mean no time limit)-->
+<confuse>true</confuse>
+<catalogs>
+	<catalog>
+		<index>0</index>
+		<name>Single Select</name>
+		<catalogdesc>
+			<![CDATA[ Test for JavaSE base knowlege ]]>
+		</catalogdesc>
+		<questions>
+			<question>
+			  <index>0</index>
+			  <name>Exception Test</name>
+			  <questionid>0</questionid>
+			  <type>Multi Select</type>			
+			  <score>5</score>
+			  <answer><![CDATA[ABC]]></answer> <!--应聘人员的答案-->
+			  <rightanswer><![CDATA[ABC]]></rightanswer><!--正确答案-->
+			  <rightdegree>1.0</rightdegree><!--答案正确程度，在0和1之间，0完全错，1完全正确-->
+			  <content><![CDATA[which of the following are java keywords]]></content>
+			  <choices>
+					<choice>
+						<index>1</index>
+						<label>A</label>
+						<content>goto</content>
+				  </choice>
+			    <choice>
+					<index>2</index>
+					<label>B</label>
+					<content>malloc</content>
+			    </choice>
+			    <choice>
+					<index>3</index>
+					<label>C</label>
+					<content>extends</content>
+			    </choice>
+			    <choice>
+					<index>4</index>
+					<label>D</label>
+					<content>false</content>
+			    </choice>
+			    <choices>
+			</question>
+		</questions>
+	</catalog>					
+</catalogs>
+</examination>
