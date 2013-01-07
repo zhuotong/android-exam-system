@@ -46,7 +46,7 @@ import android.widget.Toast;
 	        fileName = "test.jpg";
 	        
 	        try {
-	        	//////////////// 取得的是byte数组, 从byte数组生成bitmap
+	        	//////////////// 
 	        	byte[] data = getImage(filePath);      
 	            if(data!=null){      
 	                bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);// bitmap      
@@ -56,7 +56,7 @@ import android.widget.Toast;
 	            }
 	            ////////////////////////////////////////////////////////
 
-	            //******** 取得的是InputStream，直接从InputStream生成bitmap ***********/
+	            //******** InputStream InputStream bitmap ***********/
 	        	bitmap = BitmapFactory.decodeStream(getImageStream(filePath));
 	            if (bitmap != null) {
 	            	imageView.setImageBitmap(bitmap);// display image
@@ -69,10 +69,10 @@ import android.widget.Toast;
 	        }   
 
 	        
-	        // 下载图片
+	        // 涓嬭浇鍥剧墖
 	        btnSave.setOnClickListener(new Button.OnClickListener(){
 	            public void onClick(View v) {
-	                myDialog = ProgressDialog.show(CandidateInfoResumePdf.this, "保存图片", "图片正在保存中，请稍等...", true);
+	                myDialog = ProgressDialog.show(CandidateInfoResumePdf.this, "淇濆瓨鍥剧墖", "鍥剧墖姝ｅ湪淇濆瓨涓紝璇风◢绛�..", true);
 	                new Thread(saveFileRunnable).start();
 	        }
 	        });
@@ -131,7 +131,7 @@ import android.widget.Toast;
 	    } 
 
 	    /**
-	     * 保存文件
+	     * 淇濆瓨鏂囦欢
 	     * @param bm
 	     * @param fileName
 	     * @throws IOException
@@ -153,9 +153,9 @@ import android.widget.Toast;
 	        public void run() {
 	            try {
 	                saveFile(bitmap, fileName);
-	                message = "图片保存成功！";
+	                message = "success";
 	            } catch (IOException e) {
-	                message = "图片保存失败！";
+	                message = "fail";
 	                e.printStackTrace();
 	            }
 	            messageHandler.sendMessage(messageHandler.obtainMessage());
