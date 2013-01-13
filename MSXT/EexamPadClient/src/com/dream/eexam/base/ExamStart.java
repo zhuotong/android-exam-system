@@ -8,6 +8,7 @@ import com.dream.eexam.paper.MultiChoices;
 import com.dream.eexam.paper.SingleChoices;
 import com.dream.eexam.server.DataUtil;
 import com.dream.eexam.util.DatabaseUtil;
+import com.dream.eexam.util.SPkeyConstants;
 import com.dream.eexam.util.SystemConfig;
 import com.msxt.client.model.Examination;
 import com.msxt.client.model.Examination.Question;
@@ -23,7 +24,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,31 +37,24 @@ import com.msxt.client.model.QUESTION_TYPE;
 
 public class ExamStart extends BaseActivity {
 	private static final String LOG_TAG = "ExamListActivity";
-
-	ImageView imgHome = null;
 	
 	//declare components
+	ImageView imgHome = null;
 	private TextView nameTV = null;
 	private TextView jobTitleTV = null;
 	private TextView examDesc = null;
 	private Spinner spinner;
-	
-	//buttons
 	private Button startBtn;
-//	private Button clearBtn;
 	
 	LoginSuccessResult succResult = new LoginSuccessResult();
 	List<com.msxt.client.model.LoginSuccessResult.Examination> examinations;
-	
 	String conversation = null;
 	String[] exams = null;
 	ArrayAdapter<String> adapter;
 	String examIdString = null;
 	Context mContext;
-	
 	String downloadExamFile = null;
 	String downloadExamFilePath = null;
-	
 	QUESTION_TYPE fQuestionType = null;
 	String[] questionTypes;
 	
@@ -124,7 +117,8 @@ public class ExamStart extends BaseActivity {
 			public void onClick(View v) {
 				Log.i(LOG_TAG,"onClick()...");
 				downloadExamFile = SystemConfig.getInstance().getPropertyValue("Download_Exam");
-	        	downloadExamFilePath = sharedPreferences.getString("userFileHome", null);
+//	        	downloadExamFilePath = sharedPreferences.getString("examPath", null);
+	        	downloadExamFilePath = getFromSP(SPkeyConstants.SP_KEY_EXAM_PATH);
 	        	
 	        	Log.i(LOG_TAG, "downloadExamFilePath:"+downloadExamFilePath);
 	        	
@@ -142,7 +136,6 @@ public class ExamStart extends BaseActivity {
 			
 			List<com.msxt.client.model.LoginSuccessResult.Examination> exams = succResult.getExaminations();
 			com.msxt.client.model.LoginSuccessResult.Examination exam = exams.get(arg2);
-			
 			examDesc.setText(exam.getDesc());
 			examIdString = exam.getId();
 			
@@ -219,8 +212,9 @@ public class ExamStart extends BaseActivity {
 					ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Invalid qeustion type.");
 				}
 				
-				//save exam status
-				saveExamStatus();
+				if(getFromSP(SPkeyConstants.SP_KEY_EXAM_STATUS)==null){
+					save2SP(SPkeyConstants.SP_KEY_EXAM_STATUS, "start");
+				}
 				
 				//save exam start time
 				saveStartTime();
@@ -228,30 +222,16 @@ public class ExamStart extends BaseActivity {
 			}
 	    }
 	}
-
-	public void saveExamStatus(){
-		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
-		String examStatus = sharedPreferences.getString("exam_status", null);
-		//if its first time to do exam, save start exam time
-		if(examStatus==null){
-			SharedPreferences.Editor editor = sharedPreferences.edit();
-			editor.putString("exam_status", "start");
-			editor.commit();		
-		}
-	}
 	
 	public void saveStartTime(){
 		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
-		long startTime = sharedPreferences.getLong("starttime", 0);
-		Log.i(LOG_TAG, "startTime="+String.valueOf(startTime));
-		
+		long startTime = sharedPreferences.getLong(SPkeyConstants.SP_KEY_EXAM_START_TIME, 0);
 		//if its first time to do exam, save start exam time
 		if(startTime==0){
 			SharedPreferences.Editor editor = sharedPreferences.edit();
 			long currentTime = Calendar.getInstance().getTimeInMillis();
 			Log.i(LOG_TAG, "startTime="+String.valueOf(startTime));
-			editor.putLong("starttime", currentTime);
-			
+			editor.putLong(SPkeyConstants.SP_KEY_EXAM_START_TIME, currentTime);
 			editor.commit();		
 		}
 	}

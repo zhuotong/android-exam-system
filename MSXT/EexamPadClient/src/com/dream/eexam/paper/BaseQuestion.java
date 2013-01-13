@@ -1,6 +1,5 @@
 package com.dream.eexam.paper;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -13,11 +12,9 @@ import java.util.TimerTask;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -213,8 +210,14 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		choicesLabels = getResources().getStringArray(R.array.display_choice_label);
 		
 		//set file home and file
-		examFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + getResources().getString(R.string.app_file_home);
+		
+		examFilePath = sharedPreferences.getString("examPath", null);
+//		examFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + 
+//				getResources().getString(R.string.app_file_home);
 		examFileName = getResources().getString(R.string.exam_file_name);
+		
+		Log.i(LOG_TAG, "examFilePath:" + examFilePath);
+		Log.i(LOG_TAG, "examFileName:" + examFileName);
 		
 		Bundle bundle = this.getIntent().getExtras();
 		cQuestionType  = bundle.getString("questionType");
@@ -243,7 +246,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		timer = new Timer();
 		timer.schedule(timerTask,0,1000);
 		
-		//set load count down time(MM:SS)
+		// load count down time(MM:SS)
 		setLoadCDTime();
 		
 		//save catalog and question cursor to local SharedPreferences

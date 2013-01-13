@@ -2,15 +2,12 @@ package com.dream.eexam.base;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.util.Iterator;
-import java.util.Map;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
 import com.dream.eexam.util.DatabaseUtil;
+import com.dream.eexam.util.SPkeyConstants;
 import com.dream.eexam.util.SystemConfig;
 import com.msxt.client.server.ServerProxy;
 import com.msxt.client.server.WebServerProxy;
@@ -19,7 +16,6 @@ import com.msxt.client.server.ServerProxy.STATUS;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -43,18 +39,26 @@ public class LoginActivity extends BaseActivity {
 	String loginResultFilePath = null;
 	private Context mContext;
 	
-	public void printStoredDataInSP(){
-		Log.i(LOG_TAG,"----------------data in sharedPreferences-----------------");
-		//print all stored data in sharedPreferences
-		Map<String, ?> dataInSP = sharedPreferences.getAll();
-		Iterator it = dataInSP.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry entry = (Map.Entry) it.next();
-			Object key = entry.getKey();
-			Object value = entry.getValue();
-			Log.i(LOG_TAG,"key=" + key + " value=" + value);
-		}
-	}
+//	public final static String SPkeyConstants.SP_KEY_HOST = "host";
+//	public final static String SPkeyConstants.SP_KEY_ID = "id";
+//	public final static String SPkeyConstants.SP_KEY_PWD = "password";
+//	public final static String SPkeyConstants.SP_KEY_EXAM_PATH = "examPath";
+//	public final static String SPkeyConstants.SP_KEY_EXAM_FILE = "examFile";
+//	public final static String SPkeyConstants.SP_KEY_EXAM_STATUS = "exam_status";
+	
+//	public void loadSharedPreferencesData(){
+//		Log.i(LOG_TAG,"----------------data in sharedPreferences-----------------");
+//		//print all stored data in sharedPreferences
+//		Map<String, ?> dataInSP = sharedPreferences.getAll();
+//		Iterator it = dataInSP.entrySet().iterator();
+//		while (it.hasNext()) {
+//			Map.Entry entry = (Map.Entry) it.next();
+//			Object key = entry.getKey();
+//			Object value = entry.getValue();
+//			Log.i(LOG_TAG,"key=" + key + " value=" + value);
+//		}
+//	}
+//	
 	
 	public void printStoredDataInDB(){
 		Log.i(LOG_TAG,"----------------data in SQLLite-----------------");
@@ -80,19 +84,22 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.login);
         mContext = getApplicationContext();
         
-        printStoredDataInSP();
+        loadSharedPreferencesData();
         printStoredDataInDB();
 		
-        saveHost = sharedPreferences.getString("host", null);
+//        saveHost = sharedPreferences.getString("host", null);
+        saveHost = getFromSP(SPkeyConstants.SP_KEY_HOST);
         
         idEt = (EditText) this.findViewById(R.id.idEt);
-		saveId = sharedPreferences.getString("id", null);
+//		saveId = sharedPreferences.getString("id", null);
+		saveId = getFromSP(SPkeyConstants.SP_KEY_ID);
 		if(saveId!=null||!"".equals(saveId)){
 			idEt.setText(saveId);
 		}
 		
 		passwordET = (EditText) this.findViewById(R.id.passwordET);
-		savePassword = sharedPreferences.getString("password", null);
+//		savePassword = sharedPreferences.getString("password", null);
+		saveId = getFromSP(SPkeyConstants.SP_KEY_PWD);
 		if(savePassword!=null||!"".equals(savePassword)){
 			passwordET.setText(savePassword);
 		}
@@ -119,11 +126,14 @@ public class LoginActivity extends BaseActivity {
         	//save user file home path to sharedPreferences
 			sharedPreferences.edit().putString("userFileHome", loginResultFilePath);
 			sharedPreferences.edit().commit();
-			
         	
-        	String examPath = sharedPreferences.getString("examPath", null);
-        	String examFile = sharedPreferences.getString("examFile", null);
-        	String examStatus = sharedPreferences.getString("exam_status", null);
+//        	String examPath = sharedPreferences.getString("examPath", null);
+//        	String examFile = sharedPreferences.getString("examFile", null);
+//        	String examStatus = sharedPreferences.getString("exam_status", null);
+
+        	String examPath = getFromSP(SPkeyConstants.SP_KEY_EXAM_PATH);
+        	String examFile = getFromSP(SPkeyConstants.SP_KEY_EXAM_FILE);
+        	String examStatus = getFromSP(SPkeyConstants.SP_KEY_EXAM_STATUS);
         	
         	if("start".equals(examStatus)&& new File(examPath+File.separator+examFile).exists()){
 	        	//go to continue exam page
@@ -136,10 +146,15 @@ public class LoginActivity extends BaseActivity {
         		//go to start exam page
             	String id = idEt.getText().toString();
             	String password = passwordET.getText().toString();
-    			SharedPreferences.Editor editor = sharedPreferences.edit();
-    			editor.putString("id", id);
-    			editor.putString("password", password);
-    			editor.commit();		
+            	
+//    			SharedPreferences.Editor editor = sharedPreferences.edit();
+//    			editor.putString("id", id);
+//    			editor.putString("password", password);
+//    			editor.commit();
+    			
+    			save2SP(SPkeyConstants.SP_KEY_ID, id);
+    			save2SP(SPkeyConstants.SP_KEY_PWD, password);
+    			
             	if (getWifiIP() != null && getWifiIP().trim().length() > 0 && !getWifiIP().trim().equals("0.0.0.0")){
             		new LoginTask().execute(new String[]{id,password});
             	}else{
@@ -175,7 +190,6 @@ public class LoginActivity extends BaseActivity {
     	
         @Override
 		protected String doInBackground(String... urls) {
-//        	String host = mContext.getResources().getString(R.string.host);
         	Integer port = Integer.valueOf(mContext.getResources().getString(R.string.port));
         	proxy =  WebServerProxy.Factroy.createInstance(saveHost, port);
     		loginResult = proxy.login(urls[0], urls[1]);
@@ -209,7 +223,8 @@ public class LoginActivity extends BaseActivity {
     		        	String conversation = root.getElementsByTagName( "conversation" ).item(0).getTextContent();
     		        	proxy.setConversationId( conversation );
     		        	
-    		        	String examStatus = sharedPreferences.getString("exam_status", null);
+//    		        	String examStatus = sharedPreferences.getString("exam_status", null);
+    		        	String examStatus = getFromSP(SPkeyConstants.SP_KEY_EXAM_STATUS);
     		        	if(examStatus == null){
         		        	//go to exam List page
         		        	Intent intent = new Intent();

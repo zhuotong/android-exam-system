@@ -16,7 +16,6 @@ import com.msxt.client.model.Examination.Question;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ExamContinue extends BaseActivity {
-	private static final String LOG_TAG = "ExamListActivity";
+	private static final String LOG_TAG = "ExamContinue";
 
 	ImageView imgHome = null;
 	Context mContext;
@@ -77,7 +76,9 @@ public class ExamContinue extends BaseActivity {
 		questionTypes = getResources().getStringArray(R.array.question_types);
 		
 		//get Exam data
-		examFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + getResources().getString(R.string.app_file_home);
+//		examFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + getResources().getString(R.string.app_file_home);
+		examFilePath = sharedPreferences.getString("examPath", null);
+		
 		examFileName = getResources().getString(R.string.exam_file_name);
     	FileInputStream examStream = FileUtil.getExamStream(examFilePath,examFileName);
     	exam = DataUtil.getExam(examStream);
