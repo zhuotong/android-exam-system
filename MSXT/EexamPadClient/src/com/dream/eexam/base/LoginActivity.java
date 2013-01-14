@@ -7,7 +7,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import com.dream.eexam.util.DatabaseUtil;
-import com.dream.eexam.util.SPkeyConstants;
+import com.dream.eexam.util.StoreDataConstants;
 import com.dream.eexam.util.SystemConfig;
 import com.msxt.client.server.ServerProxy;
 import com.msxt.client.server.WebServerProxy;
@@ -39,26 +39,6 @@ public class LoginActivity extends BaseActivity {
 	String loginResultFilePath = null;
 	private Context mContext;
 	
-//	public final static String SPkeyConstants.SP_KEY_HOST = "host";
-//	public final static String SPkeyConstants.SP_KEY_ID = "id";
-//	public final static String SPkeyConstants.SP_KEY_PWD = "password";
-//	public final static String SPkeyConstants.SP_KEY_EXAM_PATH = "examPath";
-//	public final static String SPkeyConstants.SP_KEY_EXAM_FILE = "examFile";
-//	public final static String SPkeyConstants.SP_KEY_EXAM_STATUS = "exam_status";
-	
-//	public void loadSharedPreferencesData(){
-//		Log.i(LOG_TAG,"----------------data in sharedPreferences-----------------");
-//		//print all stored data in sharedPreferences
-//		Map<String, ?> dataInSP = sharedPreferences.getAll();
-//		Iterator it = dataInSP.entrySet().iterator();
-//		while (it.hasNext()) {
-//			Map.Entry entry = (Map.Entry) it.next();
-//			Object key = entry.getKey();
-//			Object value = entry.getValue();
-//			Log.i(LOG_TAG,"key=" + key + " value=" + value);
-//		}
-//	}
-//	
 	
 	public void printStoredDataInDB(){
 		Log.i(LOG_TAG,"----------------data in SQLLite-----------------");
@@ -88,18 +68,18 @@ public class LoginActivity extends BaseActivity {
         printStoredDataInDB();
 		
 //        saveHost = sharedPreferences.getString("host", null);
-        saveHost = getFromSP(SPkeyConstants.SP_KEY_HOST);
+        saveHost = getFromSP(StoreDataConstants.SP_KEY_HOST);
         
         idEt = (EditText) this.findViewById(R.id.idEt);
 //		saveId = sharedPreferences.getString("id", null);
-		saveId = getFromSP(SPkeyConstants.SP_KEY_ID);
+		saveId = getFromSP(StoreDataConstants.SP_KEY_ID);
 		if(saveId!=null||!"".equals(saveId)){
 			idEt.setText(saveId);
 		}
 		
 		passwordET = (EditText) this.findViewById(R.id.passwordET);
 //		savePassword = sharedPreferences.getString("password", null);
-		saveId = getFromSP(SPkeyConstants.SP_KEY_PWD);
+		saveId = getFromSP(StoreDataConstants.SP_KEY_PWD);
 		if(savePassword!=null||!"".equals(savePassword)){
 			passwordET.setText(savePassword);
 		}
@@ -127,13 +107,9 @@ public class LoginActivity extends BaseActivity {
 			sharedPreferences.edit().putString("userFileHome", loginResultFilePath);
 			sharedPreferences.edit().commit();
         	
-//        	String examPath = sharedPreferences.getString("examPath", null);
-//        	String examFile = sharedPreferences.getString("examFile", null);
-//        	String examStatus = sharedPreferences.getString("exam_status", null);
-
-        	String examPath = getFromSP(SPkeyConstants.SP_KEY_EXAM_PATH);
-        	String examFile = getFromSP(SPkeyConstants.SP_KEY_EXAM_FILE);
-        	String examStatus = getFromSP(SPkeyConstants.SP_KEY_EXAM_STATUS);
+        	String examPath = getFromSP(StoreDataConstants.SP_KEY_EXAM_PATH);
+        	String examFile = getFromSP(StoreDataConstants.SP_KEY_EXAM_FILE);
+        	String examStatus = getFromSP(StoreDataConstants.SP_KEY_EXAM_STATUS);
         	
         	if("start".equals(examStatus)&& new File(examPath+File.separator+examFile).exists()){
 	        	//go to continue exam page
@@ -147,13 +123,8 @@ public class LoginActivity extends BaseActivity {
             	String id = idEt.getText().toString();
             	String password = passwordET.getText().toString();
             	
-//    			SharedPreferences.Editor editor = sharedPreferences.edit();
-//    			editor.putString("id", id);
-//    			editor.putString("password", password);
-//    			editor.commit();
-    			
-    			save2SP(SPkeyConstants.SP_KEY_ID, id);
-    			save2SP(SPkeyConstants.SP_KEY_PWD, password);
+    			save2SP(StoreDataConstants.SP_KEY_ID, id);
+    			save2SP(StoreDataConstants.SP_KEY_PWD, password);
     			
             	if (getWifiIP() != null && getWifiIP().trim().length() > 0 && !getWifiIP().trim().equals("0.0.0.0")){
             		new LoginTask().execute(new String[]{id,password});
@@ -166,6 +137,7 @@ public class LoginActivity extends BaseActivity {
         }  
     };
     
+    //go to setting page
     View.OnClickListener settingListener = new View.OnClickListener() {  
         @Override  
         public void onClick(View v) { 
@@ -224,7 +196,7 @@ public class LoginActivity extends BaseActivity {
     		        	proxy.setConversationId( conversation );
     		        	
 //    		        	String examStatus = sharedPreferences.getString("exam_status", null);
-    		        	String examStatus = getFromSP(SPkeyConstants.SP_KEY_EXAM_STATUS);
+    		        	String examStatus = getFromSP(StoreDataConstants.SP_KEY_EXAM_STATUS);
     		        	if(examStatus == null){
         		        	//go to exam List page
         		        	Intent intent = new Intent();
@@ -232,14 +204,14 @@ public class LoginActivity extends BaseActivity {
         	    			intent.putExtra("loginResultFilePath", loginResultFilePath);
         	    			intent.setClass( mContext, ExamStart.class);
         	    			startActivity(intent);     		        		
-    		        	}else if("start".equals(examStatus)){
+    		        	}else if(StoreDataConstants.SP_VALUE_EXAM_STATUS_START.equals(examStatus)){
         		        	//go to continue exam page
         		        	Intent intent = new Intent();
         	    			intent.putExtra("loginResultFile", loginResultFile);
         	    			intent.putExtra("loginResultFilePath", loginResultFilePath);
         	    			intent.setClass( mContext, ExamContinue.class);
         	    			startActivity(intent);   
-    		        	}else if("end".equals(examStatus)){
+    		        	}else if(StoreDataConstants.SP_VALUE_EXAM_STATUS_END.equals(examStatus)){
     		        		ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Your Exam is completed");
     		        	}
     		        }

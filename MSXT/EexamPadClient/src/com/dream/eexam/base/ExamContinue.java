@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 
 import com.dream.eexam.paper.MultiChoices;
 import com.dream.eexam.paper.SingleChoices;
-import com.dream.eexam.server.DataUtil;
+import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.server.FileUtil;
 import com.dream.eexam.util.DatabaseUtil;
 import com.msxt.client.model.Examination;
@@ -60,7 +60,7 @@ public class ExamContinue extends BaseActivity {
 		String loginResultFilePath  = bundle.getString("loginResultFilePath");
 		try {
 	    	FileInputStream inputStream = new FileInputStream(new File(loginResultFilePath+ File.separator+loginResultFile));
-	    	succResult = DataUtil.getSuccessResult(inputStream);
+	    	succResult = DataParseUtil.getSuccessResult(inputStream);
 		} catch (Exception e) {
 			Log.i(LOG_TAG,e.getMessage());
 		}
@@ -81,7 +81,7 @@ public class ExamContinue extends BaseActivity {
 		
 		examFileName = getResources().getString(R.string.exam_file_name);
     	FileInputStream examStream = FileUtil.getExamStream(examFilePath,examFileName);
-    	exam = DataUtil.getExam(examStream);
+    	exam = DataParseUtil.getExam(examStream);
     	
 		nameTV = (TextView) this.findViewById(R.id.nameTV);
 		nameTV.setText(succResult.getInterviewer());
@@ -90,7 +90,7 @@ public class ExamContinue extends BaseActivity {
 		jobTitleTV.setText(succResult.getJobtitle());
 		
 		continueExam = (TextView) this.findViewById(R.id.continueExam);
-		continueExam.setText(exam.getName()+getExamInfo());
+		continueExam.setText(exam.getName()+getExamProgress());
 		
 		continueBtn = (Button) findViewById(R.id.continueBtn);
 		continueBtn.setOnClickListener(new Button.OnClickListener() {
@@ -103,7 +103,7 @@ public class ExamContinue extends BaseActivity {
 					cqIndex = getcqIndex();
 				}
 				
-				Question fQuestion = DataUtil.getQuestionByCidQid(exam, ccIndex, cqIndex);
+				Question fQuestion = DataParseUtil.getQuestionByCidQid(exam, ccIndex, cqIndex);
 				if(fQuestion==null){
 					ShowDialog(getResources().getString(R.string.exam_file_name),"Can not get question!");
 					return;
@@ -140,19 +140,15 @@ public class ExamContinue extends BaseActivity {
 		});
 	}
 	
-	public String getExamInfo(){
+	public String getExamProgress(){
 		String continueExamInfo ;
-		
 		DatabaseUtil dbUtil = new DatabaseUtil(mContext);
 		dbUtil.open();
-		
 		int examAnsweredQuestionSum = dbUtil.fetchAllAnswersCount();
-		int examQuestionSum = DataUtil.getExamQuestionSum(exam);
+		int examQuestionSum = DataParseUtil.getExamQuestionSum(exam);
 		int per = 100 * examAnsweredQuestionSum/examQuestionSum;
 		continueExamInfo = "  ("+String.valueOf(per)+"% "+getResources().getString(R.string.msg_complete)+")";
-		
 		dbUtil.close();
-		
 		return continueExamInfo;
 	}
 

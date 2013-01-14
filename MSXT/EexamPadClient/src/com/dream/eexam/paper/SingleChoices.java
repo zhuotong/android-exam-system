@@ -35,7 +35,7 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import com.dream.eexam.base.R;
 import com.dream.eexam.base.ResultActivity;
-import com.dream.eexam.server.DataUtil;
+import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.util.DatabaseUtil;
 import com.msxt.client.model.SubmitSuccessResult;
 import com.msxt.client.model.Examination.Choice;
@@ -527,7 +527,7 @@ public class SingleChoices extends BaseQuestion {
         		
         		saveExamStatus();
         		
-        		SubmitSuccessResult succResult = DataUtil.getSubmitSuccessResult(submitResult);
+        		SubmitSuccessResult succResult = DataParseUtil.getSubmitSuccessResult(submitResult);
         		
 				//move question
 				Intent intent = new Intent();

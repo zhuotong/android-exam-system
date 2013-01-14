@@ -2,8 +2,6 @@ package com.dream.eexam.paper;
 
 import java.util.ArrayList;
 import java.util.List;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.dream.eexam.base.R;
-import com.dream.eexam.server.DataUtil;
+import com.dream.eexam.server.DataParseUtil;
 import com.msxt.client.model.QUESTION_TYPE;
 import com.msxt.client.model.Examination.Question;
 
@@ -33,7 +31,7 @@ public class PendQuestions extends BaseQuestion {
     String qid = null;
 	
 	//data statement
-	MyListAdapter adapter;
+	PendQueListAdapter adapter;
 	List<String> listItemID = new ArrayList<String>();
 	Integer indexInExam;
 	
@@ -55,46 +53,38 @@ public class PendQuestions extends BaseQuestion {
 	}
 	
 	public void setHeader(){
-		//set exam header(Left)
-//		homeTV.setText("Home");
-		
-		//set exam header(Center)
-//		remainingTimeLabel.setText("Time Remaining: ");
-		
-		
-//		remainingTime.setText(String.valueOf(exam.getTime())+" mins");
 		
 		//set exam header(Right)
-		submitTV.setText("Submit");
-        submitTV.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Log.i(LOG_TAG, "submitTV.onClick()...");
-				
-		    	int waitQuestions = examQuestionSum - examAnsweredQuestionSum;
-				 
-				if (waitQuestions> 0) {
-					AlertDialog.Builder builder = new AlertDialog.Builder(PendQuestions.this);
-					builder.setMessage(String.valueOf(waitQuestions) + " " + mContext.getResources().getString(R.string.msg_submiting_warning))
-							.setCancelable(false)
-							.setPositiveButton("Yes",
-									new DialogInterface.OnClickListener() {
-										public void onClick(DialogInterface dialog,int id) {
-											submitAnswer();
-										}
-									})
-							.setNegativeButton("Cancel",
-									new DialogInterface.OnClickListener() {
-										public void onClick(DialogInterface dialog,int id) {
-											dialog.cancel();
-										}
-									});
-					builder.show();
-				} else {
-					submitAnswer();
-				}
-			}
-		});
+//		submitTV.setText("Submit");
+//        submitTV.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				Log.i(LOG_TAG, "submitTV.onClick()...");
+//				
+//		    	int waitQuestions = examQuestionSum - examAnsweredQuestionSum;
+//				 
+//				if (waitQuestions> 0) {
+//					AlertDialog.Builder builder = new AlertDialog.Builder(PendQuestions.this);
+//					builder.setMessage(String.valueOf(waitQuestions) + " " + mContext.getResources().getString(R.string.msg_submiting_warning))
+//							.setCancelable(false)
+//							.setPositiveButton("Yes",
+//									new DialogInterface.OnClickListener() {
+//										public void onClick(DialogInterface dialog,int id) {
+//											submitAnswer();
+//										}
+//									})
+//							.setNegativeButton("Cancel",
+//									new DialogInterface.OnClickListener() {
+//										public void onClick(DialogInterface dialog,int id) {
+//											dialog.cancel();
+//										}
+//									});
+//					builder.show();
+//				} else {
+//					submitAnswer();
+//				}
+//			}
+//		});
 
         //set catalog bar(Center) 
 		catalogsTV.setText(String.valueOf(cCatalogIndex)+". "+
@@ -108,27 +98,25 @@ public class PendQuestions extends BaseQuestion {
 		});
 		
 		 //set catalog bar(Right) 
-		pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_waiting)+"("+Integer.valueOf(pendQuestions.size())+")");
-		pendQueNumber.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent();
-				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
-				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
-				if(questionTypes[0].equals(cQuestionType)){
-					intent.putExtra("questionType", "Multi Select");
-					intent.setClass( getBaseContext(), PendQuestions.class);
-				}else if(questionTypes[1].equals(cQuestionType)){
-					intent.putExtra("questionType", "Single Select");
-					intent.setClass( getBaseContext(), PendQuestions.class);
-				}
-				finish();
-				startActivity(intent);
-			}
-		});
+//		pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_waiting)+"("+Integer.valueOf(pendQuestions.size())+")");
+//		pendQueNumber.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				Intent intent = new Intent();
+//				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
+//				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
+//				if(questionTypes[0].equals(cQuestionType)){
+//					intent.putExtra("questionType", "Multi Select");
+//					intent.setClass( getBaseContext(), PendQuestions.class);
+//				}else if(questionTypes[1].equals(cQuestionType)){
+//					intent.putExtra("questionType", "Single Select");
+//					intent.setClass( getBaseContext(), PendQuestions.class);
+//				}
+//				finish();
+//				startActivity(intent);
+//			}
+//		});
 	}
-	
-
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -139,7 +127,7 @@ public class PendQuestions extends BaseQuestion {
         setHeader();
         //set List
         gridList = (GridView)findViewById(R.id.gridview);
-        adapter = new MyListAdapter(pendQuestions);
+        adapter = new PendQueListAdapter(pendQuestions);
         gridList.setAdapter(adapter);
         gridList.setOnItemClickListener(new OnItemClickListener(){
         	@Override
@@ -152,36 +140,9 @@ public class PendQuestions extends BaseQuestion {
     }
     
     public void setFooter(){
-    	//set preBtn
-//    	backArrow.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				moveDirect = -1;
-//				gotoNewQuestion(mContext,cCatalogIndex,cQuestionIndex,moveDirect);
-//			}
-//		});
-//        
-//		//set completedSeekBar
-//		int per = 100 * examAnsweredQuestionSum/examQuestionSum;
-//		completedSeekBar.setThumb(null);
-//		completedSeekBar.setProgress(per);
-//		completedSeekBar.setEnabled(false);
-//		//set completedSeekBar label
-//		completedPercentage.setText(String.valueOf(per)+"%");
-//		
-//		
-//		//set nextBtn
-//		nextArrow.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				moveDirect = 1;
-//				gotoNewQuestion(mContext,cCatalogIndex,cQuestionIndex,moveDirect);
-//			}
-//		});
     	
     	backArrow.setVisibility(View.INVISIBLE);
 		pendQueNumber.setVisibility(View.INVISIBLE);
-//		remainingTime.setVisibility(View.INVISIBLE);
 		StringBuffer timeSB = new StringBuffer();
 		if(lMinutes<10) timeSB.append("0");
 		timeSB.append(String.valueOf(lMinutes));
@@ -202,11 +163,11 @@ public class PendQuestions extends BaseQuestion {
 		nextArrow.setVisibility(View.INVISIBLE);
     }
     
-    class MyListAdapter extends BaseAdapter{
+    class PendQueListAdapter extends BaseAdapter{
     	List<Question> questions = new ArrayList<Question>();
     	private LayoutInflater mInflater;
     	
-    	public MyListAdapter(List<Question> questions){
+    	public PendQueListAdapter(List<Question> questions){
     		this.questions = questions;
     		mInflater = LayoutInflater.from(mContext);  
     	}
@@ -241,21 +202,20 @@ public class PendQuestions extends BaseQuestion {
             }  
             
             Question question = questions.get(position);
-//            qType = question.getType();
             qid = question.getId();
             
-            holder.questionBtn.setText(String.valueOf(DataUtil.getQuestionExamIndex(exam, qid)));  
+            holder.questionBtn.setText(String.valueOf(DataParseUtil.getQuestionExamIndex(exam, qid)));  
             holder.questionBtn.setOnClickListener(new Button.OnClickListener() {
     			public void onClick(View v) {
     				Log.i(LOG_TAG,"onClick()...");
     				
     				Button sButton = (Button)v;
     	            String indexInExam = sButton.getText().toString();
-    	            Question nQuestion = DataUtil.getQuestionByIndexInExam(exam, Integer.valueOf(indexInExam));
+    	            Question nQuestion = DataParseUtil.getQuestionByIndexInExam(exam, Integer.valueOf(indexInExam));
     	            
     				//move question
     				Intent intent = new Intent();
-    				intent.putExtra("ccIndex", String.valueOf(DataUtil.getCidByQid(exam, nQuestion.getId())));
+    				intent.putExtra("ccIndex", String.valueOf(DataParseUtil.getCidByQid(exam, nQuestion.getId())));
     				intent.putExtra("cqIndex", String.valueOf(nQuestion.getIndex()));
     				
     				if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(nQuestion.getType())){

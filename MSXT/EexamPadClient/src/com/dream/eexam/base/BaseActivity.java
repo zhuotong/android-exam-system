@@ -9,6 +9,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.dream.eexam.util.ActivityStackControlUtil;
+import com.dream.eexam.util.StoreDataConstants;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -137,7 +139,7 @@ public class BaseActivity extends Activity {
 	 * @return
 	 */
 	public Integer getccIndex(){
-		Integer ccIndex = sharedPreferences.getInt("ccIndex", 0);
+		Integer ccIndex = sharedPreferences.getInt(StoreDataConstants.SP_KEY_CCINDEX, 0);
 		if(ccIndex!=null&&ccIndex>0){
 			Log.i(LOG_TAG,"getccIndex()...ccIndex="+String.valueOf(ccIndex));
 			return ccIndex;
@@ -148,7 +150,7 @@ public class BaseActivity extends Activity {
 	}
 	
 	public Integer getcqIndex(){
-		Integer cqIndex = sharedPreferences.getInt("cqIndex", 0);
+		Integer cqIndex = sharedPreferences.getInt(StoreDataConstants.SP_KEY_CQINDEX, 0);
 		if(cqIndex!=null&&cqIndex>0){
 			Log.i(LOG_TAG,"getcqIndex()...cqIndex="+String.valueOf(cqIndex));
 			return cqIndex;

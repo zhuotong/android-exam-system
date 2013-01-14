@@ -6,10 +6,9 @@ import java.util.Calendar;
 import java.util.List;
 import com.dream.eexam.paper.MultiChoices;
 import com.dream.eexam.paper.SingleChoices;
-import com.dream.eexam.server.DataUtil;
+import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.util.DatabaseUtil;
-import com.dream.eexam.util.SPkeyConstants;
-import com.dream.eexam.util.SystemConfig;
+import com.dream.eexam.util.StoreDataConstants;
 import com.msxt.client.model.Examination;
 import com.msxt.client.model.Examination.Question;
 import com.msxt.client.model.LoginSuccessResult;
@@ -51,9 +50,10 @@ public class ExamStart extends BaseActivity {
 	String conversation = null;
 	String[] exams = null;
 	ArrayAdapter<String> adapter;
+	
 	String examIdString = null;
 	Context mContext;
-	String downloadExamFile = null;
+//	String downloadExamFile = null;
 	String downloadExamFilePath = null;
 	QUESTION_TYPE fQuestionType = null;
 	String[] questionTypes;
@@ -80,13 +80,15 @@ public class ExamStart extends BaseActivity {
 		String loginResultFile  = bundle.getString("loginResultFile");
 		String loginResultFilePath  = bundle.getString("loginResultFilePath");
 		
+		//get login successfully information
 		try {
 	    	FileInputStream inputStream = new FileInputStream(new File(loginResultFilePath+ File.separator+loginResultFile));
-	    	succResult = DataUtil.getSuccessResult(inputStream);
-	    	
+	    	succResult = DataParseUtil.getSuccessResult(inputStream);
 		} catch (Exception e) {
 			Log.i(LOG_TAG,e.getMessage());
 		}
+		
+		//get exam name list
 		examinations = succResult.getExaminations();
 		if(examinations!=null&&examinations.size()>0){
 			exams = new String[examinations.size()];
@@ -97,6 +99,8 @@ public class ExamStart extends BaseActivity {
 			exams = new String[0];
 		}
 		
+		
+		//initial component
 		nameTV = (TextView) this.findViewById(R.id.nameTV);
 		nameTV.setText(succResult.getInterviewer());
 		
@@ -116,9 +120,9 @@ public class ExamStart extends BaseActivity {
 		startBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				Log.i(LOG_TAG,"onClick()...");
-				downloadExamFile = SystemConfig.getInstance().getPropertyValue("Download_Exam");
+//				downloadExamFile = SystemConfig.getInstance().getPropertyValue("Download_Exam");
 //	        	downloadExamFilePath = sharedPreferences.getString("examPath", null);
-	        	downloadExamFilePath = getFromSP(SPkeyConstants.SP_KEY_EXAM_PATH);
+	        	downloadExamFilePath = getFromSP(StoreDataConstants.SP_KEY_EXAM_PATH);
 	        	
 	        	Log.i(LOG_TAG, "downloadExamFilePath:"+downloadExamFilePath);
 	        	
@@ -164,7 +168,8 @@ public class ExamStart extends BaseActivity {
         	ServerProxy proxy =  WebServerProxy.Factroy.getCurrrentInstance();
         	examResult = proxy.getExam(urls[0]);
     		if(STATUS.SUCCESS.equals(examResult.getStatus())){
-    			saveFile(downloadExamFilePath, downloadExamFile, examResult.getSuccessMessage());
+    			String examName = examIdString+".xml";
+    			saveFile(downloadExamFilePath, examName, examResult.getSuccessMessage());
     		}else if(STATUS.ERROR.equals(examResult.getStatus())){
     			ShowDialog(mContext.getResources().getString(R.string.dialog_note),
     					examResult.getErrorMessage());
@@ -178,7 +183,7 @@ public class ExamStart extends BaseActivity {
 			progressDialog.dismiss();
 			if(STATUS.SUCCESS.equals(examResult.getStatus())){
 				
-				Examination exam = DataUtil.getExam(examResult);
+				Examination exam = DataParseUtil.getExam(examResult);
 				int ccIndex = 1;
 				int cqIndex = 1;
 				if(getccIndex()>0 && getcqIndex()>0){
@@ -186,7 +191,7 @@ public class ExamStart extends BaseActivity {
 					cqIndex = getcqIndex();
 				}
 				
-				Question fQuestion = DataUtil.getQuestionByCidQid(exam, ccIndex, cqIndex);
+				Question fQuestion = DataParseUtil.getQuestionByCidQid(exam, ccIndex, cqIndex);
 				if(fQuestion==null){
 					ShowDialog(mContext.getResources().getString(R.string.dialog_note),
 							"Can not get question!");
@@ -212,8 +217,8 @@ public class ExamStart extends BaseActivity {
 					ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Invalid qeustion type.");
 				}
 				
-				if(getFromSP(SPkeyConstants.SP_KEY_EXAM_STATUS)==null){
-					save2SP(SPkeyConstants.SP_KEY_EXAM_STATUS, "start");
+				if(getFromSP(StoreDataConstants.SP_KEY_EXAM_STATUS)==null){
+					save2SP(StoreDataConstants.SP_KEY_EXAM_STATUS, "start");
 				}
 				
 				//save exam start time
@@ -225,13 +230,13 @@ public class ExamStart extends BaseActivity {
 	
 	public void saveStartTime(){
 		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
-		long startTime = sharedPreferences.getLong(SPkeyConstants.SP_KEY_EXAM_START_TIME, 0);
+		long startTime = sharedPreferences.getLong(StoreDataConstants.SP_KEY_EXAM_START_TIME, 0);
 		//if its first time to do exam, save start exam time
 		if(startTime==0){
 			SharedPreferences.Editor editor = sharedPreferences.edit();
 			long currentTime = Calendar.getInstance().getTimeInMillis();
 			Log.i(LOG_TAG, "startTime="+String.valueOf(startTime));
-			editor.putLong(SPkeyConstants.SP_KEY_EXAM_START_TIME, currentTime);
+			editor.putLong(StoreDataConstants.SP_KEY_EXAM_START_TIME, currentTime);
 			editor.commit();		
 		}
 	}

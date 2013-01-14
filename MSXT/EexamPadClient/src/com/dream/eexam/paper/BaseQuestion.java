@@ -37,7 +37,7 @@ import com.dream.eexam.base.BaseActivity;
 import com.dream.eexam.base.GroupAdapter;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.CatalogInfo;
-import com.dream.eexam.server.DataUtil;
+import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.server.FileUtil;
 import com.dream.eexam.util.DatabaseUtil;
 import com.msxt.client.model.Examination;
@@ -111,14 +111,14 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
     public void loadDownLoadExam(DatabaseUtil dbUtil){
     	FileInputStream examStream = FileUtil.getExamStream(examFilePath,examFileName);
     	//load exam data
-    	exam = DataUtil.getExam(examStream);
+    	exam = DataParseUtil.getExam(examStream);
     	//load exam related data
-    	examQuestionSum = DataUtil.getExamQuestionSum(exam);
+    	examQuestionSum = DataParseUtil.getExamQuestionSum(exam);
     	cataLogs = exam.getCatalogs();
     	cCatalog = cataLogs.get(cCatalogIndex-1);
-    	cCatalog1stQuestionIndex = DataUtil.getFirstQuestionIndexOfCatalog(exam, cCatalogIndex);
-    	cQuestion = DataUtil.getQuestionByCidQid(exam, cCatalogIndex, cQuestionIndex);
-    	cQuestionIndexOfExam = DataUtil.getQuestionExamIndex(exam, cQuestion.getId());
+    	cCatalog1stQuestionIndex = DataParseUtil.getFirstQuestionIndexOfCatalog(exam, cCatalogIndex);
+    	cQuestion = DataParseUtil.getQuestionByCidQid(exam, cCatalogIndex, cQuestionIndex);
+    	cQuestionIndexOfExam = DataParseUtil.getQuestionExamIndex(exam, cQuestion.getId());
     	queSumOfCCatalog = cCatalog.getQuestions().size();
     	cCataloglastQuestionIndex = cCatalog1stQuestionIndex+queSumOfCCatalog-1;
     	cChoices = cQuestion.getChoices();
@@ -162,7 +162,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 			Integer totalQuestions = qList.size();
 
 			catalogInfos.add(new CatalogInfo(catalog.getIndex(),catalog.getDesc(),
-					DataUtil.getFirstQuestionIndexOfCatalog(exam, catalog.getIndex()),totalQuestions,answeredQuetions));
+					DataParseUtil.getFirstQuestionIndexOfCatalog(exam, catalog.getIndex()),totalQuestions,answeredQuetions));
 			catalogCursor.close();
 		}
     }
@@ -288,6 +288,8 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		if (lMinutes == 0) {
 			if (lSeconds == 0) {
 				remainingTime.setText("Time out !");
+				
+				//todo something
 				if (timer != null) {
 					timer.cancel();
 					timer = null;
@@ -390,7 +392,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
     //go to new question page
     public void gotoNewQuestion(Context context,int cid, int qid, int diret){
     	Log.i(LOG_TAG, "gotoNewQuestion()...");
-		Question newQuestion = DataUtil.getNewQuestionByCidQid(exam, cid, qid,diret);
+		Question newQuestion = DataParseUtil.getNewQuestionByCidQid(exam, cid, qid,diret);
 		
 		if(newQuestion!=null){
 //			String newQuestionType = newQuestion.getType();
@@ -401,7 +403,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 				
 				//move question
 				Intent intent = new Intent();
-				intent.putExtra("ccIndex",String.valueOf(DataUtil.getCidByQid(exam, newQuestion.getId())));
+				intent.putExtra("ccIndex",String.valueOf(DataParseUtil.getCidByQid(exam, newQuestion.getId())));
 				intent.putExtra("cqIndex",String.valueOf(newQuestion.getIndex()));
 				
 				
@@ -588,7 +590,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 				}
 				
 				CatalogInfo info = catalogInfos.get(position);
-				Question nQuestion = DataUtil.getQuestionByCidQid(exam, info.getIndex(),1);
+				Question nQuestion = DataParseUtil.getQuestionByCidQid(exam, info.getIndex(),1);
 				QUESTION_TYPE nQuestionType = nQuestion.getType();
 				Intent intent = new Intent();
 				intent.putExtra("ccIndex", String.valueOf(info.getIndex()));

@@ -36,7 +36,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.dream.eexam.base.R;
 import com.dream.eexam.base.ResultActivity;
-import com.dream.eexam.server.DataUtil;
+import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.util.DatabaseUtil;
 import com.msxt.client.model.Examination.Choice;
 import com.msxt.client.model.SubmitSuccessResult;
@@ -199,34 +199,30 @@ public class MultiChoices extends BaseQuestion {
         }
         
         //set text view pending[count]
-//        if(pendQuestions.size()>0){
-    		pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_waiting)+"("+Integer.valueOf(pendQuestions.size())+")");
-    		pendQueNumber.setOnClickListener(new View.OnClickListener() {
-    			@Override
-    			public void onClick(View v) {
-    				if(pendQuestions.size()>0){
-        				Intent intent = new Intent();
-        				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
-        				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
-        				intent.putExtra("questionType", cQuestionType);
-        				if(questionTypes[0].equals(cQuestionType)){
-        					intent.setClass( getBaseContext(), PendQuestions.class);
-        				}else if(questionTypes[1].equals(cQuestionType)){
-        					intent.setClass( getBaseContext(), PendQuestions.class);
-        				}
-        				finish();
-        				startActivity(intent);   					
-    				}else{
-    					ShowDialog(mContext.getResources().getString(R.string.dialog_note),
-    							mContext.getResources().getString(R.string.message_tv_no_question));	
+		pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_waiting)+"("+Integer.valueOf(pendQuestions.size())+")");
+		pendQueNumber.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(pendQuestions.size()>0){
+    				Intent intent = new Intent();
+    				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
+    				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
+    				intent.putExtra("questionType", cQuestionType);
+    				if(questionTypes[0].equals(cQuestionType)){
+    					intent.setClass( getBaseContext(), PendQuestions.class);
+    				}else if(questionTypes[1].equals(cQuestionType)){
+    					intent.setClass( getBaseContext(), PendQuestions.class);
     				}
-    			}
-    		});        	
-//        }else{
-//        	pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_complete));
-//        }
+    				finish();
+    				startActivity(intent);   					
+				}else{
+					ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+							mContext.getResources().getString(R.string.message_tv_no_question));	
+				}
+			}
+		});        	
 
-        
+        //set remaining time
 		StringBuffer timeSB = new StringBuffer();
 		if(lMinutes<10) timeSB.append("0");
 		timeSB.append(String.valueOf(lMinutes));
@@ -234,7 +230,6 @@ public class MultiChoices extends BaseQuestion {
 		if(lSeconds<10) timeSB.append("0");
 		timeSB.append(String.valueOf(lSeconds));
 		remainingTime.setText(timeSB.toString());
-		
 		//set completedSeekBar
 		int per = 100 * examAnsweredQuestionSum/examQuestionSum;
 		completedSeekBar.setThumb(null);
@@ -437,7 +432,6 @@ public class MultiChoices extends BaseQuestion {
 			Choice choice = choices.get(position);
 			
 			holder.selected.setChecked(mChecked.get(position));
-//			holder.selected.setText(choicesLabels[position]);
 			holder.index.setText(choice.getLabel());
 			holder.choiceDesc.setText(choice.getContent());
 			
@@ -468,12 +462,10 @@ public class MultiChoices extends BaseQuestion {
         @Override
 		protected String doInBackground(String... urls) {
         	proxy =  WebServerProxy.Factroy.getCurrrentInstance();
-        	
         	DatabaseUtil dbUtil = new DatabaseUtil(mContext);
         	dbUtil.open();
         	Map<String, String> answers =  getAllAnswers(dbUtil);
         	dbUtil.close();
-        	
         	submitResult = proxy.submitAnswer(urls[0],answers);
 			return null;
 		}
@@ -482,17 +474,13 @@ public class MultiChoices extends BaseQuestion {
         protected void onPostExecute(String result) {
         	progressDialog.dismiss();
         	submitTV.setEnabled(true);
-
     		if( submitResult.getStatus() == STATUS.ERROR ) {
     			ShowDialog(mContext.getResources().getString(R.string.dialog_note),
     					submitResult.getErrorMessage());
         	} else {
-//        		ShowDialog(submitResult.getSuccessMessage());
         		//make exam status to end
         		saveExamStatus();
-        		
-        		SubmitSuccessResult succResult = DataUtil.getSubmitSuccessResult(submitResult);
-        		
+        		SubmitSuccessResult succResult = DataParseUtil.getSubmitSuccessResult(submitResult);
 				//move question
 				Intent intent = new Intent();
 				intent.putExtra("score", String.valueOf(succResult.getScore()));
