@@ -23,7 +23,7 @@ import com.msxt.client.model.Examination.Question;
 
 public class PendQuestions extends BaseQuestion {
 	
-	public final static String LOG_TAG = "MultiChoices";
+	public final static String LOG_TAG = "PendQuestions";
 
 	GridView gridList;
 	
