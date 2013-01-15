@@ -19,11 +19,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 	public class CandidateInfoResumePdf extends CandidateInfoBase {
 		private final static String TAG = "CandidateInfoResumePdf";
 	    private final static String ALBUM_PATH = Environment.getExternalStorageDirectory() + "/download_test/";
+	    
+	    
 	    private ImageView imageView;
 	    private Button btnSave;
 	    private ProgressDialog myDialog = null;
@@ -31,13 +34,15 @@ import android.widget.Toast;
 	    private String fileName;
 	    private String message;
 	    
-	    
 	    @Override
 	    protected void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.candidate_info_resume);
 	        
 	        mContext = getApplicationContext();
+	        
+	        //set header
+	        setHeader((TextView)findViewById(R.id.candidateInfo));
 	        
 	        imageView = (ImageView)findViewById(R.id.imgSource);
 	        btnSave = (Button)findViewById(R.id.btnSave);
@@ -69,10 +74,10 @@ import android.widget.Toast;
 	        }   
 
 	        
-	        // 涓嬭浇鍥剧墖
+	        // 娑撳娴囬崶鍓у
 	        btnSave.setOnClickListener(new Button.OnClickListener(){
 	            public void onClick(View v) {
-	                myDialog = ProgressDialog.show(CandidateInfoResumePdf.this, "淇濆瓨鍥剧墖", "鍥剧墖姝ｅ湪淇濆瓨涓紝璇风◢绛�..", true);
+	                myDialog = ProgressDialog.show(CandidateInfoResumePdf.this, "娣囨繂鐡ㄩ崶鍓у", "閸ュ墽澧栧锝呮躬娣囨繂鐡ㄦ稉顓ㄧ礉鐠囬鈼㈢粵锟�.", true);
 	                new Thread(saveFileRunnable).start();
 	        }
 	        });
@@ -131,7 +136,7 @@ import android.widget.Toast;
 	    } 
 
 	    /**
-	     * 淇濆瓨鏂囦欢
+	     * 娣囨繂鐡ㄩ弬鍥︽
 	     * @param bm
 	     * @param fileName
 	     * @throws IOException

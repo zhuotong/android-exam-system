@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 public class CandidateInfoBase extends BaseActivity {
 
@@ -15,6 +16,14 @@ public class CandidateInfoBase extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 	}
+	
+	protected void setHeader(TextView candidateInfoTV){
+		//set candidateInfoTV
+		Bundle bundle = this.getIntent().getExtras();
+		String name  = bundle.getString("name");
+		String position  = bundle.getString("position");
+		candidateInfoTV.setText(position +":" + name);
+    }
 	
 	public void go2Resume(View view){
 		Intent intent = new Intent();

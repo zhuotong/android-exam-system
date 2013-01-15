@@ -88,8 +88,13 @@ public class CandidateList extends BaseActivity {
         	@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int arg2,
 					long arg3) {
+        		
+        		CandiateBean bean = candiateList.get(arg2);
+        		
             	Intent intent = new Intent();
     			intent.setClass( mContext, CandidateInfoResumePdf.class);
+    			intent.putExtra("name", bean.getName());
+    			intent.putExtra("position", bean.getPosition());
     			startActivity(intent);  
 			}      	
         });
