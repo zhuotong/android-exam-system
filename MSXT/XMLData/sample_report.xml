@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<report>
+	<bars>
+		<bar>
+				<index>1</index>
+				<catalog>java</catalog>
+				<correctrate>80%</correctrate>
+		</bar>
+		<bar>
+				<index>2</index>
+				<catalog>SQL</catalog>
+				<correctrate>70%</correctrate>
+		</bar>
+		<bar>
+				<index>3</index>
+				<catalog>javascript</catalog>
+				<correctrate>75%</correctrate>
+		</bar>		
+	</bars>
+</report>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<detail>
+	<questions>
+		<question>
+				<index>1</index>
+				<desc><![CDATA[
+				class Top {
+					public Top(String s) { System.out.print("B"); }
+				}
+				public class Bottom extends Top {
+					public Bottom(String s) { System.out.print("D"); }
+					public static void main(String [] args) {
+					new Bottom("C");
+					System.out.println(" ");
+					} 
+				}
+				
+				A:""
+				B:B
+				C:C
+				D:D
+				]]
+				</desc>
+				<answer>A,B</answer>
+				<correct>A,B,C</correct>
+		</question>
+		<question>
+				<index>2</index>
+				<desc><![CDATA[
+				class Top {
+					public Top(String s) { System.out.print("B"); }
+				}
+				public class Bottom extends Top {
+					public Bottom(String s) { System.out.print("D"); }
+					public static void main(String [] args) {
+					new Bottom("C");
+					System.out.println(" ");
+					} 
+				}
+				
+				A:""
+				B:B
+				C:C
+				D:D
+				]]
+				</desc>
+				<answer>A</answer>
+				<correct>C</correct>
+		</question>	
+	</questions>
+</detail>
