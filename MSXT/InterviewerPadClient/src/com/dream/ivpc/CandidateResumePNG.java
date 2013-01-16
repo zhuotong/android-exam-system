@@ -30,6 +30,8 @@ import android.widget.Toast;
 	        mContext = getApplicationContext();
 	        //set header
 	        setHeader((TextView)findViewById(R.id.candidateInfo));
+	        
+	        
 	        imageView = (ImageView)findViewById(R.id.imgSource);
             myDialog = ProgressDialog.show(CandidateResumePNG.this, "Download File...", "Please Wait!", true);
             new Thread(saveFileRunnable).start();

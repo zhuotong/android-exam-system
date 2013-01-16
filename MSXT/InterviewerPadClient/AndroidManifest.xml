@@ -43,7 +43,7 @@
                   android:launchMode="singleTask">
         </activity>
         
-        <activity android:name=".CircleViewFlowExample"
+        <activity android:name=".CandidateResumeGroup"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>

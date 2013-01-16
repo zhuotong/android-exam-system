@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class CandidateInfoExamDetail extends CandidateInfoBase {
@@ -38,7 +39,7 @@ public class CandidateInfoExamDetail extends CandidateInfoBase {
 	ListView listView;
 	QuestionListAdapter adapter;	
 	
-	Button examdetail;
+//	Button examdetail;
 	
 	public List<QuestionBean> getQuestionList(){
 		List<QuestionBean> questionList = new ArrayList<QuestionBean>();
@@ -91,12 +92,15 @@ public class CandidateInfoExamDetail extends CandidateInfoBase {
         setContentView(R.layout.candidate_info_examdetail);
  
         mContext = getApplicationContext();
-        
+
+		setHeader((TextView)findViewById(R.id.candidateInfo));
+		setFooter((Button) findViewById(R.id.examdetail));
+		
         imgGoBack = (ImageView) findViewById(R.id.imgGoBack);
         imgGoBack.setOnClickListener(goBackListener);
         
-        examdetail = (Button) findViewById(R.id.examdetail);
-        examdetail.setBackgroundResource(R.drawable.bg_footer_button_select);
+//        examdetail = (Button) findViewById(R.id.examdetail);
+//        examdetail.setBackgroundResource(R.drawable.bg_footer_button_select);
         
         indexSortIcon = (ImageView) findViewById(R.id.indexSortIcon);
         catalogSortIcon = (ImageView) findViewById(R.id.catalogSortIcon);

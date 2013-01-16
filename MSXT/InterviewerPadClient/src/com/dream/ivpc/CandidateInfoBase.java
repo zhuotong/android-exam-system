@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class CandidateInfoBase extends BaseActivity {
 
 	protected Context mContext;
+	protected String name = "";
+	protected String position =""; 
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -20,25 +23,39 @@ public class CandidateInfoBase extends BaseActivity {
 	protected void setHeader(TextView candidateInfoTV){
 		//set candidateInfoTV
 		Bundle bundle = this.getIntent().getExtras();
-		String name  = bundle.getString("name");
-		String position  = bundle.getString("position");
-		candidateInfoTV.setText(position +":" + name);
+		name  = bundle.getString("name");
+		position  = bundle.getString("position");
+		if(name!=null&&position!=null){
+			candidateInfoTV.setText(position +":" + name);
+		}
+		
+    }
+
+	protected void setFooter(Button button){
+		//set candidateInfoTV
+		button.setBackgroundColor(R.drawable.bg_footer_button_select);
     }
 	
 	public void go2Resume(View view){
 		Intent intent = new Intent();
-		intent.setClass( mContext, CandidateResumePNG.class);
+		intent.putExtra("name", name);
+		intent.putExtra("position", position);
+		intent.setClass( mContext, CandidateResumeGroup.class);
 		startActivity(intent); 
 	}
 	
 	public void go2Report(View view){
 		Intent intent = new Intent();
+		intent.putExtra("name", name);
+		intent.putExtra("position", position);
 		intent.setClass( mContext, CandidateInfoExamRpt.class);
 		startActivity(intent); 
 	}
 	
 	public void go2Detail(View view){
 		Intent intent = new Intent();
+		intent.putExtra("name", name);
+		intent.putExtra("position", position);
 		intent.setClass( mContext, CandidateInfoExamDetail.class);
 		startActivity(intent); 
 	}

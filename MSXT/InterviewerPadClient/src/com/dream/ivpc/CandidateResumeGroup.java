@@ -3,11 +3,12 @@ package com.dream.ivpc;
 import org.viewflow.android.widget.CircleFlowIndicator;
 import org.viewflow.android.widget.ViewFlow;
 import com.dream.ivpc.adapter.ResumeGroupAdapter;
-import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
 
-public class CircleViewFlowExample extends Activity {
+public class CandidateResumeGroup extends CandidateInfoBase {
 
 	private ViewFlow viewFlow;
 
@@ -17,6 +18,11 @@ public class CircleViewFlowExample extends Activity {
 		super.onCreate(savedInstanceState);
 //		setTitle(R.string.circle_title);
 		setContentView(R.layout.candidate_resume_group);
+		
+		mContext = getApplicationContext();
+
+		setHeader((TextView)findViewById(R.id.candidateInfo));
+		setFooter((Button) findViewById(R.id.resume));
 
 		viewFlow = (ViewFlow) findViewById(R.id.viewflow);
 		viewFlow.setAdapter(new ResumeGroupAdapter(this), 5);
