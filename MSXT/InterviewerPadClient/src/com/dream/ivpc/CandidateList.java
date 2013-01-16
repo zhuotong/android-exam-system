@@ -92,9 +92,12 @@ public class CandidateList extends BaseActivity {
         		CandiateBean bean = candiateList.get(arg2);
         		
             	Intent intent = new Intent();
-    			intent.setClass( mContext, CandidateResumePNG.class);
-    			intent.putExtra("name", bean.getName());
-    			intent.putExtra("position", bean.getPosition());
+//    			intent.setClass( mContext, CandidateResumePNG.class);
+//    			intent.putExtra("name", bean.getName());
+//    			intent.putExtra("position", bean.getPosition());
+    			
+    			intent.setClass( mContext, CircleViewFlowExample.class);
+    			
     			startActivity(intent);  
 			}      	
         });

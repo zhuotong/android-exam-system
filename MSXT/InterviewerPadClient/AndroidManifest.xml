@@ -38,12 +38,12 @@
                   android:launchMode="singleTask">
         </activity>
 
-<!--         <activity android:name=".CandidateInfoResume"
+        <activity android:name=".CandidateInfoResume"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
-        </activity> -->
+        </activity>
         
-        <activity android:name=".CandidateResumePNG"
+        <activity android:name=".CircleViewFlowExample"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
