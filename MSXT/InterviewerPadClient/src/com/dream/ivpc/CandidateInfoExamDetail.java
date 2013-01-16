@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.dream.ivpc.adapter.QuestionListAdapter;
-import com.dream.ivpc.model.QuestionBean;
+import com.dream.ivpc.model.QuestionDetailBean;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,32 +35,32 @@ public class CandidateInfoExamDetail extends CandidateInfoBase {
 	int qnameSortFlag = -1;
 	int qresultSortFlag = -1;
 	
-	List<QuestionBean> questionList = new ArrayList<QuestionBean>();
+	List<QuestionDetailBean> questionList = new ArrayList<QuestionDetailBean>();
 	ListView listView;
 	QuestionListAdapter adapter;	
 	
 //	Button examdetail;
 	
-	public List<QuestionBean> getQuestionList(){
-		List<QuestionBean> questionList = new ArrayList<QuestionBean>();
-		QuestionBean q1= new QuestionBean(1,"Catalog 1","Question 1",true);
-		QuestionBean q2= new QuestionBean(2,"Catalog 1","Question 2",true);
-		QuestionBean q3= new QuestionBean(3,"Catalog 1","Question 3",true);
-		QuestionBean q4= new QuestionBean(4,"Catalog 2","Question 4",false);
-		QuestionBean q5= new QuestionBean(5,"Catalog 2","Question 5",true);
-		QuestionBean q6= new QuestionBean(6,"Catalog 2","Question 6",false);
-		QuestionBean q7= new QuestionBean(7,"Catalog 3","Question 7",true);
-		QuestionBean q8= new QuestionBean(8,"Catalog 3","Question 8",true);
-		QuestionBean q9= new QuestionBean(9,"Catalog 3","Question 9",true);
-		QuestionBean q10= new QuestionBean(10,"Catalog 4","Question 10",false);
-		QuestionBean q11= new QuestionBean(11,"Catalog 4","Question 11",true);
-		QuestionBean q12= new QuestionBean(12,"Catalog 4","Question 12",true);
-		QuestionBean q13= new QuestionBean(13,"Catalog 5","Question 13",true);
-		QuestionBean q14= new QuestionBean(14,"Catalog 5","Question 14",true);
-		QuestionBean q15= new QuestionBean(15,"Catalog 5","Question 15",false);
-		QuestionBean q16= new QuestionBean(16,"Catalog 6","Question 16",true);
-		QuestionBean q17= new QuestionBean(17,"Catalog 6","Question 17",true);
-		QuestionBean q18= new QuestionBean(18,"Catalog 6","Question 18",true);
+	public List<QuestionDetailBean> getQuestionList(){
+		List<QuestionDetailBean> questionList = new ArrayList<QuestionDetailBean>();
+		QuestionDetailBean q1= new QuestionDetailBean(1,"Catalog 1","Question 1",true,"kjssssssssssssssssssssssssssssssssssssssssjssssssssssssssssssssssssssssssssssssssssjssssssssssssssssssssssssssssssssssssssssjssssssssssssssssssssssssssssssssssssssssjssssssssssssssssssssssssssssssssssssssssjssssssssssssssssssssssssssssssssssssssss...","A,B,C");
+		QuestionDetailBean q2= new QuestionDetailBean(2,"Catalog 1","Question 2",true,"kjssssssssssssssssssssssssssssssssssssssss","A,B,C");
+		QuestionDetailBean q3= new QuestionDetailBean(3,"Catalog 1","Question 3",true,"kjssssssssssssssssssssssssssssssssssssssss","A,B,C");
+		QuestionDetailBean q4= new QuestionDetailBean(4,"Catalog 2","Question 4",false,"kjssssssssssssssssssssssssssssssssssssssss","A,B,C");
+		QuestionDetailBean q5= new QuestionDetailBean(5,"Catalog 2","Question 5",true,"kjssssssssssssssssssssssssssssssssssssssss","A,B,C");
+		QuestionDetailBean q6= new QuestionDetailBean(6,"Catalog 2","Question 6",false,"kjssssssssssssssssssssssssssssssssssssssss","A,B,C");
+		QuestionDetailBean q7= new QuestionDetailBean(7,"Catalog 3","Question 7",true,"kjssssssssssssssssssssssssssssssssssssssss","A,B,C");
+		QuestionDetailBean q8= new QuestionDetailBean(8,"Catalog 3","Question 8",true,"kjssssssssssssssssssssssssssssssssssssssss","A,B,C");
+		QuestionDetailBean q9= new QuestionDetailBean(9,"Catalog 3","Question 9",true,"kjssssssssssssssssssssssssssssssssssssssss","A,B,C");
+		QuestionDetailBean q10= new QuestionDetailBean(10,"Catalog 4","Question 10",false,"kjssssssssssssssssssssssssssssssssssssssss","A,B,C");
+		QuestionDetailBean q11= new QuestionDetailBean(11,"Catalog 4","Question 11",true,"kjssssssssssssssssssssssssssssssssssssssss","A,B,C");
+		QuestionDetailBean q12= new QuestionDetailBean(12,"Catalog 4","Question 12",true,"kjssssssssssssssssssssssssssssssssssssssss","A,B,C");
+		QuestionDetailBean q13= new QuestionDetailBean(13,"Catalog 5","Question 13",true,"kjssssssssssssssssssssssssssssssssssssssss","A,B,C");
+		QuestionDetailBean q14= new QuestionDetailBean(14,"Catalog 5","Question 14",true,"kjssssssssssssssssssssssssssssssssssssssss","A,B,C");
+		QuestionDetailBean q15= new QuestionDetailBean(15,"Catalog 5","Question 15",false,"kjssssssssssssssssssssssssssssssssssssssss","A,B,C");
+		QuestionDetailBean q16= new QuestionDetailBean(16,"Catalog 6","Question 16",true,"kjssssssssssssssssssssssssssssssssssssssss","A,B,C");
+		QuestionDetailBean q17= new QuestionDetailBean(17,"Catalog 6","Question 17",true,"kjssssssssssssssssssssssssssssssssssssssss","A,B,C");
+		QuestionDetailBean q18= new QuestionDetailBean(18,"Catalog 6","Question 18",true,"kjssssssssssssssssssssssssssssssssssssssss","A,B,C");
 		
 		questionList.add(q1);
 		questionList.add(q2);
@@ -108,8 +108,8 @@ public class CandidateInfoExamDetail extends CandidateInfoBase {
         qresultSortIcon = (ImageView) findViewById(R.id.qresultSortIcon);
         
         questionList = getQuestionList();
-		Collections.sort(questionList,new Comparator<QuestionBean>(){  
-            public int compare(QuestionBean arg0, QuestionBean arg1) {  
+		Collections.sort(questionList,new Comparator<QuestionDetailBean>(){  
+            public int compare(QuestionDetailBean arg0, QuestionDetailBean arg1) {  
                 return Integer.valueOf(arg0.getIndex()).compareTo(Integer.valueOf(arg1.getIndex()));  
             }  
         });
@@ -143,8 +143,8 @@ public class CandidateInfoExamDetail extends CandidateInfoBase {
 	public void sortByIndex(){
 		switch(indexSortFlag){
 			case -1:
-				Collections.sort(questionList,new Comparator<QuestionBean>(){  
-		            public int compare(QuestionBean arg0, QuestionBean arg1) {  
+				Collections.sort(questionList,new Comparator<QuestionDetailBean>(){  
+		            public int compare(QuestionDetailBean arg0, QuestionDetailBean arg1) {  
 		                return Integer.valueOf(arg0.getIndex()).compareTo(Integer.valueOf(arg1.getIndex()));  
 		            }  
 		        });	
@@ -152,8 +152,8 @@ public class CandidateInfoExamDetail extends CandidateInfoBase {
 				indexSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.up_32));
 				break;
 			case 1:
-				Collections.sort(questionList,new Comparator<QuestionBean>(){  
-		            public int compare(QuestionBean arg0, QuestionBean arg1) {  
+				Collections.sort(questionList,new Comparator<QuestionDetailBean>(){  
+		            public int compare(QuestionDetailBean arg0, QuestionDetailBean arg1) {  
 		                return Integer.valueOf(arg1.getIndex()).compareTo(Integer.valueOf(arg0.getIndex()));  
 		            }  
 		        });
@@ -169,8 +169,8 @@ public class CandidateInfoExamDetail extends CandidateInfoBase {
 	public void sortByCatalog(){
 		switch(catalogSortFlag){
 			case -1:
-				Collections.sort(questionList,new Comparator<QuestionBean>(){  
-		            public int compare(QuestionBean arg0, QuestionBean arg1) {  
+				Collections.sort(questionList,new Comparator<QuestionDetailBean>(){  
+		            public int compare(QuestionDetailBean arg0, QuestionDetailBean arg1) {  
 		                return arg0.getCatalog().compareTo(arg1.getCatalog());  
 		            }  
 		        });	
@@ -178,8 +178,8 @@ public class CandidateInfoExamDetail extends CandidateInfoBase {
 				catalogSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.up_32));
 				break;
 			case 1:
-				Collections.sort(questionList,new Comparator<QuestionBean>(){  
-		            public int compare(QuestionBean arg0, QuestionBean arg1) {  
+				Collections.sort(questionList,new Comparator<QuestionDetailBean>(){  
+		            public int compare(QuestionDetailBean arg0, QuestionDetailBean arg1) {  
 		                return arg1.getCatalog().compareTo(arg0.getCatalog());  
 		            }  
 		        });
@@ -195,8 +195,8 @@ public class CandidateInfoExamDetail extends CandidateInfoBase {
 	public void sortByQname(){
 		switch(qnameSortFlag){
 			case -1:
-				Collections.sort(questionList,new Comparator<QuestionBean>(){  
-		            public int compare(QuestionBean arg0, QuestionBean arg1) {  
+				Collections.sort(questionList,new Comparator<QuestionDetailBean>(){  
+		            public int compare(QuestionDetailBean arg0, QuestionDetailBean arg1) {  
 		                return arg0.getQuestionName().compareTo(arg1.getQuestionName());  
 		            }  
 		        });	
@@ -204,8 +204,8 @@ public class CandidateInfoExamDetail extends CandidateInfoBase {
 				qnameSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.up_32));
 				break;
 			case 1:
-				Collections.sort(questionList,new Comparator<QuestionBean>(){  
-		            public int compare(QuestionBean arg0, QuestionBean arg1) {  
+				Collections.sort(questionList,new Comparator<QuestionDetailBean>(){  
+		            public int compare(QuestionDetailBean arg0, QuestionDetailBean arg1) {  
 		                return arg1.getQuestionName().compareTo(arg0.getQuestionName());  
 		            }  
 		        });
@@ -221,8 +221,8 @@ public class CandidateInfoExamDetail extends CandidateInfoBase {
 	public void sortByQresult(){
 		switch(qresultSortFlag){
 			case -1:
-				Collections.sort(questionList,new Comparator<QuestionBean>(){  
-		            public int compare(QuestionBean arg0, QuestionBean arg1) {  
+				Collections.sort(questionList,new Comparator<QuestionDetailBean>(){  
+		            public int compare(QuestionDetailBean arg0, QuestionDetailBean arg1) {  
 		                return Boolean.valueOf(arg0.isResult()).compareTo(Boolean.valueOf(arg1.isResult()));  
 		            }  
 		        });	
@@ -230,8 +230,8 @@ public class CandidateInfoExamDetail extends CandidateInfoBase {
 				qresultSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.up_32));
 				break;
 			case 1:
-				Collections.sort(questionList,new Comparator<QuestionBean>(){  
-		            public int compare(QuestionBean arg0, QuestionBean arg1) {  
+				Collections.sort(questionList,new Comparator<QuestionDetailBean>(){  
+		            public int compare(QuestionDetailBean arg0, QuestionDetailBean arg1) {  
 		                return Boolean.valueOf(arg1.isResult()).compareTo(Boolean.valueOf(arg0.isResult()));  
 		            }  
 		        });

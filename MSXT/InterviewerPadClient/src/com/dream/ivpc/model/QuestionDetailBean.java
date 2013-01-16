@@ -8,6 +8,14 @@ public class QuestionDetailBean extends QuestionBean{
 		super();
 	}
 
+	public QuestionDetailBean(int index, String catalog, String questionName,
+			boolean result,String qcontent, String qanswer) {
+		super(index, catalog, questionName, result);
+		this.qcontent = qcontent;
+		this.qanswer = qanswer;
+	}
+
+
 	public String getQcontent() {
 		return qcontent;
 	}

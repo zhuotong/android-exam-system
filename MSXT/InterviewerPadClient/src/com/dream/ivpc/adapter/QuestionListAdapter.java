@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.dream.ivpc.R;
-import com.dream.ivpc.model.QuestionBean;
+import com.dream.ivpc.model.QuestionDetailBean;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +16,10 @@ import android.widget.TextView;
 
 public class QuestionListAdapter extends BaseAdapter {
 	Context mContext;
-	List<QuestionBean> questionList = new ArrayList<QuestionBean>();
+	List<QuestionDetailBean> questionList = new ArrayList<QuestionDetailBean>();
 	HashMap<Integer,View> map = new HashMap<Integer,View>(); 
 	
-	public QuestionListAdapter(List<QuestionBean> questionList,Context mContext){
+	public QuestionListAdapter(List<QuestionDetailBean> questionList,Context mContext){
 		this.questionList = questionList;
 		this.mContext = mContext;
 	}
@@ -54,6 +54,7 @@ public class QuestionListAdapter extends BaseAdapter {
 			holder.catalog = (TextView)view.findViewById(R.id.catalog);
 			holder.questionName = (TextView)view.findViewById(R.id.questionName);
 			holder.resultView = (ImageView) view.findViewById(R.id.resultView);
+			holder.qcontent = (TextView) view.findViewById(R.id.qcontent);
 			
 			map.put(position, view);
 			view.setTag(holder);
@@ -62,7 +63,7 @@ public class QuestionListAdapter extends BaseAdapter {
 			holder = (ViewHolder)view.getTag();
 		}
 		
-		QuestionBean bean = questionList.get(position);
+		QuestionDetailBean bean = questionList.get(position);
 		
 		holder.index.setText(String.valueOf(bean.getIndex()));
 		holder.catalog.setText(bean.getCatalog());
@@ -73,6 +74,8 @@ public class QuestionListAdapter extends BaseAdapter {
 			holder.resultView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.false_32));
 		}
 		
+		holder.qcontent.setText(bean.getQcontent());
+		
 		return view;
 	}
 	
@@ -81,6 +84,8 @@ public class QuestionListAdapter extends BaseAdapter {
 		TextView catalog;
 		TextView questionName;
 		ImageView resultView;
+		
+		TextView qcontent;
 	}
 	
 
