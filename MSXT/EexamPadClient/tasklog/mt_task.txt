@@ -2,3 +2,8 @@
 1 Exception Email 发送
 2 SharedPreferences 变量整理
 3 答案文本文件导出
+
+2013-01-23
+
+SharedPreferences
+只保持当前登录用户信息，一旦结束，则应该清空
