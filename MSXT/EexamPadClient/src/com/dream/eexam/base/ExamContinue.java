@@ -8,6 +8,7 @@ import com.dream.eexam.paper.SingleChoices;
 import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.server.FileUtil;
 import com.dream.eexam.util.DatabaseUtil;
+import com.dream.eexam.util.SPUtil;
 import com.msxt.client.model.Examination;
 import com.msxt.client.model.LoginSuccessResult;
 import com.msxt.client.model.QUESTION_TYPE;
@@ -54,10 +55,9 @@ public class ExamContinue extends BaseActivity {
 		setContentView(R.layout.exam_continue);
 		mContext = getApplicationContext();
 		
-		//get demoSessionStr and save to string array
-		Bundle bundle = this.getIntent().getExtras();
-		String loginResultFile  = bundle.getString("loginResultFile");
-		String loginResultFilePath  = bundle.getString("loginResultFilePath");
+		String loginResultFilePath  = SPUtil.getFromSP(SPUtil.SP_KEY_LOGIN_FILE_PATH, sharedPreferences);
+		String loginResultFile  = SPUtil.getFromSP(SPUtil.SP_KEY_LOGIN_FILE, sharedPreferences);
+		
 		try {
 	    	FileInputStream inputStream = new FileInputStream(new File(loginResultFilePath+ File.separator+loginResultFile));
 	    	succResult = DataParseUtil.getSuccessResult(inputStream);

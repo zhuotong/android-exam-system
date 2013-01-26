@@ -8,7 +8,7 @@ import com.dream.eexam.paper.MultiChoices;
 import com.dream.eexam.paper.SingleChoices;
 import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.util.DatabaseUtil;
-import com.dream.eexam.util.StoreDataConstants;
+import com.dream.eexam.util.SPUtil;
 import com.msxt.client.model.Examination;
 import com.msxt.client.model.Examination.Question;
 import com.msxt.client.model.LoginSuccessResult;
@@ -75,10 +75,10 @@ public class ExamStart extends BaseActivity {
 		
 		questionTypes = getResources().getStringArray(R.array.question_types);
 		
-		//get demoSessionStr and save to string array
-		Bundle bundle = this.getIntent().getExtras();
-		String loginResultFile  = bundle.getString("loginResultFile");
-		String loginResultFilePath  = bundle.getString("loginResultFilePath");
+		String loginResultFilePath  = SPUtil.getFromSP(SPUtil.SP_KEY_LOGIN_FILE_PATH, sharedPreferences);
+		String loginResultFile  = SPUtil.getFromSP(SPUtil.SP_KEY_LOGIN_FILE, sharedPreferences);
+		Log.i(LOG_TAG,"loginResultFilePath:"+loginResultFilePath);
+		Log.i(LOG_TAG,"loginResultFile:"+loginResultFile);
 		
 		//get login successfully information
 		try {
@@ -120,10 +120,8 @@ public class ExamStart extends BaseActivity {
 		startBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				Log.i(LOG_TAG,"onClick()...");
-//				downloadExamFile = SystemConfig.getInstance().getPropertyValue("Download_Exam");
-//	        	downloadExamFilePath = sharedPreferences.getString("examPath", null);
-	        	downloadExamFilePath = getFromSP(StoreDataConstants.SP_KEY_EXAM_PATH);
-	        	
+				
+	        	downloadExamFilePath = SPUtil.getFromSP(SPUtil.SP_KEY_USER_HOME, sharedPreferences);
 	        	Log.i(LOG_TAG, "downloadExamFilePath:"+downloadExamFilePath);
 	        	
 	        	new DownloadExamTask().execute(examIdString);
@@ -140,13 +138,16 @@ public class ExamStart extends BaseActivity {
 			
 			List<com.msxt.client.model.LoginSuccessResult.Examination> exams = succResult.getExaminations();
 			com.msxt.client.model.LoginSuccessResult.Examination exam = exams.get(arg2);
+			
 			examDesc.setText(exam.getDesc());
 			examIdString = exam.getId();
 			
+			Log.i(LOG_TAG, "examDesc:"+exam.getDesc());
 			Log.i(LOG_TAG, "examIdString:"+examIdString);
 			
 			loadAnswerOfLasttime();
 		}
+		
 		public void onNothingSelected(AdapterView<?> arg0) {
 			Log.i(LOG_TAG,"onNothingSelected()...");
 		}
@@ -165,11 +166,24 @@ public class ExamStart extends BaseActivity {
 		
 	    @Override
 	    protected String doInBackground(String... urls) {
+	    	Log.i(LOG_TAG, "doInBackground() called");
+	    	
         	ServerProxy proxy =  WebServerProxy.Factroy.getCurrrentInstance();
         	examResult = proxy.getExam(urls[0]);
     		if(STATUS.SUCCESS.equals(examResult.getStatus())){
-    			String examName = examIdString+".xml";
-    			saveFile(downloadExamFilePath, examName, examResult.getSuccessMessage());
+    			String examFileName = examIdString+".xml";
+    			
+    			Log.i(LOG_TAG,"downloadExamFilePath:"+downloadExamFilePath);
+    			Log.i(LOG_TAG,"examFileName:"+examFileName);
+    			
+    			//save to SD card 
+    			saveFile(downloadExamFilePath, examFileName, examResult.getSuccessMessage());
+    			
+    			//save to SharedPreferences
+    			SPUtil.save2SP(SPUtil.SP_KEY_EXAM_PATH, downloadExamFilePath, sharedPreferences);
+    			SPUtil.save2SP(SPUtil.SP_KEY_EXAM_FILE, examFileName, sharedPreferences);
+    			
+    			
     		}else if(STATUS.ERROR.equals(examResult.getStatus())){
     			ShowDialog(mContext.getResources().getString(R.string.dialog_note),
     					examResult.getErrorMessage());
@@ -217,8 +231,13 @@ public class ExamStart extends BaseActivity {
 					ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Invalid qeustion type.");
 				}
 				
-				if(getFromSP(StoreDataConstants.SP_KEY_EXAM_STATUS)==null){
-					save2SP(StoreDataConstants.SP_KEY_EXAM_STATUS, "start");
+//				if(getFromSP(StoreDataConstants.SP_KEY_EXAM_STATUS)==null){
+//					save2SP(StoreDataConstants.SP_KEY_EXAM_STATUS, "start");
+//				}
+				
+				String status = SPUtil.getFromSP(SPUtil.SP_KEY_EXAM_STATUS, sharedPreferences);
+				if(status==null){
+					SPUtil.save2SP(SPUtil.SP_KEY_EXAM_STATUS, SPUtil.SP_VALUE_EXAM_STATUS_START, sharedPreferences);
 				}
 				
 				//save exam start time
@@ -230,13 +249,13 @@ public class ExamStart extends BaseActivity {
 	
 	public void saveStartTime(){
 		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
-		long startTime = sharedPreferences.getLong(StoreDataConstants.SP_KEY_EXAM_START_TIME, 0);
+		long startTime = sharedPreferences.getLong(SPUtil.SP_KEY_EXAM_START_TIME, 0);
 		//if its first time to do exam, save start exam time
 		if(startTime==0){
 			SharedPreferences.Editor editor = sharedPreferences.edit();
 			long currentTime = Calendar.getInstance().getTimeInMillis();
 			Log.i(LOG_TAG, "startTime="+String.valueOf(startTime));
-			editor.putLong(StoreDataConstants.SP_KEY_EXAM_START_TIME, currentTime);
+			editor.putLong(SPUtil.SP_KEY_EXAM_START_TIME, currentTime);
 			editor.commit();		
 		}
 	}

@@ -5,12 +5,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Iterator;
-import java.util.Map;
-
 import com.dream.eexam.util.ActivityStackControlUtil;
-import com.dream.eexam.util.StoreDataConstants;
-
+import com.dream.eexam.util.DatabaseUtil;
+import com.dream.eexam.util.SPUtil;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -31,26 +28,20 @@ public class BaseActivity extends Activity {
 	public final static String LOG_TAG = "BaseActivity";
 	protected SharedPreferences sharedPreferences;
 	
-	
-	
-	public void loadSharedPreferencesData(){
-		Log.i(LOG_TAG,"----------------data in sharedPreferences-----------------");
-		//print all stored data in sharedPreferences
-		Map<String, ?> dataInSP = sharedPreferences.getAll();
-		Iterator it = dataInSP.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry entry = (Map.Entry) it.next();
-			Object key = entry.getKey();
-			Object value = entry.getValue();
-			Log.i(LOG_TAG,"key=" + key + " value=" + value);
-		}
+	public void printStoredDataInDB(Context mContext){
+		Log.i(LOG_TAG,"----------------Start print data in SQLLite-----------------");
+		DatabaseUtil dbUtil = new DatabaseUtil(mContext);
+		dbUtil.open();
+		dbUtil.printStoredDataInDB();
+    	dbUtil.close();
+    	Log.i(LOG_TAG,"----------------End print data in SQLLite-----------------");
+    	
 	}
 	
-	
-	@Override
-	public void finish() {
-		Log.i(LOG_TAG,"finish()...");
-		super.finish();
+	public void printSharedPreferencesData(SharedPreferences sharedPreferences){
+		Log.i(LOG_TAG,"----------------Start Print data in sharedPreferences-----------------");
+		SPUtil.printAllSPData(sharedPreferences);
+		Log.i(LOG_TAG,"----------------End Print data in sharedPreferences-----------------");
 	}
 
 	@Override
@@ -64,21 +55,11 @@ public class BaseActivity extends Activity {
 		//get SharedPreferences Object
 		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
 		
-		loadSharedPreferencesData();
+        printSharedPreferencesData(sharedPreferences);
+        printStoredDataInDB(getApplicationContext());
 		
 		//hide title bar
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-	}
-	
-
-	public void save2SP(String key,String value){
-		SharedPreferences.Editor edit = sharedPreferences.edit();
-		edit.putString(key, value);
-		edit.commit();
-	}
-	
-	public String getFromSP(String key){
-		return sharedPreferences.getString(key, null);
 	}
 	
 	@Override
@@ -117,6 +98,12 @@ public class BaseActivity extends Activity {
 		super.onStop();
 	}
 	
+	@Override
+	public void finish() {
+		Log.i(LOG_TAG,"finish()...");
+		super.finish();
+	}
+	
 	public void ShowDialog(String title,String msg) {
 		new AlertDialog.Builder(this).setTitle(title).setMessage(msg)
 				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -139,7 +126,7 @@ public class BaseActivity extends Activity {
 	 * @return
 	 */
 	public Integer getccIndex(){
-		Integer ccIndex = sharedPreferences.getInt(StoreDataConstants.SP_KEY_CCINDEX, 0);
+		Integer ccIndex = sharedPreferences.getInt(SPUtil.SP_KEY_CCINDEX, 0);
 		if(ccIndex!=null&&ccIndex>0){
 			Log.i(LOG_TAG,"getccIndex()...ccIndex="+String.valueOf(ccIndex));
 			return ccIndex;
@@ -150,7 +137,7 @@ public class BaseActivity extends Activity {
 	}
 	
 	public Integer getcqIndex(){
-		Integer cqIndex = sharedPreferences.getInt(StoreDataConstants.SP_KEY_CQINDEX, 0);
+		Integer cqIndex = sharedPreferences.getInt(SPUtil.SP_KEY_CQINDEX, 0);
 		if(cqIndex!=null&&cqIndex>0){
 			Log.i(LOG_TAG,"getcqIndex()...cqIndex="+String.valueOf(cqIndex));
 			return cqIndex;
@@ -192,11 +179,6 @@ public class BaseActivity extends Activity {
 	            fos.write(content.getBytes());  
 	            fos.close();  
 	        }  
-	        
-			SharedPreferences.Editor editor = sharedPreferences.edit();
-			editor.putString("examPath", path);  
-			editor.putString("examFile", fileName); 
-			editor.commit();
 			
 		} catch (Exception e) {
 			Log.e(LOG_TAG, "an error occured while writing file...", e);

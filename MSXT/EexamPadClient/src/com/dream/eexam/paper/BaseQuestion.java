@@ -40,6 +40,7 @@ import com.dream.eexam.model.CatalogInfo;
 import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.server.FileUtil;
 import com.dream.eexam.util.DatabaseUtil;
+import com.dream.eexam.util.SPUtil;
 import com.msxt.client.model.Examination;
 import com.msxt.client.model.Examination.Catalog;
 import com.msxt.client.model.Examination.Choice;
@@ -210,12 +211,8 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		choicesLabels = getResources().getStringArray(R.array.display_choice_label);
 		
 		//set file home and file
-		
-		examFilePath = sharedPreferences.getString("examPath", null);
-//		examFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + 
-//				getResources().getString(R.string.app_file_home);
-		examFileName = getResources().getString(R.string.exam_file_name);
-		
+		examFilePath = SPUtil.getFromSP(SPUtil.SP_KEY_EXAM_PATH, sharedPreferences);
+		examFileName = SPUtil.getFromSP(SPUtil.SP_KEY_EXAM_FILE, sharedPreferences);
 		Log.i(LOG_TAG, "examFilePath:" + examFilePath);
 		Log.i(LOG_TAG, "examFileName:" + examFileName);
 		

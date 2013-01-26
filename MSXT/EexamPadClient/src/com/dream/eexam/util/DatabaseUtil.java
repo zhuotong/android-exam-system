@@ -178,4 +178,17 @@ public class DatabaseUtil{
 		args.put(ANSWERS, answers);
 		return mDb.update(DATABASE_TABLE,args,CATALOG_ID + "=" + cid + " AND " + QUESTION_ID + "=" + qid, null) > 0;
 	}
+	
+	public void printStoredDataInDB(){
+		Log.i(TAG,"----------------data in SQLLite-----------------");
+    	Cursor cursor = fetchAllAnswers() ;
+    	while(cursor.moveToNext()){
+    		int cid = cursor.getInt(0);
+    		int qid = cursor.getInt(1);
+			String qidStr = cursor.getString(2);
+			String answer = cursor.getString(3);
+			Log.i(TAG, "cid="+String.valueOf(cid)+" qid="+String.valueOf(qid)+" qidStr="+qidStr+" answer="+answer);
+		}
+    	cursor.close();
+	}
 }

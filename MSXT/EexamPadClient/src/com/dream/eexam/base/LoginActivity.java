@@ -7,8 +7,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import com.dream.eexam.util.DatabaseUtil;
-import com.dream.eexam.util.StoreDataConstants;
-import com.dream.eexam.util.SystemConfig;
+import com.dream.eexam.util.SPUtil;
 import com.msxt.client.server.ServerProxy;
 import com.msxt.client.server.WebServerProxy;
 import com.msxt.client.server.ServerProxy.Result;
@@ -16,7 +15,6 @@ import com.msxt.client.server.ServerProxy.STATUS;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -28,6 +26,8 @@ import android.widget.EditText;
 public class LoginActivity extends BaseActivity {
 
 	public final static String LOG_TAG = "LoginActivity";
+	public final static String LOGIN_RESULT_FILE = "login_result.xml";
+	
 	String saveHost = null;
 	EditText idEt = null;
 	EditText passwordET = null;
@@ -35,26 +35,11 @@ public class LoginActivity extends BaseActivity {
 	String savePassword = null;
 	Button loginBtn = null;
 	Button settingBtn = null;
-	String loginResultFile = null;
-	String loginResultFilePath = null;
+	
+	//user home of save file
+	String userHome = null;
+	
 	private Context mContext;
-	
-	
-	public void printStoredDataInDB(){
-		Log.i(LOG_TAG,"----------------data in SQLLite-----------------");
-		DatabaseUtil dbUtil = new DatabaseUtil(mContext);
-		dbUtil.open();
-    	Cursor cursor = dbUtil.fetchAllAnswers();
-    	while(cursor.moveToNext()){
-    		int cid = cursor.getInt(0);
-    		int qid = cursor.getInt(1);
-			String qidStr = cursor.getString(2);
-			String answer = cursor.getString(3);
-			Log.i(LOG_TAG, "cid="+String.valueOf(cid)+" qid="+String.valueOf(qid)+" qidStr="+qidStr+" answer="+answer);
-		}
-    	cursor.close();
-    	dbUtil.close();
-	}
 	
 	/** Called when the activity is first created. */
     @Override
@@ -64,22 +49,16 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.login);
         mContext = getApplicationContext();
         
-        loadSharedPreferencesData();
-        printStoredDataInDB();
-		
-//        saveHost = sharedPreferences.getString("host", null);
-        saveHost = getFromSP(StoreDataConstants.SP_KEY_HOST);
+        saveHost = SPUtil.getFromSP(SPUtil.SP_KEY_HOST, sharedPreferences);
         
         idEt = (EditText) this.findViewById(R.id.idEt);
-//		saveId = sharedPreferences.getString("id", null);
-		saveId = getFromSP(StoreDataConstants.SP_KEY_ID);
+        saveId = SPUtil.getFromSP(SPUtil.SP_KEY_ID, sharedPreferences);
 		if(saveId!=null||!"".equals(saveId)){
 			idEt.setText(saveId);
 		}
 		
 		passwordET = (EditText) this.findViewById(R.id.passwordET);
-//		savePassword = sharedPreferences.getString("password", null);
-		saveId = getFromSP(StoreDataConstants.SP_KEY_PWD);
+		savePassword = SPUtil.getFromSP(SPUtil.SP_KEY_PWD, sharedPreferences);
 		if(savePassword!=null||!"".equals(savePassword)){
 			passwordET.setText(savePassword);
 		}
@@ -88,7 +67,15 @@ public class LoginActivity extends BaseActivity {
 		loginBtn.setOnClickListener(loginListener);
 		
 		settingBtn = (Button) this.findViewById(R.id.settingBtn);
-		settingBtn.setOnClickListener(settingListener);
+		settingBtn.setOnClickListener(new View.OnClickListener() {  
+	        @Override  
+	        public void onClick(View v) { 
+	        	//go to examList page
+	        	Intent intent = new Intent();
+				intent.setClass( LoginActivity.this, SettingActivity.class);
+				startActivity(intent);  	
+	        }  
+	    });
 		
     }
 
@@ -98,24 +85,21 @@ public class LoginActivity extends BaseActivity {
         	Button lBtn = (Button)v;
         	lBtn.setEnabled(false);
 
-        	loginResultFile = SystemConfig.getInstance().getPropertyValue("Login_Result");
-        	loginResultFilePath = Environment.getExternalStorageDirectory().getPath() 
+        	userHome = Environment.getExternalStorageDirectory().getPath() 
         	+ File.separator + getResources().getString(R.string.app_file_home)
         	+ File.separator + idEt.getText().toString();
         	
-        	//save user file home path to sharedPreferences
-			sharedPreferences.edit().putString("userFileHome", loginResultFilePath);
-			sharedPreferences.edit().commit();
+        	SPUtil.save2SP(SPUtil.SP_KEY_USER_HOME, userHome, sharedPreferences);
         	
-        	String examPath = getFromSP(StoreDataConstants.SP_KEY_EXAM_PATH);
-        	String examFile = getFromSP(StoreDataConstants.SP_KEY_EXAM_FILE);
-        	String examStatus = getFromSP(StoreDataConstants.SP_KEY_EXAM_STATUS);
+        	String examPath = SPUtil.getFromSP(SPUtil.SP_KEY_EXAM_PATH, sharedPreferences);
+        	String examFile = SPUtil.getFromSP(SPUtil.SP_KEY_EXAM_FILE, sharedPreferences);
+        	String examStatus = SPUtil.getFromSP(SPUtil.SP_KEY_EXAM_STATUS, sharedPreferences);
         	
-        	if("start".equals(examStatus)&& new File(examPath+File.separator+examFile).exists()){
+        	if(SPUtil.SP_VALUE_EXAM_STATUS_START.equals(examStatus)&& new File(examPath+File.separator+examFile).exists()){
 	        	//go to continue exam page
 	        	Intent intent = new Intent();
-    			intent.putExtra("loginResultFile", loginResultFile);
-    			intent.putExtra("loginResultFilePath", loginResultFilePath);
+    			intent.putExtra("loginResultFile", LOGIN_RESULT_FILE);
+    			intent.putExtra("loginResultFilePath", userHome);
     			intent.setClass( mContext, ExamContinue.class);
     			startActivity(intent);  
         	}else{
@@ -123,9 +107,9 @@ public class LoginActivity extends BaseActivity {
             	String id = idEt.getText().toString();
             	String password = passwordET.getText().toString();
             	
-    			save2SP(StoreDataConstants.SP_KEY_ID, id);
-    			save2SP(StoreDataConstants.SP_KEY_PWD, password);
-    			
+        		SPUtil.save2SP(SPUtil.SP_KEY_ID, id, sharedPreferences);
+        		SPUtil.save2SP(SPUtil.SP_KEY_PWD, password, sharedPreferences);
+        		
             	if (getWifiIP() != null && getWifiIP().trim().length() > 0 && !getWifiIP().trim().equals("0.0.0.0")){
             		new LoginTask().execute(new String[]{id,password});
             	}else{
@@ -136,18 +120,6 @@ public class LoginActivity extends BaseActivity {
         	
         }  
     };
-    
-    //go to setting page
-    View.OnClickListener settingListener = new View.OnClickListener() {  
-        @Override  
-        public void onClick(View v) { 
-        	//go to examList page
-        	Intent intent = new Intent();
-			intent.setClass( LoginActivity.this, SettingActivity.class);
-			startActivity(intent);  	
-        }  
-    };
-    
     
     private class LoginTask extends AsyncTask<String, Void, String> {
     	ProgressDialog progressDialog;
@@ -177,7 +149,11 @@ public class LoginActivity extends BaseActivity {
     			ShowDialog(mContext.getResources().getString(R.string.dialog_note),
     					loginResult.getErrorMessage());
         	} else {
-        		saveFile(loginResultFilePath, loginResultFile, loginResult.getSuccessMessage());
+        		//save login result file
+        		saveFile(userHome, LOGIN_RESULT_FILE, loginResult.getSuccessMessage());
+        		
+        		SPUtil.save2SP(SPUtil.SP_KEY_LOGIN_FILE_PATH, userHome, sharedPreferences);
+        		SPUtil.save2SP(SPUtil.SP_KEY_LOGIN_FILE, LOGIN_RESULT_FILE, sharedPreferences);
         		
         		try{
     		    	DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -195,23 +171,23 @@ public class LoginActivity extends BaseActivity {
     		        	String conversation = root.getElementsByTagName( "conversation" ).item(0).getTextContent();
     		        	proxy.setConversationId( conversation );
     		        	
-//    		        	String examStatus = sharedPreferences.getString("exam_status", null);
-    		        	String examStatus = getFromSP(StoreDataConstants.SP_KEY_EXAM_STATUS);
+    		        	//get exam status 
+    		        	String examStatus = SPUtil.getFromSP(SPUtil.SP_KEY_EXAM_STATUS, sharedPreferences);
     		        	if(examStatus == null){
-        		        	//go to exam List page
+        		        	//go to exam List pa
         		        	Intent intent = new Intent();
-        	    			intent.putExtra("loginResultFile", loginResultFile);
-        	    			intent.putExtra("loginResultFilePath", loginResultFilePath);
+//        	    			intent.putExtra("loginResultFile", loginResultFile);
+//        	    			intent.putExtra("loginResultFilePath", loginResultFilePath);
         	    			intent.setClass( mContext, ExamStart.class);
         	    			startActivity(intent);     		        		
-    		        	}else if(StoreDataConstants.SP_VALUE_EXAM_STATUS_START.equals(examStatus)){
+    		        	}else if(SPUtil.SP_VALUE_EXAM_STATUS_START.equals(examStatus)){
         		        	//go to continue exam page
         		        	Intent intent = new Intent();
-        	    			intent.putExtra("loginResultFile", loginResultFile);
-        	    			intent.putExtra("loginResultFilePath", loginResultFilePath);
+//        	    			intent.putExtra("loginResultFile", loginResultFile);
+//        	    			intent.putExtra("loginResultFilePath", loginResultFilePath);
         	    			intent.setClass( mContext, ExamContinue.class);
         	    			startActivity(intent);   
-    		        	}else if(StoreDataConstants.SP_VALUE_EXAM_STATUS_END.equals(examStatus)){
+    		        	}else if(SPUtil.SP_VALUE_EXAM_STATUS_END.equals(examStatus)){
     		        		ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Your Exam is completed");
     		        	}
     		        }
