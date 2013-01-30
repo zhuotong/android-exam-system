@@ -86,7 +86,7 @@ public class LoginActivity extends BaseActivity {
         	Button lBtn = (Button)v;
         	lBtn.setEnabled(false);
 
-        	LOGIN_RESULT_FILE = "lgresult"+TimeDateUtil.getCurrentTime()+".xml";
+        	LOGIN_RESULT_FILE = "lgresult"+TimeDateUtil.getCurrentDate()+".xml";
         	
         	userHome = Environment.getExternalStorageDirectory().getPath() 
         	+ File.separator + getResources().getString(R.string.app_file_home)

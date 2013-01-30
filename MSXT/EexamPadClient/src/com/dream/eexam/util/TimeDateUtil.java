@@ -5,10 +5,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TimeDateUtil {
+
 	
 	public static String getCurrentTime(){
 		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time = formatter.format(new Date());
         return time;
 	}
+	
+	public static String getCurrentDate(){
+		Date date = new Date();
+		return String.valueOf(date.getTime());
+	}
+
 }
