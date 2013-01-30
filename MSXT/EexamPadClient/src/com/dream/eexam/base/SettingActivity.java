@@ -1,11 +1,9 @@
 package com.dream.eexam.base;
 
-import com.dream.eexam.util.DatabaseUtil;
+import com.dream.eexam.util.SPUtil;
 import com.dream.eexam.util.ValidateUtil;
-
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -66,16 +64,12 @@ public class SettingActivity extends BaseActivity {
     View.OnClickListener saveListener = new View.OnClickListener() {  
         @Override  
         public void onClick(View v) { 
-//        	Button lBtn = (Button)v;
-//        	lBtn.setEnabled(false);
-        	
         	String host = hostET.getText().toString();
-        	
         	if(ValidateUtil.validateIP4(host)){
-    			SharedPreferences.Editor editor = sharedPreferences.edit();
-    			editor.putString("host", host);
-    			editor.commit();		
-    			
+//    			SharedPreferences.Editor editor = sharedPreferences.edit();
+//    			editor.putString("host", host);
+//    			editor.commit();	
+    			SPUtil.save2SP(SPUtil.SP_KEY_HOST, host, sharedPreferences);
             	//go to login page
             	Intent intent = new Intent();
     			intent.setClass( SettingActivity.this, LoginActivity.class);
@@ -92,26 +86,17 @@ public class SettingActivity extends BaseActivity {
     View.OnClickListener clearListener = new View.OnClickListener() {  
         @Override  
         public void onClick(View v) { 
-        	SharedPreferences.Editor editor = sharedPreferences.edit(); 
-        	editor.clear();
-        	editor.commit();
-        	
-        	DatabaseUtil dbUtil = new DatabaseUtil(mContext);
-        	dbUtil.open();
-        	dbUtil.deleteAllAnswers();
-        	dbUtil.close();
+        	clearSP();
+        	clearDB(mContext);
         	
         	ShowDialog(mContext.getResources().getString(R.string.dialog_note),
         			mContext.getResources().getString(R.string.msg_history_be_cleared));	
         }  
     };   
     
-
-    
     View.OnClickListener cancelListener = new View.OnClickListener() {  
         @Override  
         public void onClick(View v) { 
-        	
         	//go to login page
         	Intent intent = new Intent();
 			intent.setClass( SettingActivity.this, LoginActivity.class);

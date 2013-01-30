@@ -30,6 +30,8 @@ public class SPUtil {
 	public final static String SP_VALUE_EXAM_STATUS_START = "start";
 	public final static String SP_VALUE_EXAM_STATUS_END = "end";
 	
+//	public final static String SP_KEY_EXAM_START_FLAG = "exam_start_flag";
+	
 	//answer infor key
 	public final static String SP_KEY_CCINDEX = "ccIndex";
 	public final static String SP_KEY_CQINDEX = "cqIndex";

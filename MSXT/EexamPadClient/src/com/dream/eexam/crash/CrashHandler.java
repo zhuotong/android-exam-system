@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.dream.eexam.util.ActivityStackControlUtil;
+import com.dream.eexam.util.ActivityManage;
 
 import android.content.Context;
 import android.content.Intent;
@@ -92,7 +92,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 			android.os.Process.killProcess(android.os.Process.myPid());
 			System.exit(1);
 			
-			ActivityStackControlUtil.finishProgram();
+			ActivityManage.finishProgram();
 		}
 	}
 
@@ -135,6 +135,9 @@ public class CrashHandler implements UncaughtExceptionHandler {
 		//发送到邮箱
 //		sendCrashInfo2Mail(crashInfoString);
 //		doSendLogFile(fileName);
+		
+		sendCrachReport(crashInfoString);
+		
 		return true;
 	}
 	
@@ -279,6 +282,17 @@ public class CrashHandler implements UncaughtExceptionHandler {
 //        sendIntent.setType("message/rfc822");  
         mContext.startActivity(sendIntent);  
 	}*/
+	
+	private void sendCrachReport(String crashReport){
+		//发送异常报告
+		Intent i = new Intent(Intent.ACTION_SEND);
+		//i.setType("text/plain"); //模拟器
+		i.setType("message/rfc822") ; //真机
+		i.putExtra(Intent.EXTRA_EMAIL, new String[]{"tangqi1101@gmail.com"});
+		i.putExtra(Intent.EXTRA_SUBJECT,"Eexam is crashed");
+		i.putExtra(Intent.EXTRA_TEXT,crashReport);
+		mContext.startActivity(Intent.createChooser(i, "Send Error Report"));
+	}
 	
 	public void doSendLogFile(String fileName) {
 //	    String fileName = "myFileName.txt";

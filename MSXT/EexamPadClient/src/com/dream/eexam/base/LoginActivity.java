@@ -6,8 +6,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SPUtil;
+import com.dream.eexam.util.TimeDateUtil;
 import com.msxt.client.server.ServerProxy;
 import com.msxt.client.server.WebServerProxy;
 import com.msxt.client.server.ServerProxy.Result;
@@ -26,7 +26,7 @@ import android.widget.EditText;
 public class LoginActivity extends BaseActivity {
 
 	public final static String LOG_TAG = "LoginActivity";
-	public final static String LOGIN_RESULT_FILE = "login_result.xml";
+	public static String LOGIN_RESULT_FILE;
 	
 	String saveHost = null;
 	EditText idEt = null;
@@ -79,12 +79,15 @@ public class LoginActivity extends BaseActivity {
 		
     }
 
+    //define login listener
     View.OnClickListener loginListener = new View.OnClickListener() {  
         @Override  
         public void onClick(View v) { 
         	Button lBtn = (Button)v;
         	lBtn.setEnabled(false);
 
+        	LOGIN_RESULT_FILE = "lgresult"+TimeDateUtil.getCurrentTime()+".xml";
+        	
         	userHome = Environment.getExternalStorageDirectory().getPath() 
         	+ File.separator + getResources().getString(R.string.app_file_home)
         	+ File.separator + idEt.getText().toString();
@@ -95,32 +98,38 @@ public class LoginActivity extends BaseActivity {
         	String examFile = SPUtil.getFromSP(SPUtil.SP_KEY_EXAM_FILE, sharedPreferences);
         	String examStatus = SPUtil.getFromSP(SPUtil.SP_KEY_EXAM_STATUS, sharedPreferences);
         	
-        	if(SPUtil.SP_VALUE_EXAM_STATUS_START.equals(examStatus)&& new File(examPath+File.separator+examFile).exists()){
-	        	//go to continue exam page
-	        	Intent intent = new Intent();
-    			intent.putExtra("loginResultFile", LOGIN_RESULT_FILE);
-    			intent.putExtra("loginResultFilePath", userHome);
-    			intent.setClass( mContext, ExamContinue.class);
-    			startActivity(intent);  
-        	}else{
+        	boolean firstTimeFlag = new File(examPath+File.separator+examFile).exists();
+        	boolean examStartFlag = SPUtil.SP_VALUE_EXAM_STATUS_START.equals(examStatus);
+        	
+        	if(!examStartFlag){//exam is not start
         		//go to start exam page
             	String id = idEt.getText().toString();
             	String password = passwordET.getText().toString();
-            	
         		SPUtil.save2SP(SPUtil.SP_KEY_ID, id, sharedPreferences);
         		SPUtil.save2SP(SPUtil.SP_KEY_PWD, password, sharedPreferences);
-        		
             	if (getWifiIP() != null && getWifiIP().trim().length() > 0 && !getWifiIP().trim().equals("0.0.0.0")){
             		new LoginTask().execute(new String[]{id,password});
             	}else{
             		ShowDialog(mContext.getResources().getString(R.string.dialog_note),
             				mContext.getResources().getString(R.string.msg_network_error));
-            	}       		
+            	}         		
+        	}else{//exam is start  
+        		if(!firstTimeFlag){//user has login before
+    	        	//go to continue exam page
+    	        	Intent intent = new Intent();
+        			intent.putExtra("loginResultFile", LOGIN_RESULT_FILE);
+        			intent.putExtra("loginResultFilePath", userHome);
+        			intent.setClass( mContext, ExamContinue.class);
+        			startActivity(intent);            		       			
+        		}else{//user has not login before
+            		ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+            				mContext.getResources().getString(R.string.msg_user_in_exam_error));
+        		}
         	}
-        	
-        }  
+        }
     };
     
+    //define login task
     private class LoginTask extends AsyncTask<String, Void, String> {
     	ProgressDialog progressDialog;
     	ServerProxy proxy;
@@ -176,15 +185,11 @@ public class LoginActivity extends BaseActivity {
     		        	if(examStatus == null){
         		        	//go to exam List pa
         		        	Intent intent = new Intent();
-//        	    			intent.putExtra("loginResultFile", loginResultFile);
-//        	    			intent.putExtra("loginResultFilePath", loginResultFilePath);
         	    			intent.setClass( mContext, ExamStart.class);
         	    			startActivity(intent);     		        		
     		        	}else if(SPUtil.SP_VALUE_EXAM_STATUS_START.equals(examStatus)){
         		        	//go to continue exam page
         		        	Intent intent = new Intent();
-//        	    			intent.putExtra("loginResultFile", loginResultFile);
-//        	    			intent.putExtra("loginResultFilePath", loginResultFilePath);
         	    			intent.setClass( mContext, ExamContinue.class);
         	    			startActivity(intent);   
     		        	}else if(SPUtil.SP_VALUE_EXAM_STATUS_END.equals(examStatus)){

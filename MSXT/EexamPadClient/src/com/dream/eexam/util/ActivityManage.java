@@ -17,7 +17,7 @@ import android.util.Log;
  * @version:    1.0  
  * Create at:   2011-8-8 下午05:15:51  
  */
-public class ActivityStackControlUtil {
+public class ActivityManage {
 	private static final String LOG_TAG = "ActivityStackControlUtil";
 	
 	private static List<Activity> activityList = new ArrayList<Activity>();

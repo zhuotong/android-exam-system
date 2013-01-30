@@ -479,13 +479,19 @@ public class MultiChoices extends BaseQuestion {
     					submitResult.getErrorMessage());
         	} else {
         		//make exam status to end
-        		saveExamStatus();
+//        		saveExamStatus();
+        		
         		SubmitSuccessResult succResult = DataParseUtil.getSubmitSuccessResult(submitResult);
 				//move question
 				Intent intent = new Intent();
 				intent.putExtra("score", String.valueOf(succResult.getScore()));
 				intent.setClass( getBaseContext(), ResultActivity.class);
 				startActivity(intent);
+				
+				//clear temporary data
+            	clearSP();
+            	clearDB(mContext);
+            	
         	}
         }
     }

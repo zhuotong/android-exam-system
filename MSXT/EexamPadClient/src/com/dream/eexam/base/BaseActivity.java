@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import com.dream.eexam.util.ActivityStackControlUtil;
+import com.dream.eexam.util.ActivityManage;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SPUtil;
 import android.app.Activity;
@@ -50,7 +50,7 @@ public class BaseActivity extends Activity {
 		Log.i(LOG_TAG,"onCreate()...");
 		
 		//add Activity to ActivityStackControlUtil to manage
-		ActivityStackControlUtil.add(this);
+		ActivityManage.add(this);
 		
 		//get SharedPreferences Object
 		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
@@ -211,7 +211,7 @@ public class BaseActivity extends Activity {
 	    		exitTime = System.currentTimeMillis();
 	    	}else{
 			    finish();
-			    ActivityStackControlUtil.finishProgram();
+			    ActivityManage.finishProgram();
 			    System.exit(0);
 		    }
 			return true;
@@ -224,6 +224,21 @@ public class BaseActivity extends Activity {
 		intent.setClass( context, LoginActivity.class);
 		finish();
 		startActivity(intent);
+	}
+	
+	//clear data in SP
+	public void clearSP(){
+    	SharedPreferences.Editor editor = sharedPreferences.edit(); 
+    	editor.clear();
+    	editor.commit();
+	}
+	
+	//clear data in DB
+	public void clearDB(Context context){
+    	DatabaseUtil dbUtil = new DatabaseUtil(context);
+    	dbUtil.open();
+    	dbUtil.deleteAllAnswers();
+    	dbUtil.close();
 	}
 
 }

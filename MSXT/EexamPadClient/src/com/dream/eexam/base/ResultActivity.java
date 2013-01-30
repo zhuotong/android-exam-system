@@ -2,7 +2,7 @@ package com.dream.eexam.base;
 
 import java.io.File;
 
-import com.dream.eexam.util.ActivityStackControlUtil;
+import com.dream.eexam.util.ActivityManage;
 import com.dream.eexam.util.SystemConfig;
 
 import android.app.AlertDialog;
@@ -64,7 +64,7 @@ public class ResultActivity extends BaseActivity {
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,int id) {
 								    finish();
-								    ActivityStackControlUtil.finishProgram();
+								    ActivityManage.finishProgram();
 								    System.exit(0);
 								}
 							})

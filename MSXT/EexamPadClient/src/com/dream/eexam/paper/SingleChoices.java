@@ -108,7 +108,6 @@ public class SingleChoices extends BaseQuestion {
 		
 	}
 	
-	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -525,7 +524,7 @@ public class SingleChoices extends BaseQuestion {
     					submitResult.getErrorMessage());
         	} else {
         		
-        		saveExamStatus();
+//        		saveExamStatus();
         		
         		SubmitSuccessResult succResult = DataParseUtil.getSubmitSuccessResult(submitResult);
         		
@@ -534,6 +533,10 @@ public class SingleChoices extends BaseQuestion {
 				intent.putExtra("score", String.valueOf(succResult.getScore()));
 				intent.setClass( getBaseContext(), ResultActivity.class);
 				startActivity(intent);
+				
+				//clear temporary data
+            	clearSP();
+            	clearDB(mContext);
         	}
         }
         
