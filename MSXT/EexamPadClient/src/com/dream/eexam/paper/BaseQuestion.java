@@ -33,8 +33,9 @@ import android.widget.SeekBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+
+import com.dream.eexam.adapter.CatalogAdapter;
 import com.dream.eexam.base.BaseActivity;
-import com.dream.eexam.base.GroupAdapter;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.CatalogInfo;
 import com.dream.eexam.server.DataParseUtil;
@@ -47,7 +48,7 @@ import com.msxt.client.model.Examination.Choice;
 import com.msxt.client.model.Examination.Question;
 import com.msxt.client.model.QUESTION_TYPE;
 
-public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, OnGestureListener,OnTouchListener{
+public class BaseQuestion extends BaseActivity{
 	
 	public final static String LOG_TAG = "BaseQuestion";
 	
@@ -251,15 +252,20 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 		
 	}
 	
+	//set load countdown time
 	protected void setLoadCDTime(){
 		long currentTime = Calendar.getInstance().getTimeInMillis();
 		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
 		long starttime = sharedPreferences.getLong("starttime", 0);
 		long cosumeTime = (currentTime - starttime)/1000;//second
 	    long examTime = exam.getTime() * 60;//second
+	    
+	    //time out
 	    if(cosumeTime>examTime){
 	    	ShowDialog(mContext.getResources().getString(R.string.dialog_note),
 	    			"Exam Time Out!");
+	    	
+	    	//todo, submit answer
 	    }else{
 	    	long leftTime = examTime - cosumeTime;
 	    	lMinutes = Integer.valueOf((int)(leftTime/60));
@@ -539,7 +545,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 			catalogInfos.clear();
 			loadCatalogInfos(dbUtil); 
 			dbUtil.close();
-			GroupAdapter groupAdapter = new GroupAdapter(this, catalogInfos);
+			CatalogAdapter groupAdapter = new CatalogAdapter(this, catalogInfos);
 			lv_group.setAdapter(groupAdapter);
 			
 			int ppH = Integer.valueOf(getResources().getString(R.string.popup_window_height));
@@ -554,7 +560,7 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 			loadCatalogInfos(dbUtil);
 			dbUtil.close();
 			
-			GroupAdapter groupAdapter = new GroupAdapter(this, catalogInfos);
+			CatalogAdapter groupAdapter = new CatalogAdapter(this, catalogInfos);
 			lv_group.setAdapter(groupAdapter);
 			
 			popupWindow.dismiss();
@@ -607,74 +613,6 @@ public class BaseQuestion extends BaseActivity implements OnDoubleTapListener, O
 			}
 		});
 	}
-	
-	
-	//----------------------------------define fling move------------------------------------
-	GestureDetector detector = null;
-	protected int verticalMinDistance = 5;
-	protected int horizontalMinDistance = 5;
-    protected int minVelocity         = 0;
-    
-	@Override
-	public boolean onTouch(View arg0, MotionEvent arg1) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
-	@Override
-	public boolean onDown(MotionEvent arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-			float velocityY) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void onLongPress(MotionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
-			float distanceY) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void onShowPress(MotionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean onSingleTapUp(MotionEvent e) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean onDoubleTap(MotionEvent arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean onDoubleTapEvent(MotionEvent arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean onSingleTapConfirmed(MotionEvent arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
 }

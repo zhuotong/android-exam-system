@@ -1,7 +1,8 @@
-package com.dream.eexam.base;
+package com.dream.eexam.adapter;
 
 import java.util.List;
 
+import com.dream.eexam.base.R;
 import com.dream.eexam.model.CatalogInfo;
 
 import android.content.Context;
@@ -13,12 +14,18 @@ import android.widget.BaseAdapter;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-public class GroupAdapter extends BaseAdapter {
+/**
+ * dropdown list of catalogs
+ * @author Timothy
+ *
+ */
+
+public class CatalogAdapter extends BaseAdapter {
 	private static final String TAG = "GroupAdapter";
 	private Context context;
 	private List<CatalogInfo> list;
 	
-	public GroupAdapter(Context context, List<CatalogInfo> list) {
+	public CatalogAdapter(Context context, List<CatalogInfo> list) {
 		Log.i(TAG, "GroupAdapter()...");
 		this.context = context;
 		this.list = list;

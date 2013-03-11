@@ -171,7 +171,7 @@ public class MultiChoices extends BaseQuestion {
         listView.setOnTouchListener(new OnTouchListener(){
 			@Override
 			public boolean onTouch(View arg0, MotionEvent arg1) {
-				detector.onTouchEvent(arg1);
+//				detector.onTouchEvent(arg1);
 				return false;
 			}
 		});
@@ -179,7 +179,7 @@ public class MultiChoices extends BaseQuestion {
         setFooter();
         
         //set GestureDetector
-        detector = new GestureDetector((OnGestureListener) this);
+//        detector = new GestureDetector((OnGestureListener) this);
     }
     
     public void setFooter(){
@@ -310,7 +310,7 @@ public class MultiChoices extends BaseQuestion {
 		}
     }
     
-	@Override
+/*	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		super.onTouch(v,event);
 		return detector.onTouchEvent(event);
@@ -331,7 +331,7 @@ public class MultiChoices extends BaseQuestion {
 			move2NewQuestion();
         }
 		return false;
-	}
+	}*/
     
     public void setAnswer(){
     	Log.i(LOG_TAG, "setAnswer()...");

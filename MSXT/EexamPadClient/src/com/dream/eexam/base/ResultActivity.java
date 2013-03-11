@@ -1,15 +1,11 @@
 package com.dream.eexam.base;
 
-import java.io.File;
-
 import com.dream.eexam.util.ActivityManage;
-import com.dream.eexam.util.SystemConfig;
-
+import com.dream.eexam.util.SPUtil;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -48,9 +44,12 @@ public class ResultActivity extends BaseActivity {
 		quitBtn.setOnClickListener(quitListener);
 		
 		//clear exam answer history
-		String downloadExamFile = SystemConfig.getInstance().getPropertyValue("Download_Exam");
-    	String downloadExamFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + "eExam";
-    	deleteFile(downloadExamFilePath,downloadExamFile);
+//		String downloadExamFile = SystemConfig.getInstance().getPropertyValue("Download_Exam");
+//    	String downloadExamFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + "eExam";
+		
+		//below code is still not work
+    	deleteFile(SPUtil.getFromSP(SPUtil.SP_KEY_EXAM_PATH, sharedPreferences),
+    			SPUtil.getFromSP(SPUtil.SP_KEY_EXAM_FILE, sharedPreferences));
     }
 
     View.OnClickListener quitListener = new View.OnClickListener() {  
@@ -84,49 +83,5 @@ public class ResultActivity extends BaseActivity {
 			goHome(mContext);
 		}
 	};
-    
-    
-    @Override
-	public void finish() {
-		// TODO Auto-generated method stub
-		super.finish();
-	}
-
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-	}
-
-	@Override
-	protected void onPause() {
-		// TODO Auto-generated method stub
-		super.onPause();
-	}
-
-	@Override
-	protected void onRestart() {
-		// TODO Auto-generated method stub
-		super.onRestart();
-	}
-
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-	}
-
-	@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-	}
-
-	@Override
-	protected void onStop() {
-		// TODO Auto-generated method stub
-		super.onStop();
-	}
-
 
 }

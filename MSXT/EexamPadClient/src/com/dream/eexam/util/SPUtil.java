@@ -37,39 +37,51 @@ public class SPUtil {
 	public final static String SP_KEY_CQINDEX = "cqIndex";
 	
 
-	
+	//save String to SP
 	public static void save2SP(String key,String value,SharedPreferences sp){
 		SharedPreferences.Editor edit = sp.edit();
 		edit.putString(key, value);
 		edit.commit();
 	}
 	
+	//save boolean to SP
 	public static void save2SP(String key,boolean value,SharedPreferences sp){
 		SharedPreferences.Editor edit = sp.edit();
 		edit.putBoolean(key, value);
 		edit.commit();
 	}
 	
+	//save float to SP
 	public static void save2SP(String key,float value,SharedPreferences sp){
 		SharedPreferences.Editor edit = sp.edit();
 		edit.putFloat(key, value);
 		edit.commit();
 	}
 	
+	//save int to SP
 	public static void save2SP(String key,int value,SharedPreferences sp){
 		SharedPreferences.Editor edit = sp.edit();
 		edit.putInt(key, value);
 		edit.commit();
 	}
 	
+	//save long to SP
 	public static void save2SP(String key,long value,SharedPreferences sp){
 		SharedPreferences.Editor edit = sp.edit();
 		edit.putLong(key, value);
 		edit.commit();
 	}
 	
+	//get by string
 	public static String getFromSP(String key,SharedPreferences sp){
 		return sp.getString(key, null);
+	}
+	
+	//clear data in SP
+	public void clearSP(SharedPreferences sp){
+    	SharedPreferences.Editor editor = sp.edit(); 
+    	editor.clear();
+    	editor.commit();
 	}
 	
 	public static void printAllSPData(SharedPreferences sp){

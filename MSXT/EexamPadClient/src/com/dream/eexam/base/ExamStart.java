@@ -34,6 +34,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import com.msxt.client.model.QUESTION_TYPE;
 
+/**
+ * ExamStart Page
+ * @author Timothy
+ *
+ */
+
 public class ExamStart extends BaseActivity {
 	private static final String LOG_TAG = "ExamListActivity";
 	

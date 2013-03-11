@@ -53,39 +53,6 @@ public class PendQuestions extends BaseQuestion {
 	}
 	
 	public void setHeader(){
-		
-		//set exam header(Right)
-//		submitTV.setText("Submit");
-//        submitTV.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				Log.i(LOG_TAG, "submitTV.onClick()...");
-//				
-//		    	int waitQuestions = examQuestionSum - examAnsweredQuestionSum;
-//				 
-//				if (waitQuestions> 0) {
-//					AlertDialog.Builder builder = new AlertDialog.Builder(PendQuestions.this);
-//					builder.setMessage(String.valueOf(waitQuestions) + " " + mContext.getResources().getString(R.string.msg_submiting_warning))
-//							.setCancelable(false)
-//							.setPositiveButton("Yes",
-//									new DialogInterface.OnClickListener() {
-//										public void onClick(DialogInterface dialog,int id) {
-//											submitAnswer();
-//										}
-//									})
-//							.setNegativeButton("Cancel",
-//									new DialogInterface.OnClickListener() {
-//										public void onClick(DialogInterface dialog,int id) {
-//											dialog.cancel();
-//										}
-//									});
-//					builder.show();
-//				} else {
-//					submitAnswer();
-//				}
-//			}
-//		});
-
         //set catalog bar(Center) 
 		catalogsTV.setText(String.valueOf(cCatalogIndex)+". "+
 				cCatalog.getDesc() + 
@@ -96,26 +63,6 @@ public class PendQuestions extends BaseQuestion {
 				showWindow(v);
 			}
 		});
-		
-		 //set catalog bar(Right) 
-//		pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_waiting)+"("+Integer.valueOf(pendQuestions.size())+")");
-//		pendQueNumber.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				Intent intent = new Intent();
-//				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
-//				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
-//				if(questionTypes[0].equals(cQuestionType)){
-//					intent.putExtra("questionType", "Multi Select");
-//					intent.setClass( getBaseContext(), PendQuestions.class);
-//				}else if(questionTypes[1].equals(cQuestionType)){
-//					intent.putExtra("questionType", "Single Select");
-//					intent.setClass( getBaseContext(), PendQuestions.class);
-//				}
-//				finish();
-//				startActivity(intent);
-//			}
-//		});
 	}
 	
     @Override

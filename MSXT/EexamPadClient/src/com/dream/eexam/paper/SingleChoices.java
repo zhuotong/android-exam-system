@@ -167,7 +167,7 @@ public class SingleChoices extends BaseQuestion {
         setFooter();
         
         //set GestureDetector
-        detector = new GestureDetector((OnGestureListener) this);
+//        detector = new GestureDetector((OnGestureListener) this);
     }
     
     public void clearOldAnswer(){
