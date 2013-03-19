@@ -1,12 +1,18 @@
 package com.dream.eexam.paper;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
 import android.content.Context;
@@ -475,6 +481,31 @@ public class BaseQuestion extends BaseActivity{
 		SharedPreferences.Editor editor = sharedPreferences.edit();
 		editor.putString("exam_status", "end");
 		editor.commit();		
+	}
+	
+	//save answer 2 local SD card by user id
+	public void saveAnswer2Local(Map<String, String> answer, String path,
+			String examId) {
+		StringBuffer content = new StringBuffer();
+
+		Iterator<Entry<String, String>> it = answer.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry entry = (Map.Entry) it.next();
+			String key = (String) entry.getKey();
+			String value = (String) entry.getValue();
+			content.append(key + ";" + value + "\n");
+		}
+
+		FileOutputStream foutput;
+		try {
+			foutput = new FileOutputStream(path + File.separator + examId+ "_answer.txt");
+			foutput.write(content.toString().getBytes());
+		} catch (FileNotFoundException e) {
+			Log.e(LOG_TAG, e.getMessage());
+		} catch (IOException e) {
+			Log.e(LOG_TAG, e.getMessage());
+		}
+
 	}
 	
 	

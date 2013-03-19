@@ -18,7 +18,7 @@ import com.msxt.client.model.SubmitSuccessResult;
 import com.msxt.client.model.transfer.Message2ModelTransfer;
 import com.msxt.client.server.ServerProxy.Result;
 
-@Deprecated
+
 public class DataParseUtil {
 
 	

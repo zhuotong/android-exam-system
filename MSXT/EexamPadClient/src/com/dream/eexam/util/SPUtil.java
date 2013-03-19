@@ -15,8 +15,6 @@ public class SPUtil {
 	public final static String SP_KEY_PWD = "password";
 	
 	public final static String SP_KEY_USER_HOME = "userhome";
-	
-	//
 	public final static String SP_KEY_LOGIN_FILE_PATH = "loginResultFilePath";
 	public final static String SP_KEY_LOGIN_FILE = "loginResultFile";
 	

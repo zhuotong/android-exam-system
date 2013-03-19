@@ -426,28 +426,12 @@ public class SingleChoices extends BaseQuestion {
 					public void onClick(View v) {
 						
 						Log.i(LOG_TAG, "---------------radioButton.onClick---------------");
-//		        		clearOldAnswer();
-//		        		RadioButton rb = (RadioButton)v;
-//		        		mChecked.set(p, rb.isChecked());
-//		        		setAnswer(p,rb.isChecked());
-//						Message msg = new Message();
-//						msg.what = 1;
-//						handler.sendMessage(msg);
-						
+
+						//clear old answer
 						clearOldAnswer(p);
 						
 		        		//get old status
 						RadioButton rb = (RadioButton)v;
-//		        		boolean oldStatus = rb.isChecked();
-//		        		Log.i(LOG_TAG, "before clear:"+String.valueOf(oldStatus));
-		        		
-		        		//clear answer first
-		        		
-		        		
-//		        		Log.i(LOG_TAG, "after clear:"+String.valueOf(rb.isChecked()));
-//		        		rb.setChecked(!oldStatus);
-		        		
-//		        		Log.i(LOG_TAG, "after set:"+String.valueOf(rb.isChecked()));
 		        		
 		        		//set answer
 		        		setAnswer(p,rb.isChecked());
@@ -485,6 +469,7 @@ public class SingleChoices extends BaseQuestion {
     	ProgressDialog progressDialog;
     	ServerProxy proxy;
     	Result submitResult;
+    	Map<String, String> answers;
     	
     	@Override
     	protected void onPreExecute() {
@@ -501,7 +486,7 @@ public class SingleChoices extends BaseQuestion {
         	
         	DatabaseUtil dbUtil = new DatabaseUtil(mContext);
         	dbUtil.open();
-        	Map<String, String> answers =  getAllAnswers(dbUtil);
+        	answers =  getAllAnswers(dbUtil);
         	dbUtil.close();
         	
         	submitResult = proxy.submitAnswer(urls[0],answers);
@@ -516,6 +501,27 @@ public class SingleChoices extends BaseQuestion {
     		if( submitResult.getStatus() == STATUS.ERROR ) {
     			ShowDialog(mContext.getResources().getString(R.string.dialog_note),
     					submitResult.getErrorMessage());
+    			
+    			//save answer to local
+//    			AlertDialog.Builder builder = new AlertDialog.Builder(SingleChoices.this);
+//    			builder.setMessage(mContext.getResources().getString(R.string.warning_save_answer_local))
+//    					.setCancelable(false)
+//    					.setPositiveButton(mContext.getResources().getString(R.string.warning_save_answer_local_yes),
+//    							new DialogInterface.OnClickListener() {
+//    								public void onClick(DialogInterface dialog,int id) {
+//    									String path = SPUtil.getFromSP(SPUtil.SP_KEY_USER_HOME, sharedPreferences);
+//    								    String examid = exam.getId();
+//    									saveAnswer2Local(answers,path,examid);
+//    								}
+//    							})
+//    					.setNegativeButton(mContext.getResources().getString(R.string.warning_save_answer_local_cancel),
+//    							new DialogInterface.OnClickListener() {
+//    								public void onClick(DialogInterface dialog,int id) {
+//    									dialog.cancel();
+//    								}
+//    							});
+//    			builder.show();
+    			
         	} else {
         		
 //        		saveExamStatus();

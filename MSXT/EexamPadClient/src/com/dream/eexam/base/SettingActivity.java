@@ -66,10 +66,8 @@ public class SettingActivity extends BaseActivity {
         public void onClick(View v) { 
         	String host = hostET.getText().toString();
         	if(ValidateUtil.validateIP4(host)){
-//    			SharedPreferences.Editor editor = sharedPreferences.edit();
-//    			editor.putString("host", host);
-//    			editor.commit();	
     			SPUtil.save2SP(SPUtil.SP_KEY_HOST, host, sharedPreferences);
+    			
             	//go to login page
             	Intent intent = new Intent();
     			intent.setClass( SettingActivity.this, LoginActivity.class);

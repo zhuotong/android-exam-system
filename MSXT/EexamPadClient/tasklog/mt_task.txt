@@ -25,4 +25,11 @@ SharedPreferences
 
 试卷XML文件加密
 
+问题类型包含
+
+单选
+多选
+
+问题设定
+
 

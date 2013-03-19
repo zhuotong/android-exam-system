@@ -63,12 +63,17 @@
 	
 	<string name="warning_answer_later">Answer this question later?</string>
 	<string name="warning_answer_later_yes">Yes</string>
-	<string name="warning_answer_later_cancel">Cancel</string> 		
+	<string name="warning_answer_later_cancel">Cancel</string> 	
+	
+	<string name="warning_save_answer_local">Can not connect server, save answer to local?</string>
+	<string name="warning_save_answer_local_yes">Yes</string>
+	<string name="warning_save_answer_local_cancel">Cancel</string>	
     
     <string name="connection_error">Unable to load content. Check your network connection.</string>
     <string name="xml_error">Error parsing XML.</string>
     <string name="popup_window_height">300</string>
-    <string name="popup_window_width">280</string>    
+    <string name="popup_window_width">280</string> 
+       
     <!-- Exam Page(MultiChoice,SingChoice,PendingChoice) END-->
         
     <!-- Exam Result Page Start -->
@@ -106,5 +111,8 @@
     <string name="login_file_name">login_result.xml</string>
     <string name="exam_file_name">download_exam.xml</string>
     <string name="msg_exit_hint">Click again to exit</string>
+    <string name="setting_id">admin</string>
+    <string name="setting_password">admin</string>
+    
     <!-- Other -->
 </resources>
