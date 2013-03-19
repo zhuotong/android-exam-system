@@ -59,7 +59,6 @@ public class ExamStart extends BaseActivity {
 	
 	String examIdString = null;
 	Context mContext;
-//	String downloadExamFile = null;
 	String downloadExamFilePath = null;
 	QUESTION_TYPE fQuestionType = null;
 	String[] questionTypes;
