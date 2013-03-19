@@ -240,5 +240,20 @@ public class BaseActivity extends Activity {
     	dbUtil.deleteAllAnswers();
     	dbUtil.close();
 	}
+	
+	//delete file fold and file under it
+	public void deleteFile(File file) {
+		if (file.exists()) {
+			if (file.isFile()) {
+				file.delete();
+			} else if (file.isDirectory()) {
+				File files[] = file.listFiles();
+				for (int i = 0; i < files.length; i++) {
+					this.deleteFile(files[i]);
+				}
+			}
+			file.delete();
+		}
+	}
 
 }

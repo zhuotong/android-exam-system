@@ -1,5 +1,6 @@
 package com.dream.eexam.paper;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,11 +18,9 @@ import android.os.Bundle;
 import android.os.Message;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.GestureDetector.OnGestureListener;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
@@ -37,6 +36,7 @@ import com.dream.eexam.base.R;
 import com.dream.eexam.base.ResultActivity;
 import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.util.DatabaseUtil;
+import com.dream.eexam.util.SPUtil;
 import com.msxt.client.model.SubmitSuccessResult;
 import com.msxt.client.model.Examination.Choice;
 import com.msxt.client.server.ServerProxy;
@@ -166,8 +166,6 @@ public class SingleChoices extends BaseQuestion {
         });
         setFooter();
         
-        //set GestureDetector
-//        detector = new GestureDetector((OnGestureListener) this);
     }
     
     public void clearOldAnswer(){
@@ -241,33 +239,29 @@ public class SingleChoices extends BaseQuestion {
         }
         
     	//set catalog bar(Right) 
-//    	if(pendQuestions.size()>0){
-    		pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_waiting)+"("+Integer.valueOf(pendQuestions.size())+")");
-    		pendQueNumber.setOnClickListener(new View.OnClickListener() {
-    			@Override
-    			public void onClick(View v) {
-    				if(pendQuestions.size()>0){
-        				Intent intent = new Intent();
-        				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
-        				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
-        				intent.putExtra("questionType", cQuestionType);
-        				if(questionTypes[0].equals(cQuestionType)){
-        					intent.setClass( getBaseContext(), PendQuestions.class);
-        				}else if(questionTypes[1].equals(cQuestionType)){
-        					intent.setClass( getBaseContext(), PendQuestions.class);
-        				}
-        				finish();
-        				startActivity(intent);   					
-    				}else{
-    					ShowDialog(mContext.getResources().getString(R.string.dialog_note),
-    							mContext.getResources().getString(R.string.message_tv_no_question));			
+		pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_waiting)+"("+Integer.valueOf(pendQuestions.size())+")");
+		pendQueNumber.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(pendQuestions.size()>0){
+    				Intent intent = new Intent();
+    				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
+    				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
+    				intent.putExtra("questionType", cQuestionType);
+    				if(questionTypes[0].equals(cQuestionType)){
+    					intent.setClass( getBaseContext(), PendQuestions.class);
+    				}else if(questionTypes[1].equals(cQuestionType)){
+    					intent.setClass( getBaseContext(), PendQuestions.class);
     				}
+    				finish();
+    				startActivity(intent);   					
+				}else{
+					ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+							mContext.getResources().getString(R.string.message_tv_no_question));			
+				}
 
-    			}
-    		});   		
-//    	}else{
-//    		pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_complete));
-//    	}
+			}
+		});   		
 		
 		//set exam header(Center)
 		remainingTime.setText(String.valueOf(exam.getTime())+" mins");
@@ -537,6 +531,8 @@ public class SingleChoices extends BaseQuestion {
 				//clear temporary data
             	clearSP();
             	clearDB(mContext);
+            	//clear all user data
+//            	deleteFile(new File(SPUtil.getFromSP(SPUtil.SP_KEY_USER_HOME, sharedPreferences)));
         	}
         }
         

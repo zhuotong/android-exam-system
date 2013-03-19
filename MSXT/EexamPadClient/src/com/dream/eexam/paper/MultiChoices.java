@@ -16,12 +16,10 @@ import android.os.Bundle;
 import android.os.Message;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.GestureDetector.OnGestureListener;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.AdapterView;
@@ -106,19 +104,6 @@ public class MultiChoices extends BaseQuestion {
         //set catalog bar(Center) 
 		catalogsTV.setText(String.valueOf(cCatalogIndex)+". "+ cCatalog.getDesc() + 
 				"(Q" + String.valueOf(cCatalog1stQuestionIndex)+" - " + "Q" + String.valueOf(cCataloglastQuestionIndex)+")");
-/*		catalogsTV.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				showWindow(v);
-			}
-		});
-		
-		imgDownArrow.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				showWindow(v);
-			}
-		});*/
 		
 	}
 	
@@ -162,7 +147,6 @@ public class MultiChoices extends BaseQuestion {
 		    	answerLabels.setLength(0);
 				setAnswer();
 				
-				
 				Message msg = new Message();
 				msg.what = 1;
 				handler.sendMessage(msg);
@@ -171,15 +155,12 @@ public class MultiChoices extends BaseQuestion {
         listView.setOnTouchListener(new OnTouchListener(){
 			@Override
 			public boolean onTouch(View arg0, MotionEvent arg1) {
-//				detector.onTouchEvent(arg1);
 				return false;
 			}
 		});
         
         setFooter();
         
-        //set GestureDetector
-//        detector = new GestureDetector((OnGestureListener) this);
     }
     
     public void setFooter(){
@@ -309,29 +290,6 @@ public class MultiChoices extends BaseQuestion {
 			gotoNewQuestion(mContext,cCatalogIndex,cQuestionIndex,moveDirect);
 		}
     }
-    
-/*	@Override
-	public boolean onTouch(View v, MotionEvent event) {
-		super.onTouch(v,event);
-		return detector.onTouchEvent(event);
-	}
-	
-	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-			float velocityY) {
-		super.onFling(e1,e2,velocityX,velocityY);
-		Log.i(LOG_TAG, "onFling()...");	
-        if (e1.getX() - e2.getX() > verticalMinDistance && Math.abs(velocityX) > minVelocity) {
-        	Log.i(LOG_TAG,"Move Left");
-			moveDirect = -1;
-			move2NewQuestion();
-        } else if (e2.getX() - e1.getX() > verticalMinDistance && Math.abs(velocityX) > minVelocity) {
-        	Log.i(LOG_TAG,"Move Right");
-			moveDirect = 1;
-			move2NewQuestion();
-        }
-		return false;
-	}*/
     
     public void setAnswer(){
     	Log.i(LOG_TAG, "setAnswer()...");
@@ -491,6 +449,8 @@ public class MultiChoices extends BaseQuestion {
 				//clear temporary data
             	clearSP();
             	clearDB(mContext);
+            	//clear all user data
+//            	deleteFile(new File(SPUtil.getFromSP(SPUtil.SP_KEY_USER_HOME, sharedPreferences)));
             	
         	}
         }
