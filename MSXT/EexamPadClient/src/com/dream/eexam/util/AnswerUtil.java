@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.dream.eexam.model.Answer;
 
+@Deprecated
 public class AnswerUtil {
 	//header message
 	private static String EXAM_ANSWER_HEADER = "<examanswer>" +

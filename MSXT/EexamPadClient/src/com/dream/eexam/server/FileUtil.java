@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import android.util.Log;
 
+@Deprecated
 public class FileUtil {
 
 	public final static String LOG_TAG = "FileUtil";
