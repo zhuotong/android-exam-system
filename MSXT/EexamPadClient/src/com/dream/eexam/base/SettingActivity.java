@@ -1,9 +1,13 @@
 package com.dream.eexam.base;
 
+import java.util.Map;
+
+import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SPUtil;
 import com.dream.eexam.util.ValidateUtil;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,7 +32,26 @@ public class SettingActivity extends BaseActivity {
 	Button saveBtn = null;
 	Button clearBtn = null;
 	Button cancelBtn = null;
+	
+	TextView dbData = null;
 
+	public String getDBData(Context mContext){
+		DatabaseUtil dbUtil = new DatabaseUtil(mContext);
+		dbUtil.open();
+		StringBuffer sb = new StringBuffer();
+    	Cursor cursor = dbUtil.fetchAllAnswers();
+    	while(cursor.moveToNext()){
+    		int cid = cursor.getInt(0);
+    		int qid = cursor.getInt(1);
+			String qidStr = cursor.getString(2);
+			String answer = cursor.getString(3);
+			sb.append(String.valueOf(cid)+";" + String.valueOf(qid)+";"+qidStr+";"+answer+"\n");
+		}
+    	cursor.close();
+    	dbUtil.close();
+    	return sb.toString();
+	}
+	
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,7 +80,10 @@ public class SettingActivity extends BaseActivity {
 		clearBtn.setOnClickListener(clearListener);
 		
 		cancelBtn = (Button) this.findViewById(R.id.cancelBtn);
-		cancelBtn.setOnClickListener(saveListener);
+		cancelBtn.setOnClickListener(cancelListener);
+		
+		dbData = (TextView) this.findViewById(R.id.dbData);
+		dbData.setText(getDBData(mContext));
 		
     }
 
@@ -101,6 +127,8 @@ public class SettingActivity extends BaseActivity {
 			startActivity(intent);  	
         }  
     };
+    
+    
     
 
 

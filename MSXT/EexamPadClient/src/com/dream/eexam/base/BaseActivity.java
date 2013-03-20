@@ -165,10 +165,6 @@ public class BaseActivity extends Activity {
 	}
 	
 	public void saveFile(String path, String fileName,String content) {
-//		Log.i(LOG_TAG,"saveFile...");
-//		Log.i(LOG_TAG,"path:"+path);
-//		Log.i(LOG_TAG,"fileName:"+fileName);
-//		Log.i(LOG_TAG,"content:"+content);
 		try {
 	        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {  
 	            File dir = new File(path);  

@@ -16,6 +16,8 @@
     <string name="msg_login_server">正在登录...</string>
     <string name="msg_network_error">你的网络存在问题</string>
     <string name="msg_user_in_exam_error">上一个用户考试进行中</string>
+    <string name="msg_warning_setting">该账号无法进入设置页面</string>
+    
     <!-- 登陆页面结束 -->
     
     <!-- 开始设置页面-->

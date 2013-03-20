@@ -36,6 +36,7 @@ import com.dream.eexam.base.R;
 import com.dream.eexam.base.ResultActivity;
 import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.util.DatabaseUtil;
+import com.dream.eexam.util.SPUtil;
 import com.msxt.client.model.Examination.Choice;
 import com.msxt.client.model.SubmitSuccessResult;
 import com.msxt.client.server.ServerProxy;
@@ -408,6 +409,7 @@ public class MultiChoices extends BaseQuestion {
     	ProgressDialog progressDialog;
     	ServerProxy proxy;
     	Result submitResult;
+    	Map<String, String> answers;
     	
     	@Override
     	protected void onPreExecute() {
@@ -433,8 +435,29 @@ public class MultiChoices extends BaseQuestion {
         	progressDialog.dismiss();
         	submitTV.setEnabled(true);
     		if( submitResult.getStatus() == STATUS.ERROR ) {
-    			ShowDialog(mContext.getResources().getString(R.string.dialog_note),
-    					submitResult.getErrorMessage());
+//    			ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+//    					submitResult.getErrorMessage());
+    			
+    			//save answer to local
+    			AlertDialog.Builder builder = new AlertDialog.Builder(MultiChoices.this);
+    			builder.setMessage(mContext.getResources().getString(R.string.warning_save_answer_local))
+    					.setCancelable(false)
+    					.setPositiveButton(mContext.getResources().getString(R.string.warning_save_answer_local_yes),
+    							new DialogInterface.OnClickListener() {
+    								public void onClick(DialogInterface dialog,int id) {
+    									String path = SPUtil.getFromSP(SPUtil.SP_KEY_USER_HOME, sharedPreferences);
+    								    String examid = exam.getId();
+    									saveAnswer2Local(answers,path,examid);
+    								}
+    							})
+    					.setNegativeButton(mContext.getResources().getString(R.string.warning_save_answer_local_cancel),
+    							new DialogInterface.OnClickListener() {
+    								public void onClick(DialogInterface dialog,int id) {
+    									dialog.cancel();
+    								}
+    							});
+    			builder.show();
+    			
         	} else {
         		//make exam status to end
 //        		saveExamStatus();

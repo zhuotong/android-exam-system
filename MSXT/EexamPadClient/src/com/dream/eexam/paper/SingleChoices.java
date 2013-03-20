@@ -499,28 +499,28 @@ public class SingleChoices extends BaseQuestion {
         	submitTV.setEnabled(true);
 
     		if( submitResult.getStatus() == STATUS.ERROR ) {
-    			ShowDialog(mContext.getResources().getString(R.string.dialog_note),
-    					submitResult.getErrorMessage());
+//    			ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+//    					submitResult.getErrorMessage());
     			
     			//save answer to local
-//    			AlertDialog.Builder builder = new AlertDialog.Builder(SingleChoices.this);
-//    			builder.setMessage(mContext.getResources().getString(R.string.warning_save_answer_local))
-//    					.setCancelable(false)
-//    					.setPositiveButton(mContext.getResources().getString(R.string.warning_save_answer_local_yes),
-//    							new DialogInterface.OnClickListener() {
-//    								public void onClick(DialogInterface dialog,int id) {
-//    									String path = SPUtil.getFromSP(SPUtil.SP_KEY_USER_HOME, sharedPreferences);
-//    								    String examid = exam.getId();
-//    									saveAnswer2Local(answers,path,examid);
-//    								}
-//    							})
-//    					.setNegativeButton(mContext.getResources().getString(R.string.warning_save_answer_local_cancel),
-//    							new DialogInterface.OnClickListener() {
-//    								public void onClick(DialogInterface dialog,int id) {
-//    									dialog.cancel();
-//    								}
-//    							});
-//    			builder.show();
+    			AlertDialog.Builder builder = new AlertDialog.Builder(SingleChoices.this);
+    			builder.setMessage(mContext.getResources().getString(R.string.warning_save_answer_local))
+    					.setCancelable(false)
+    					.setPositiveButton(mContext.getResources().getString(R.string.warning_save_answer_local_yes),
+    							new DialogInterface.OnClickListener() {
+    								public void onClick(DialogInterface dialog,int id) {
+    									String path = SPUtil.getFromSP(SPUtil.SP_KEY_USER_HOME, sharedPreferences);
+    								    String examid = exam.getId();
+    									saveAnswer2Local(answers,path,examid);
+    								}
+    							})
+    					.setNegativeButton(mContext.getResources().getString(R.string.warning_save_answer_local_cancel),
+    							new DialogInterface.OnClickListener() {
+    								public void onClick(DialogInterface dialog,int id) {
+    									dialog.cancel();
+    								}
+    							});
+    			builder.show();
     			
         	} else {
         		

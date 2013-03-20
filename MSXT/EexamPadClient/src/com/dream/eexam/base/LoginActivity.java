@@ -75,11 +75,21 @@ public class LoginActivity extends BaseActivity {
 		settingBtn = (Button) this.findViewById(R.id.settingBtn);
 		settingBtn.setOnClickListener(new View.OnClickListener() {  
 	        @Override  
-	        public void onClick(View v) { 
-	        	//go to examList page
-	        	Intent intent = new Intent();
-				intent.setClass( LoginActivity.this, SettingActivity.class);
-				startActivity(intent);  	
+	        public void onClick(View v) {
+            	String id = idEt.getText().toString();
+            	String password = passwordET.getText().toString();
+	        	String settingId = getResources().getString(R.string.setting_id);
+	        	String settingPwd = getResources().getString(R.string.setting_password);
+	        	if(settingId.endsWith(id)&&settingPwd.equals(password)){
+		        	//go to examList page
+		        	Intent intent = new Intent();
+					intent.setClass( LoginActivity.this, SettingActivity.class);
+					startActivity(intent);  	        		
+	        	}else{
+		        	ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+		        			mContext.getResources().getString(R.string.msg_warning_setting));
+	        	}
+	
 	        }  
 	    });
 		

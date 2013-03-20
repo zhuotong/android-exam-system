@@ -15,6 +15,8 @@
     <string name="label_btn_reset">Setting</string>
     <string name="msg_login_server">Login to server...</string>
     <string name="msg_network_error">Your mobile is not in a available NetWork!</string>
+    <string name="msg_user_in_exam_error">Last user exam is not finished!</string>
+    <string name="msg_warning_setting">You are not allowed to go to setting page</string>
     
     <!-- Login Page End -->
     
@@ -24,7 +26,6 @@
     </string-array>
     <string name="label_tv_host">Server Address:</string>
     <string name="label_btn_save">Save</string>
-    <!-- <string name="label_btn_cancel">Cancel</string> -->
     <string name="label_btn_clear_history">Clear History</string>
     <string name="msg_history_be_cleared">History is cleared</string>
     <!-- Setting Page End-->
