@@ -8,7 +8,7 @@
 
     <include
 	       android:id="@+id/baseHeader"
-	       layout="@layout/exam_header" /> 
+	       layout="@layout/paper_header" /> 
     	       
 	<RelativeLayout 
 	    android:orientation="vertical"
@@ -40,7 +40,7 @@
 			android:layout_alignParentBottom="true">
 		    <include
 			      android:id="@+id/examFooter"
-			      layout="@layout/exam_footer" /> 
+			      layout="@layout/paper_footer" /> 
 		</RelativeLayout>		   
 		
 		<ListView

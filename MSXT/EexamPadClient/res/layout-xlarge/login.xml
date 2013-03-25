@@ -3,24 +3,14 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	android:id="@+id/layout1"
-	android:background="@drawable/bg_color_login" android:orientation="vertical">
+	android:background="@drawable/bg_color_login" 
+	android:orientation="vertical">
 	
 	<!-- header -->
     <include
         android:id="@+id/baseHeader"
         layout="@layout/base_header" 
         android:layout_gravity="top"/>
-        
-<!--     <ImageView 
-        android:layout_width="wrap_content" 
-	    android:id="@+id/imageView1"
-		android:layout_height="wrap_content" 
-		android:src="@drawable/eexams"
-		android:layout_gravity="center_horizontal"
-		android:layout_marginTop="60dp"
-		android:layout_marginBottom="20dp"
-		android:contentDescription="@string/msg_logo_desc">
-	</ImageView> -->
 	
 	<TableLayout android:id="@+id/tableLayout1"
 		android:layout_width="fill_parent"
@@ -69,6 +59,7 @@
 				android:textSize="25sp"/>
 			<EditText    
 			    android:id="@+id/passwordET"
+			    android:inputType="textPassword"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center_vertical"
@@ -82,32 +73,6 @@
 
 	</TableLayout>
 
-<!-- 	<TableRow android:id="@+id/tableRow4" 
-	    android:layout_width="match_parent" 
-	    android:layout_height="wrap_content"
-	    android:layout_marginLeft="10dp"
-	    android:layout_gravity="center_vertical|center_horizontal"
-	    android:gravity="center_vertical|center_horizontal">
-	    <CheckBox
-		    android:id="@+id/checkBox1"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_marginLeft="100dp"
-		    android:layout_marginRight="80dp"
-		    android:layout_weight="1"
-		    android:text="@string/label_chb_save_id" 
-		    android:textColor="#000000"/>
-	    <CheckBox
-		    android:id="@+id/checkBox2"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-   		    android:layout_marginLeft="100dp"
-		    android:layout_marginRight="80dp"
-		    android:layout_weight="1"
-		    android:text="@string/label_chb_save_password" 
-		    android:textColor="#000000"/>
-	</TableRow> -->
-	
 	<!-- Login Button -->
 	<TableRow android:id="@+id/tableRow3" 
 		android:layout_width="fill_parent"
@@ -123,7 +88,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:background="@drawable/common_button"
-			android:textSize="22dp">
+			android:textSize="22sp">
 		</Button>
 		
 		<Button android:text="@string/label_btn_reset" 
@@ -133,7 +98,7 @@
 			android:layout_weight="1"
 			android:layout_marginLeft="5dp"
 			android:background="@drawable/common_button"
-			android:textSize="22dp">
+			android:textSize="22sp">
 		</Button>
 	</TableRow>
 
