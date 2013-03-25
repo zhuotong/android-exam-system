@@ -7,6 +7,7 @@ import java.util.List;
 import com.dream.eexam.paper.MultiChoices;
 import com.dream.eexam.paper.SingleChoices;
 import com.dream.eexam.server.DataParseUtil;
+import com.dream.eexam.server.FileUtil;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SPUtil;
 import com.msxt.client.model.Examination;
@@ -80,8 +81,8 @@ public class ExamStart extends BaseActivity {
 		
 		questionTypes = getResources().getStringArray(R.array.question_types);
 		
-		String loginResultFilePath  = SPUtil.getFromSP(SPUtil.SP_KEY_LOGIN_FILE_PATH, sharedPreferences);
-		String loginResultFile  = SPUtil.getFromSP(SPUtil.SP_KEY_LOGIN_FILE, sharedPreferences);
+		String loginResultFilePath  = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
+		String loginResultFile  = SPUtil.getFromSP(SPUtil.CURRENT_LOGIN_FILE_NAME, sharedPreferences);
 		Log.i(LOG_TAG,"loginResultFilePath:"+loginResultFilePath);
 		Log.i(LOG_TAG,"loginResultFile:"+loginResultFile);
 		
@@ -126,13 +127,15 @@ public class ExamStart extends BaseActivity {
 			public void onClick(View v) {
 				Log.i(LOG_TAG,"onClick()...");
 				
-	        	downloadExamFilePath = SPUtil.getFromSP(SPUtil.SP_KEY_USER_HOME, sharedPreferences);
+	        	downloadExamFilePath = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
 	        	Log.i(LOG_TAG, "downloadExamFilePath:"+downloadExamFilePath);
 	        	
 	        	new DownloadExamTask().execute(examIdString);
 
 			}			
 		});
+		
+		SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.STATUS_LOGIN_NOT_START, sharedPreferences);
 
 	}
 	
@@ -181,12 +184,13 @@ public class ExamStart extends BaseActivity {
     			Log.i(LOG_TAG,"downloadExamFilePath:"+downloadExamFilePath);
     			Log.i(LOG_TAG,"examFileName:"+examFileName);
     			
-    			//save to SD card 
-    			saveFile(downloadExamFilePath, examFileName, examResult.getSuccessMessage());
+    			//save to SD card
+    			FileUtil fu = new FileUtil();
+        		fu.saveFile(downloadExamFilePath, examFileName, examResult.getSuccessMessage());
     			
     			//save to SharedPreferences
-    			SPUtil.save2SP(SPUtil.SP_KEY_EXAM_PATH, downloadExamFilePath, sharedPreferences);
-    			SPUtil.save2SP(SPUtil.SP_KEY_EXAM_FILE, examFileName, sharedPreferences);
+//    			SPUtil.save2SP(SPUtil.CURRENT_USER_HOME, downloadExamFilePath, sharedPreferences);
+    			SPUtil.save2SP(SPUtil.CURRENT_EXAM_FILE_NAME, examFileName, sharedPreferences);
     			
     			
     		}else if(STATUS.ERROR.equals(examResult.getStatus())){
@@ -240,10 +244,12 @@ public class ExamStart extends BaseActivity {
 //					save2SP(StoreDataConstants.SP_KEY_EXAM_STATUS, "start");
 //				}
 				
-				String status = SPUtil.getFromSP(SPUtil.SP_KEY_EXAM_STATUS, sharedPreferences);
-				if(status==null){
-					SPUtil.save2SP(SPUtil.SP_KEY_EXAM_STATUS, SPUtil.SP_VALUE_EXAM_STATUS_START, sharedPreferences);
-				}
+//				String status = SPUtil.getFromSP(SPUtil.SP_KEY_EXAM_STATUS, sharedPreferences);
+//				if(status==null){
+//					SPUtil.save2SP(SPUtil.SP_KEY_EXAM_STATUS, SPUtil.SP_VALUE_EXAM_STATUS_START, sharedPreferences);
+//				}
+				
+				SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.STATUS_START_NOT_TIMEOUT_NOT_SUBMIT, sharedPreferences);
 				
 				//save exam start time
 				saveStartTime();
@@ -254,13 +260,13 @@ public class ExamStart extends BaseActivity {
 	
 	public void saveStartTime(){
 		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
-		long startTime = sharedPreferences.getLong(SPUtil.SP_KEY_EXAM_START_TIME, 0);
+		long startTime = sharedPreferences.getLong(SPUtil.CURRENT_EXAM_START_TIME, 0);
 		//if its first time to do exam, save start exam time
 		if(startTime==0){
 			SharedPreferences.Editor editor = sharedPreferences.edit();
 			long currentTime = Calendar.getInstance().getTimeInMillis();
 			Log.i(LOG_TAG, "startTime="+String.valueOf(startTime));
-			editor.putLong(SPUtil.SP_KEY_EXAM_START_TIME, currentTime);
+			editor.putLong(SPUtil.CURRENT_EXAM_START_TIME, currentTime);
 			editor.commit();		
 		}
 	}

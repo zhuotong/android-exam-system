@@ -89,6 +89,7 @@
 
 	<!-- Other -->
 	<string name="dialog_note">Note</string>
+	<string name="dialog_warning">Warning</string>
  	<string-array name="question_types">
         <item>M</item>
         <item>S</item>
@@ -109,8 +110,6 @@
     </string-array>
     <string name="port">8080</string>
     <string name="app_file_home">eExam</string>
-    <string name="login_file_name">login_result.xml</string>
-    <string name="exam_file_name">download_exam.xml</string>
     <string name="msg_exit_hint">Click again to exit</string>
     <string name="setting_id">admin</string>
     <string name="setting_password">admin</string>

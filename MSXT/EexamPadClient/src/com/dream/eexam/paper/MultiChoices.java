@@ -424,7 +424,7 @@ public class MultiChoices extends BaseQuestion {
         	proxy =  WebServerProxy.Factroy.getCurrrentInstance();
         	DatabaseUtil dbUtil = new DatabaseUtil(mContext);
         	dbUtil.open();
-        	Map<String, String> answers =  getAllAnswers(dbUtil);
+        	answers =  getAllAnswers(dbUtil);
         	dbUtil.close();
         	submitResult = proxy.submitAnswer(urls[0],answers);
 			return null;
@@ -445,9 +445,11 @@ public class MultiChoices extends BaseQuestion {
     					.setPositiveButton(mContext.getResources().getString(R.string.warning_save_answer_local_yes),
     							new DialogInterface.OnClickListener() {
     								public void onClick(DialogInterface dialog,int id) {
-    									String path = SPUtil.getFromSP(SPUtil.SP_KEY_USER_HOME, sharedPreferences);
+    									String path = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
     								    String examid = exam.getId();
     									saveAnswer2Local(answers,path,examid);
+    									
+    									SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.STATUS_START_SUBMIT_LOCAL, sharedPreferences);
     								}
     							})
     					.setNegativeButton(mContext.getResources().getString(R.string.warning_save_answer_local_cancel),
@@ -463,15 +465,20 @@ public class MultiChoices extends BaseQuestion {
 //        		saveExamStatus();
         		
         		SubmitSuccessResult succResult = DataParseUtil.getSubmitSuccessResult(submitResult);
+        		
+        		//Save Exam Score to sharedPreferences
+        		SPUtil.save2SP(SPUtil.CURRENT_EXAM_SCORE, String.valueOf(succResult.getScore()), sharedPreferences);
+        		SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.STATUS_START_NOT_TIMEOUT_SUBMIT, sharedPreferences);
+        		
 				//move question
 				Intent intent = new Intent();
-				intent.putExtra("score", String.valueOf(succResult.getScore()));
+//				intent.putExtra("score", String.valueOf(succResult.getScore()));
 				intent.setClass( getBaseContext(), ResultActivity.class);
 				startActivity(intent);
 				
 				//clear temporary data
-            	clearSP();
-            	clearDB(mContext);
+//            	clearSP();
+//            	clearDB(mContext);
             	//clear all user data
 //            	deleteFile(new File(SPUtil.getFromSP(SPUtil.SP_KEY_USER_HOME, sharedPreferences)));
             	

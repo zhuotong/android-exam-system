@@ -55,8 +55,8 @@ public class ExamContinue extends BaseActivity {
 		setContentView(R.layout.exam_continue);
 		mContext = getApplicationContext();
 		
-		String loginResultFilePath  = SPUtil.getFromSP(SPUtil.SP_KEY_LOGIN_FILE_PATH, sharedPreferences);
-		String loginResultFile  = SPUtil.getFromSP(SPUtil.SP_KEY_LOGIN_FILE, sharedPreferences);
+		String loginResultFilePath  = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
+		String loginResultFile  = SPUtil.getFromSP(SPUtil.CURRENT_LOGIN_FILE_NAME, sharedPreferences);
 		
 		try {
 	    	FileInputStream inputStream = new FileInputStream(new File(loginResultFilePath+ File.separator+loginResultFile));
@@ -76,10 +76,8 @@ public class ExamContinue extends BaseActivity {
 		questionTypes = getResources().getStringArray(R.array.question_types);
 		
 		//get Exam data
-//		examFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + getResources().getString(R.string.app_file_home);
-		examFilePath = sharedPreferences.getString("examPath", null);
-		
-		examFileName = getResources().getString(R.string.exam_file_name);
+		examFilePath = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
+		examFileName = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_FILE_NAME, sharedPreferences);
     	FileInputStream examStream = FileUtil.getExamStream(examFilePath,examFileName);
     	exam = DataParseUtil.getExam(examStream);
     	
@@ -105,7 +103,7 @@ public class ExamContinue extends BaseActivity {
 				
 				Question fQuestion = DataParseUtil.getQuestionByCidQid(exam, ccIndex, cqIndex);
 				if(fQuestion==null){
-					ShowDialog(getResources().getString(R.string.exam_file_name),"Can not get question!");
+					ShowDialog(getResources().getString(R.string.dialog_warning),"Can not get question!");
 					return;
 				}
 				

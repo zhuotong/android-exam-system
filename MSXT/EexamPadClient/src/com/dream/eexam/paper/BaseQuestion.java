@@ -213,8 +213,8 @@ public class BaseQuestion extends BaseActivity{
 		choicesLabels = getResources().getStringArray(R.array.display_choice_label);
 		
 		//set file home and file
-		examFilePath = SPUtil.getFromSP(SPUtil.SP_KEY_EXAM_PATH, sharedPreferences);
-		examFileName = SPUtil.getFromSP(SPUtil.SP_KEY_EXAM_FILE, sharedPreferences);
+		examFilePath = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
+		examFileName = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_FILE_NAME, sharedPreferences);
 		Log.i(LOG_TAG, "examFilePath:" + examFilePath);
 		Log.i(LOG_TAG, "examFileName:" + examFileName);
 		
@@ -257,7 +257,7 @@ public class BaseQuestion extends BaseActivity{
 	protected void setLoadCDTime(){
 		long currentTime = Calendar.getInstance().getTimeInMillis();
 		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
-		long starttime = sharedPreferences.getLong("starttime", 0);
+		long starttime = sharedPreferences.getLong(SPUtil.CURRENT_EXAM_START_TIME, 0);
 		long cosumeTime = (currentTime - starttime)/1000;//second
 	    long examTime = exam.getTime() * 60;//second
 	    

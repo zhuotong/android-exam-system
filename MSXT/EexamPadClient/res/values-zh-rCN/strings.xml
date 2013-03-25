@@ -29,6 +29,9 @@
     <!-- <string name="label_btn_cancel">取消</string> -->
     <string name="label_btn_clear_history">清空历史记录</string>
     <string name="msg_history_be_cleared">历史记录已被清空</string>
+    <string name="label_exam_status">考试状态</string>
+    <string name="label_exam_progress">答题进度</string>
+    
     <!-- 结束设置页面-->
         
     <!-- 开始选择试卷页面 -->
@@ -90,6 +93,7 @@
 
 	<!-- Other -->
 	<string name="dialog_note">通知</string>
+	<string name="dialog_warning">警告</string>
 
  	<string-array name="question_types">
         <item>M</item>
@@ -112,8 +116,6 @@
     </string-array>
     <string name="port">8080</string>
     <string name="app_file_home">eExam</string>
-    <string name="login_file_name">login_result.xml</string>
-    <string name="exam_file_name">download_exam.xml</string>
     <string name="msg_exit_hint">再次点击退出</string>
     <string name="setting_id">admin</string>
     <string name="setting_password">admin</string>

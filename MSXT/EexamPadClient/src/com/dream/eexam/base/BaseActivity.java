@@ -126,7 +126,7 @@ public class BaseActivity extends Activity {
 	 * @return
 	 */
 	public Integer getccIndex(){
-		Integer ccIndex = sharedPreferences.getInt(SPUtil.SP_KEY_CCINDEX, 0);
+		Integer ccIndex = sharedPreferences.getInt(SPUtil.CURRENT_EXAM_CATALOG, 0);
 		if(ccIndex!=null&&ccIndex>0){
 			Log.i(LOG_TAG,"getccIndex()...ccIndex="+String.valueOf(ccIndex));
 			return ccIndex;
@@ -137,7 +137,7 @@ public class BaseActivity extends Activity {
 	}
 	
 	public Integer getcqIndex(){
-		Integer cqIndex = sharedPreferences.getInt(SPUtil.SP_KEY_CQINDEX, 0);
+		Integer cqIndex = sharedPreferences.getInt(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, 0);
 		if(cqIndex!=null&&cqIndex>0){
 			Log.i(LOG_TAG,"getcqIndex()...cqIndex="+String.valueOf(cqIndex));
 			return cqIndex;
@@ -164,7 +164,7 @@ public class BaseActivity extends Activity {
 		return baos.toString();
 	}
 	
-	public void saveFile(String path, String fileName,String content) {
+/*	public void saveFile(String path, String fileName,String content) {
 		try {
 	        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {  
 	            File dir = new File(path);  
@@ -180,7 +180,7 @@ public class BaseActivity extends Activity {
 			Log.e(LOG_TAG, "an error occured while writing file...", e);
 		}
 		Log.i(LOG_TAG,"saveFile end.");
-	}
+	}*/
 	
 	public void deleteFile(String path, String fileName) {
 		Log.i(LOG_TAG,"deleteFile...");

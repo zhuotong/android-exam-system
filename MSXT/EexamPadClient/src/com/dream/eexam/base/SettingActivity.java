@@ -33,6 +33,7 @@ public class SettingActivity extends BaseActivity {
 	Button clearBtn = null;
 	Button cancelBtn = null;
 	
+	TextView spData = null;
 	TextView dbData = null;
 
 	public String getDBData(Context mContext){
@@ -81,6 +82,9 @@ public class SettingActivity extends BaseActivity {
 		
 		cancelBtn = (Button) this.findViewById(R.id.cancelBtn);
 		cancelBtn.setOnClickListener(cancelListener);
+
+		spData = (TextView) this.findViewById(R.id.spData);
+		spData.setText(SPUtil.getAllSPData(sharedPreferences));
 		
 		dbData = (TextView) this.findViewById(R.id.dbData);
 		dbData.setText(getDBData(mContext));

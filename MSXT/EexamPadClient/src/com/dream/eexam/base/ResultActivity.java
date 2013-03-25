@@ -31,12 +31,14 @@ public class ResultActivity extends BaseActivity {
         
         mContext = getApplicationContext();
 		
-		Bundle bundle = this.getIntent().getExtras();
-		String score  = bundle.getString("score");
+//		Bundle bundle = this.getIntent().getExtras();
+//		String score  = bundle.getString("score");
+		
 		
 		imgHome = (ImageView) findViewById(R.id.imgHome);
 		imgHome.setOnClickListener(goHomeListener);
 		
+		String score = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_SCORE, sharedPreferences);
         scoreTV = (TextView) this.findViewById(R.id.yourScoreTV);
         scoreTV.setText(score);
         
@@ -48,8 +50,8 @@ public class ResultActivity extends BaseActivity {
 //    	String downloadExamFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + "eExam";
 		
 		//below code is still not work
-    	deleteFile(SPUtil.getFromSP(SPUtil.SP_KEY_EXAM_PATH, sharedPreferences),
-    			SPUtil.getFromSP(SPUtil.SP_KEY_EXAM_FILE, sharedPreferences));
+//    	deleteFile(SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences),
+//    			SPUtil.getFromSP(SPUtil.SP_KEY_EXAM_FILE, sharedPreferences));
     }
 
     View.OnClickListener quitListener = new View.OnClickListener() {  
