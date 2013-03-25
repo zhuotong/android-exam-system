@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,7 +31,7 @@ public class CandidateResumeXML extends CandidateInfoBase {
 	    private ImageView imageView;
 	    private ProgressDialog myDialog = null;
 	    private Bitmap bitmap;
-	    private String filePath = "http://ww2.sinaimg.cn/large/8161d11bjw1dym8g5uzmdj.jpg";
+//	    private String filePath = "http://ww2.sinaimg.cn/large/8161d11bjw1dym8g5uzmdj.jpg";
 	    private String fileName = "test.jpg";
 	    private String message;
 	    
@@ -52,24 +53,23 @@ public class CandidateResumeXML extends CandidateInfoBase {
 	        @Override
 	        public void run() {
 	            try {
-		        	byte[] data = ImageUtil.getImage(filePath);      
-		            if(data!=null)      
-		            bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);// bitmap      
-		            ImageUtil.saveFile(bitmap,ALBUM_PATH, fileName);
+//		        	byte[] data = ImageUtil.getImage(filePath);      
+//		            if(data!=null)      
+//		            bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);// bitmap      
+//		            ImageUtil.saveFile(bitmap,ALBUM_PATH, fileName);
 		            
 		            FileInputStream inputStream =  FileUtil.getFileInputStream(ALBUM_PATH, ALBUM_NAME);
 		            List<ResumePicBean> resumeList = DataParseUtil.parseResume(inputStream);
+		            String encodedContent = null;
 		            for(ResumePicBean bean: resumeList){
 		            	Log.i(LOG_TAG,"Resume Page "+String.valueOf(bean.getIndex()));
-		            	
-		            	Base64Util.toFile(bean.getContent().toString(), ALBUM_PATH+File.separator + String.valueOf(bean.getIndex()));
+		            	encodedContent = bean.getContent().toString();
 		            }
-		            
+		            byte[] decodedString = Base64.decode(encodedContent, Base64.DEFAULT);
+		            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+		            imageView.setImageBitmap(decodedByte);
 	                message = "success";
-	            } catch (IOException e) {
-	                message = "fail";
-	                e.printStackTrace();
-	            } catch (Exception e) {
+	            }  catch (Exception e) {
 	            	message = "fail";
 					e.printStackTrace();
 				}
