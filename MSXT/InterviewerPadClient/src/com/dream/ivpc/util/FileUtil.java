@@ -1,14 +1,19 @@
 package com.dream.ivpc.util;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import android.os.Environment;
+import android.util.Log;
 
-public class FileUtils {
+public class FileUtil {
+	public final static String LOG_TAG = "FileUtil";
+	
 	private String SDPATH;
 	
 	private int FILESIZE = 4 * 1024; 
@@ -17,7 +22,7 @@ public class FileUtils {
 		return SDPATH;
 	}
 	
-	public FileUtils(){
+	public FileUtil(){
 		//得到当前外部存储设备的目录( /SDCARD )
 		SDPATH = Environment.getExternalStorageDirectory() + "/";
 	}
@@ -86,6 +91,19 @@ public class FileUtils {
 			}
 		}
 		return file;
+	}
+	
+	public static FileInputStream getFileInputStream(String filePath,String fileName){
+		Log.i(LOG_TAG, "filePath:"+filePath);
+		Log.i(LOG_TAG, "fileName:"+fileName);
+		FileInputStream inputStream = null;
+		try {
+			inputStream = new FileInputStream(new File(filePath+ File.separator+fileName));
+		} catch (FileNotFoundException e) {
+			Log.i(LOG_TAG,e.getMessage());
+		}
+		Log.i(LOG_TAG, "getExamStream() end.");
+		return inputStream;
 	}
 
 }

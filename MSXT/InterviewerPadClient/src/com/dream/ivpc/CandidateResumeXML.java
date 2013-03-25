@@ -1,6 +1,14 @@
 package com.dream.ivpc;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
+
+import com.dream.ivpc.model.ResumePicBean;
+import com.dream.ivpc.util.Base64Util;
+import com.dream.ivpc.util.DataParseUtil;
+import com.dream.ivpc.util.FileUtil;
 import com.dream.ivpc.util.ImageUtil;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
@@ -9,14 +17,16 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-	@Deprecated 
-	public class CandidateResumePNG extends CandidateInfoBase {
-//		private final static String TAG = "CandidateResumePNG";
-	    private final static String ALBUM_PATH = Environment.getExternalStorageDirectory() + "/download_test/";
+public class CandidateResumeXML extends CandidateInfoBase {
+		private final static String LOG_TAG = "CandidateResumeXML";
+	    private final static String ALBUM_PATH = Environment.getExternalStorageDirectory() + "/interviewer/";
+	    private final static String ALBUM_NAME = "sample_resume.xml";
+	    
 	    private ImageView imageView;
 	    private ProgressDialog myDialog = null;
 	    private Bitmap bitmap;
@@ -34,7 +44,7 @@ import android.widget.Toast;
 	        
 	        
 	        imageView = (ImageView)findViewById(R.id.imgSource);
-            myDialog = ProgressDialog.show(CandidateResumePNG.this, "Download File...", "Please Wait!", true);
+            myDialog = ProgressDialog.show(CandidateResumeXML.this, "Download File...", "Please Wait!", true);
             new Thread(saveFileRunnable).start();
 	    }
 
@@ -46,6 +56,15 @@ import android.widget.Toast;
 		            if(data!=null)      
 		            bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);// bitmap      
 		            ImageUtil.saveFile(bitmap,ALBUM_PATH, fileName);
+		            
+		            FileInputStream inputStream =  FileUtil.getFileInputStream(ALBUM_PATH, ALBUM_NAME);
+		            List<ResumePicBean> resumeList = DataParseUtil.parseResume(inputStream);
+		            for(ResumePicBean bean: resumeList){
+		            	Log.i(LOG_TAG,"Resume Page "+String.valueOf(bean.getIndex()));
+		            	
+		            	Base64Util.toFile(bean.getContent().toString(), ALBUM_PATH+File.separator + String.valueOf(bean.getIndex()));
+		            }
+		            
 	                message = "success";
 	            } catch (IOException e) {
 	                message = "fail";
@@ -65,7 +84,7 @@ import android.widget.Toast;
 	        public void handleMessage(Message msg) {
 	            myDialog.dismiss();
 	            imageView.setImageBitmap(bitmap);
-	            Toast.makeText(CandidateResumePNG.this, message, Toast.LENGTH_SHORT).show();
+	            Toast.makeText(CandidateResumeXML.this, message, Toast.LENGTH_SHORT).show();
 	        }
 	    };
 	}

@@ -96,7 +96,11 @@ public class CandidateList extends BaseActivity {
     			intent.putExtra("name", bean.getName());
     			intent.putExtra("position", bean.getPosition());
     			
-    			intent.setClass( mContext, CandidateResumeGroup.class);
+//    			intent.setClass( mContext, CandidateResumeGroup.class);
+    			
+    			intent.setClass( mContext, CandidateResumeXML.class);
+    			
+    			
     			
     			startActivity(intent);  
 			}      	

@@ -61,7 +61,7 @@ public class HttpDownloader {
 	public int downFile(String urlStr, String path, String fileName){
 		InputStream inputStream = null;
 		try {
-			FileUtils fileUtils = new FileUtils();
+			FileUtil fileUtils = new FileUtil();
             
 			if(fileUtils.isFileExist(path + fileName)){
 				return 1;
