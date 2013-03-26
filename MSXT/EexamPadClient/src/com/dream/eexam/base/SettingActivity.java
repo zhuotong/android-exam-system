@@ -27,9 +27,11 @@ public class SettingActivity extends BaseActivity {
 	TextView valiMessageTV = null;
 	String[] valiMessageArray = null;
 	EditText hostET = null;
-	String saveHost = null;
+	EditText portET = null;
 	
-	Button saveBtn = null;
+	Button saveHostBtn = null;
+	Button savePortBtn = null;
+	
 	Button clearBtn = null;
 	Button cancelBtn = null;
 	
@@ -68,26 +70,34 @@ public class SettingActivity extends BaseActivity {
         valiMessageTV = (TextView) this.findViewById(R.id.valiMessage);
         valiMessageArray = getResources().getStringArray(R.array.msg_settings_invalid);
         
+        //set host if exist
         hostET = (EditText) this.findViewById(R.id.hostET);
-        saveHost = sharedPreferences.getString("host", null);
-		if(saveHost!=null||!"".equals(saveHost)){
-			hostET.setText(saveHost);
-		}
+        String saveHost = sharedPreferences.getString(SPUtil.SP_KEY_HOST, null);
+		hostET.setText(saveHost!=null?saveHost:"");
+
+        //set host if exist
+		portET = (EditText) this.findViewById(R.id.portET);
+        String savePort = sharedPreferences.getString(SPUtil.SP_KEY_PORT, null);
+        portET.setText(savePort!=null?savePort:"");
 		
-		saveBtn = (Button) this.findViewById(R.id.saveBtn);
-		saveBtn.setOnClickListener(saveListener);
+		saveHostBtn = (Button) this.findViewById(R.id.saveHostBtn);
+		saveHostBtn.setOnClickListener(saveListener);
+
+		savePortBtn = (Button) this.findViewById(R.id.savePortBtn);
+		savePortBtn.setOnClickListener(savePortListener);
+
 		
-		clearBtn = (Button) this.findViewById(R.id.clearBtn);
-		clearBtn.setOnClickListener(clearListener);
-		
-		cancelBtn = (Button) this.findViewById(R.id.cancelBtn);
-		cancelBtn.setOnClickListener(cancelListener);
+//		cancelBtn = (Button) this.findViewById(R.id.cancelBtn);
+//		cancelBtn.setOnClickListener(cancelListener);
 
 		spData = (TextView) this.findViewById(R.id.spData);
 		spData.setText(SPUtil.getAllSPData(sharedPreferences));
 		
 		dbData = (TextView) this.findViewById(R.id.dbData);
 		dbData.setText(getDBData(mContext));
+		
+		clearBtn = (Button) this.findViewById(R.id.clearBtn);
+		clearBtn.setOnClickListener(clearListener);
 		
     }
 
@@ -97,16 +107,23 @@ public class SettingActivity extends BaseActivity {
         	String host = hostET.getText().toString();
         	if(ValidateUtil.validateIP4(host)){
     			SPUtil.save2SP(SPUtil.SP_KEY_HOST, host, sharedPreferences);
-    			
             	//go to login page
-            	Intent intent = new Intent();
-    			intent.setClass( SettingActivity.this, LoginActivity.class);
-    			startActivity(intent);          		
+//            	Intent intent = new Intent();
+//    			intent.setClass( SettingActivity.this, LoginActivity.class);
+//    			startActivity(intent);          		
         	}else{
         		valiMessageTV.setVisibility(View.VISIBLE);
         		valiMessageTV.setText(valiMessageArray[0]);
         	}
 
+        }  
+    };
+    
+    View.OnClickListener savePortListener = new View.OnClickListener() {  
+        @Override  
+        public void onClick(View v) { 
+        	String host = hostET.getText().toString();
+    		SPUtil.save2SP(SPUtil.SP_KEY_HOST, host, sharedPreferences);
         }  
     };
     
