@@ -24,7 +24,8 @@
     <string-array name="msg_settings_invalid">
         <item>无效的IP地址!</item>
     </string-array>
-    <string name="label_tv_host">服务器地址</string>
+    <string name="label_tv_host">主机地址:</string>
+    <string name="label_tv_port">端口号:</string>
     <string name="label_btn_save">保存</string>
     <!-- <string name="label_btn_cancel">取消</string> -->
     <string name="label_btn_clear_history">清空历史记录</string>

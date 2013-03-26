@@ -24,7 +24,8 @@
     <string-array name="msg_settings_invalid">
         <item>Invalid IP Address!</item>
     </string-array>
-    <string name="label_tv_host">Server Address:</string>
+    <string name="label_tv_host">Host:</string>
+    <string name="label_tv_port">Port:</string>
     <string name="label_btn_save">Save</string>
     <string name="label_btn_clear_history">Clear History</string>
     <string name="msg_history_be_cleared">History is cleared</string>
