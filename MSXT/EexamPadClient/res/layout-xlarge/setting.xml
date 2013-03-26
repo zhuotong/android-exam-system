@@ -11,12 +11,32 @@
         layout="@layout/base_header" /> 
 
  	<!-- host setting -->
+ 	 <TableRow
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginLeft="20dp"
+		 android:layout_marginRight="20dp"
+		 android:layout_marginTop="20dp"		 
+		 android:layout_gravity="center_horizontal"
+		 android:gravity="center_horizontal"
+		 >
+ 		<TextView 
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:text="Server Setting:"
+			android:background="@drawable/common_tv_title">
+		</TextView> 
+   	</TableRow>
+   	
      <TableRow
          android:layout_width="fill_parent"
 		 android:layout_height="wrap_content"
 		 android:layout_marginLeft="20dp"
 		 android:layout_marginRight="20dp"
-		 android:layout_marginTop="20dp">
+		 android:layout_marginTop="10dp">
  		<TextView
  		    android:id="@+id/valiMessage" 
 			android:layout_width="fill_parent" 
@@ -49,17 +69,8 @@
 			android:textSize="22sp"
 			android:textColor="#000000"
 			android:background="@drawable/common_et">
-		</EditText>          
-   	</TableRow>
- 
-	<TableRow
-         android:layout_width="fill_parent"
-		 android:layout_height="wrap_content"
-		 android:layout_marginLeft="20dp"
-		 android:layout_marginRight="20dp"
-		 android:padding="10dp">
-		
-		<Button android:id="@+id/saveBtn"
+		</EditText> 
+		<Button android:id="@+id/saveHostBtn"
 			android:layout_width="fill_parent" 
 			android:layout_height="50dp"
 			android:layout_weight="1"
@@ -67,8 +78,48 @@
 			android:textColor="#000000"
 			android:background="@drawable/common_button"
 			android:text="@string/label_btn_save">
-		</Button>
-			
+		</Button>         
+   	</TableRow>
+    <TableRow
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginLeft="20dp"
+		 android:layout_marginRight="20dp"
+		 android:padding="10dp">
+ 		<TextView 
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:text="@string/label_tv_port">
+		</TextView>
+		<EditText android:id="@+id/portET"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:layout_marginLeft="5dp"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:background="@drawable/common_et">
+		</EditText> 
+		<Button android:id="@+id/savePortBtn"
+			android:layout_width="fill_parent" 
+			android:layout_height="50dp"
+			android:layout_weight="1"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:background="@drawable/common_button"
+			android:text="@string/label_btn_save">
+		</Button>         
+   	</TableRow>
+   	 
+<!-- 	<TableRow
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginLeft="20dp"
+		 android:layout_marginRight="20dp"
+		 android:padding="10dp">
 	    <Button android:id="@+id/cancelBtn"
 			android:layout_width="fill_parent" 
 			android:layout_height="50dp"
@@ -79,7 +130,7 @@
 			android:background="@drawable/common_button"
 			android:text="@string/label_btn_cancel">
 		</Button>          
-   	</TableRow> 	
+   	</TableRow>  -->	
 	<!-- host setting end-->
 
 
@@ -90,14 +141,16 @@
 		 android:layout_marginLeft="20dp"
 		 android:layout_marginRight="20dp"		 
 		 android:layout_gravity="center_horizontal"
-		 android:gravity="center_horizontal">
+		 android:gravity="center_horizontal"
+		 >"
  		<TextView 
-			android:layout_width="fill_parent" 
+			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:textSize="22sp"
 			android:textColor="#000000"
-			android:text="data in SharedPreferences">
+			android:text="Current Exam Status:"
+			android:background="@drawable/common_tv_title">
 		</TextView> 
    	</TableRow>
 	<TableRow
@@ -115,6 +168,7 @@
 			android:textColor="#000000">
 		</TextView> 
    	</TableRow>
+   	
 	<!-- data in SharedPreferences End-->
 	
 	<!-- data in SQLite-->
@@ -126,12 +180,13 @@
 		 android:layout_gravity="center_horizontal"
 		 android:gravity="center_horizontal">
  		<TextView 
-			android:layout_width="fill_parent" 
+			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:textSize="22sp"
 			android:textColor="#000000"
-			android:text="data in SQLite">
+			android:text="Exam Progress:"
+			android:background="@drawable/common_tv_title">
 		</TextView> 
    	</TableRow>
    		
@@ -150,6 +205,8 @@
 			android:textColor="#000000">
 		</TextView> 
    	</TableRow>
+   	
+	<!-- data in SQLite end-->
 	
 	<TableRow
          android:layout_width="fill_parent"
