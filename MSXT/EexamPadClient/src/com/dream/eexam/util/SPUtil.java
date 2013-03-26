@@ -30,6 +30,8 @@ public class SPUtil {
 	
 	//login infor key
 	public final static String SP_KEY_HOST = "host";
+	public final static String SP_KEY_PORT = "port";
+	
 //	public final static String SP_KEY_ID = "id";
 //	public final static String SP_KEY_PWD = "password";
 	
