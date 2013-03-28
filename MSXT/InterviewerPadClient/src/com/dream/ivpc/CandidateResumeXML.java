@@ -1,15 +1,11 @@
 package com.dream.ivpc;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.List;
 
 import com.dream.ivpc.model.ResumePicBean;
-import com.dream.ivpc.util.Base64Util;
 import com.dream.ivpc.util.DataParseUtil;
 import com.dream.ivpc.util.FileUtil;
-import com.dream.ivpc.util.ImageUtil;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -60,12 +56,14 @@ public class CandidateResumeXML extends CandidateInfoBase {
 		            
 		            FileInputStream inputStream =  FileUtil.getFileInputStream(ALBUM_PATH, ALBUM_NAME);
 		            List<ResumePicBean> resumeList = DataParseUtil.parseResume(inputStream);
-		            String encodedContent = null;
+		            StringBuffer encodedContent = null;
 		            for(ResumePicBean bean: resumeList){
 		            	Log.i(LOG_TAG,"Resume Page "+String.valueOf(bean.getIndex()));
-		            	encodedContent = bean.getContent().toString();
+		            	if(bean.getIndex() == 1){
+		            		encodedContent = bean.getContent();
+		            	}
 		            }
-		            byte[] decodedString = Base64.decode(encodedContent, Base64.DEFAULT);
+		            byte[] decodedString = Base64.decode(encodedContent.toString(), Base64.DEFAULT);
 		            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 		            imageView.setImageBitmap(decodedByte);
 	                message = "success";
