@@ -4,12 +4,15 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 
 public class ImageUtil {
 	
@@ -81,5 +84,36 @@ public class ImageUtil {
         bm.compress(Bitmap.CompressFormat.JPEG, 80, bos);
         bos.flush();
         bos.close();
+    }
+    
+    public static void saveAsFileWriter(String content, String file) {
+		FileWriter fwriter = null;
+		try {
+			fwriter = new FileWriter(file);
+			fwriter.write(content);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			try {
+				fwriter.flush();
+				fwriter.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+    
+    public static String encodeTobase64(Bitmap image){
+        Bitmap immagex=image;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();  
+        immagex.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
+        return imageEncoded;
+    }
+    
+    public static Bitmap decodeBase64(String input) {
+        byte[] decodedByte = Base64.decode(input, 0);
+        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length); 
     }
 }

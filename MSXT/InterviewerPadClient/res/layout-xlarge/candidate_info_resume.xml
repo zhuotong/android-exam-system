@@ -38,6 +38,8 @@
 		    android:layout_height="wrap_content"
 		    android:layout_gravity="center_vertical|center_horizontal" 
 		    android:adjustViewBounds="true"
+		    android:visibility="visible"
+		    android:contentDescription="Resume"
 		    />
 	</FrameLayout>
 	
