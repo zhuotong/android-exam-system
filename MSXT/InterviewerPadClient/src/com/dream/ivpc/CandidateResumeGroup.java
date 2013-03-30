@@ -1,20 +1,16 @@
 package com.dream.ivpc;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.viewflow.android.widget.CircleFlowIndicator;
 import org.viewflow.android.widget.ViewFlow;
-
 import com.dream.ivpc.adapter.ResumeGroupAdapter;
 import com.dream.ivpc.model.ResumeBean;
 import com.dream.ivpc.model.ResumePageBean;
 import com.dream.ivpc.util.DataParseUtil;
 import com.dream.ivpc.util.FileUtil;
 import com.dream.ivpc.util.ImageUtil;
-
 import android.app.ProgressDialog;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
