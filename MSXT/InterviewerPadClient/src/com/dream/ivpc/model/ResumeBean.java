@@ -1,31 +1,23 @@
 package com.dream.ivpc.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ResumeBean extends BaseBean {
-	private String label;
-	private String value;
+	private Integer size;
+	private List<ResumePageBean> rpbList = new ArrayList<ResumePageBean>();
 	
-	public ResumeBean() {
-		super();
+	public Integer getSize() {
+		return size;
 	}
-	
-	public ResumeBean(String label, String value) {
-		super();
-		this.label = label;
-		this.value = value;
+	public void setSize(Integer size) {
+		this.size = size;
 	}
-	
-	public String getLabel() {
-		return label;
+	public List<ResumePageBean> getRpbList() {
+		return rpbList;
 	}
-	public void setLabel(String label) {
-		this.label = label;
+	public void setRpbList(List<ResumePageBean> rpbList) {
+		this.rpbList = rpbList;
 	}
-	public String getValue() {
-		return value;
-	}
-	public void setValue(String value) {
-		this.value = value;
-	}
-	
 	
 }

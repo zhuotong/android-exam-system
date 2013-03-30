@@ -98,7 +98,7 @@ public class CandidateList extends BaseActivity {
     			
 //    			intent.setClass( mContext, CandidateResumeGroup.class);
     			
-    			intent.setClass( mContext, CandidateResumeXML.class);
+    			intent.setClass( mContext, CandidateResumeGroup.class);
     			
     			
     			

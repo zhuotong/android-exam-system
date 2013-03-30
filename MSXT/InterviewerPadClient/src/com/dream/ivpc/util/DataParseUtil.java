@@ -8,14 +8,19 @@ import java.util.List;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.util.Log;
 import android.util.Xml;
-import com.dream.ivpc.model.ResumePicBean;
+
+import com.dream.ivpc.model.ResumeBean;
+import com.dream.ivpc.model.ResumePageBean;
 
 public class DataParseUtil {
+	public final static String LOG_TAG = "DataParseUtil";
 
-	public static List<ResumePicBean> parseResume(InputStream is) {
-		List<ResumePicBean> beanList = null;
-		ResumePicBean bean = null;
+	public static ResumeBean parseResume(InputStream is) {
+		ResumeBean resumeBean = new ResumeBean();
+		List<ResumePageBean> beanList = null;
+		ResumePageBean bean = null;
 		XmlPullParser parser = Xml.newPullParser();
 		try {
 			parser.setInput(is, "UTF-8");
@@ -24,9 +29,11 @@ public class DataParseUtil {
 				switch (eventType) {
 				case XmlPullParser.START_TAG:
 					if (parser.getName().equals("pages")) {
-						beanList = new ArrayList<ResumePicBean>();
+						beanList = new ArrayList<ResumePageBean>();
+					} else if (parser.getName().equals("size")) {
+						resumeBean.setSize(Integer.valueOf(parser.nextText()));
 					} else if (parser.getName().equals("page")) {
-						bean = new ResumePicBean();
+						bean = new ResumePageBean();
 					} else if (parser.getName().equals("index")) {
 						bean.setIndex(Integer.valueOf(parser.nextText()));
 					} else if (parser.getName().equals("content")) {
@@ -34,23 +41,22 @@ public class DataParseUtil {
 					}
 					break;
 				case XmlPullParser.END_TAG:
-					if (parser.getName().equals("pages")) {
+					if (parser.getName().equals("page")) {
 						beanList.add(bean);
+					}else if(parser.getName().equals("pages")){
+						resumeBean.setRpbList(beanList);
 					}
 					break;
 				}
 			}
 		} catch (XmlPullParserException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e(LOG_TAG, e.getMessage());
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e(LOG_TAG, e.getMessage());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e(LOG_TAG, e.getMessage());
 		}
 
-		return beanList;
+		return resumeBean;
 	}
 }

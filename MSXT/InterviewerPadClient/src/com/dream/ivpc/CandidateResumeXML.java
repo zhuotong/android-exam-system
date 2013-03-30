@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
 
+import com.dream.ivpc.model.ResumeBean;
+import com.dream.ivpc.model.ResumePageBean;
 import com.dream.ivpc.model.ResumePicBean;
 import com.dream.ivpc.util.DataParseUtil;
 import com.dream.ivpc.util.FileUtil;
@@ -117,10 +119,11 @@ public class CandidateResumeXML extends CandidateInfoBase {
 				
 				//get image from local
 	            FileInputStream inputStream =  FileUtil.getFileInputStream(ALBUM_PATH, ALBUM_NAME);
-	            List<ResumePicBean> resumeList = DataParseUtil.parseResume(inputStream);
+	            ResumeBean resume = DataParseUtil.parseResume(inputStream);
+	            List<ResumePageBean> pageList = resume.getRpbList();
 	            String encodedContent = null;
-	            for(ResumePicBean bean: resumeList){
-	            	if(bean.getIndex() == 2){
+	            for(ResumePageBean bean: pageList){
+	            	if(bean.getIndex() == 1){
 	            		Log.i(LOG_TAG,"Resume Page: "+String.valueOf(bean.getIndex()));
 	            		encodedContent = bean.getContent().toString();
 						Log.i(LOG_TAG, "Resume encodedContent:" + encodedContent);
