@@ -6,24 +6,20 @@ import java.util.List;
 
 import com.dream.ivpc.model.ResumeBean;
 import com.dream.ivpc.model.ResumePageBean;
-import com.dream.ivpc.model.ResumePicBean;
 import com.dream.ivpc.util.DataParseUtil;
 import com.dream.ivpc.util.FileUtil;
 import com.dream.ivpc.util.ImageUtil;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Base64;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@Deprecated
 public class CandidateResumeXML extends CandidateInfoBase {
 	private final static String LOG_TAG = "CandidateResumeXML";
     private final static String ALBUM_PATH = Environment.getExternalStorageDirectory() + "/interviewer/";
@@ -44,7 +40,7 @@ public class CandidateResumeXML extends CandidateInfoBase {
         setContentView(R.layout.candidate_info_resume);
         mContext = getApplicationContext();
         //set header
-        setHeader((TextView)findViewById(R.id.candidateInfo));
+        setHeader((TextView)findViewById(R.id.candidateInfo),(ImageView)findViewById(R.id.imgGoBack));
         
         
         imageView = (ImageView)findViewById(R.id.imgSource);

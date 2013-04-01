@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,8 +41,7 @@ public class CandidateResumeGroup extends CandidateInfoBase {
 		setContentView(R.layout.candidate_resume_group);
 		
 		mContext = getApplicationContext();
-
-		setHeader((TextView)findViewById(R.id.candidateInfo));
+		setHeader((TextView)findViewById(R.id.candidateInfo),(ImageView)findViewById(R.id.imgGoBack));
 		setFooter((Button) findViewById(R.id.resume));
 
         myDialog = ProgressDialog.show(CandidateResumeGroup.this, "Download File...", "Please Wait!", true);      

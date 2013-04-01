@@ -30,7 +30,7 @@ import android.widget.Toast;
 	        setContentView(R.layout.candidate_info_resume);
 	        mContext = getApplicationContext();
 	        //set header
-	        setHeader((TextView)findViewById(R.id.candidateInfo));
+	        setHeader((TextView)findViewById(R.id.candidateInfo),(ImageView)findViewById(R.id.imgGoBack));
 	        
 	        
 	        imageView = (ImageView)findViewById(R.id.imgSource);

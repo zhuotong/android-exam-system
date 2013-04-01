@@ -48,7 +48,7 @@ public class CandidateInfoExamRpt extends CandidateInfoBase {
         
         mContext = getApplicationContext();
         
-		setHeader((TextView)findViewById(R.id.candidateInfo));
+        setHeader((TextView)findViewById(R.id.candidateInfo),(ImageView)findViewById(R.id.imgGoBack));
 		setFooter((Button) findViewById(R.id.examrpt));
         
         imgGoBack = (ImageView) findViewById(R.id.imgGoBack);

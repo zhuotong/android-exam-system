@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class CandidateInfoBase extends BaseActivity {
@@ -20,7 +21,7 @@ public class CandidateInfoBase extends BaseActivity {
 		super.onCreate(savedInstanceState);
 	}
 	
-	protected void setHeader(TextView candidateInfoTV){
+	protected void setHeader(TextView candidateInfoTV,ImageView goBack){
 		//set candidateInfoTV
 		Bundle bundle = this.getIntent().getExtras();
 		name  = bundle.getString("name");
@@ -28,6 +29,16 @@ public class CandidateInfoBase extends BaseActivity {
 		if(name!=null&&position!=null){
 			candidateInfoTV.setText(position +":" + name);
 		}
+		
+		goBack.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+	        	Intent intent = new Intent();
+				intent.setClass( mContext, CandidateList.class);
+				startActivity(intent);  
+			}
+			
+		});
 		
     }
 
