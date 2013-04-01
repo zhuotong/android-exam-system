@@ -86,23 +86,12 @@
 		 android:layout_marginLeft="20dp"
 		 android:layout_marginRight="20dp">
  		<Button android:id="@+id/continueBtn"
-			android:layout_width="fill_parent" 
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:textSize="22sp"
-			android:textColor="#000000"
-			android:background="@drawable/common_button"
-			android:text="@string/label_btn_continue">
+			android:text="@string/label_btn_continue"
+			style="@style/button_style">
 		</Button>
 		<Button android:id="@+id/cancelBtn"
-			android:layout_width="fill_parent" 
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:layout_marginLeft="5dp"
-			android:textSize="22sp"
-			android:textColor="#000000"
-			android:background="@drawable/common_button"
-			android:text="@string/label_btn_cancel">
+			android:text="@string/label_btn_cancel"
+			style="@style/button_style">
 		</Button>          
    	</TableRow>
    	
