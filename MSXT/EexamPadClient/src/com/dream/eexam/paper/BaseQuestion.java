@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -34,22 +35,26 @@ import android.widget.SeekBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 import com.dream.eexam.adapter.CatalogAdapter;
 import com.dream.eexam.base.BaseActivity;
 import com.dream.eexam.base.R;
+import com.dream.eexam.base.ResultActivity;
 import com.dream.eexam.model.CatalogInfo;
 import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.server.FileUtil;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SPUtil;
 import com.msxt.client.model.Examination;
+import com.msxt.client.model.SubmitSuccessResult;
 import com.msxt.client.model.Examination.Catalog;
 import com.msxt.client.model.Examination.Choice;
 import com.msxt.client.model.Examination.Question;
 import com.msxt.client.model.QUESTION_TYPE;
 import com.msxt.client.server.ServerProxy;
 import com.msxt.client.server.ServerProxy.Result;
+import com.msxt.client.server.ServerProxy.STATUS;
 import com.msxt.client.server.WebServerProxy;
 
 public class BaseQuestion extends BaseActivity{
@@ -270,6 +275,7 @@ public class BaseQuestion extends BaseActivity{
 	    			"Exam Time Out!");
 	    	
 	    	//todo, submit answer
+//	    	new SubmitAnswerTask().execute(exam.getId());
 	    }else{
 	    	long leftTime = examTime - cosumeTime;
 	    	lMinutes = Integer.valueOf((int)(leftTime/60));
@@ -285,6 +291,48 @@ public class BaseQuestion extends BaseActivity{
     	dbUtil.close();
 		Result submitResult = proxy.submitAnswer(examId,answers);
 		return submitResult;
+	}
+	
+	class SubmitAnswerTask extends AsyncTask<String, Void, String> {
+		Result submitResult;
+		
+    	@Override
+    	protected void onPreExecute() {
+    		Toast.makeText(mContext, "Exam time out, system will auto submit!", Toast.LENGTH_LONG).show();
+    	}
+    	
+		@Override
+		protected String doInBackground(String... arg0) {
+			submitResult = submitExam(arg0[0]);
+			return null;
+		}
+		
+        @Override
+        protected void onPostExecute(String result) {
+        	if( submitResult.getStatus() == STATUS.ERROR ) {
+        		DatabaseUtil dbUtil = new DatabaseUtil(mContext);
+            	dbUtil.open();
+            	Map<String, String> answers =  getAllAnswers(dbUtil);
+            	dbUtil.close();
+            	
+            	String path = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
+			    String examid = exam.getId();
+			    
+				saveAnswer2Local(answers,path,examid);
+				SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.STATUS_START_SUBMIT_LOCAL, sharedPreferences);
+				Toast.makeText(mContext, "Fail to submit to server, save answers to local!", Toast.LENGTH_LONG).show();
+        		
+        	} else{
+        		SubmitSuccessResult succResult = DataParseUtil.getSubmitSuccessResult(submitResult);
+        		//Save Exam Score to sharedPreferences
+        		SPUtil.save2SP(SPUtil.CURRENT_EXAM_SCORE, String.valueOf(succResult.getScore()), sharedPreferences);
+        		SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.STATUS_START_TIMEOUT_SUBMIT, sharedPreferences);
+				//move question
+				Intent intent = new Intent();
+				intent.setClass( getBaseContext(), ResultActivity.class);
+        	}
+        }
+		
 	}
 	
 	/**

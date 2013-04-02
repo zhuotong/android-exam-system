@@ -29,6 +29,11 @@ eExam功能增强
 3 倒计时改为Service控制
 4 设置界面增加数据显示
 
+2013-04-02
+ccIndex,cqIndex设置常量
+
+
+
 
 
 
