@@ -212,11 +212,13 @@ public class MultiChoices extends BaseQuestion {
 		if(lSeconds<10) timeSB.append("0");
 		timeSB.append(String.valueOf(lSeconds));
 		remainingTime.setText(timeSB.toString());
+		
 		//set completedSeekBar
 		int per = 100 * examAnsweredQuestionSum/examQuestionSum;
 		completedSeekBar.setThumb(null);
 		completedSeekBar.setProgress(per);
 		completedSeekBar.setEnabled(false);
+		
 		//set completedSeekBar label
 		completedPercentage.setText(String.valueOf(per)+"%");
 

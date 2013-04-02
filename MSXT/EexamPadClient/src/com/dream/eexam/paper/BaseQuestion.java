@@ -48,6 +48,9 @@ import com.msxt.client.model.Examination.Catalog;
 import com.msxt.client.model.Examination.Choice;
 import com.msxt.client.model.Examination.Question;
 import com.msxt.client.model.QUESTION_TYPE;
+import com.msxt.client.server.ServerProxy;
+import com.msxt.client.server.ServerProxy.Result;
+import com.msxt.client.server.WebServerProxy;
 
 public class BaseQuestion extends BaseActivity{
 	
@@ -272,6 +275,16 @@ public class BaseQuestion extends BaseActivity{
 	    	lMinutes = Integer.valueOf((int)(leftTime/60));
 	    	lSeconds = Integer.valueOf((int)(leftTime - lMinutes * 60));
 	    }
+	}
+	
+	protected Result submitExam(String examId){
+		ServerProxy proxy =  WebServerProxy.Factroy.getCurrrentInstance();
+    	DatabaseUtil dbUtil = new DatabaseUtil(mContext);
+    	dbUtil.open();
+    	Map<String, String> answers =  getAllAnswers(dbUtil);
+    	dbUtil.close();
+		Result submitResult = proxy.submitAnswer(examId,answers);
+		return submitResult;
 	}
 	
 	/**
