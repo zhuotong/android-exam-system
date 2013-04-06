@@ -23,10 +23,24 @@
             </intent-filter>
         </activity>
  
-      	<activity android:name=".SettingActivity"
+<!--       	<activity android:name=".SettingActivity"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity> -->
+        
+        <activity android:name=".SettingServer"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
+         <activity android:name=".SettingExamStatus"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        <activity android:name=".SettingExamProgress"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+              	  
                
      	<activity android:name=".ExamStart"
      	 	      android:screenOrientation="portrait"

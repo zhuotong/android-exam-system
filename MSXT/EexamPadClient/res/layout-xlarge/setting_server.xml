@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:orientation="vertical"
+  android:background="@drawable/bg_color_papers">
+  
+  <include
+        android:id="@+id/baseHeader"
+        layout="@layout/base_header" /> 
+  
+  <include layout="@layout/setting_footer" /> 
+
+
+	<TableLayout android:id="@+id/tableLayout1"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" 
+		android:padding="1dp"
+		android:layout_marginLeft="100dp"
+		android:layout_marginRight="100dp"
+		android:layout_marginTop="300dp">   	
+     <TableRow
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginLeft="20dp"
+		 android:layout_marginRight="20dp"
+		 android:layout_marginTop="10dp">
+ 		<TextView
+ 		    android:id="@+id/valiMessage" 
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:textSize="22sp"
+			android:textColor="@color/failure_message_color"
+			android:text="@string/label_tv_host"
+			android:visibility="invisible">
+		</TextView>
+   	</TableRow>   	
+    <TableRow
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginLeft="20dp"
+		 android:layout_marginRight="20dp"
+		 android:padding="10dp">
+ 		<TextView 
+			android:text="@string/label_tv_host"
+			style="@style/textview_style">
+		</TextView>
+		<EditText android:id="@+id/hostET"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:layout_marginLeft="5dp"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:background="@drawable/common_et">
+		</EditText> 
+         
+   	</TableRow>
+    <TableRow
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginLeft="20dp"
+		 android:layout_marginRight="20dp"
+		 android:padding="10dp">
+ 		<TextView 
+			android:text="@string/label_tv_port"
+			style="@style/textview_style">
+		</TextView>
+		<EditText android:id="@+id/portET"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:layout_marginLeft="5dp"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:background="@drawable/common_et">
+		</EditText> 
+         
+   	</TableRow>
+   	</TableLayout> 
+   	
+	<TableRow android:id="@+id/tableRow3" 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="30dp"
+		android:layout_marginLeft="40dp"
+		android:layout_marginRight="40dp"
+		android:padding="10dp">
+    	<Button android:id="@+id/saveHostBtn"
+    	    android:text="@string/label_btn_save"
+			style="@style/button_style"	>
+		</Button>
+		<Button android:id="@+id/savePortBtn"
+			android:text="@string/label_btn_save"
+			style="@style/button_style">
+		</Button>
+    </TableRow>
+</LinearLayout>

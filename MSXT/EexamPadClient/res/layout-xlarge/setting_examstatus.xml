@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:orientation="vertical"
+  android:background="@drawable/bg_color_papers">
+  
+  <include
+        android:id="@+id/baseHeader"
+        layout="@layout/base_header" /> 
+
+  <include layout="@layout/setting_footer" />
+  
+   <!-- data in SharedPreferences -->
+<!-- 	<TableRow
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginLeft="20dp"
+		 android:layout_marginRight="20dp"		 
+		 android:layout_gravity="center_horizontal"
+		 android:gravity="center_horizontal"
+		 >"
+ 		<TextView 
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:text="Current Exam Status:"
+			android:background="@drawable/common_tv_title">
+		</TextView> 
+   	</TableRow> -->
+   	
+	<TableRow
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginLeft="20dp"
+		 android:layout_marginRight="20dp"		 
+		 android:layout_gravity="center_horizontal"
+		 android:gravity="center_horizontal">
+ 		<TextView android:id="@+id/spData"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textSize="22sp"
+			android:textColor="#000000">
+		</TextView> 
+   	</TableRow>
+	<!-- data in SharedPreferences End-->
+	
+	<TableRow
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginLeft="20dp"
+		 android:layout_marginRight="20dp"		 
+		 android:layout_gravity="center_horizontal"
+		 android:gravity="center_horizontal">
+		<Button android:id="@+id/clearBtn"
+			android:layout_width="300dp" 
+			android:layout_height="50dp"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:background="@drawable/common_button"
+			android:text="@string/label_btn_clear_history">
+		</Button>
+   	</TableRow>	
+   	
+	 	
+</LinearLayout>

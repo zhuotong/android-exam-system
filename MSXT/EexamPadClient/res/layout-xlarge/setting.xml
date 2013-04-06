@@ -114,26 +114,6 @@
 		</Button>         
    	</TableRow>
    	 
-<!-- 	<TableRow
-         android:layout_width="fill_parent"
-		 android:layout_height="wrap_content"
-		 android:layout_marginLeft="20dp"
-		 android:layout_marginRight="20dp"
-		 android:padding="10dp">
-	    <Button android:id="@+id/cancelBtn"
-			android:layout_width="fill_parent" 
-			android:layout_height="50dp"
-			android:layout_marginLeft="5dp"
-			android:layout_weight="1"
-			android:textSize="22sp"
-			android:textColor="#000000"
-			android:background="@drawable/common_button"
-			android:text="@string/label_btn_cancel">
-		</Button>          
-   	</TableRow>  -->	
-	<!-- host setting end-->
-
-
    <!-- data in SharedPreferences -->
 	<TableRow
          android:layout_width="fill_parent"

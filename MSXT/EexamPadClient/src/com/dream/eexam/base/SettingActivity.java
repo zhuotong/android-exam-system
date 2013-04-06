@@ -1,7 +1,5 @@
 package com.dream.eexam.base;
 
-import java.util.Map;
-
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SPUtil;
 import com.dream.eexam.util.ValidateUtil;
@@ -85,10 +83,6 @@ public class SettingActivity extends BaseActivity {
 
 		savePortBtn = (Button) this.findViewById(R.id.savePortBtn);
 		savePortBtn.setOnClickListener(savePortListener);
-
-		
-//		cancelBtn = (Button) this.findViewById(R.id.cancelBtn);
-//		cancelBtn.setOnClickListener(cancelListener);
 
 		spData = (TextView) this.findViewById(R.id.spData);
 		spData.setText(SPUtil.getAllSPData(sharedPreferences));

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="60dp"
+    android:background="@drawable/bg_color_login_header">
+    
+   <Button android:id="@+id/server_setting"
+	    android:layout_width="0dp"
+	    android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:text="@string/label_footer_server_setting"
+        android:textColor="#FFFFFF"
+        android:textSize="22sp"
+        android:gravity="center_horizontal|center_vertical"
+        android:background="@drawable/bg_footer_button"
+        android:onClick="go2SettingServer">
+   </Button>
+   
+   <Button android:id="@+id/examstatus_setting"
+	    android:layout_width="0dp"
+	    android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:text="@string/label_footer_current_exam_status"
+        android:textColor="#FFFFFF"
+        android:textSize="22sp"
+        android:layout_marginLeft="0.5dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:background="@drawable/bg_footer_button"
+        android:onClick="go2SettingExamStatus">
+   </Button>
+   
+   <Button android:id="@+id/examprogress_setting"
+	    android:layout_width="0dp"
+	    android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:text="@string/label_footer_current_exam_progress"
+        android:textColor="#FFFFFF"
+        android:textSize="22sp"
+        android:layout_marginLeft="0.5dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:background="@drawable/bg_footer_button"
+        android:onClick="go2SettingExamProgress">
+   </Button>
+</LinearLayout>
