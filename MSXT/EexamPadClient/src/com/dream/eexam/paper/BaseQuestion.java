@@ -309,7 +309,7 @@ public class BaseQuestion extends BaseActivity{
 		
         @Override
         protected void onPostExecute(String result) {
-        	if( submitResult.getStatus() == STATUS.ERROR ) {
+        	if( submitResult.getStatus() == STATUS.ERROR ) {//save answer to local 
         		DatabaseUtil dbUtil = new DatabaseUtil(mContext);
             	dbUtil.open();
             	Map<String, String> answers =  getAllAnswers(dbUtil);
