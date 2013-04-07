@@ -178,26 +178,26 @@ public class ExamStart extends BaseActivity {
 	    	
         	ServerProxy proxy =  WebServerProxy.Factroy.getCurrrentInstance();
         	examResult = proxy.getExam(urls[0]);
-    		if(STATUS.SUCCESS.equals(examResult.getStatus())){
-    			String examFileName = examIdString+".xml";
-    			
-    			Log.i(LOG_TAG,"downloadExamFilePath:"+downloadExamFilePath);
-    			Log.i(LOG_TAG,"examFileName:"+examFileName);
-    			
-    			//save to SD card
-    			FileUtil fu = new FileUtil();
-        		fu.saveFile(downloadExamFilePath, examFileName, examResult.getSuccessMessage());
-    			
-    			//save to SharedPreferences
-//    			SPUtil.save2SP(SPUtil.CURRENT_USER_HOME, downloadExamFilePath, sharedPreferences);
-    			SPUtil.save2SP(SPUtil.CURRENT_EXAM_FILE_NAME, examFileName, sharedPreferences);
-    			
-    			
-    		}else if(STATUS.ERROR.equals(examResult.getStatus())){
-    			ShowDialog(mContext.getResources().getString(R.string.dialog_note),
-    					examResult.getErrorMessage());
-    			this.cancel(true);
-    		}
+//    		if(STATUS.SUCCESS.equals(examResult.getStatus())){
+//    			String examFileName = examIdString+".xml";
+//    			
+//    			Log.i(LOG_TAG,"downloadExamFilePath:"+downloadExamFilePath);
+//    			Log.i(LOG_TAG,"examFileName:"+examFileName);
+//    			
+//    			//save to SD card
+//    			FileUtil fu = new FileUtil();
+//        		fu.saveFile(downloadExamFilePath, examFileName, examResult.getSuccessMessage());
+//    			
+//    			//save to SharedPreferences
+////    			SPUtil.save2SP(SPUtil.CURRENT_USER_HOME, downloadExamFilePath, sharedPreferences);
+//    			SPUtil.save2SP(SPUtil.CURRENT_EXAM_FILE_NAME, examFileName, sharedPreferences);
+//    			
+//    			
+//    		}else if(STATUS.ERROR.equals(examResult.getStatus())){
+//    			ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+//    					examResult.getErrorMessage());
+//    			this.cancel(true);
+//    		}
 	        return "success";
 	    }
 	
@@ -206,6 +206,15 @@ public class ExamStart extends BaseActivity {
 			progressDialog.dismiss();
 			if(STATUS.SUCCESS.equals(examResult.getStatus())){
 				
+    			String examFileName = examIdString+".xml";
+    			//save to SD card
+    			FileUtil fu = new FileUtil();
+        		fu.saveFile(downloadExamFilePath, examFileName, examResult.getSuccessMessage());
+    			//save to SharedPreferences
+    			SPUtil.save2SP(SPUtil.CURRENT_EXAM_FILE_NAME, examFileName, sharedPreferences);
+				
+    			
+    			//parse exam
 				Examination exam = DataParseUtil.getExam(examResult);
 				int ccIndex = 1;
 				int cqIndex = 1;
@@ -254,6 +263,8 @@ public class ExamStart extends BaseActivity {
 				//save exam start time
 				saveStartTime();
 				   					
+			}else if(STATUS.ERROR.equals(examResult.getStatus())){
+		    	ShowDialog(mContext.getResources().getString(R.string.dialog_note),examResult.getErrorMessage());
 			}
 	    }
 	}
