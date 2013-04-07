@@ -19,7 +19,7 @@
 		android:padding="1dp"
 		android:layout_marginLeft="100dp"
 		android:layout_marginRight="100dp"
-		android:layout_marginTop="300dp">   	
+		android:layout_marginTop="200dp">   	
      <TableRow
          android:layout_width="fill_parent"
 		 android:layout_height="wrap_content"
@@ -87,12 +87,12 @@
 		android:layout_marginLeft="40dp"
 		android:layout_marginRight="40dp"
 		android:padding="10dp">
-    	<Button android:id="@+id/saveHostBtn"
+    	<Button android:id="@+id/saveBtn"
     	    android:text="@string/label_btn_save"
 			style="@style/button_style"	>
 		</Button>
-		<Button android:id="@+id/savePortBtn"
-			android:text="@string/label_btn_save"
+		<Button android:id="@+id/clearBtn"
+			android:text="@string/label_btn_clear"
 			style="@style/button_style">
 		</Button>
     </TableRow>

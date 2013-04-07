@@ -10,16 +10,16 @@ import android.widget.TextView;
 public class SettingExamStatus extends SettingBase {
 	TextView spData = null;
 	
-	 @Override
-	 public void onCreate(Bundle savedInstanceState) {
-	        super.onCreate(savedInstanceState);
-	        setContentView(R.layout.setting_examstatus);
-	        mContext = getApplicationContext();
-	        
-	        setHeader((ImageView)findViewById(R.id.imgHome));
-			setFooter((Button) findViewById(R.id.server_setting));
-			
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.setting_examstatus);
+		mContext = getApplicationContext();
+
+		setHeader((ImageView) findViewById(R.id.imgHome));
+		setFooter((Button) findViewById(R.id.examstatus_setting));
+
 		spData = (TextView) this.findViewById(R.id.spData);
-		spData.setText(SPUtil.getAllSPData(sharedPreferences)); 
-	 }
+		spData.setText(SPUtil.getAllSPData(sharedPreferences));
+	}
 }

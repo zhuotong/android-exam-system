@@ -11,19 +11,19 @@ import com.dream.eexam.util.DatabaseUtil;
 public class SettingExamProgress extends SettingBase {
 	 TextView dbData = null;
 
-	 @Override
-	 public void onCreate(Bundle savedInstanceState) {
-	        super.onCreate(savedInstanceState);
-	        setContentView(R.layout.setting_examserver);
-	        mContext = getApplicationContext();
-	        
-	        setHeader((ImageView)findViewById(R.id.imgHome));
-			setFooter((Button) findViewById(R.id.server_setting));
-			
-			dbData = (TextView) this.findViewById(R.id.dbData);
-			dbData.setText(getDBData(mContext));
-			
-	 }
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.setting_examserver);
+		mContext = getApplicationContext();
+
+		setHeader((ImageView) findViewById(R.id.imgHome));
+		setFooter((Button) findViewById(R.id.examprogress_setting));
+
+		dbData = (TextView) this.findViewById(R.id.dbData);
+		dbData.setText(getDBData(mContext));
+
+	}
 	 
 	public String getDBData(Context mContext){
 		DatabaseUtil dbUtil = new DatabaseUtil(mContext);

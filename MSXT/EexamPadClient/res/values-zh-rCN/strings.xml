@@ -115,7 +115,7 @@
         <item>I</item>
         <item>J</item>
     </string-array>
-    <string name="port">8080</string>
+    <!-- <string name="port">8080</string> -->
     <string name="app_file_home">eExam</string>
     <string name="msg_exit_hint">再次点击退出</string>
     <string name="setting_id">admin</string>

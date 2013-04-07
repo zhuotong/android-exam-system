@@ -14,6 +14,8 @@
     <string name="label_btn_login">Sign In</string>
     <string name="label_btn_reset">Setting</string>
     <string name="msg_login_server">Login to server...</string>
+    <string name="msg_userid_password_empty_error">UserId And Password can not be null!</string>
+    <string name="msg_host_port_empty_error">Server address or port is not set, please contact the Administrator!</string>
     <string name="msg_network_error">Your mobile is not in a available NetWork!</string>
     <string name="msg_user_in_exam_error">Last user exam is not finished!</string>
     <string name="msg_warning_setting">You are not allowed to go to setting page</string>
@@ -27,6 +29,7 @@
     <string name="label_tv_host">Host:</string>
     <string name="label_tv_port">Port:</string>
     <string name="label_btn_save">Save</string>
+    <string name="label_btn_clear">Clear</string>
     <string name="label_btn_clear_history">Clear History</string>
     <string name="msg_history_be_cleared">History is cleared</string>
     <string name="label_footer_server_setting">Server Setting:</string>
@@ -112,7 +115,7 @@
         <item>I</item>
         <item>J</item>
     </string-array>
-    <string name="port">8080</string>
+<!--     <string name="port">8080</string> -->
     <string name="app_file_home">eExam</string>
     <string name="msg_exit_hint">Click again to exit</string>
     <string name="setting_id">admin</string>

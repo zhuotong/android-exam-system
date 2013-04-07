@@ -43,10 +43,10 @@ public class SettingServer extends SettingBase {
         String savePort = sharedPreferences.getString(SPUtil.SP_KEY_PORT, null);
         portET.setText(savePort!=null?savePort:"");
 		
-		saveHostBtn = (Button) this.findViewById(R.id.saveHostBtn);
+		saveHostBtn = (Button) this.findViewById(R.id.saveBtn);
 		saveHostBtn.setOnClickListener(saveListener);
 
-		savePortBtn = (Button) this.findViewById(R.id.savePortBtn);
+		savePortBtn = (Button) this.findViewById(R.id.clearBtn);
 		savePortBtn.setOnClickListener(saveListener);
 
     }
@@ -55,26 +55,28 @@ public class SettingServer extends SettingBase {
         @Override  
         public void onClick(View v) {
         	switch(v.getId()){
-        		case R.id.saveHostBtn:saveHost();break;
-        		case R.id.savePortBtn:savePort();
+        		case R.id.saveBtn:save();break;
+        		case R.id.clearBtn:clear();
         	}
         }  
     };
     
-    private void saveHost(){
+    private void save(){
     	String host = hostET.getText().toString();
+    	String port = portET.getText().toString();
     	if(ValidateUtil.validateIP4(host)){
 			SPUtil.save2SP(SPUtil.SP_KEY_HOST, host, sharedPreferences);
-			Toast.makeText(mContext, "Host is saved!", Toast.LENGTH_SHORT).show();
+			SPUtil.save2SP(SPUtil.SP_KEY_PORT, port, sharedPreferences);
+			Toast.makeText(mContext, "Host And Port is saved!", Toast.LENGTH_SHORT).show();
     	}else{
     		valiMessageTV.setVisibility(View.VISIBLE);
     		valiMessageTV.setText(valiMessageArray[0]);
     	}
     }
     
-    private void savePort(){
-    	String host = hostET.getText().toString();
-		SPUtil.save2SP(SPUtil.SP_KEY_HOST, host, sharedPreferences);
-		Toast.makeText(mContext, "Port is saved!", Toast.LENGTH_SHORT).show();
+    private void clear(){
+    	hostET.getText().clear();
+    	portET.getText().clear();
+		Toast.makeText(mContext, "Host And Port is cleared, please input again", Toast.LENGTH_SHORT).show();
     }
 }

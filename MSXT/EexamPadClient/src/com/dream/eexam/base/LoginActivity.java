@@ -9,6 +9,7 @@ import org.w3c.dom.Element;
 
 import com.dream.eexam.server.FileUtil;
 import com.dream.eexam.util.SPUtil;
+import com.dream.eexam.util.StringUtil;
 import com.dream.eexam.util.TimeDateUtil;
 import com.msxt.client.server.ServerProxy;
 import com.msxt.client.server.WebServerProxy;
@@ -37,6 +38,7 @@ public class LoginActivity extends BaseActivity {
 	public static String LOGIN_RESULT_FILE = "lgresult"+TimeDateUtil.getCurrentDate()+".xml";;
 	
 	String saveHost = null;
+	String savePort = null;
 	
 	EditText idEt = null;
 	EditText passwordET = null;
@@ -61,7 +63,6 @@ public class LoginActivity extends BaseActivity {
         
         mContext = getApplicationContext();
         
-        saveHost = SPUtil.getFromSP(SPUtil.SP_KEY_HOST, sharedPreferences);
         currentUserId = SPUtil.getFromSP(SPUtil.CURRENT_USER_ID, sharedPreferences);
         currentUserPwd = SPUtil.getFromSP(SPUtil.CURRENT_USER_PWD, sharedPreferences);
         
@@ -106,18 +107,35 @@ public class LoginActivity extends BaseActivity {
         	
         	String loginUserId  = idEt.getText().toString();
         	String loginUserPwd  = passwordET.getText().toString();
-        	userHome  = Environment.getExternalStorageDirectory().getPath()+File.separator + getResources().getString(R.string.app_file_home)
-        						+File.separator + loginUserId;
+
+        	if(StringUtil.isEmpty(loginUserId)|| StringUtil.isEmpty(loginUserPwd)){
+    			ShowDialog(mContext.getResources().getString(R.string.dialog_warning),
+    					mContext.getResources().getString(R.string.msg_userid_password_empty_error));
+    			return;
+        	}
         	
         	Log.i(LOG_TAG,"loginUserId:"+loginUserId);
         	Log.i(LOG_TAG,"loginUserPwd:"+loginUserPwd);
-        	Log.i(LOG_TAG,"userHome:"+userHome);
         	
+        	//get user home
+        	userHome  = Environment.getExternalStorageDirectory().getPath()+File.separator + getResources().getString(R.string.app_file_home)
+					+File.separator + loginUserId;
+        	Log.i(LOG_TAG,"userHome:"+userHome);
+ 
+        	//server is not set
+        	saveHost = SPUtil.getFromSP(SPUtil.SP_KEY_HOST, sharedPreferences);
+        	savePort = SPUtil.getFromSP(SPUtil.SP_KEY_PORT, sharedPreferences);
+        	if(StringUtil.isEmpty(saveHost) && StringUtil.isEmpty(savePort)){
+    			ShowDialog(mContext.getResources().getString(R.string.dialog_warning),
+    					mContext.getResources().getString(R.string.msg_host_port_empty_error));
+    			return;
+        	}
         	
         	String currentUserId  = SPUtil.getFromSP(SPUtil.CURRENT_USER_ID, sharedPreferences);
         	String currentExamStatus = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_STATUS, sharedPreferences);
         	Log.i(LOG_TAG,"currentUserId:"+currentUserId);
         	Log.i(LOG_TAG,"currentExamStatus:"+currentExamStatus);
+        	
         	
         	if(loginUserId.equals(currentUserId)){
         		Log.i(LOG_TAG,"---------------------currentUserId=loginUserId ---------------------");
@@ -210,9 +228,9 @@ public class LoginActivity extends BaseActivity {
     	
         @Override
 		protected String doInBackground(String... urls) {
-        	Integer port = Integer.valueOf(mContext.getResources().getString(R.string.port));
-        	proxy =  WebServerProxy.Factroy.createInstance(saveHost, port);
-    		loginResult = proxy.login(urls[0], urls[1]);
+//        	Integer port = Integer.valueOf(mContext.getResources().getString(R.string.port));
+        	proxy =  WebServerProxy.Factroy.createInstance(saveHost, Integer.valueOf(savePort));
+    		loginResult = proxy.login(urls[0], urls[1]);           	
 			return null;
 		}
 
