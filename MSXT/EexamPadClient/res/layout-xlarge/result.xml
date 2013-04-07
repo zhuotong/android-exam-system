@@ -72,21 +72,35 @@
 			android:background="@drawable/common_tv_value">
 		</TextView>          
    	</TableRow>
-	
+
+    <TextView android:id="@+id/examLeftTV"
+  			android:layout_width="wrap_content" 
+  			android:layout_height="wrap_content"
+  			android:layout_marginTop="100dp"
+  			android:layout_marginLeft="50dp" 
+  			android:layout_marginRight="50dp" 
+  			android:layout_gravity="center_vertical|center_horizontal"
+  			android:gravity="center_vertical|center_horizontal"
+  			android:textSize="22sp"
+  			android:textColor="@color/success_message_color">
+  	</TextView>
+  		
 	<TableRow
          android:layout_width="fill_parent"
 		 android:layout_height="wrap_content"
 		 android:layout_marginTop="100dp"
 		 android:layout_gravity="center_horizontal"
 		 android:gravity="center_horizontal">
+		
+		<Button android:id="@+id/continueBtn"
+		    android:text="@string/label_btn_login" 
+			style="@style/button_style">
+		</Button>
+		
 		<Button android:id="@+id/quitBtn"
-			android:layout_width="300dp" 
-			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal"
-			android:textSize="22sp"
-			android:textColor="#000000"
-			android:background="@drawable/common_button"
-			android:text="@string/msg_btn_quit">
+		    android:text="@string/label_btn_reset" 
+		    style="@style/button_style"
+			android:layout_marginLeft="5dp">
 		</Button>          
    	</TableRow>
 </LinearLayout>

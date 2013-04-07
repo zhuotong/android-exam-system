@@ -99,7 +99,11 @@ public class ExamStart extends BaseActivity {
 		if(examinations!=null&&examinations.size()>0){
 			exams = new String[examinations.size()];
 			for(int i=0;i<examinations.size();i++){
-				exams[i] = examinations.get(i).getName();
+				String examId = examinations.get(i).getId();
+				String examIdSubmitted = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_SUBMITTED, sharedPreferences);
+				if(examIdSubmitted==null || examIdSubmitted.indexOf(examId)==-1){
+					exams[i] = examinations.get(i).getName();
+				}
 			}
 		}else{
 			exams = new String[0];

@@ -20,6 +20,7 @@ public class SPUtil {
 	public final static String CURRENT_EXAM_SCORE = "Current_Exam_Score";
 	public final static String CURRENT_EXAM_CATALOG = "ccIndex";
 	public final static String CURRENT_EXAM_INDEX_IN_CATA = "cqIndex";
+	public final static String CURRENT_EXAM_SUBMITTED = "Current_Exam_Submitted";
 	
 	public final static String STATUS_LOGIN_NOT_START = "0";
 	public final static String STATUS_START_NOT_TIMEOUT_NOT_SUBMIT = "1";
@@ -87,6 +88,13 @@ public class SPUtil {
 	public static void save2SP(String key,long value,SharedPreferences sp){
 		SharedPreferences.Editor edit = sp.edit();
 		edit.putLong(key, value);
+		edit.commit();
+	}
+	
+	//save String to SP
+	public static void append2SP(String key,String value,SharedPreferences sp){
+		SharedPreferences.Editor edit = sp.edit();
+		edit.putString(key, SPUtil.getFromSP(key, sp)+","+value);
 		edit.commit();
 	}
 	

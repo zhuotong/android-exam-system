@@ -472,6 +472,8 @@ public class MultiChoices extends BaseQuestion {
         		SPUtil.save2SP(SPUtil.CURRENT_EXAM_SCORE, String.valueOf(succResult.getScore()), sharedPreferences);
         		SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.STATUS_START_NOT_TIMEOUT_SUBMIT, sharedPreferences);
         		
+        		SPUtil.append2SP(SPUtil.CURRENT_EXAM_SUBMITTED, exam.getId(), sharedPreferences);
+        		
 				//move question
 				Intent intent = new Intent();
 //				intent.putExtra("score", String.valueOf(succResult.getScore()));

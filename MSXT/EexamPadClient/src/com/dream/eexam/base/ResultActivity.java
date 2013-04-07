@@ -5,6 +5,7 @@ import com.dream.eexam.util.SPUtil;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +21,9 @@ public class ResultActivity extends BaseActivity {
 	
     ImageView imgHome = null;
     TextView scoreTV = null;
+    
+    TextView examLeftTV = null;
+    Button continueBtn = null;
 	Button quitBtn = null;
 	
 	/** Called when the activity is first created. */
@@ -31,59 +35,61 @@ public class ResultActivity extends BaseActivity {
         
         mContext = getApplicationContext();
 		
-//		Bundle bundle = this.getIntent().getExtras();
-//		String score  = bundle.getString("score");
-		
-		
 		imgHome = (ImageView) findViewById(R.id.imgHome);
-		imgHome.setOnClickListener(goHomeListener);
+		imgHome.setOnClickListener(onClickListener);
 		
 		String score = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_SCORE, sharedPreferences);
         scoreTV = (TextView) this.findViewById(R.id.yourScoreTV);
         scoreTV.setText(score);
         
+        examLeftTV = (TextView) this.findViewById(R.id.examLeftTV);
+        examLeftTV.setText("You have 1 exam paper remaining,please continue!");
+ 
+		continueBtn = (Button) this.findViewById(R.id.continueBtn);
+		continueBtn.setOnClickListener(onClickListener);
 		quitBtn = (Button) this.findViewById(R.id.quitBtn);
-		quitBtn.setOnClickListener(quitListener);
+		quitBtn.setOnClickListener(onClickListener);
 		
-		//clear exam answer history
-//		String downloadExamFile = SystemConfig.getInstance().getPropertyValue("Download_Exam");
-//    	String downloadExamFilePath = Environment.getExternalStorageDirectory().getPath()+ File.separator + "eExam";
-		
-		//below code is still not work
-//    	deleteFile(SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences),
-//    			SPUtil.getFromSP(SPUtil.SP_KEY_EXAM_FILE, sharedPreferences));
     }
-
-    View.OnClickListener quitListener = new View.OnClickListener() {  
+    
+    View.OnClickListener onClickListener = new View.OnClickListener() {  
         @Override  
-        public void onClick(View v) { 
-		    
-			AlertDialog.Builder builder = new AlertDialog.Builder(ResultActivity.this);
-			builder.setMessage(mContext.getResources().getString(R.string.warning_quit_eexam))
-					.setCancelable(false)
-					.setPositiveButton(mContext.getResources().getString(R.string.warning_quit_eexam_yes),
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,int id) {
-								    finish();
-								    ActivityManage.finishProgram();
-								    System.exit(0);
-								}
-							})
-					.setNegativeButton(mContext.getResources().getString(R.string.warning_quit_eexam_cancel),
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,int id) {
-									dialog.cancel();
-								}
-							});
-			builder.show();
+        public void onClick(View v) {
+        	switch(v.getId()){
+        		case R.id.continueBtn: continueExam();break;
+        		case R.id.quitBtn:quitExam();break;
+        		case R.id.imgHome:goHome(mContext);
+        	}
         }  
     };
+
+    private void continueExam(){
+    	//go to start exam page
+    	Intent intent = new Intent();
+		intent.setClass( mContext, ExamStart.class);
+		startActivity(intent); 
+    }
     
-    View.OnClickListener goHomeListener = new View.OnClickListener(){
-		@Override
-		public void onClick(View v) {
-			goHome(mContext);
-		}
-	};
+    private void quitExam(){
+		AlertDialog.Builder builder = new AlertDialog.Builder(ResultActivity.this);
+		builder.setMessage(mContext.getResources().getString(R.string.warning_quit_eexam))
+				.setCancelable(false)
+				.setPositiveButton(mContext.getResources().getString(R.string.warning_quit_eexam_yes),
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,int id) {
+							    finish();
+							    ActivityManage.finishProgram();
+							    System.exit(0);
+							}
+						})
+				.setNegativeButton(mContext.getResources().getString(R.string.warning_quit_eexam_cancel),
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,int id) {
+								dialog.cancel();
+							}
+						});
+		builder.show();      	
+    }
+
 
 }
