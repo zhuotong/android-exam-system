@@ -20,40 +20,25 @@ public class SPUtil {
 	public final static String CURRENT_EXAM_SCORE = "Current_Exam_Score";
 	public final static String CURRENT_EXAM_CATALOG = "ccIndex";
 	public final static String CURRENT_EXAM_INDEX_IN_CATA = "cqIndex";
-	public final static String CURRENT_EXAM_SUBMITTED = "Current_Exam_Submitted";
+	public final static String CURRENT_EXAM_SUBMITTED_IDS = "Current_Exam_Submitted_Ids";
+	public final static String CURRENT_EXAM_REMAINING_COUNT = "Current_Exam_Remaining_Count";
 	
-	public final static String STATUS_LOGIN_NOT_START = "0";
-	public final static String STATUS_START_NOT_TIMEOUT_NOT_SUBMIT = "1";
-	public final static String STATUS_START_NOT_TIMEOUT_SUBMIT =  "2";
-	public final static String STATUS_START_TIMEOUT_NOT_SUBMIT =  "3";
-	public final static String STATUS_START_TIMEOUT_SUBMIT =  "4";
-	public final static String STATUS_START_SUBMIT_LOCAL =  "5";
+//	public final static String STATUS_LOGIN_NOT_START = "0";
+//	public final static String STATUS_START_NOT_TIMEOUT_NOT_SUBMIT = "1";
+//	public final static String STATUS_START_NOT_TIMEOUT_SUBMIT =  "2";
+//	public final static String STATUS_START_TIMEOUT_NOT_SUBMIT =  "3";
+//	public final static String STATUS_START_TIMEOUT_SUBMIT =  "4";
+//	public final static String STATUS_START_SUBMIT_LOCAL =  "5";
+
+	public final static int EXAM_STATUS_NOT_START = 1;
+	public final static int EXAM_STATUS_START_GOING = 2;
+	public final static int EXAM_STATUS_START_GOING_OBSOLETE =  3;
+	public final static int EXAM_STATUS_START_PENDING_NEW =  4;
+	public final static int EXAM_STATUS_END =  5;
 	
 	//login infor key
 	public final static String SP_KEY_HOST = "host";
 	public final static String SP_KEY_PORT = "port";
-	
-//	public final static String SP_KEY_ID = "id";
-//	public final static String SP_KEY_PWD = "password";
-	
-//	public final static String SP_KEY_USER_HOME = "userhome";
-//	public final static String SP_KEY_LOGIN_FILE_PATH = "loginResultFilePath";
-//	public final static String SP_KEY_LOGIN_FILE = "loginResultFile";
-	
-	//exam infor key
-//	public final static String SP_KEY_EXAM_PATH = "examPath";
-//	public final static String SP_KEY_EXAM_FILE = "examFile";
-//	public final static String SP_KEY_EXAM_STATUS = "exam_status";
-//	public final static String SP_KEY_EXAM_START_TIME = "starttime";
-	
-	//examStatus value
-//	public final static String SP_VALUE_EXAM_STATUS_START = "start";
-//	public final static String SP_VALUE_EXAM_STATUS_END = "end";
-	
-//	public final static String SP_KEY_EXAM_START_FLAG = "exam_start_flag";
-	
-	//answer infor key
-
 	
 
 	//save String to SP
@@ -94,13 +79,18 @@ public class SPUtil {
 	//save String to SP
 	public static void append2SP(String key,String value,SharedPreferences sp){
 		SharedPreferences.Editor edit = sp.edit();
-		edit.putString(key, SPUtil.getFromSP(key, sp)+","+value);
+		String oldValue = SPUtil.getFromSP(key, sp); 
+		edit.putString(key, (oldValue==null? "":(oldValue+",")) + value);
 		edit.commit();
 	}
 	
 	//get by string
 	public static String getFromSP(String key,SharedPreferences sp){
 		return sp.getString(key, null);
+	}
+	
+	public static int getIntegerFromSP(String key,SharedPreferences sp){
+		return sp.getInt(key, 0);
 	}
 	
 	//clear data in SP
@@ -129,6 +119,8 @@ public class SPUtil {
     	editor.remove(SPUtil.CURRENT_EXAM_SCORE);
     	editor.remove(SPUtil.CURRENT_EXAM_CATALOG);
     	editor.remove(SPUtil.CURRENT_EXAM_INDEX_IN_CATA);
+    	editor.remove(SPUtil.CURRENT_EXAM_SUBMITTED_IDS);
+    	editor.remove(SPUtil.CURRENT_EXAM_REMAINING_COUNT);
     	editor.commit();
 	}
 	

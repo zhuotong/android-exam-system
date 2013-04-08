@@ -42,11 +42,20 @@ public class ResultActivity extends BaseActivity {
         scoreTV = (TextView) this.findViewById(R.id.yourScoreTV);
         scoreTV.setText(score);
         
+        String remainExamCount = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_REMAINING_COUNT, sharedPreferences);
         examLeftTV = (TextView) this.findViewById(R.id.examLeftTV);
-        examLeftTV.setText("You have 1 exam paper remaining,please continue!");
+        examLeftTV.setText("You have " + remainExamCount + " exam paper remaining,please continue!");
  
 		continueBtn = (Button) this.findViewById(R.id.continueBtn);
-		continueBtn.setOnClickListener(onClickListener);
+		if("0".equals(remainExamCount)){
+			continueBtn.setEnabled(false);
+			
+    		//Save Exam Status
+    		SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_END, sharedPreferences);
+		}else{
+			continueBtn.setOnClickListener(onClickListener);
+		}
+		
 		quitBtn = (Button) this.findViewById(R.id.quitBtn);
 		quitBtn.setOnClickListener(onClickListener);
 		

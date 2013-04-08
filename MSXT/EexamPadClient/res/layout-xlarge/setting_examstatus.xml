@@ -12,26 +12,6 @@
 
   <include layout="@layout/setting_footer" />
   
-   <!-- data in SharedPreferences -->
-<!-- 	<TableRow
-         android:layout_width="fill_parent"
-		 android:layout_height="wrap_content"
-		 android:layout_marginLeft="20dp"
-		 android:layout_marginRight="20dp"		 
-		 android:layout_gravity="center_horizontal"
-		 android:gravity="center_horizontal"
-		 >"
- 		<TextView 
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:textSize="22sp"
-			android:textColor="#000000"
-			android:text="Current Exam Status:"
-			android:background="@drawable/common_tv_title">
-		</TextView> 
-   	</TableRow> -->
-   	
 	<TableRow
          android:layout_width="fill_parent"
 		 android:layout_height="wrap_content"

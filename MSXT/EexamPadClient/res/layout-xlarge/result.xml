@@ -90,15 +90,16 @@
 		 android:layout_height="wrap_content"
 		 android:layout_marginTop="100dp"
 		 android:layout_gravity="center_horizontal"
-		 android:gravity="center_horizontal">
+		 android:gravity="center_horizontal"
+		 android:padding="10dp">
 		
 		<Button android:id="@+id/continueBtn"
-		    android:text="@string/label_btn_login" 
+		    android:text="@string/label_btn_continue" 
 			style="@style/button_style">
 		</Button>
 		
 		<Button android:id="@+id/quitBtn"
-		    android:text="@string/label_btn_reset" 
+		    android:text="@string/label_btn_quit" 
 		    style="@style/button_style"
 			android:layout_marginLeft="5dp">
 		</Button>          

@@ -314,23 +314,20 @@ public class BaseQuestion extends BaseActivity{
             	dbUtil.open();
             	Map<String, String> answers =  getAllAnswers(dbUtil);
             	dbUtil.close();
-            	
             	String path = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
 			    String examid = exam.getId();
-			    
 				saveAnswer2Local(answers,path,examid);
-				SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.STATUS_START_SUBMIT_LOCAL, sharedPreferences);
 				Toast.makeText(mContext, "Fail to submit to server, save answers to local!", Toast.LENGTH_LONG).show();
-        		
         	} else{
         		SubmitSuccessResult succResult = DataParseUtil.getSubmitSuccessResult(submitResult);
         		//Save Exam Score to sharedPreferences
         		SPUtil.save2SP(SPUtil.CURRENT_EXAM_SCORE, String.valueOf(succResult.getScore()), sharedPreferences);
-        		SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.STATUS_START_TIMEOUT_SUBMIT, sharedPreferences);
 				//move question
 				Intent intent = new Intent();
 				intent.setClass( getBaseContext(), ResultActivity.class);
         	}
+        	
+        	SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_PENDING_NEW, sharedPreferences);
         }
 		
 	}

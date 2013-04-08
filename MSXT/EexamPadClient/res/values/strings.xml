@@ -3,6 +3,13 @@
     <string name="app_name">EexamClient</string>
     <string name="msg_header_tv_home">Home</string>
 
+    <!-- Common Message Start-->
+    
+    <string name="label_btn_continue">Continue</string>
+    <string name="label_btn_quit">Quit</string>
+    
+     <!-- Common Message End-->
+    
     <!-- Login Page Start-->
 	<string name="msg_logo_desc">eExam</string>
 	<string name="label_tv_username">Username:</string>
@@ -47,7 +54,6 @@
 
     <!-- Continue Exam Page Start-->
     <string name="label_tv_unfinished_exam">Your Have Unfinished Exam:</string>
-    <string name="label_btn_continue">Continue</string>
     <string name="label_btn_cancel">Cancel</string>
     <string name="msg_complete">Complete</string>
     <!-- Continue Exam Page End-->

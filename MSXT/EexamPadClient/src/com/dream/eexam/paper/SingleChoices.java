@@ -513,7 +513,7 @@ public class SingleChoices extends BaseQuestion {
     								    String examid = exam.getId();
     									saveAnswer2Local(answers,path,examid);
     									
-    									SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.STATUS_START_SUBMIT_LOCAL, sharedPreferences);
+    									SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_PENDING_NEW, sharedPreferences);
     								}
     							})
     					.setNegativeButton(mContext.getResources().getString(R.string.warning_save_answer_local_cancel),
@@ -532,9 +532,12 @@ public class SingleChoices extends BaseQuestion {
         		
         		//Save Exam Score to sharedPreferences
         		SPUtil.save2SP(SPUtil.CURRENT_EXAM_SCORE, String.valueOf(succResult.getScore()), sharedPreferences);
-        		SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.STATUS_START_NOT_TIMEOUT_SUBMIT, sharedPreferences);
+        		SPUtil.append2SP(SPUtil.CURRENT_EXAM_SUBMITTED_IDS, exam.getId(), sharedPreferences);
+        		int remainingExamCount = Integer.valueOf(SPUtil.getFromSP(SPUtil.CURRENT_EXAM_REMAINING_COUNT, sharedPreferences));
+        		SPUtil.save2SP(SPUtil.CURRENT_EXAM_REMAINING_COUNT, String.valueOf(remainingExamCount-1), sharedPreferences);
         		
-        		SPUtil.append2SP(SPUtil.CURRENT_EXAM_SUBMITTED, exam.getId(), sharedPreferences);
+        		//Save Exam Status
+        		SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_PENDING_NEW, sharedPreferences);
         		
 				//move question
 				Intent intent = new Intent();

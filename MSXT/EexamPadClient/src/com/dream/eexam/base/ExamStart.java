@@ -2,6 +2,7 @@ package com.dream.eexam.base;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import com.dream.eexam.paper.MultiChoices;
@@ -44,6 +45,8 @@ import com.msxt.client.model.QUESTION_TYPE;
 public class ExamStart extends BaseActivity {
 	private static final String LOG_TAG = "ExamListActivity";
 	
+	Context mContext;
+	
 	//declare components
 	ImageView imgHome = null;
 	private TextView nameTV = null;
@@ -55,32 +58,16 @@ public class ExamStart extends BaseActivity {
 	LoginSuccessResult succResult = new LoginSuccessResult();
 	List<com.msxt.client.model.LoginSuccessResult.Examination> examinations;
 	String conversation = null;
-	String[] exams = null;
+	List<String> examDescs = new ArrayList<String>();;
 	ArrayAdapter<String> adapter;
-	
-	String examIdString = null;
-	Context mContext;
-	String downloadExamFilePath = null;
+	String selectedExamId = null;
+//	String downloadExamFilePath = null;
 	QUESTION_TYPE fQuestionType = null;
 	String[] questionTypes;
+
 	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		Log.i(LOG_TAG,"onCreate()...");
-		mContext = getApplicationContext();
-		setContentView(R.layout.exam_list);
-		
-		imgHome = (ImageView) findViewById(R.id.imgHome);
-		imgHome.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				goHome(mContext);
-			}
-		});
-		
+	private void loadExamList(){
 		questionTypes = getResources().getStringArray(R.array.question_types);
-		
 		String loginResultFilePath  = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
 		String loginResultFile  = SPUtil.getFromSP(SPUtil.CURRENT_LOGIN_FILE_NAME, sharedPreferences);
 		Log.i(LOG_TAG,"loginResultFilePath:"+loginResultFilePath);
@@ -97,18 +84,34 @@ public class ExamStart extends BaseActivity {
 		//get exam name list
 		examinations = succResult.getExaminations();
 		if(examinations!=null&&examinations.size()>0){
-			exams = new String[examinations.size()];
 			for(int i=0;i<examinations.size();i++){
 				String examId = examinations.get(i).getId();
-				String examIdSubmitted = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_SUBMITTED, sharedPreferences);
+				String examIdSubmitted = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_SUBMITTED_IDS, sharedPreferences);
 				if(examIdSubmitted==null || examIdSubmitted.indexOf(examId)==-1){
-					exams[i] = examinations.get(i).getName();
+					examDescs.add(examinations.get(i).getName());
 				}
 			}
-		}else{
-			exams = new String[0];
 		}
+		SPUtil.save2SP(SPUtil.CURRENT_EXAM_REMAINING_COUNT, String.valueOf(examDescs.size()), sharedPreferences);
+	}
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		Log.i(LOG_TAG,"onCreate()...");
+		mContext = getApplicationContext();
+		setContentView(R.layout.exam_list);
 		
+		imgHome = (ImageView) findViewById(R.id.imgHome);
+		imgHome.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				goHome(mContext);
+			}
+		});
+		
+		//load Exam List Information
+		loadExamList();
 		
 		//initial component
 		nameTV = (TextView) this.findViewById(R.id.nameTV);
@@ -118,7 +121,7 @@ public class ExamStart extends BaseActivity {
 		jobTitleTV.setText(succResult.getJobtitle());
 		
 		spinner = (Spinner) findViewById(R.id.Spinner01);
-		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,exams);
+		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,examDescs);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
 		spinner.setOnItemSelectedListener(new SpinnerSelectedListener());
@@ -129,17 +132,16 @@ public class ExamStart extends BaseActivity {
 		startBtn = (Button) findViewById(R.id.startBtn);
 		startBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
-				Log.i(LOG_TAG,"onClick()...");
 				
-	        	downloadExamFilePath = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
-	        	Log.i(LOG_TAG, "downloadExamFilePath:"+downloadExamFilePath);
+//	        	downloadExamFilePath = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
+//	        	Log.i(LOG_TAG, "downloadExamFilePath:"+downloadExamFilePath);
 	        	
-	        	new DownloadExamTask().execute(examIdString);
+	        	new DownloadExamTask().execute(selectedExamId);
 
 			}			
 		});
 		
-		SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.STATUS_LOGIN_NOT_START, sharedPreferences);
+		
 
 	}
 	
@@ -152,10 +154,10 @@ public class ExamStart extends BaseActivity {
 			com.msxt.client.model.LoginSuccessResult.Examination exam = exams.get(arg2);
 			
 			examDesc.setText(exam.getDesc());
-			examIdString = exam.getId();
+			selectedExamId = exam.getId();
 			
 			Log.i(LOG_TAG, "examDesc:"+exam.getDesc());
-			Log.i(LOG_TAG, "examIdString:"+examIdString);
+			Log.i(LOG_TAG, "examIdString:"+selectedExamId);
 			
 			loadAnswerOfLasttime();
 		}
@@ -210,10 +212,11 @@ public class ExamStart extends BaseActivity {
 			progressDialog.dismiss();
 			if(STATUS.SUCCESS.equals(examResult.getStatus())){
 				
-    			String examFileName = examIdString+".xml";
+    			String examFileName = selectedExamId+".xml";
     			//save to SD card
     			FileUtil fu = new FileUtil();
-        		fu.saveFile(downloadExamFilePath, examFileName, examResult.getSuccessMessage());
+        		fu.saveFile(SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences), examFileName, examResult.getSuccessMessage());
+        		
     			//save to SharedPreferences
     			SPUtil.save2SP(SPUtil.CURRENT_EXAM_FILE_NAME, examFileName, sharedPreferences);
 				
@@ -253,16 +256,7 @@ public class ExamStart extends BaseActivity {
 					ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Invalid qeustion type.");
 				}
 				
-//				if(getFromSP(StoreDataConstants.SP_KEY_EXAM_STATUS)==null){
-//					save2SP(StoreDataConstants.SP_KEY_EXAM_STATUS, "start");
-//				}
-				
-//				String status = SPUtil.getFromSP(SPUtil.SP_KEY_EXAM_STATUS, sharedPreferences);
-//				if(status==null){
-//					SPUtil.save2SP(SPUtil.SP_KEY_EXAM_STATUS, SPUtil.SP_VALUE_EXAM_STATUS_START, sharedPreferences);
-//				}
-				
-				SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.STATUS_START_NOT_TIMEOUT_NOT_SUBMIT, sharedPreferences);
+				SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_GOING, sharedPreferences);
 				
 				//save exam start time
 				saveStartTime();

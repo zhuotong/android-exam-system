@@ -132,70 +132,43 @@ public class LoginActivity extends BaseActivity {
         	}
         	
         	String currentUserId  = SPUtil.getFromSP(SPUtil.CURRENT_USER_ID, sharedPreferences);
-        	String currentExamStatus = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_STATUS, sharedPreferences);
-        	Log.i(LOG_TAG,"currentUserId:"+currentUserId);
-        	Log.i(LOG_TAG,"currentExamStatus:"+currentExamStatus);
+        	int examStatus = SPUtil.getIntegerFromSP(SPUtil.CURRENT_EXAM_STATUS, sharedPreferences);
+//        	Log.i(LOG_TAG,"currentUserId:"+currentUserId);
+//        	Log.i(LOG_TAG,"currentExamStatus:"+currentExamStatus);
         	
         	
         	if(loginUserId.equals(currentUserId)){
         		Log.i(LOG_TAG,"---------------------currentUserId=loginUserId ---------------------");
-        		
-            	if(currentExamStatus==null){//user first login
-            		Log.i(LOG_TAG,"currentExamStatus==null.");
-            		
-        			//clear last exam first,start a new exam
+        		if(examStatus >0) {
+        			switch(examStatus){
+        				case SPUtil.EXAM_STATUS_NOT_START:go2ExamStart();break;//Go to ExamStart Page
+        				case SPUtil.EXAM_STATUS_START_GOING:go2ExamContinue();break;//Go to ExamContinue Page
+        				case SPUtil.EXAM_STATUS_START_GOING_OBSOLETE:go2ExamContinue();break;//Go to ExamContinue Page
+        				case SPUtil.EXAM_STATUS_START_PENDING_NEW:go2ExamStart();break;//Go to ExamStart Page
+        				case SPUtil.EXAM_STATUS_END:go2ExamResult();break;//Go to ExamResult Page
+        			}
+        		}else{
+        			//It should not be happen
+        			go2ExamStart();
         			SPUtil.clearUserSP(sharedPreferences);
-        			
-        			//start a new exam
             		SPUtil.save2SP(SPUtil.CURRENT_USER_ID, loginUserId, sharedPreferences);
             		SPUtil.save2SP(SPUtil.CURRENT_USER_PWD, loginUserPwd, sharedPreferences);
             		SPUtil.save2SP(SPUtil.CURRENT_USER_HOME, userHome, sharedPreferences);
-            		
                 	if (getWifiIP() != null && getWifiIP().trim().length() > 0 && !getWifiIP().trim().equals("0.0.0.0")){
                 		new LoginTask().execute(new String[]{loginUserId,loginUserPwd});
                 	}else{
                 		ShowDialog(mContext.getResources().getString(R.string.dialog_note),
                 				mContext.getResources().getString(R.string.msg_network_error));
                 	} 
-            	}else if(SPUtil.STATUS_LOGIN_NOT_START.equals(currentExamStatus)){//user login before but not start exam ("0")
-            		Log.i(LOG_TAG,"currentExamStatus=STATUS_LOGIN_NOT_START.");
-            		
-    	        	//go to start exam page directly
-    	        	Intent intent = new Intent();
-        			intent.setClass( mContext, ExamStart.class);
-        			startActivity(intent);            		       			
-            	}else if(SPUtil.STATUS_START_NOT_TIMEOUT_NOT_SUBMIT.equals(currentExamStatus)){ //("1")
-            		Log.i(LOG_TAG,"currentExamStatus=STATUS_START_NOT_TIMEOUT_NOT_SUBMIT.");
-            		
-    	        	//go to continue exam page
-    	        	Intent intent = new Intent();
-        			intent.setClass( mContext, ExamContinue.class);
-        			startActivity(intent);            		       			
-            	}else if(SPUtil.STATUS_START_NOT_TIMEOUT_SUBMIT.equals(currentExamStatus) || SPUtil.STATUS_START_TIMEOUT_SUBMIT.equals(currentExamStatus) ){//("2","4")
-            		if(SPUtil.STATUS_START_NOT_TIMEOUT_SUBMIT.equals(currentExamStatus)){
-            			Log.i(LOG_TAG,"currentExamStatus=STATUS_START_NOT_TIMEOUT_SUBMIT.");
-            		}else{
-            			Log.i(LOG_TAG,"currentExamStatus=STATUS_START_TIMEOUT_SUBMIT.");
-            		}
-            		
-    	        	//go to exam result page
-    	        	Intent intent = new Intent();
-        			intent.setClass( mContext, ResultActivity.class);
-        			startActivity(intent); 
-            	}else{
-            		
-            	}
-        		
+        		}
         	}else{
         		Log.i(LOG_TAG,"---------------------currentUserId != loginUserId ---------------------");
         		
-        		//Exam is in progress
-        		if(SPUtil.STATUS_START_NOT_TIMEOUT_NOT_SUBMIT.equals(currentExamStatus)||SPUtil.STATUS_START_TIMEOUT_NOT_SUBMIT.equals(currentExamStatus)){
-            		ShowDialog(mContext.getResources().getString(R.string.dialog_note),
-            				mContext.getResources().getString(R.string.msg_user_in_exam_error));
-        		}else{
+        		if(examStatus==SPUtil.EXAM_STATUS_END){
         			//clear last exam first,start a new exam
         			SPUtil.clearUserSP(sharedPreferences);
+        			SPUtil.clearExamSP(sharedPreferences);
+        			clearDB(mContext);
         			
             		//save new exam to sharedPreferences
             		SPUtil.save2SP(SPUtil.CURRENT_USER_ID, loginUserId, sharedPreferences);
@@ -208,11 +181,32 @@ public class LoginActivity extends BaseActivity {
                 		ShowDialog(mContext.getResources().getString(R.string.dialog_note),
                 				mContext.getResources().getString(R.string.msg_network_error));
                 	}
-        			
+        		}else{
+        			//Exam is in progress
+            		ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+            				mContext.getResources().getString(R.string.msg_user_in_exam_error));
         		}
         	}
         }
     };
+    
+    public void go2ExamStart(){
+    	Intent intent = new Intent();
+		intent.setClass( mContext, ExamStart.class);
+		startActivity(intent); 
+    }
+    
+	public void go2ExamContinue(){
+    	Intent intent = new Intent();
+		intent.setClass( mContext, ExamContinue.class);
+		startActivity(intent); 	
+	}
+	
+	public void go2ExamResult(){
+    	Intent intent = new Intent();
+		intent.setClass( mContext, ResultActivity.class);
+		startActivity(intent); 
+	}
     
     //define login task
     private class LoginTask extends AsyncTask<String, Void, String> {
@@ -276,7 +270,7 @@ public class LoginActivity extends BaseActivity {
     		        	clearDB(mContext);
     		        	
     		        	//exam ready but not start
-    		        	SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.STATUS_LOGIN_NOT_START, sharedPreferences);
+    		        	SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_NOT_START, sharedPreferences);
     		        	
     		        	//go to exam List pa
     		        	Intent intent = new Intent();
