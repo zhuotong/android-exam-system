@@ -408,27 +408,37 @@ public class MultiChoices extends BaseQuestion {
     }
     
     class SubmitAnswerTask extends AsyncTask<String, Void, String> {
+    	String examId;
+    	Map<String, String> answers;
+    	
     	ProgressDialog progressDialog;
     	ServerProxy proxy;
     	Result submitResult;
-    	Map<String, String> answers;
+    	
     	
     	@Override
     	protected void onPreExecute() {
     		Log.i(LOG_TAG, "onPreExecute() called");
     		String displayMessage =  mContext.getResources().getString(R.string.msg_submiting);
-    		progressDialog = ProgressDialog.show(MultiChoices.this, null, displayMessage, true, false);
+    		progressDialog = ProgressDialog.show(MultiChoices.this, null, displayMessage, true, true);
     		submitTV.setEnabled(false);
     	}
     	
         @Override
 		protected String doInBackground(String... urls) {
+        	Log.i(LOG_TAG, "doInBackground()...");
+        	
+        	examId = urls[0];
+        	
         	proxy =  WebServerProxy.Factroy.getCurrrentInstance();
         	DatabaseUtil dbUtil = new DatabaseUtil(mContext);
         	dbUtil.open();
         	answers =  getAllAnswers(dbUtil);
         	dbUtil.close();
-        	submitResult = proxy.submitAnswer(urls[0],answers);
+        	
+        	Log.i(LOG_TAG, "proxy.submitAnswer..."+examId);
+        	submitResult = proxy.submitAnswer(examId,answers);
+        	
 			return null;
 		}
 

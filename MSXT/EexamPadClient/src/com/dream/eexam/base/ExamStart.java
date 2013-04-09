@@ -182,6 +182,10 @@ public class ExamStart extends BaseActivity {
 			progressDialog.dismiss();
 			if(STATUS.SUCCESS.equals(examResult.getStatus())){
 				
+				//clear Exam status and Exam record first
+    			SPUtil.clearExamSP(sharedPreferences);
+    			clearDB(mContext);
+				
     			String examFileName = selectedExamId+".xml";
     			//save to SD card
     			FileUtil fu = new FileUtil();

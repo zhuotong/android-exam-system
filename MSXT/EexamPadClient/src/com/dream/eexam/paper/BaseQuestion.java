@@ -120,6 +120,10 @@ public class BaseQuestion extends BaseActivity{
 	protected Integer lSeconds = 0;
 	
     public void loadDownLoadExam(DatabaseUtil dbUtil){
+    	Log.i(LOG_TAG, "loadDownLoadExam()...");
+    	Log.i(LOG_TAG, "examFilePath:"+examFilePath);
+    	Log.i(LOG_TAG, "examFileName:"+examFileName);
+    	
     	FileInputStream examStream = FileUtil.getExamStream(examFilePath,examFileName);
     	//load exam data
     	exam = DataParseUtil.getExam(examStream);

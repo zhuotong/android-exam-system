@@ -139,6 +139,7 @@ public class LoginActivity extends BaseActivity {
     			clearDB(mContext);
     			
             	if (getWifiIP() != null && getWifiIP().trim().length() > 0 && !getWifiIP().trim().equals("0.0.0.0")){
+            		Log.i(LOG_TAG,"start connect server...");
             		new LoginTask().execute(new String[]{loginUserId,loginUserPwd});
             	}else{
             		ShowDialog(mContext.getResources().getString(R.string.dialog_note),
@@ -176,6 +177,7 @@ public class LoginActivity extends BaseActivity {
     	
         @Override
 		protected String doInBackground(String... urls) {
+        	Log.i(LOG_TAG,"LoginTask.doInBackground()...");
         	loginUserId = urls[0];
         	loginUserPwd = urls[1];
         	proxy =  WebServerProxy.Factroy.createInstance(saveHost, Integer.valueOf(savePort));
