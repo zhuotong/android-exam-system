@@ -61,7 +61,6 @@ public class ExamStart extends BaseActivity {
 	List<String> examDescs = new ArrayList<String>();;
 	ArrayAdapter<String> adapter;
 	String selectedExamId = null;
-//	String downloadExamFilePath = null;
 	QUESTION_TYPE fQuestionType = null;
 	String[] questionTypes;
 
@@ -132,17 +131,9 @@ public class ExamStart extends BaseActivity {
 		startBtn = (Button) findViewById(R.id.startBtn);
 		startBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
-				
-//	        	downloadExamFilePath = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
-//	        	Log.i(LOG_TAG, "downloadExamFilePath:"+downloadExamFilePath);
-	        	
 	        	new DownloadExamTask().execute(selectedExamId);
-
 			}			
 		});
-		
-		
-
 	}
 	
 	class SpinnerSelectedListener implements OnItemSelectedListener{
@@ -181,29 +172,8 @@ public class ExamStart extends BaseActivity {
 	    @Override
 	    protected String doInBackground(String... urls) {
 	    	Log.i(LOG_TAG, "doInBackground() called");
-	    	
         	ServerProxy proxy =  WebServerProxy.Factroy.getCurrrentInstance();
         	examResult = proxy.getExam(urls[0]);
-//    		if(STATUS.SUCCESS.equals(examResult.getStatus())){
-//    			String examFileName = examIdString+".xml";
-//    			
-//    			Log.i(LOG_TAG,"downloadExamFilePath:"+downloadExamFilePath);
-//    			Log.i(LOG_TAG,"examFileName:"+examFileName);
-//    			
-//    			//save to SD card
-//    			FileUtil fu = new FileUtil();
-//        		fu.saveFile(downloadExamFilePath, examFileName, examResult.getSuccessMessage());
-//    			
-//    			//save to SharedPreferences
-////    			SPUtil.save2SP(SPUtil.CURRENT_USER_HOME, downloadExamFilePath, sharedPreferences);
-//    			SPUtil.save2SP(SPUtil.CURRENT_EXAM_FILE_NAME, examFileName, sharedPreferences);
-//    			
-//    			
-//    		}else if(STATUS.ERROR.equals(examResult.getStatus())){
-//    			ShowDialog(mContext.getResources().getString(R.string.dialog_note),
-//    					examResult.getErrorMessage());
-//    			this.cancel(true);
-//    		}
 	        return "success";
 	    }
 	
@@ -219,7 +189,6 @@ public class ExamStart extends BaseActivity {
         		
     			//save to SharedPreferences
     			SPUtil.save2SP(SPUtil.CURRENT_EXAM_FILE_NAME, examFileName, sharedPreferences);
-				
     			
     			//parse exam
 				Examination exam = DataParseUtil.getExam(examResult);

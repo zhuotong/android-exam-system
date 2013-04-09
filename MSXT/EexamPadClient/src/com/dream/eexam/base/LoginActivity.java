@@ -37,19 +37,15 @@ public class LoginActivity extends BaseActivity {
 	public final static String LOG_TAG = "LoginActivity";
 	public static String LOGIN_RESULT_FILE = "lgresult"+TimeDateUtil.getCurrentDate()+".xml";;
 	
-	String saveHost = null;
-	String savePort = null;
-	
 	EditText idEt = null;
 	EditText passwordET = null;
-	
-	String currentUserId = null;
-	String currentUserPwd = null;
-	
 	Button loginBtn = null;
 	Button settingBtn = null;
 	
-	//user home of save file
+	String saveHost = null;
+	String savePort = null;
+	String currentUserId = null;
+	String currentUserPwd = null;
 	String userHome = null;
 	
 	private Context mContext;
@@ -133,56 +129,31 @@ public class LoginActivity extends BaseActivity {
         	
         	String currentUserId  = SPUtil.getFromSP(SPUtil.CURRENT_USER_ID, sharedPreferences);
         	int examStatus = SPUtil.getIntegerFromSP(SPUtil.CURRENT_EXAM_STATUS, sharedPreferences);
-//        	Log.i(LOG_TAG,"currentUserId:"+currentUserId);
-//        	Log.i(LOG_TAG,"currentExamStatus:"+currentExamStatus);
         	
-        	
-        	if(loginUserId.equals(currentUserId)){
-        		Log.i(LOG_TAG,"---------------------currentUserId=loginUserId ---------------------");
-        		if(examStatus >0) {
+        	//If Current Exam User is empty, or Current Exam User not empty, but completed
+        	//Then Connect server to login with a new User
+        	if(StringUtil.isEmpty(currentUserId) || (!StringUtil.isEmpty(currentUserId) && examStatus == SPUtil.EXAM_STATUS_END)){
+    			//clear last exam first,start a new exam
+    			SPUtil.clearUserSP(sharedPreferences);
+    			SPUtil.clearExamSP(sharedPreferences);
+    			clearDB(mContext);
+    			
+            	if (getWifiIP() != null && getWifiIP().trim().length() > 0 && !getWifiIP().trim().equals("0.0.0.0")){
+            		new LoginTask().execute(new String[]{loginUserId,loginUserPwd});
+            	}else{
+            		ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+            				mContext.getResources().getString(R.string.msg_network_error));
+            	}
+        	}else{
+        		if(loginUserId.equals(currentUserId)){
         			switch(examStatus){
-        				case SPUtil.EXAM_STATUS_NOT_START:go2ExamStart();break;//Go to ExamStart Page
-        				case SPUtil.EXAM_STATUS_START_GOING:go2ExamContinue();break;//Go to ExamContinue Page
-        				case SPUtil.EXAM_STATUS_START_GOING_OBSOLETE:go2ExamContinue();break;//Go to ExamContinue Page
-        				case SPUtil.EXAM_STATUS_START_PENDING_NEW:go2ExamStart();break;//Go to ExamStart Page
-        				case SPUtil.EXAM_STATUS_END:go2ExamResult();break;//Go to ExamResult Page
+	    				case SPUtil.EXAM_STATUS_NOT_START:go2ExamStart(mContext);break;//Go to ExamStart Page
+	    				case SPUtil.EXAM_STATUS_START_GOING:go2ExamContinue(mContext);break;//Go to ExamContinue Page
+	    				case SPUtil.EXAM_STATUS_START_GOING_OBSOLETE:go2ExamContinue(mContext);break;//Go to ExamContinue Page
+	    				case SPUtil.EXAM_STATUS_START_PENDING_NEW:go2ExamStart(mContext);break;//Go to ExamStart Page
+	    				case SPUtil.EXAM_STATUS_END:go2ExamResult(mContext);break;//Go to ExamResult Page
         			}
         		}else{
-        			//It should not be happen
-        			go2ExamStart();
-        			SPUtil.clearUserSP(sharedPreferences);
-            		SPUtil.save2SP(SPUtil.CURRENT_USER_ID, loginUserId, sharedPreferences);
-            		SPUtil.save2SP(SPUtil.CURRENT_USER_PWD, loginUserPwd, sharedPreferences);
-            		SPUtil.save2SP(SPUtil.CURRENT_USER_HOME, userHome, sharedPreferences);
-                	if (getWifiIP() != null && getWifiIP().trim().length() > 0 && !getWifiIP().trim().equals("0.0.0.0")){
-                		new LoginTask().execute(new String[]{loginUserId,loginUserPwd});
-                	}else{
-                		ShowDialog(mContext.getResources().getString(R.string.dialog_note),
-                				mContext.getResources().getString(R.string.msg_network_error));
-                	} 
-        		}
-        	}else{
-        		Log.i(LOG_TAG,"---------------------currentUserId != loginUserId ---------------------");
-        		
-        		if(examStatus==SPUtil.EXAM_STATUS_END){
-        			//clear last exam first,start a new exam
-        			SPUtil.clearUserSP(sharedPreferences);
-        			SPUtil.clearExamSP(sharedPreferences);
-        			clearDB(mContext);
-        			
-            		//save new exam to sharedPreferences
-            		SPUtil.save2SP(SPUtil.CURRENT_USER_ID, loginUserId, sharedPreferences);
-            		SPUtil.save2SP(SPUtil.CURRENT_USER_PWD, loginUserPwd, sharedPreferences);
-            		SPUtil.save2SP(SPUtil.CURRENT_USER_HOME, userHome, sharedPreferences);
-            		
-                	if (getWifiIP() != null && getWifiIP().trim().length() > 0 && !getWifiIP().trim().equals("0.0.0.0")){
-                		new LoginTask().execute(new String[]{loginUserId,loginUserPwd});
-                	}else{
-                		ShowDialog(mContext.getResources().getString(R.string.dialog_note),
-                				mContext.getResources().getString(R.string.msg_network_error));
-                	}
-        		}else{
-        			//Exam is in progress
             		ShowDialog(mContext.getResources().getString(R.string.dialog_note),
             				mContext.getResources().getString(R.string.msg_user_in_exam_error));
         		}
@@ -190,41 +161,25 @@ public class LoginActivity extends BaseActivity {
         }
     };
     
-    public void go2ExamStart(){
-    	Intent intent = new Intent();
-		intent.setClass( mContext, ExamStart.class);
-		startActivity(intent); 
-    }
-    
-	public void go2ExamContinue(){
-    	Intent intent = new Intent();
-		intent.setClass( mContext, ExamContinue.class);
-		startActivity(intent); 	
-	}
-	
-	public void go2ExamResult(){
-    	Intent intent = new Intent();
-		intent.setClass( mContext, ResultActivity.class);
-		startActivity(intent); 
-	}
-    
     //define login task
     private class LoginTask extends AsyncTask<String, Void, String> {
     	ProgressDialog progressDialog;
     	ServerProxy proxy;
     	Result loginResult;
+    	String loginUserId;
+    	String loginUserPwd;
     	
     	@Override
     	protected void onPreExecute() {
-    		Log.i(LOG_TAG, "onPreExecute() called");
     		progressDialog = ProgressDialog.show(LoginActivity.this, null,mContext.getResources().getString(R.string.msg_login_server), true, false); 
     	}
     	
         @Override
 		protected String doInBackground(String... urls) {
-//        	Integer port = Integer.valueOf(mContext.getResources().getString(R.string.port));
+        	loginUserId = urls[0];
+        	loginUserPwd = urls[1];
         	proxy =  WebServerProxy.Factroy.createInstance(saveHost, Integer.valueOf(savePort));
-    		loginResult = proxy.login(urls[0], urls[1]);           	
+    		loginResult = proxy.login(loginUserId, loginUserPwd);           	
 			return null;
 		}
 
@@ -233,10 +188,11 @@ public class LoginActivity extends BaseActivity {
         	progressDialog.dismiss();
         	loginBtn.setEnabled(true);
 
-    		if( loginResult.getStatus() == STATUS.ERROR ) {
+    		if( loginResult.getStatus() == STATUS.ERROR ) {//Login failed
     			ShowDialog(mContext.getResources().getString(R.string.dialog_note),
     					loginResult.getErrorMessage());
-        	} else {
+        	} else {//Login successfully
+        		
         		//define login result file name
         		LOGIN_RESULT_FILE = idEt.getText().toString() + TimeDateUtil.getCurrentDate() + ".xml";
         		
@@ -248,6 +204,7 @@ public class LoginActivity extends BaseActivity {
         		//save login result file
         		SPUtil.save2SP(SPUtil.CURRENT_LOGIN_FILE_NAME, LOGIN_RESULT_FILE, sharedPreferences);
         		
+        		//parse login result
         		try{
     		    	DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
     		        ByteArrayInputStream is = new ByteArrayInputStream( loginResult.getSuccessMessage().getBytes() );
@@ -256,26 +213,26 @@ public class LoginActivity extends BaseActivity {
     		        
     		        Element root = doc.getDocumentElement();
     		        String status = root.getElementsByTagName("status").item(0).getTextContent();
+    		        
     		        if( status.equals("failed") ) {
     		        	String desc = root.getElementsByTagName("desc").item(0).getTextContent();
-    		        	ShowDialog(mContext.getResources().getString(R.string.dialog_note),
-    		        			desc);
-    		        } else {
+    		        	ShowDialog(mContext.getResources().getString(R.string.dialog_note),desc);
+    		        } else {//Login successfully
     		        	String conversation = root.getElementsByTagName( "conversation" ).item(0).getTextContent();
     		        	proxy.setConversationId( conversation );
     		        	
-    		        	//clear last exam
-    		        	SPUtil.clearExamSP(sharedPreferences);
-    		        	//clear last exam progress
-    		        	clearDB(mContext);
+//    		        	//clear last exam
+//    		        	SPUtil.clearExamSP(sharedPreferences);
+//    		        	//clear last exam progress
+//    		        	clearDB(mContext);
     		        	
     		        	//exam ready but not start
+    		        	go2ExamStart(mContext);
     		        	SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_NOT_START, sharedPreferences);
-    		        	
-    		        	//go to exam List pa
-    		        	Intent intent = new Intent();
-    	    			intent.setClass( mContext, ExamStart.class);
-    	    			startActivity(intent);   
+    	        		//save new exam to sharedPreferences
+    	        		SPUtil.save2SP(SPUtil.CURRENT_USER_ID, loginUserId, sharedPreferences);
+    	        		SPUtil.save2SP(SPUtil.CURRENT_USER_PWD, loginUserPwd, sharedPreferences);
+    	        		SPUtil.save2SP(SPUtil.CURRENT_USER_HOME, userHome, sharedPreferences);
     		        }
         		} catch (Exception e) {
         			ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Invalid XML Data");

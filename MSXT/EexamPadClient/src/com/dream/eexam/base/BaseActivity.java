@@ -163,23 +163,6 @@ public class BaseActivity extends Activity {
 		return baos.toString();
 	}
 	
-/*	public void saveFile(String path, String fileName,String content) {
-		try {
-	        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {  
-	            File dir = new File(path);  
-	            if (!dir.exists()) {  
-	                dir.mkdirs();  
-	            } 
-	            FileOutputStream fos = new FileOutputStream(path + File.separator + fileName);  
-	            fos.write(content.getBytes());  
-	            fos.close();  
-	        }  
-			
-		} catch (Exception e) {
-			Log.e(LOG_TAG, "an error occured while writing file...", e);
-		}
-		Log.i(LOG_TAG,"saveFile end.");
-	}*/
 	
 	public void deleteFile(String path, String fileName) {
 		Log.i(LOG_TAG,"deleteFile...");
@@ -219,6 +202,24 @@ public class BaseActivity extends Activity {
 		intent.setClass( context, LoginActivity.class);
 		finish();
 		startActivity(intent);
+	}
+	
+    public void go2ExamStart(Context context){
+    	Intent intent = new Intent();
+		intent.setClass( context, ExamStart.class);
+		startActivity(intent); 
+    }
+    
+	public void go2ExamContinue(Context context){
+    	Intent intent = new Intent();
+		intent.setClass( context, ExamContinue.class);
+		startActivity(intent); 	
+	}
+	
+	public void go2ExamResult(Context context){
+    	Intent intent = new Intent();
+		intent.setClass( context, ResultActivity.class);
+		startActivity(intent); 
 	}
 	
 	//clear data in SP
