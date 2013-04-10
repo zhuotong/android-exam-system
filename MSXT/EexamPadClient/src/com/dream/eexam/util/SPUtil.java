@@ -93,6 +93,10 @@ public class SPUtil {
 		return sp.getInt(key, 0);
 	}
 	
+	public static long getLongFromSP(String key,SharedPreferences sp){
+		return sp.getLong(key, 0);
+	}
+	
 	//clear data in SP
 	public void clearSP(SharedPreferences sp){
     	SharedPreferences.Editor editor = sp.edit(); 

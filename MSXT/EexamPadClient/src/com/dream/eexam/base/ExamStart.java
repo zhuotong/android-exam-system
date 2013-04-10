@@ -9,7 +9,6 @@ import com.dream.eexam.paper.MultiChoices;
 import com.dream.eexam.paper.SingleChoices;
 import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.server.FileUtil;
-import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SPUtil;
 import com.msxt.client.model.Examination;
 import com.msxt.client.model.Examination.Question;
@@ -22,7 +21,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -150,7 +148,7 @@ public class ExamStart extends BaseActivity {
 			Log.i(LOG_TAG, "examDesc:"+exam.getDesc());
 			Log.i(LOG_TAG, "examIdString:"+selectedExamId);
 			
-			loadAnswerOfLasttime();
+//			loadAnswerOfLasttime();
 		}
 		
 		public void onNothingSelected(AdapterView<?> arg0) {
@@ -253,7 +251,7 @@ public class ExamStart extends BaseActivity {
 		}
 	}
 	
-	public void loadAnswerOfLasttime(){
+/*	public void loadAnswerOfLasttime(){
 		Log.i(LOG_TAG, "loadAnswerOfLasttime()...");
     	DatabaseUtil dbUtil = new DatabaseUtil(this);
     	dbUtil.open();
@@ -263,5 +261,5 @@ public class ExamStart extends BaseActivity {
 		}
     	Log.i(LOG_TAG, "loadAnswerOfLasttime()...");
     	dbUtil.close();
-	}
+	}*/
 }
