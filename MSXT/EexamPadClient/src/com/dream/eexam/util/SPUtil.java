@@ -13,7 +13,8 @@ public class SPUtil {
 	public final static String CURRENT_USER_PWD = "Current_User_Pwd";
 	public final static String CURRENT_USER_HOME = "Current_User_Home";
 	public final static String CURRENT_USER_LOGIN_FILE_NAME = "Current_Login_File";
-	public final static String CURRENT_USER_EXAM_REMAINING_COUNT = "current_User_Exam_Remaining_Count";
+	public final static String CURRENT_USER_EXAM_REMAINING_COUNT = "Current_User_Exam_Remaining_Count";
+	public final static String CURRENT_EXAM_SUBMITTED_IDS = "Current_Exam_Submitted_Ids";
 	
 	public final static String CURRENT_EXAM_FILE_NAME = "Current_Exam_File";
 	public final static String CURRENT_EXAM_STATUS = "Current_Exam_Status";
@@ -21,7 +22,7 @@ public class SPUtil {
 	public final static String CURRENT_EXAM_SCORE = "Current_Exam_Score";
 	public final static String CURRENT_EXAM_CATALOG = "ccIndex";
 	public final static String CURRENT_EXAM_INDEX_IN_CATA = "cqIndex";
-	public final static String CURRENT_EXAM_SUBMITTED_IDS = "Current_Exam_Submitted_Ids";
+	
 	
 	
 //	public final static String STATUS_LOGIN_NOT_START = "0";
@@ -79,9 +80,16 @@ public class SPUtil {
 	
 	//save String to SP
 	public static void append2SP(String key,String value,SharedPreferences sp){
+		
+		String oldValue = SPUtil.getFromSP(key, sp);
+		String newValue;
+		if(oldValue==null){
+			newValue = value;
+		}else{
+			newValue = oldValue + "," + value;
+		}
 		SharedPreferences.Editor edit = sp.edit();
-		String oldValue = SPUtil.getFromSP(key, sp); 
-		edit.putString(key, (oldValue==null? "":(oldValue+",")) + value);
+		edit.putString(key, newValue);
 		edit.commit();
 	}
 	
@@ -113,6 +121,7 @@ public class SPUtil {
     	editor.remove(SPUtil.CURRENT_USER_HOME);
     	editor.remove(SPUtil.CURRENT_USER_LOGIN_FILE_NAME);
     	editor.remove(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT);
+    	editor.remove(SPUtil.CURRENT_EXAM_SUBMITTED_IDS);
     	editor.commit();
 	}
 	
@@ -125,7 +134,7 @@ public class SPUtil {
     	editor.remove(SPUtil.CURRENT_EXAM_SCORE);
     	editor.remove(SPUtil.CURRENT_EXAM_CATALOG);
     	editor.remove(SPUtil.CURRENT_EXAM_INDEX_IN_CATA);
-    	editor.remove(SPUtil.CURRENT_EXAM_SUBMITTED_IDS);
+
     	editor.commit();
 	}
 	

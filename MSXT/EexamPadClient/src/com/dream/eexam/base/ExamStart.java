@@ -60,11 +60,12 @@ public class ExamStart extends BaseActivity {
 	LoginSuccessResult succResult = new LoginSuccessResult();
 	List<com.msxt.client.model.LoginSuccessResult.Examination> examinations;
 	String conversation = null;
-//	Map<String,String> examMap = new HashMap<String,String>();
-	List<String> examDescs = new ArrayList<String>();
 	
-	ArrayAdapter<String> adapter;
 	String selectedExamId = null;
+	Map<Integer,String> examIdsMap = new HashMap<Integer,String>();
+	List<String> examNames = new ArrayList<String>();
+	ArrayAdapter<String> adapter;
+	
 	QUESTION_TYPE fQuestionType = null;
 	String[] questionTypes;
 
@@ -84,21 +85,28 @@ public class ExamStart extends BaseActivity {
 			Log.i(LOG_TAG,e.getMessage());
 		}
 		
+		Log.i(LOG_TAG,"Load Pending Exams...");
 		//get exam name list
 		examinations = succResult.getExaminations();
 		if(examinations!=null&&examinations.size()>0){
+			int rSum = 0;
+			String examIdSubmitted = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_SUBMITTED_IDS, sharedPreferences);
+			Log.i(LOG_TAG,"examIdSubmitted:" + examIdSubmitted);
+			
 			for(int i=0;i<examinations.size();i++){
-				
 				String examId = examinations.get(i).getId();
 				String examName = examinations.get(i).getName();
-				String examIdSubmitted = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_SUBMITTED_IDS, sharedPreferences);
 				if(examIdSubmitted==null || examIdSubmitted.indexOf(examId)==-1){
-					examDescs.add(examName);
-//					examMap.put(examId, examName);
+					examIdsMap.put(rSum, examId);
+					examNames.add(rSum,examName);
+					Log.i(LOG_TAG,"rSum:"+rSum + " examId:"+examId + " examName:"+ examName );
+					rSum++;
 				}
 			}
 		}
-		SPUtil.save2SP(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT, String.valueOf(examDescs.size()), sharedPreferences);
+		
+		Log.i(LOG_TAG,"There are " + String.valueOf(examNames.size()) + " exams pending.");
+		SPUtil.save2SP(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT, String.valueOf(examNames.size()), sharedPreferences);
 	}
 	
 	@Override
@@ -142,7 +150,7 @@ public class ExamStart extends BaseActivity {
 		super.onStart();
 		
 		spinner = (Spinner) findViewById(R.id.Spinner01);
-		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,examDescs);
+		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,examNames);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
 		spinner.setOnItemSelectedListener(new SpinnerSelectedListener());
@@ -156,16 +164,13 @@ public class ExamStart extends BaseActivity {
 			Log.i(LOG_TAG,"--------------------Spinner.onItemSelected()...-----------------");
 			Log.i(LOG_TAG,"arg2="+String.valueOf(arg2));
 			
-			List<com.msxt.client.model.LoginSuccessResult.Examination> exams = succResult.getExaminations();
-			com.msxt.client.model.LoginSuccessResult.Examination exam = exams.get(arg2);
+//			List<com.msxt.client.model.LoginSuccessResult.Examination> exams = succResult.getExaminations();
+//			com.msxt.client.model.LoginSuccessResult.Examination exam = exams.get(arg2);
+//			examDesc.setText(exam.getDesc());
 			
-			examDesc.setText(exam.getDesc());
-			selectedExamId = exam.getId();
-			
-			Log.i(LOG_TAG, "examDesc:"+exam.getDesc());
+			selectedExamId = examIdsMap.get(arg2);
 			Log.i(LOG_TAG, "examIdString:"+selectedExamId);
 			
-//			loadAnswerOfLasttime();
 			Log.i(LOG_TAG,"---------------------------End---------------------------------");
 		}
 		
