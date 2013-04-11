@@ -1,4 +1,4 @@
-package com.dream.eexam.server;
+package com.dream.eexam.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,40 +9,25 @@ import android.os.Environment;
 import android.util.Log;
 
 public class FileUtil {
-
 	public final static String LOG_TAG = "FileUtil";
+	public final static String LOGIN_FILE_PREFIX = "Login_";
+	public final static String EXAM_FILE_PREFIX = "Exam_";
+	public final static String RESULT_FILE_PREFIX = "Result_";
+	
+	public final static String FILE_SUFFIX = ".xml";
 	
 	public static FileInputStream getExamStream(String filePath,String fileName){
-		
 		Log.i(LOG_TAG, "getExamStream()...");
-		
 		Log.i(LOG_TAG, "filePath:"+filePath);
 		Log.i(LOG_TAG, "fileName:"+fileName);
-		
 		FileInputStream inputStream = null;
 		try {
 			inputStream = new FileInputStream(new File(filePath+ File.separator+fileName));
 		} catch (FileNotFoundException e) {
 			Log.i(LOG_TAG,e.getMessage());
 		}
-		
 		Log.i(LOG_TAG, "getExamStream() end.");
 		return inputStream;
-	}
-	
-	
-	public void deleteFolder(File file) {
-		if (file.exists()) {
-			if (file.isFile()) {
-				file.delete();
-			} else if (file.isDirectory()) {
-				File files[] = file.listFiles();
-				for (int i = 0; i < files.length; i++) {
-					this.deleteFolder(files[i]);
-				}
-			}
-			file.delete();
-		} 
 	}
 	
 	public void saveFile(String path, String fileName,String content) {
@@ -61,5 +46,19 @@ public class FileUtil {
 			Log.e(LOG_TAG, "an error occured while writing file...", e);
 		}
 		Log.i(LOG_TAG,"saveFile end.");
+	}
+	
+	public void deleteFolder(File file) {
+		if (file.exists()) {
+			if (file.isFile()) {
+				file.delete();
+			} else if (file.isDirectory()) {
+				File files[] = file.listFiles();
+				for (int i = 0; i < files.length; i++) {
+					this.deleteFolder(files[i]);
+				}
+			}
+			file.delete();
+		} 
 	}
 }

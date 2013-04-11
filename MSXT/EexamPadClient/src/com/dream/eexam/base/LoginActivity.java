@@ -7,7 +7,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.dream.eexam.server.FileUtil;
+import com.dream.eexam.util.FileUtil;
 import com.dream.eexam.util.SPUtil;
 import com.dream.eexam.util.StringUtil;
 import com.dream.eexam.util.TimeDateUtil;
@@ -35,7 +35,7 @@ import android.widget.EditText;
 public class LoginActivity extends BaseActivity {
 
 	public final static String LOG_TAG = "LoginActivity";
-	public static String LOGIN_RESULT_FILE = "lgresult"+TimeDateUtil.getCurrentDate()+".xml";;
+//	public static String LOGIN_RESULT_FILE = FileUtil.LOGIN_FILE_PREFIX + TimeDateUtil.getCurrentDate()+FileUtil.FILE_SUFFIX;
 	
 	EditText idEt = null;
 	EditText passwordET = null;
@@ -196,15 +196,16 @@ public class LoginActivity extends BaseActivity {
         	} else {//Login successfully
         		
         		//define login result file name
-        		LOGIN_RESULT_FILE = idEt.getText().toString() + TimeDateUtil.getCurrentDate() + ".xml";
+//        		LOGIN_RESULT_FILE = idEt.getText().toString() + TimeDateUtil.getCurrentDate() + ".xml";
+        		String loginResultFile = FileUtil.LOGIN_FILE_PREFIX + TimeDateUtil.getCurrentDate()+FileUtil.FILE_SUFFIX;
         		
         		//save login file
         		FileUtil fu = new FileUtil();
         		fu.deleteFolder(new File(userHome));
-        		fu.saveFile(userHome, LOGIN_RESULT_FILE, loginResult.getSuccessMessage());
+        		fu.saveFile(userHome, loginResultFile, loginResult.getSuccessMessage());
         		
         		//save login result file
-        		SPUtil.save2SP(SPUtil.CURRENT_LOGIN_FILE_NAME, LOGIN_RESULT_FILE, sharedPreferences);
+        		SPUtil.save2SP(SPUtil.CURRENT_USER_LOGIN_FILE_NAME, loginResultFile, sharedPreferences);
         		
         		//parse login result
         		try{

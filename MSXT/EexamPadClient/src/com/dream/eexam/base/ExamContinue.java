@@ -6,8 +6,8 @@ import java.io.FileInputStream;
 import com.dream.eexam.paper.MultiChoices;
 import com.dream.eexam.paper.SingleChoices;
 import com.dream.eexam.server.DataParseUtil;
-import com.dream.eexam.server.FileUtil;
 import com.dream.eexam.util.DatabaseUtil;
+import com.dream.eexam.util.FileUtil;
 import com.dream.eexam.util.SPUtil;
 import com.msxt.client.model.Examination;
 import com.msxt.client.model.LoginSuccessResult;
@@ -56,7 +56,7 @@ public class ExamContinue extends BaseActivity {
 		mContext = getApplicationContext();
 		
 		String loginResultFilePath  = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
-		String loginResultFile  = SPUtil.getFromSP(SPUtil.CURRENT_LOGIN_FILE_NAME, sharedPreferences);
+		String loginResultFile  = SPUtil.getFromSP(SPUtil.CURRENT_USER_LOGIN_FILE_NAME, sharedPreferences);
 		
 		try {
 	    	FileInputStream inputStream = new FileInputStream(new File(loginResultFilePath+ File.separator+loginResultFile));

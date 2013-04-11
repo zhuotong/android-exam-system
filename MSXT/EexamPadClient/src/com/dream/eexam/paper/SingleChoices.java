@@ -11,6 +11,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.SQLException;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -36,6 +37,7 @@ import com.dream.eexam.base.R;
 import com.dream.eexam.base.ResultActivity;
 import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.util.DatabaseUtil;
+import com.dream.eexam.util.FileUtil;
 import com.dream.eexam.util.SPUtil;
 import com.msxt.client.model.SubmitSuccessResult;
 import com.msxt.client.model.Examination.Choice;
@@ -466,6 +468,7 @@ public class SingleChoices extends BaseQuestion {
     }
     
     class SubmitAnswerTask extends AsyncTask<String, Void, String> {
+    	String examId;
     	ProgressDialog progressDialog;
     	ServerProxy proxy;
     	Result submitResult;
@@ -473,7 +476,7 @@ public class SingleChoices extends BaseQuestion {
     	
     	@Override
     	protected void onPreExecute() {
-    		Log.i(LOG_TAG, "onPreExecute() called");
+    		Log.i(LOG_TAG, "SubmitAnswerTask.onPreExecute() called");
     		
     		String displayMessage =  mContext.getResources().getString(R.string.msg_submiting);
     		progressDialog = ProgressDialog.show(SingleChoices.this, null, displayMessage, true, false);
@@ -482,25 +485,69 @@ public class SingleChoices extends BaseQuestion {
     	
         @Override
 		protected String doInBackground(String... urls) {
-        	proxy =  WebServerProxy.Factroy.getCurrrentInstance();
+        	Log.i(LOG_TAG, "SubmitAnswerTask.doInBackground()...");
         	
-        	DatabaseUtil dbUtil = new DatabaseUtil(mContext);
-        	dbUtil.open();
-        	answers =  getAllAnswers(dbUtil);
-        	dbUtil.close();
+        	examId = urls[0];
         	
-        	submitResult = proxy.submitAnswer(urls[0],answers);
+        	try {
+				proxy =  WebServerProxy.Factroy.getCurrrentInstance();
+				DatabaseUtil dbUtil = new DatabaseUtil(mContext);
+				dbUtil.open();
+				answers =  getAllAnswers(dbUtil);
+				dbUtil.close();
+				
+				Log.i(LOG_TAG, "proxy.submitAnswer..."+examId);
+				
+				submitResult = proxy.submitAnswer(examId,answers);
+			} catch (SQLException e) {
+				Log.i(LOG_TAG, e.getMessage());
+				progressDialog.dismiss();
+			}
 			return null;
 		}
 
         @Override
         protected void onPostExecute(String result) {
+        	Log.i(LOG_TAG, "SubmitAnswerTask.onPostExecute()...");
         	progressDialog.dismiss();
         	submitTV.setEnabled(true);
 
-    		if( submitResult.getStatus() == STATUS.ERROR ) {
-//    			ShowDialog(mContext.getResources().getString(R.string.dialog_note),
-//    					submitResult.getErrorMessage());
+        	if(submitResult!= null && submitResult.getStatus() == STATUS.SUCCESS ) {
+        		
+        		String resultFileName = FileUtil.RESULT_FILE_PREFIX + exam.getId() + FileUtil.FILE_SUFFIX;
+        		Log.i(LOG_TAG, "resultFileName: " + resultFileName);
+        		
+    			FileUtil fu = new FileUtil();
+        		fu.saveFile(SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences), resultFileName, submitResult.getSuccessMessage());
+        		
+        		SubmitSuccessResult succResult = DataParseUtil.getSubmitSuccessResult(submitResult);
+        		
+        		//Save Exam Score to sharedPreferences
+        		Log.i(LOG_TAG, "Exam " + exam.getId() + " Submitted Successfully!");
+        		
+        		//Save Update Exam Remaining Count to sharedPreferences
+        		String examCountBefore = SPUtil.getFromSP(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT, sharedPreferences);
+        		Log.i(LOG_TAG, "Exam Count Before Submitted: " +  examCountBefore);
+        		
+        		int remainingExamCount = Integer.valueOf(examCountBefore);
+        		SPUtil.save2SP(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT, String.valueOf(remainingExamCount-1), sharedPreferences);
+        		
+        		String examCountAfter = SPUtil.getFromSP(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT, sharedPreferences);
+        		Log.i(LOG_TAG, "Exam Count After Submitted: " +  examCountAfter);
+        		
+        		//Save Update Exam Submitted IDs to sharedPreferences
+        		SPUtil.append2SP(SPUtil.CURRENT_EXAM_SUBMITTED_IDS, exam.getId(), sharedPreferences);
+        		
+        		//Save Exam Score to sharedPreferences
+        		SPUtil.save2SP(SPUtil.CURRENT_EXAM_SCORE, String.valueOf(succResult.getScore()), sharedPreferences);
+        		
+        		//Save Exam Status
+        		SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_PENDING_NEW, sharedPreferences);
+        		
+				//move question
+        		go2ExamResult(mContext);
+        		
+        	}else {
     			
     			//save answer to local
     			AlertDialog.Builder builder = new AlertDialog.Builder(SingleChoices.this);
@@ -524,32 +571,6 @@ public class SingleChoices extends BaseQuestion {
     							});
     			builder.show();
     			
-        	} else {
-        		
-//        		saveExamStatus();
-        		
-        		SubmitSuccessResult succResult = DataParseUtil.getSubmitSuccessResult(submitResult);
-        		
-        		//Save Exam Score to sharedPreferences
-        		SPUtil.save2SP(SPUtil.CURRENT_EXAM_SCORE, String.valueOf(succResult.getScore()), sharedPreferences);
-        		SPUtil.append2SP(SPUtil.CURRENT_EXAM_SUBMITTED_IDS, exam.getId(), sharedPreferences);
-        		int remainingExamCount = Integer.valueOf(SPUtil.getFromSP(SPUtil.CURRENT_EXAM_REMAINING_COUNT, sharedPreferences));
-        		SPUtil.save2SP(SPUtil.CURRENT_EXAM_REMAINING_COUNT, String.valueOf(remainingExamCount-1), sharedPreferences);
-        		
-        		//Save Exam Status
-        		SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_PENDING_NEW, sharedPreferences);
-        		
-				//move question
-				Intent intent = new Intent();
-//				intent.putExtra("score", String.valueOf(succResult.getScore()));
-				intent.setClass( getBaseContext(), ResultActivity.class);
-				startActivity(intent);
-				
-				//clear temporary data
-//            	clearSP();
-//            	clearDB(mContext);
-            	//clear all user data
-//            	deleteFile(new File(SPUtil.getFromSP(SPUtil.SP_KEY_USER_HOME, sharedPreferences)));
         	}
         }
         

@@ -42,7 +42,7 @@ public class ResultActivity extends BaseActivity {
         scoreTV = (TextView) this.findViewById(R.id.yourScoreTV);
         scoreTV.setText(score);
         
-        String remainExamCount = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_REMAINING_COUNT, sharedPreferences);
+        String remainExamCount = SPUtil.getFromSP(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT, sharedPreferences);
         examLeftTV = (TextView) this.findViewById(R.id.examLeftTV);
         examLeftTV.setText("You have " + remainExamCount + " exam paper remaining,please continue!");
  

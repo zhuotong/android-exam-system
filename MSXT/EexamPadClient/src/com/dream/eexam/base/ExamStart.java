@@ -4,12 +4,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import com.dream.eexam.paper.MultiChoices;
 import com.dream.eexam.paper.SingleChoices;
 import com.dream.eexam.server.DataParseUtil;
-import com.dream.eexam.server.FileUtil;
+import com.dream.eexam.util.FileUtil;
 import com.dream.eexam.util.SPUtil;
+import com.dream.eexam.util.TimeDateUtil;
 import com.msxt.client.model.Examination;
 import com.msxt.client.model.Examination.Question;
 import com.msxt.client.model.LoginSuccessResult;
@@ -41,7 +45,7 @@ import com.msxt.client.model.QUESTION_TYPE;
  */
 
 public class ExamStart extends BaseActivity {
-	private static final String LOG_TAG = "ExamListActivity";
+	private static final String LOG_TAG = "ExamStart";
 	
 	Context mContext;
 	
@@ -56,7 +60,9 @@ public class ExamStart extends BaseActivity {
 	LoginSuccessResult succResult = new LoginSuccessResult();
 	List<com.msxt.client.model.LoginSuccessResult.Examination> examinations;
 	String conversation = null;
-	List<String> examDescs = new ArrayList<String>();;
+//	Map<String,String> examMap = new HashMap<String,String>();
+	List<String> examDescs = new ArrayList<String>();
+	
 	ArrayAdapter<String> adapter;
 	String selectedExamId = null;
 	QUESTION_TYPE fQuestionType = null;
@@ -66,7 +72,7 @@ public class ExamStart extends BaseActivity {
 	private void loadExamList(){
 		questionTypes = getResources().getStringArray(R.array.question_types);
 		String loginResultFilePath  = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
-		String loginResultFile  = SPUtil.getFromSP(SPUtil.CURRENT_LOGIN_FILE_NAME, sharedPreferences);
+		String loginResultFile  = SPUtil.getFromSP(SPUtil.CURRENT_USER_LOGIN_FILE_NAME, sharedPreferences);
 		Log.i(LOG_TAG,"loginResultFilePath:"+loginResultFilePath);
 		Log.i(LOG_TAG,"loginResultFile:"+loginResultFile);
 		
@@ -82,14 +88,17 @@ public class ExamStart extends BaseActivity {
 		examinations = succResult.getExaminations();
 		if(examinations!=null&&examinations.size()>0){
 			for(int i=0;i<examinations.size();i++){
+				
 				String examId = examinations.get(i).getId();
+				String examName = examinations.get(i).getName();
 				String examIdSubmitted = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_SUBMITTED_IDS, sharedPreferences);
 				if(examIdSubmitted==null || examIdSubmitted.indexOf(examId)==-1){
-					examDescs.add(examinations.get(i).getName());
+					examDescs.add(examName);
+//					examMap.put(examId, examName);
 				}
 			}
 		}
-		SPUtil.save2SP(SPUtil.CURRENT_EXAM_REMAINING_COUNT, String.valueOf(examDescs.size()), sharedPreferences);
+		SPUtil.save2SP(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT, String.valueOf(examDescs.size()), sharedPreferences);
 	}
 	
 	@Override
@@ -117,13 +126,6 @@ public class ExamStart extends BaseActivity {
 		jobTitleTV = (TextView) this.findViewById(R.id.jobTitleTV);
 		jobTitleTV.setText(succResult.getJobtitle());
 		
-		spinner = (Spinner) findViewById(R.id.Spinner01);
-		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,examDescs);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner.setAdapter(adapter);
-		spinner.setOnItemSelectedListener(new SpinnerSelectedListener());
-		spinner.setVisibility(View.VISIBLE);
-		
 		examDesc = (TextView) this.findViewById(R.id.examDesc);
 		
 		startBtn = (Button) findViewById(R.id.startBtn);
@@ -134,9 +136,24 @@ public class ExamStart extends BaseActivity {
 		});
 	}
 	
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		
+		spinner = (Spinner) findViewById(R.id.Spinner01);
+		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,examDescs);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner.setAdapter(adapter);
+		spinner.setOnItemSelectedListener(new SpinnerSelectedListener());
+		spinner.setVisibility(View.VISIBLE);
+	}
+
+
+
 	class SpinnerSelectedListener implements OnItemSelectedListener{
 		public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
-			Log.i(LOG_TAG,"onItemSelected()...");
+			Log.i(LOG_TAG,"--------------------Spinner.onItemSelected()...-----------------");
 			Log.i(LOG_TAG,"arg2="+String.valueOf(arg2));
 			
 			List<com.msxt.client.model.LoginSuccessResult.Examination> exams = succResult.getExaminations();
@@ -149,6 +166,7 @@ public class ExamStart extends BaseActivity {
 			Log.i(LOG_TAG, "examIdString:"+selectedExamId);
 			
 //			loadAnswerOfLasttime();
+			Log.i(LOG_TAG,"---------------------------End---------------------------------");
 		}
 		
 		public void onNothingSelected(AdapterView<?> arg0) {
@@ -177,14 +195,19 @@ public class ExamStart extends BaseActivity {
 	
 	    @Override
 	    protected void onPostExecute(String result) {
+	    	Log.i(LOG_TAG, "onPostExecute()...");
+	    	
 			progressDialog.dismiss();
 			if(STATUS.SUCCESS.equals(examResult.getStatus())){
+				
+				Log.i(LOG_TAG, "download exam successfully!");
 				
 				//clear Exam status and Exam record first
     			SPUtil.clearExamSP(sharedPreferences);
     			clearDB(mContext);
 				
-    			String examFileName = selectedExamId+".xml";
+    			String examFileName = FileUtil.EXAM_FILE_PREFIX + selectedExamId+ FileUtil.FILE_SUFFIX;
+    			
     			//save to SD card
     			FileUtil fu = new FileUtil();
         		fu.saveFile(SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences), examFileName, examResult.getSuccessMessage());
@@ -210,6 +233,8 @@ public class ExamStart extends BaseActivity {
 				}
 				
 				fQuestionType = fQuestion.getType();
+				
+				
 	
 				//move question
 				Intent intent = new Intent();
@@ -226,6 +251,8 @@ public class ExamStart extends BaseActivity {
 				}else{
 					ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Invalid qeustion type.");
 				}
+				
+				Log.i(LOG_TAG, "Start a New Exam!");
 				
 				SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_GOING, sharedPreferences);
 				

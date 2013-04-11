@@ -12,7 +12,8 @@ public class SPUtil {
 	public final static String CURRENT_USER_ID = "Current_User_Id";
 	public final static String CURRENT_USER_PWD = "Current_User_Pwd";
 	public final static String CURRENT_USER_HOME = "Current_User_Home";
-	public final static String CURRENT_LOGIN_FILE_NAME = "Current_Login_File";
+	public final static String CURRENT_USER_LOGIN_FILE_NAME = "Current_Login_File";
+	public final static String CURRENT_USER_EXAM_REMAINING_COUNT = "current_User_Exam_Remaining_Count";
 	
 	public final static String CURRENT_EXAM_FILE_NAME = "Current_Exam_File";
 	public final static String CURRENT_EXAM_STATUS = "Current_Exam_Status";
@@ -21,7 +22,7 @@ public class SPUtil {
 	public final static String CURRENT_EXAM_CATALOG = "ccIndex";
 	public final static String CURRENT_EXAM_INDEX_IN_CATA = "cqIndex";
 	public final static String CURRENT_EXAM_SUBMITTED_IDS = "Current_Exam_Submitted_Ids";
-	public final static String CURRENT_EXAM_REMAINING_COUNT = "Current_Exam_Remaining_Count";
+	
 	
 //	public final static String STATUS_LOGIN_NOT_START = "0";
 //	public final static String STATUS_START_NOT_TIMEOUT_NOT_SUBMIT = "1";
@@ -110,7 +111,8 @@ public class SPUtil {
     	editor.remove(SPUtil.CURRENT_USER_ID);
     	editor.remove(SPUtil.CURRENT_USER_PWD);
     	editor.remove(SPUtil.CURRENT_USER_HOME);
-    	editor.remove(SPUtil.CURRENT_LOGIN_FILE_NAME);
+    	editor.remove(SPUtil.CURRENT_USER_LOGIN_FILE_NAME);
+    	editor.remove(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT);
     	editor.commit();
 	}
 	
@@ -124,7 +126,6 @@ public class SPUtil {
     	editor.remove(SPUtil.CURRENT_EXAM_CATALOG);
     	editor.remove(SPUtil.CURRENT_EXAM_INDEX_IN_CATA);
     	editor.remove(SPUtil.CURRENT_EXAM_SUBMITTED_IDS);
-    	editor.remove(SPUtil.CURRENT_EXAM_REMAINING_COUNT);
     	editor.commit();
 	}
 	
