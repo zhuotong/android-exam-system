@@ -224,11 +224,6 @@ public class LoginActivity extends BaseActivity {
     		        	String conversation = root.getElementsByTagName( "conversation" ).item(0).getTextContent();
     		        	proxy.setConversationId( conversation );
     		        	
-//    		        	//clear last exam
-//    		        	SPUtil.clearExamSP(sharedPreferences);
-//    		        	//clear last exam progress
-//    		        	clearDB(mContext);
-    		        	
     		        	//exam ready but not start
     		        	go2ExamStart(mContext);
     		        	SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_NOT_START, sharedPreferences);

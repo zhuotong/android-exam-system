@@ -569,49 +569,6 @@ public class BaseQuestion extends BaseActivity{
 		}
 
 	}
-	
-	
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-		Log.i(LOG_TAG, "------------------------------onDestroy()---------------------------------");
-	}
-
-	@Override
-	protected void onPause() {
-		// TODO Auto-generated method stub
-		super.onPause();
-	}
-
-	@Override
-	protected void onRestart() {
-		// TODO Auto-generated method stub
-		super.onRestart();
-		Log.i(LOG_TAG, "------------------------------onRestart()---------------------------------");
-	}
-
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		
-		Log.i(LOG_TAG, "------------------------------onResume()---------------------------------");
-	}
-
-	@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-		Log.i(LOG_TAG, "------------------------------onStart()---------------------------------");
-	}
-
-	@Override
-	protected void onStop() {
-		// TODO Auto-generated method stub
-		super.onStop();
-		Log.i(LOG_TAG, "------------------------------onStop()---------------------------------");
-	}
 
 	//----------------------------------define popupWindow-----------------------------
 	protected PopupWindow popupWindow;
