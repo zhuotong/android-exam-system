@@ -80,46 +80,4 @@ public class CandidateInfoBase extends BaseActivity {
         }  
     };
 	
-	@Override
-	protected void onDestroy() {
-		Log.i(LOG_TAG,"onDestroy()...");
-		super.onDestroy();
-	}
-
-	@Override
-	protected void onPause() {
-		Log.i(LOG_TAG,"onPause()...");
-		super.onPause();
-	}
-
-	@Override
-	protected void onRestart() {
-		Log.i(LOG_TAG,"onRestart()...");
-		super.onRestart();
-	}
-
-	@Override
-	protected void onResume() {
-		Log.i(LOG_TAG,"onResume()...");
-		super.onResume();
-	}
-
-	@Override
-	protected void onStart() {
-		Log.i(LOG_TAG,"onStart()...");
-		super.onStart();
-	}
-
-	@Override
-	protected void onStop() {
-		Log.i(LOG_TAG,"onStop()...");
-		super.onStop();
-	}
-	
-	@Override
-	public void finish() {
-		Log.i(LOG_TAG,"finish()...");
-		super.finish();
-	}
-
 }
