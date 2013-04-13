@@ -197,7 +197,7 @@ public class LoginActivity extends BaseActivity {
         		
         		//define login result file name
 //        		LOGIN_RESULT_FILE = idEt.getText().toString() + TimeDateUtil.getCurrentDate() + ".xml";
-        		String loginResultFile = FileUtil.LOGIN_FILE_PREFIX + TimeDateUtil.getCurrentDate()+FileUtil.FILE_SUFFIX;
+        		String loginResultFile = FileUtil.LOGIN_FILE_PREFIX + TimeDateUtil.getCurrentDate()+FileUtil.FILE_SUFFIX_XML;
         		
         		//save login file
         		FileUtil fu = new FileUtil();

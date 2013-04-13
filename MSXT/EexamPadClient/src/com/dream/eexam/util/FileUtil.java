@@ -13,8 +13,10 @@ public class FileUtil {
 	public final static String LOGIN_FILE_PREFIX = "Login_";
 	public final static String EXAM_FILE_PREFIX = "Exam_";
 	public final static String RESULT_FILE_PREFIX = "Result_";
+	public final static String ANSWER_FILE_PREFIX = "Answer_";
 	
-	public final static String FILE_SUFFIX = ".xml";
+	public final static String FILE_SUFFIX_XML = ".xml";
+	public final static String FILE_SUFFIX_TXT = ".txt";
 	
 	public static FileInputStream getExamStream(String filePath,String fileName){
 		Log.i(LOG_TAG, "getExamStream()...");

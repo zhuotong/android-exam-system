@@ -207,13 +207,15 @@ public class MultiChoices extends BaseQuestion {
 		});        	
 
         //set remaining time
-		StringBuffer timeSB = new StringBuffer();
-		if(lMinutes<10) timeSB.append("0");
-		timeSB.append(String.valueOf(lMinutes));
-		timeSB.append(String.valueOf(":"));
-		if(lSeconds<10) timeSB.append("0");
-		timeSB.append(String.valueOf(lSeconds));
-		remainingTime.setText(timeSB.toString());
+//		StringBuffer timeSB = new StringBuffer();
+//		if(lMinutes<10) timeSB.append("0");
+//		timeSB.append(String.valueOf(lMinutes));
+//		timeSB.append(String.valueOf(":"));
+//		if(lSeconds<10) timeSB.append("0");
+//		timeSB.append(String.valueOf(lSeconds));
+//		remainingTime.setText(timeSB.toString());
+		
+		setRemainingTime();
 		
 		//set completedSeekBar
 		int per = 100 * examAnsweredQuestionSum/examQuestionSum;
@@ -456,7 +458,7 @@ public class MultiChoices extends BaseQuestion {
         	
         	if( submitResult!=null && submitResult.getStatus() == STATUS.SUCCESS ) {
         		
-           		String resultFileName = FileUtil.RESULT_FILE_PREFIX + exam.getId() + FileUtil.FILE_SUFFIX;
+           		String resultFileName = FileUtil.RESULT_FILE_PREFIX + exam.getId() + FileUtil.FILE_SUFFIX_XML;
         		Log.i(LOG_TAG, "resultFileName: " + resultFileName);
         		
     			FileUtil fu = new FileUtil();

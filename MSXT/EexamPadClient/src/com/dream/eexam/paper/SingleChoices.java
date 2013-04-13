@@ -62,7 +62,6 @@ public class SingleChoices extends BaseQuestion {
 		catalogsTL = (TableLayout)findViewById(R.id.catalogsTL);
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
 		imgDownArrow = (ImageView) findViewById(R.id.imgDownArrow);
-		
     	pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);//TextView[Pending([count])]
 		remainingTime = (TextView)findViewById(R.id.remainingTime);//TextView[Time Value]
 		submitTV = (TextView)findViewById(R.id.submitTV);
@@ -265,8 +264,20 @@ public class SingleChoices extends BaseQuestion {
 			}
 		});   		
 		
-		//set exam header(Center)
-		remainingTime.setText(String.valueOf(exam.getTime())+" mins");
+//		//set exam header(Center)
+//		remainingTime.setText(String.valueOf(exam.getTime())+" mins");
+//		
+//        //set remaining time
+//		StringBuffer timeSB = new StringBuffer();
+//		if(lMinutes<10) timeSB.append("0");
+//		timeSB.append(String.valueOf(lMinutes));
+//		timeSB.append(String.valueOf(":"));
+//		if(lSeconds<10) timeSB.append("0");
+//		timeSB.append(String.valueOf(lSeconds));
+//		remainingTime.setText(timeSB.toString());
+		
+		//set remaining time
+		setRemainingTime();
 		
 		//set completedSeekBar
 		int per = 100 * examAnsweredQuestionSum/examQuestionSum;
@@ -514,7 +525,7 @@ public class SingleChoices extends BaseQuestion {
 
         	if(submitResult!= null && submitResult.getStatus() == STATUS.SUCCESS ) {
         		
-        		String resultFileName = FileUtil.RESULT_FILE_PREFIX + exam.getId() + FileUtil.FILE_SUFFIX;
+        		String resultFileName = FileUtil.RESULT_FILE_PREFIX + exam.getId() + FileUtil.FILE_SUFFIX_XML;
         		Log.i(LOG_TAG, "resultFileName: " + resultFileName);
         		
     			FileUtil fu = new FileUtil();

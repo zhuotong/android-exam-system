@@ -211,7 +211,7 @@ public class ExamStart extends BaseActivity {
     			SPUtil.clearExamSP(sharedPreferences);
     			clearDB(mContext);
 				
-    			String examFileName = FileUtil.EXAM_FILE_PREFIX + selectedExamId+ FileUtil.FILE_SUFFIX;
+    			String examFileName = FileUtil.EXAM_FILE_PREFIX + selectedExamId+ FileUtil.FILE_SUFFIX_XML;
     			
     			//save to SD card
     			FileUtil fu = new FileUtil();

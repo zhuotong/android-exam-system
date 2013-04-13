@@ -90,13 +90,13 @@ public class PendQuestions extends BaseQuestion {
     	
     	backArrow.setVisibility(View.INVISIBLE);
 		pendQueNumber.setVisibility(View.INVISIBLE);
-		StringBuffer timeSB = new StringBuffer();
-		if(lMinutes<10) timeSB.append("0");
-		timeSB.append(String.valueOf(lMinutes));
-		timeSB.append(String.valueOf(":"));
-		if(lSeconds<10) timeSB.append("0");
-		timeSB.append(String.valueOf(lSeconds));
-		remainingTime.setText(timeSB.toString());
+//		StringBuffer timeSB = new StringBuffer();
+//		if(lMinutes<10) timeSB.append("0");
+//		timeSB.append(String.valueOf(lMinutes));
+//		timeSB.append(String.valueOf(":"));
+//		if(lSeconds<10) timeSB.append("0");
+//		timeSB.append(String.valueOf(lSeconds));
+		setRemainingTime();
 		
 		//set completedSeekBar
 		int per = 100 * examAnsweredQuestionSum/examQuestionSum;

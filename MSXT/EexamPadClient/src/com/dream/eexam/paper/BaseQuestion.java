@@ -15,10 +15,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -36,16 +39,15 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
-
 import com.dream.eexam.adapter.CatalogAdapter;
 import com.dream.eexam.base.BaseActivity;
 import com.dream.eexam.base.R;
-import com.dream.eexam.base.ResultActivity;
 import com.dream.eexam.model.CatalogInfo;
 import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.FileUtil;
 import com.dream.eexam.util.SPUtil;
+import com.dream.eexam.util.TimeDateUtil;
 import com.msxt.client.model.Examination;
 import com.msxt.client.model.SubmitSuccessResult;
 import com.msxt.client.model.Examination.Catalog;
@@ -116,8 +118,8 @@ public class BaseQuestion extends BaseActivity{
 	protected List<CatalogInfo> catalogInfos = new ArrayList<CatalogInfo>();
 	protected TimerTask  timerTask;
 	protected Timer timer;
-	protected Integer lMinutes = 0;
-	protected Integer lSeconds = 0;
+//	protected Integer lMinutes = 0;
+//	protected Integer lSeconds = 0;
 	
     public void loadDownLoadExam(DatabaseUtil dbUtil){
     	Log.i(LOG_TAG, "loadDownLoadExam()...");
@@ -258,82 +260,120 @@ public class BaseQuestion extends BaseActivity{
 		timer.schedule(timerTask,0,1000);
 		
 		// load count down time(MM:SS)
-		setLoadCDTime();
+//		setLoadCDTime();
 		
 		//save catalog and question cursor to local SharedPreferences
 		saveccIndexcqIndex(cCatalogIndex,cQuestionIndex);
 		
 	}
 	
-	//set load countdown time
-	protected void setLoadCDTime(){
-		long currentTime = Calendar.getInstance().getTimeInMillis();
-		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
-		long starttime = sharedPreferences.getLong(SPUtil.CURRENT_EXAM_START_TIME, 0);
-		long cosumeTime = (currentTime - starttime)/1000;//second
-	    long examTime = exam.getTime() * 60;//second
-	    
-	    //time out
-	    if(cosumeTime>examTime){
-	    	ShowDialog(mContext.getResources().getString(R.string.dialog_note),
-	    			"Exam Time Out!");
-	    	
-	    	//todo, submit answer
-//	    	new SubmitAnswerTask().execute(exam.getId());
-	    }else{
-	    	long leftTime = examTime - cosumeTime;
-	    	lMinutes = Integer.valueOf((int)(leftTime/60));
-	    	lSeconds = Integer.valueOf((int)(leftTime - lMinutes * 60));
-	    }
-	}
-	
 	protected Result submitExam(String examId){
+		Result submitResult = null;
 		ServerProxy proxy =  WebServerProxy.Factroy.getCurrrentInstance();
-    	DatabaseUtil dbUtil = new DatabaseUtil(mContext);
-    	dbUtil.open();
-    	Map<String, String> answers =  getAllAnswers(dbUtil);
-    	dbUtil.close();
-		Result submitResult = proxy.submitAnswer(examId,answers);
+		DatabaseUtil dbUtil = new DatabaseUtil(mContext);
+		dbUtil.open();
+		Map<String, String> answers =  getAllAnswers(dbUtil);
+		dbUtil.close();
+		submitResult = proxy.submitAnswer(examId,answers);
 		return submitResult;
 	}
 	
 	class SubmitAnswerTask extends AsyncTask<String, Void, String> {
 		Result submitResult;
+		String examId;
+    	ProgressDialog progressDialog;
 		
     	@Override
     	protected void onPreExecute() {
+    		Log.i(LOG_TAG, "onPreExecute()...");
     		Toast.makeText(mContext, "Exam time out, system will auto submit!", Toast.LENGTH_LONG).show();
+    		String displayMessage =  mContext.getResources().getString(R.string.msg_submiting);
+    		progressDialog = ProgressDialog.show(mContext, null, displayMessage, true, true);
     	}
     	
 		@Override
 		protected String doInBackground(String... arg0) {
-			submitResult = submitExam(arg0[0]);
+			Log.i(LOG_TAG, "doInBackground()...");
+			examId = arg0[0];
+			try {
+				submitResult = submitExam(examId);
+			} catch (Exception e) {
+				Log.i(LOG_TAG, e.getMessage());
+				progressDialog.cancel();
+//				progressDialog.dismiss();
+				
+			}
 			return null;
 		}
 		
         @Override
         protected void onPostExecute(String result) {
-        	if( submitResult.getStatus() == STATUS.ERROR ) {//save answer to local 
+        	Log.i(LOG_TAG, "onPostExecute()...");
+        	
+        	progressDialog.cancel();
+        	
+        	if( submitResult!=null && submitResult.getStatus() == STATUS.SUCCESS ) {
+        		timer.cancel();
+        		timerTask.cancel();
+        		
+        		Log.i(LOG_TAG, "Answer Submitted Successfully!");
+        		//save Exam Status
+        		saveExamStatusAfterSubmittedSuccess(submitResult);
+        		//move question
+        		go2ExamResult(mContext);
+        	}else{
         		DatabaseUtil dbUtil = new DatabaseUtil(mContext);
             	dbUtil.open();
             	Map<String, String> answers =  getAllAnswers(dbUtil);
             	dbUtil.close();
             	String path = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
 			    String examid = exam.getId();
-				saveAnswer2Local(answers,path,examid);
-				Toast.makeText(mContext, "Fail to submit to server, save answers to local!", Toast.LENGTH_LONG).show();
-        	} else{
-        		SubmitSuccessResult succResult = DataParseUtil.getSubmitSuccessResult(submitResult);
-        		//Save Exam Score to sharedPreferences
-        		SPUtil.save2SP(SPUtil.CURRENT_EXAM_SCORE, String.valueOf(succResult.getScore()), sharedPreferences);
-				//move question
-				Intent intent = new Intent();
-				intent.setClass( getBaseContext(), ResultActivity.class);
+			    saveAnswer2Local(answers,path,examid);
+			    saveExamStatusAfterSubmittedLocal();
         	}
         	
-        	SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_PENDING_NEW, sharedPreferences);
+
         }
 		
+	}
+	
+	public void saveExamStatusAfterSubmittedSuccess(Result submitResult){
+   		String resultFileName = FileUtil.RESULT_FILE_PREFIX + exam.getId() + FileUtil.FILE_SUFFIX_XML;
+		Log.i(LOG_TAG, "resultFileName: " + resultFileName);
+		FileUtil fu = new FileUtil();
+		fu.saveFile(SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences), resultFileName, submitResult.getSuccessMessage());
+		SubmitSuccessResult succResult = DataParseUtil.getSubmitSuccessResult(submitResult);
+		//Save Exam Score to sharedPreferences
+		Log.i(LOG_TAG, "Exam " + exam.getId() + " Submitted Successfully!");
+		//Save Update Exam Remaining Count to sharedPreferences
+		String examCountBefore = SPUtil.getFromSP(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT, sharedPreferences);
+		Log.i(LOG_TAG, "Exam Count Before Submitted: " +  examCountBefore);
+		int remainingExamCount = Integer.valueOf(examCountBefore);
+		SPUtil.save2SP(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT, String.valueOf(remainingExamCount-1), sharedPreferences);
+		String examCountAfter = SPUtil.getFromSP(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT, sharedPreferences);
+		Log.i(LOG_TAG, "Exam Count After Submitted: " +  examCountAfter);
+		//Save Update Exam Submitted IDs to sharedPreferences
+		SPUtil.append2SP(SPUtil.CURRENT_EXAM_SUBMITTED_IDS, exam.getId(), sharedPreferences);
+		//Save Exam Score to sharedPreferences
+		SPUtil.save2SP(SPUtil.CURRENT_EXAM_SCORE, String.valueOf(succResult.getScore()), sharedPreferences);
+		//Save Exam Status
+		SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_PENDING_NEW, sharedPreferences);
+	}
+	
+	public void saveExamStatusAfterSubmittedLocal(){
+		//Save Exam Score to sharedPreferences
+		Log.i(LOG_TAG, "Exam " + exam.getId() + " Submitted Local!");
+		//Save Update Exam Remaining Count to sharedPreferences
+		String examCountBefore = SPUtil.getFromSP(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT, sharedPreferences);
+		Log.i(LOG_TAG, "Exam Count Before Submitted: " +  examCountBefore);
+		int remainingExamCount = Integer.valueOf(examCountBefore);
+		SPUtil.save2SP(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT, String.valueOf(remainingExamCount-1), sharedPreferences);
+		String examCountAfter = SPUtil.getFromSP(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT, sharedPreferences);
+		Log.i(LOG_TAG, "Exam Count After Submitted: " +  examCountAfter);
+		//Save Update Exam Submitted IDs to sharedPreferences
+		SPUtil.append2SP(SPUtil.CURRENT_EXAM_SUBMITTED_IDS, exam.getId(), sharedPreferences);
+		//Save Exam Status
+		SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_PENDING_NEW, sharedPreferences);
 	}
 	
 	/**
@@ -348,55 +388,6 @@ public class BaseQuestion extends BaseActivity{
 		Log.i(LOG_TAG,"saveccIndexcqIndex()...");
 		Log.i(LOG_TAG,"ccIndex="+String.valueOf(ccIndex));
 		Log.i(LOG_TAG,"cqIndex="+String.valueOf(cqIndex));
-	}
-	
-	protected void setCountDownTime() {
-		if (lMinutes == 0) {
-			if (lSeconds == 0) {
-				remainingTime.setText("Time out !");
-				
-				//todo something
-				if (timer != null) {
-					timer.cancel();
-					timer = null;
-				}
-				if (timerTask != null) {
-					timerTask = null;
-				}
-			}else {
-				lSeconds--;
-				if (lSeconds >= 10) {
-					remainingTime.setText("0"+lMinutes + ":" + lSeconds);
-				}else {
-					remainingTime.setText("0"+lMinutes + ":0" + lSeconds);
-				}
-			}
-		}else {
-			if (lSeconds == 0) {
-				lSeconds =59;
-				lMinutes--;
-				if (lMinutes >= 10) {
-					remainingTime.setText(lMinutes + ":" + lSeconds);
-				}else {
-					remainingTime.setText("0"+lMinutes + ":" + lSeconds);
-				}
-			}else {
-				lSeconds--;
-				if (lSeconds >= 10) {
-					if (lMinutes >= 10) {
-						remainingTime.setText(lMinutes + ":" + lSeconds);
-					}else {
-						remainingTime.setText("0"+lMinutes + ":" + lSeconds);
-					}
-				}else {
-					if (lMinutes >= 10) {
-						remainingTime.setText(lMinutes + ":0" + lSeconds);
-					}else {
-						remainingTime.setText("0"+lMinutes + ":0" + lSeconds);
-					}
-				}
-			}
-		}
 	}
 	
 	public void updateAllData(){
@@ -420,14 +411,6 @@ public class BaseQuestion extends BaseActivity{
 		completedSeekBar.setProgress(per);
 		completedSeekBar.setEnabled(false);
 		
-/*		TypedArray colors = getResources().obtainTypedArray(R.array.completed_seekbar_colors);
-		switch (per/25){
-		case 0:completedSeekBar.setBackgroundColor(colors.getColor(0, 0));break;
-		case 1:completedSeekBar.setBackgroundColor(colors.getColor(1, 0));break;
-		case 2:completedSeekBar.setBackgroundColor(colors.getColor(2, 0));break;
-		case 3:completedSeekBar.setBackgroundColor(colors.getColor(3, 0));break;
-		}*/
-		
 		//set exam progress text
 		completedPercentage.setText(String.valueOf(per)+"%");
 		
@@ -445,15 +428,50 @@ public class BaseQuestion extends BaseActivity{
 		Log.i(LOG_TAG, "updateAllData().");
 	}
 	
-
+	
 	protected Handler handler = new Handler(){
 		public void handleMessage(Message msg) {
 			switch(msg.what){
-				case 0:setCountDownTime();break;
+				case 0:setRemainingTime();break;
 				case 1:updateAllData();break;
 			}
 		}
 	};
+
+	protected String getRemainingTime(){
+		Log.i(LOG_TAG, "getRemainingTime()...");
+		
+		long startTime = SPUtil.getLongFromSP(SPUtil.CURRENT_EXAM_START_TIME, sharedPreferences);
+		Log.i(LOG_TAG, "startTime:"+String.valueOf(startTime));
+		
+		long currentTime = Calendar.getInstance().getTimeInMillis();
+		Log.i(LOG_TAG, "currentTime:"+String.valueOf(currentTime));
+		
+		long cosumeTime = TimeDateUtil.getTimeInterval(currentTime,startTime);
+		Log.i(LOG_TAG, "cosumeTime:"+String.valueOf(cosumeTime));
+		
+		long examTime = exam.getTime() * 60;//second
+		Log.i(LOG_TAG, "examTime:"+String.valueOf(examTime));
+		
+		if(cosumeTime<examTime){
+			return TimeDateUtil.getRemainingTime(examTime-cosumeTime);
+		}else{
+			return null;
+		}
+		
+	}
+	
+	protected void setRemainingTime(){
+		Log.i(LOG_TAG, "setRemainingTime()...");
+		String rTimeStr = getRemainingTime();
+		
+		if(rTimeStr!=null){
+			Log.i(LOG_TAG, "rTimeStr():"+rTimeStr);
+			remainingTime.setText(rTimeStr);
+		}else{
+			new SubmitAnswerTask().execute(exam.getId());
+		}
+	}
 	
     //go to new question page
     public void gotoNewQuestion(Context context,int cid, int qid, int diret){
@@ -560,7 +578,7 @@ public class BaseQuestion extends BaseActivity{
 
 		FileOutputStream foutput;
 		try {
-			foutput = new FileOutputStream(path + File.separator + examId+ "_answer.txt");
+			foutput = new FileOutputStream(path + File.separator + FileUtil.ANSWER_FILE_PREFIX + examId + FileUtil.FILE_SUFFIX_TXT);
 			foutput.write(content.toString().getBytes());
 		} catch (FileNotFoundException e) {
 			Log.e(LOG_TAG, e.getMessage());
