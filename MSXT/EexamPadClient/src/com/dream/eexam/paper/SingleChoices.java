@@ -558,6 +558,9 @@ public class SingleChoices extends BaseQuestion {
 				//move question
         		go2ExamResult(mContext);
         		
+        		timerTask.cancel();
+        		timer.cancel();
+        		
         	}else {
     			
     			//save answer to local
@@ -572,6 +575,9 @@ public class SingleChoices extends BaseQuestion {
     									saveAnswer2Local(answers,path,examid);
     									
     									SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_PENDING_NEW, sharedPreferences);
+    									
+    					        		timerTask.cancel();
+    					        		timer.cancel();
     								}
     							})
     					.setNegativeButton(mContext.getResources().getString(R.string.warning_save_answer_local_cancel),
@@ -586,4 +592,18 @@ public class SingleChoices extends BaseQuestion {
         }
         
     }
+
+	@Override
+	void setRemainingTime() {
+		Log.i(LOG_TAG, "setRemainingTime()...");
+		String rTimeStr = getRemainingTime();
+		
+		if(rTimeStr!=null){
+			Log.i(LOG_TAG, "rTimeStr():"+rTimeStr);
+			remainingTime.setText(rTimeStr);
+		}else{
+			new SubmitAnswerTask().execute(exam.getId());
+		}
+		
+	}
 }

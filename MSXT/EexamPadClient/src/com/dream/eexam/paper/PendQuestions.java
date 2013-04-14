@@ -186,4 +186,10 @@ public class PendQuestions extends BaseQuestion {
     static class ViewHolder{
     	Button questionBtn;
     }
+
+	@Override
+	void setRemainingTime() {
+		// TODO Auto-generated method stub
+		
+	}
 }

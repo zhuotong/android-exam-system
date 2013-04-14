@@ -25,8 +25,8 @@ public class TimeDateUtil {
 	public static String getRemainingTime(long leftTime){
     	Integer lMinutes = Integer.valueOf((int)(leftTime/60));
     	Integer lSeconds = Integer.valueOf((int)(leftTime - lMinutes * 60));
-    	String lMinutesStr = lMinutes>10 ? String.valueOf(lMinutes):("0"+String.valueOf(lMinutes));
-    	String lSecondsStr = lSeconds>10 ? String.valueOf(lSeconds):("0"+String.valueOf(lSeconds));
+    	String lMinutesStr = lMinutes>=10 ? String.valueOf(lMinutes):("0"+String.valueOf(lMinutes));
+    	String lSecondsStr = lSeconds>=10 ? String.valueOf(lSeconds):("0"+String.valueOf(lSeconds));
     	return lMinutesStr+":"+lSecondsStr;
 	}
 	

@@ -34,7 +34,6 @@ import android.widget.SeekBar;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.dream.eexam.base.R;
-import com.dream.eexam.base.ResultActivity;
 import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.FileUtil;
@@ -206,15 +205,6 @@ public class MultiChoices extends BaseQuestion {
 			}
 		});        	
 
-        //set remaining time
-//		StringBuffer timeSB = new StringBuffer();
-//		if(lMinutes<10) timeSB.append("0");
-//		timeSB.append(String.valueOf(lMinutes));
-//		timeSB.append(String.valueOf(":"));
-//		if(lSeconds<10) timeSB.append("0");
-//		timeSB.append(String.valueOf(lSeconds));
-//		remainingTime.setText(timeSB.toString());
-		
 		setRemainingTime();
 		
 		//set completedSeekBar
@@ -505,6 +495,8 @@ public class MultiChoices extends BaseQuestion {
     									saveAnswer2Local(answers,path,examid);
     									
     									SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_PENDING_NEW, sharedPreferences);
+    									
+    					        		
     								}
     							})
     					.setNegativeButton(mContext.getResources().getString(R.string.warning_save_answer_local_cancel),
@@ -518,6 +510,26 @@ public class MultiChoices extends BaseQuestion {
         	} 
         }
     }
+
+	@Override
+	void setRemainingTime() {
+		Log.i(LOG_TAG, "setRemainingTime()...");
+		String rTimeStr = getRemainingTime();
+		
+		if(rTimeStr!=null){
+			Log.i(LOG_TAG, "rTimeStr():"+rTimeStr);
+			remainingTime.setText(rTimeStr);
+		}else{
+			Log.i(LOG_TAG, "Time Out!");
+			remainingTime.setText("Time Out!");
+			
+			timerTask.cancel();
+    		timer.cancel();
+    		
+    		new SubmitAnswerTask().execute(exam.getId());
+		}
+		
+	}
 
 
 

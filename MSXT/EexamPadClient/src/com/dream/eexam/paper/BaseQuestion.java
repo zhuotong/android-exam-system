@@ -15,15 +15,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -38,7 +34,6 @@ import android.widget.SeekBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Toast;
 import com.dream.eexam.adapter.CatalogAdapter;
 import com.dream.eexam.base.BaseActivity;
 import com.dream.eexam.base.R;
@@ -56,10 +51,9 @@ import com.msxt.client.model.Examination.Question;
 import com.msxt.client.model.QUESTION_TYPE;
 import com.msxt.client.server.ServerProxy;
 import com.msxt.client.server.ServerProxy.Result;
-import com.msxt.client.server.ServerProxy.STATUS;
 import com.msxt.client.server.WebServerProxy;
 
-public class BaseQuestion extends BaseActivity{
+public abstract class BaseQuestion extends BaseActivity{
 	
 	public final static String LOG_TAG = "BaseQuestion";
 	
@@ -278,17 +272,14 @@ public class BaseQuestion extends BaseActivity{
 		return submitResult;
 	}
 	
-	class SubmitAnswerTask extends AsyncTask<String, Void, String> {
+	/*class SubmitAnswerTask extends AsyncTask<String, Void, String> {
 		Result submitResult;
 		String examId;
-    	ProgressDialog progressDialog;
 		
     	@Override
     	protected void onPreExecute() {
     		Log.i(LOG_TAG, "onPreExecute()...");
     		Toast.makeText(mContext, "Exam time out, system will auto submit!", Toast.LENGTH_LONG).show();
-    		String displayMessage =  mContext.getResources().getString(R.string.msg_submiting);
-    		progressDialog = ProgressDialog.show(mContext, null, displayMessage, true, true);
     	}
     	
 		@Override
@@ -299,7 +290,7 @@ public class BaseQuestion extends BaseActivity{
 				submitResult = submitExam(examId);
 			} catch (Exception e) {
 				Log.i(LOG_TAG, e.getMessage());
-				progressDialog.cancel();
+//				progressDialog.cancel();
 //				progressDialog.dismiss();
 				
 			}
@@ -310,7 +301,7 @@ public class BaseQuestion extends BaseActivity{
         protected void onPostExecute(String result) {
         	Log.i(LOG_TAG, "onPostExecute()...");
         	
-        	progressDialog.cancel();
+//        	progressDialog.cancel();
         	
         	if( submitResult!=null && submitResult.getStatus() == STATUS.SUCCESS ) {
         		timer.cancel();
@@ -335,9 +326,9 @@ public class BaseQuestion extends BaseActivity{
 
         }
 		
-	}
+	}*/
 	
-	public void saveExamStatusAfterSubmittedSuccess(Result submitResult){
+/*	public void saveExamStatusAfterSubmittedSuccess(Result submitResult){
    		String resultFileName = FileUtil.RESULT_FILE_PREFIX + exam.getId() + FileUtil.FILE_SUFFIX_XML;
 		Log.i(LOG_TAG, "resultFileName: " + resultFileName);
 		FileUtil fu = new FileUtil();
@@ -358,9 +349,9 @@ public class BaseQuestion extends BaseActivity{
 		SPUtil.save2SP(SPUtil.CURRENT_EXAM_SCORE, String.valueOf(succResult.getScore()), sharedPreferences);
 		//Save Exam Status
 		SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_PENDING_NEW, sharedPreferences);
-	}
+	}*/
 	
-	public void saveExamStatusAfterSubmittedLocal(){
+/*	public void saveExamStatusAfterSubmittedLocal(){
 		//Save Exam Score to sharedPreferences
 		Log.i(LOG_TAG, "Exam " + exam.getId() + " Submitted Local!");
 		//Save Update Exam Remaining Count to sharedPreferences
@@ -374,7 +365,7 @@ public class BaseQuestion extends BaseActivity{
 		SPUtil.append2SP(SPUtil.CURRENT_EXAM_SUBMITTED_IDS, exam.getId(), sharedPreferences);
 		//Save Exam Status
 		SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_PENDING_NEW, sharedPreferences);
-	}
+	}*/
 	
 	/**
 	 * save question index you current view 
@@ -461,17 +452,7 @@ public class BaseQuestion extends BaseActivity{
 		
 	}
 	
-	protected void setRemainingTime(){
-		Log.i(LOG_TAG, "setRemainingTime()...");
-		String rTimeStr = getRemainingTime();
-		
-		if(rTimeStr!=null){
-			Log.i(LOG_TAG, "rTimeStr():"+rTimeStr);
-			remainingTime.setText(rTimeStr);
-		}else{
-			new SubmitAnswerTask().execute(exam.getId());
-		}
-	}
+	abstract void setRemainingTime();
 	
     //go to new question page
     public void gotoNewQuestion(Context context,int cid, int qid, int diret){
@@ -479,7 +460,6 @@ public class BaseQuestion extends BaseActivity{
 		Question newQuestion = DataParseUtil.getNewQuestionByCidQid(exam, cid, qid,diret);
 		
 		if(newQuestion!=null){
-//			String newQuestionType = newQuestion.getType();
 			QUESTION_TYPE newQuestionType = newQuestion.getType();
 			
 			if(newQuestionType!=null){
