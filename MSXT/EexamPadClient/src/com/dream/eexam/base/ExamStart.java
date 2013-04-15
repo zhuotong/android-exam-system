@@ -13,7 +13,6 @@ import com.dream.eexam.paper.SingleChoices;
 import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.util.FileUtil;
 import com.dream.eexam.util.SPUtil;
-import com.dream.eexam.util.TimeDateUtil;
 import com.msxt.client.model.Examination;
 import com.msxt.client.model.Examination.Question;
 import com.msxt.client.model.LoginSuccessResult;
@@ -148,7 +147,6 @@ public class ExamStart extends BaseActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		
 		spinner = (Spinner) findViewById(R.id.Spinner01);
 		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,examNames);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -163,14 +161,8 @@ public class ExamStart extends BaseActivity {
 		public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
 			Log.i(LOG_TAG,"--------------------Spinner.onItemSelected()...-----------------");
 			Log.i(LOG_TAG,"arg2="+String.valueOf(arg2));
-			
-//			List<com.msxt.client.model.LoginSuccessResult.Examination> exams = succResult.getExaminations();
-//			com.msxt.client.model.LoginSuccessResult.Examination exam = exams.get(arg2);
-//			examDesc.setText(exam.getDesc());
-			
 			selectedExamId = examIdsMap.get(arg2);
 			Log.i(LOG_TAG, "examIdString:"+selectedExamId);
-			
 			Log.i(LOG_TAG,"---------------------------End---------------------------------");
 		}
 		
@@ -283,15 +275,4 @@ public class ExamStart extends BaseActivity {
 		}
 	}
 	
-/*	public void loadAnswerOfLasttime(){
-		Log.i(LOG_TAG, "loadAnswerOfLasttime()...");
-    	DatabaseUtil dbUtil = new DatabaseUtil(this);
-    	dbUtil.open();
-    	Cursor cursor = dbUtil.fetchAllAnswers();
-    	while (cursor.moveToNext()) {
-			Log.i(LOG_TAG, "cid:" + cursor.getInt(0) + " qid:"+ cursor.getInt(1)+" qid_str:"+ cursor.getString(2) + " answer:" + cursor.getString(3));
-		}
-    	Log.i(LOG_TAG, "loadAnswerOfLasttime()...");
-    	dbUtil.close();
-	}*/
 }

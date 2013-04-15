@@ -49,6 +49,7 @@ public class ResultActivity extends BaseActivity {
 		continueBtn = (Button) this.findViewById(R.id.continueBtn);
 		if("0".equals(remainExamCount)){
 			continueBtn.setEnabled(false);
+			continueBtn.setBackgroundColor(R.drawable.button_disable);
 			
     		//Save Exam Status
     		SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_END, sharedPreferences);

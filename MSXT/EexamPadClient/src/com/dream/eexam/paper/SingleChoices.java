@@ -238,7 +238,7 @@ public class SingleChoices extends BaseQuestion {
     public void setFooter(){
     	//set preBtn
     	if(cQuestionIndexOfExam == 1){
-        	Drawable firstQuestion = getResources().getDrawable(R.drawable.first_question_64);
+        	Drawable firstQuestion = getResources().getDrawable(R.drawable.ic_first_question_64);
         	backArrow.setImageDrawable(firstQuestion);
         }else{
             backArrow.setOnClickListener(new View.OnClickListener() {
@@ -319,7 +319,7 @@ public class SingleChoices extends BaseQuestion {
 		
 		//set nextBtn
 		if(cQuestionIndexOfExam == examQuestionSum){
-        	Drawable lastQuestion = getResources().getDrawable(R.drawable.last_question_64);
+        	Drawable lastQuestion = getResources().getDrawable(R.drawable.ic_last_question_64);
         	nextArrow.setImageDrawable(lastQuestion);
         }else{
             nextArrow.setOnClickListener(new View.OnClickListener() {

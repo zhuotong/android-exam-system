@@ -22,7 +22,7 @@ public class SettingBase extends BaseActivity {
     }
 
 	protected void setFooter(Button button){
-		button.setBackgroundColor(R.drawable.bg_footer_button_select);
+		button.setBackgroundColor(R.drawable.button_title_select);
     }
 	
 	public void go2SettingServer(View view){

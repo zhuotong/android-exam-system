@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="85dp">
+    android:layout_height="85dp"
+    android:background="@drawable/footer_common">
 
     <TableLayout
             android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
 			android:layout_gravity="center_vertical|center_horizontal"
-			android:gravity="center_vertical|center_horizontal"
-			android:background="@drawable/bg_color_login_header_text_view">
-
+			android:gravity="center_vertical|center_horizontal">
 		<TableRow 
 		    android:layout_width="fill_parent"
 			android:layout_height="fill_parent">
 	    	
 	    	<ImageView android:id="@+id/backArrow"
-	    	    	android:src="@drawable/back_64"
+	    	    	android:src="@drawable/ic_back_64"
 			        android:layout_width="fill_parent" 
 					android:layout_height="fill_parent" 
 					android:layout_margin="5dp" 
@@ -101,7 +100,7 @@
 		        android:background="@drawable/tv_sys"/>
    		    
 	 	    <ImageView android:id="@+id/nextArrow"
-	    	    	android:src="@drawable/next_64"
+	    	    	android:src="@drawable/ic_next_64"
 			        android:layout_width="fill_parent" 
 					android:layout_height="fill_parent" 
 					android:layout_margin="5dp" 

@@ -68,7 +68,7 @@
 			android:layout_marginLeft="5dp"
 			android:textSize="22sp"
 			android:textColor="#000000"
-			android:background="@drawable/common_et">
+			android:background="@drawable/et_common">
 		</EditText> 
 		<Button android:id="@+id/saveHostBtn"
 			android:layout_width="fill_parent" 
@@ -76,7 +76,7 @@
 			android:layout_weight="1"
 			android:textSize="22sp"
 			android:textColor="#000000"
-			android:background="@drawable/common_button"
+			android:background="@drawable/button_common"
 			android:text="@string/label_btn_save">
 		</Button>         
    	</TableRow>
@@ -101,7 +101,7 @@
 			android:layout_marginLeft="5dp"
 			android:textSize="22sp"
 			android:textColor="#000000"
-			android:background="@drawable/common_et">
+			android:background="@drawable/et_common">
 		</EditText> 
 		<Button android:id="@+id/savePortBtn"
 			android:layout_width="fill_parent" 
@@ -109,7 +109,7 @@
 			android:layout_weight="1"
 			android:textSize="22sp"
 			android:textColor="#000000"
-			android:background="@drawable/common_button"
+			android:background="@drawable/button_common"
 			android:text="@string/label_btn_save">
 		</Button>         
    	</TableRow>
@@ -200,7 +200,7 @@
 			android:layout_height="50dp"
 			android:textSize="22sp"
 			android:textColor="#000000"
-			android:background="@drawable/common_button"
+			android:background="@drawable/button_common"
 			android:text="@string/label_btn_clear_history">
 		</Button>
    	</TableRow>	  	

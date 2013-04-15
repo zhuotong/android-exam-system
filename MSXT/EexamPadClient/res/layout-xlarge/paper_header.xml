@@ -2,26 +2,14 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="60dp" 
-    android:background="@drawable/bg_color_login_header">
+    android:background="@drawable/header_common">
 
-<!-- 	<TableRow android:layout_width="fill_parent"
-		android:layout_height="fill_parent"> -->
-<!--     	<TextView
-    	    android:id="@+id/homeTV"
-	        android:text="@string/msg_header_tv_home"
-	        android:layout_width="fill_parent"
-	        android:layout_height="fill_parent"
-	        android:gravity="center_vertical"
-	        android:paddingLeft="8dp"
-	        android:layout_weight="1"
-	        android:textColor="#FFFFFF"
-	        android:textSize="30sp"/> -->
 	   <ImageView android:id="@+id/imgHome"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center_vertical|left"
 	        android:paddingLeft="8dp"
-					android:src="@drawable/home_64"
+					android:src="@drawable/ic_home_64"
 					android:contentDescription="@string/msg_logo_desc">
 	   </ImageView>
 	   <TableLayout android:id="@+id/catalogsTL"
@@ -44,7 +32,7 @@
 			    <ImageView android:id="@+id/imgDownArrow"
 			        android:layout_width="wrap_content" 
 					android:layout_height="wrap_content" 
-					android:src="@drawable/down_arrow"
+					android:src="@drawable/ic_down_arrow"
 					android:contentDescription="@string/msg_logo_desc">
 				</ImageView>
    	    	</TableRow> 

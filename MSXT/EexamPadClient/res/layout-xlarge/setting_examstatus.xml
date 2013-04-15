@@ -41,7 +41,7 @@
 			android:layout_height="50dp"
 			android:textSize="22sp"
 			android:textColor="#000000"
-			android:background="@drawable/common_button"
+			android:background="@drawable/button_common"
 			android:text="@string/label_btn_clear_history">
 		</Button>
    	</TableRow>	
