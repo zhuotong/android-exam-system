@@ -165,7 +165,21 @@ public class MultiChoices extends BaseQuestion {
         
     }
     
-    public void setFooter(){
+    
+    @Override
+	protected void onDestroy() {
+		super.onDestroy();
+		
+		Log.i(LOG_TAG, "onDestroy()...");
+		if(timerTask!=null){
+			timerTask.cancel();
+		}
+		if(timer!=null){
+			timer.cancel();
+		}
+	}
+
+	public void setFooter(){
     	//set preBtn
     	
         if(cQuestionIndexOfExam == 1){
@@ -521,10 +535,12 @@ public class MultiChoices extends BaseQuestion {
 			remainingTime.setText(rTimeStr);
 		}else{
 			Log.i(LOG_TAG, "Time Out!");
-			remainingTime.setText("Time Out!");
-			
-			timerTask.cancel();
-    		timer.cancel();
+			if(timerTask!=null){
+				timerTask.cancel();
+			}
+			if(timer!=null){
+				timer.cancel();
+			}
     		
     		new SubmitAnswerTask().execute(exam.getId());
 		}

@@ -1,6 +1,5 @@
 package com.dream.eexam.paper;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +33,6 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import com.dream.eexam.base.R;
-import com.dream.eexam.base.ResultActivity;
 import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.FileUtil;
@@ -169,6 +167,19 @@ public class SingleChoices extends BaseQuestion {
         
     }
     
+    @Override
+	protected void onDestroy() {
+		super.onDestroy();
+		
+		Log.i(LOG_TAG, "onDestroy()...");
+		if(timerTask!=null){
+			timerTask.cancel();
+		}
+		if(timer!=null){
+			timer.cancel();
+		}
+	}
+    
     public void clearOldAnswer(){
     	Log.i(LOG_TAG, "clearOldAnswer()...");
     	
@@ -263,18 +274,6 @@ public class SingleChoices extends BaseQuestion {
 
 			}
 		});   		
-		
-//		//set exam header(Center)
-//		remainingTime.setText(String.valueOf(exam.getTime())+" mins");
-//		
-//        //set remaining time
-//		StringBuffer timeSB = new StringBuffer();
-//		if(lMinutes<10) timeSB.append("0");
-//		timeSB.append(String.valueOf(lMinutes));
-//		timeSB.append(String.valueOf(":"));
-//		if(lSeconds<10) timeSB.append("0");
-//		timeSB.append(String.valueOf(lSeconds));
-//		remainingTime.setText(timeSB.toString());
 		
 		//set remaining time
 		setRemainingTime();
@@ -558,8 +557,13 @@ public class SingleChoices extends BaseQuestion {
 				//move question
         		go2ExamResult(mContext);
         		
-        		timerTask.cancel();
-        		timer.cancel();
+        			
+//    			if(timerTask!=null){
+//    				timerTask.cancel();
+//    			}
+//    			if(timer!=null){
+//    				timer.cancel();
+//    			}
         		
         	}else {
     			
@@ -576,8 +580,9 @@ public class SingleChoices extends BaseQuestion {
     									
     									SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_PENDING_NEW, sharedPreferences);
     									
-    					        		timerTask.cancel();
-    					        		timer.cancel();
+    									go2ExamResult(mContext);
+//    					        		timerTask.cancel();
+//    					        		timer.cancel();
     								}
     							})
     					.setNegativeButton(mContext.getResources().getString(R.string.warning_save_answer_local_cancel),
@@ -602,6 +607,12 @@ public class SingleChoices extends BaseQuestion {
 			Log.i(LOG_TAG, "rTimeStr():"+rTimeStr);
 			remainingTime.setText(rTimeStr);
 		}else{
+			if(timerTask!=null){
+				timerTask.cancel();
+			}
+			if(timer!=null){
+				timer.cancel();
+			}
 			new SubmitAnswerTask().execute(exam.getId());
 		}
 		

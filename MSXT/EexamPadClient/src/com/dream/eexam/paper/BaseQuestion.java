@@ -44,7 +44,6 @@ import com.dream.eexam.util.FileUtil;
 import com.dream.eexam.util.SPUtil;
 import com.dream.eexam.util.TimeDateUtil;
 import com.msxt.client.model.Examination;
-import com.msxt.client.model.SubmitSuccessResult;
 import com.msxt.client.model.Examination.Catalog;
 import com.msxt.client.model.Examination.Choice;
 import com.msxt.client.model.Examination.Question;
