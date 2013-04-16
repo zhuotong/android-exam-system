@@ -23,15 +23,6 @@ public class SPUtil {
 	public final static String CURRENT_EXAM_CATALOG = "ccIndex";
 	public final static String CURRENT_EXAM_INDEX_IN_CATA = "cqIndex";
 	
-	
-	
-//	public final static String STATUS_LOGIN_NOT_START = "0";
-//	public final static String STATUS_START_NOT_TIMEOUT_NOT_SUBMIT = "1";
-//	public final static String STATUS_START_NOT_TIMEOUT_SUBMIT =  "2";
-//	public final static String STATUS_START_TIMEOUT_NOT_SUBMIT =  "3";
-//	public final static String STATUS_START_TIMEOUT_SUBMIT =  "4";
-//	public final static String STATUS_START_SUBMIT_LOCAL =  "5";
-
 	public final static int EXAM_STATUS_NOT_START = 1;
 	public final static int EXAM_STATUS_START_GOING = 2;
 	public final static int EXAM_STATUS_START_GOING_OBSOLETE =  3;

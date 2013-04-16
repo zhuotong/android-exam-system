@@ -35,7 +35,6 @@ import android.widget.EditText;
 public class LoginActivity extends BaseActivity {
 
 	public final static String LOG_TAG = "LoginActivity";
-//	public static String LOGIN_RESULT_FILE = FileUtil.LOGIN_FILE_PREFIX + TimeDateUtil.getCurrentDate()+FileUtil.FILE_SUFFIX;
 	
 	EditText idEt = null;
 	EditText passwordET = null;

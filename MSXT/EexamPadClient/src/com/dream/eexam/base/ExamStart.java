@@ -230,8 +230,6 @@ public class ExamStart extends BaseActivity {
 				}
 				
 				fQuestionType = fQuestion.getType();
-				
-				
 	
 				//move question
 				Intent intent = new Intent();
