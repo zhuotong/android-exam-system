@@ -18,7 +18,7 @@ public class SettingServer extends SettingBase {
 	EditText portET = null;
 	
 	Button saveHostBtn = null;
-	Button savePortBtn = null;
+	Button clearBtn = null;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,14 +44,14 @@ public class SettingServer extends SettingBase {
         portET.setText(savePort!=null?savePort:"");
 		
 		saveHostBtn = (Button) this.findViewById(R.id.saveBtn);
-		saveHostBtn.setOnClickListener(saveListener);
+		saveHostBtn.setOnClickListener(btnOnClickListener);
 
-		savePortBtn = (Button) this.findViewById(R.id.clearBtn);
-		savePortBtn.setOnClickListener(saveListener);
+		clearBtn = (Button) this.findViewById(R.id.clearBtn);
+		clearBtn.setOnClickListener(btnOnClickListener);
 
     }
     
-    View.OnClickListener saveListener = new View.OnClickListener() {  
+    View.OnClickListener btnOnClickListener = new View.OnClickListener() {  
         @Override  
         public void onClick(View v) {
         	switch(v.getId()){

@@ -227,8 +227,8 @@ public abstract class BaseQuestion extends BaseActivity{
 		
 		Bundle bundle = this.getIntent().getExtras();
 		cQuestionType  = bundle.getString("questionType");
-		cCatalogIndex  = Integer.valueOf(bundle.getString("ccIndex"));
-		cQuestionIndex  = Integer.valueOf(bundle.getString("cqIndex"));
+		cCatalogIndex  = Integer.valueOf(bundle.getString(SPUtil.CURRENT_EXAM_CATALOG));
+		cQuestionIndex  = Integer.valueOf(bundle.getString(SPUtil.CURRENT_EXAM_INDEX_IN_CATA));
 		
 		Log.i(LOG_TAG, "cQuestionIndex:" + String.valueOf(cQuestionIndex));
 		Log.i(LOG_TAG, "cCatalogIndex:" + String.valueOf(cCatalogIndex));
@@ -372,8 +372,8 @@ public abstract class BaseQuestion extends BaseActivity{
 	 */
 	public void saveccIndexcqIndex(Integer ccIndex,Integer cqIndex){
 		SharedPreferences.Editor editor = sharedPreferences.edit();
-		editor.putInt("ccIndex", ccIndex);  
-		editor.putInt("cqIndex", cqIndex); 
+		editor.putInt(SPUtil.CURRENT_EXAM_CATALOG, ccIndex);  
+		editor.putInt(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, cqIndex); 
 		editor.commit();
 		Log.i(LOG_TAG,"saveccIndexcqIndex()...");
 		Log.i(LOG_TAG,"ccIndex="+String.valueOf(ccIndex));
@@ -466,8 +466,8 @@ public abstract class BaseQuestion extends BaseActivity{
 				
 				//move question
 				Intent intent = new Intent();
-				intent.putExtra("ccIndex",String.valueOf(DataParseUtil.getCidByQid(exam, newQuestion.getId())));
-				intent.putExtra("cqIndex",String.valueOf(newQuestion.getIndex()));
+				intent.putExtra(SPUtil.CURRENT_EXAM_CATALOG,String.valueOf(DataParseUtil.getCidByQid(exam, newQuestion.getId())));
+				intent.putExtra(SPUtil.CURRENT_EXAM_INDEX_IN_CATA,String.valueOf(newQuestion.getIndex()));
 				
 				
 				if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(newQuestionType)){
@@ -638,8 +638,8 @@ public abstract class BaseQuestion extends BaseActivity{
 				Question nQuestion = DataParseUtil.getQuestionByCidQid(exam, info.getIndex(),1);
 				QUESTION_TYPE nQuestionType = nQuestion.getType();
 				Intent intent = new Intent();
-				intent.putExtra("ccIndex", String.valueOf(info.getIndex()));
-				intent.putExtra("cqIndex", String.valueOf(nQuestion.getIndex()));
+				intent.putExtra(SPUtil.CURRENT_EXAM_CATALOG, String.valueOf(info.getIndex()));
+				intent.putExtra(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, String.valueOf(nQuestion.getIndex()));
 				if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(nQuestionType)){
 					intent.putExtra("questionType", questionTypes[0]);
 					intent.setClass( mContext, MultiChoices.class);

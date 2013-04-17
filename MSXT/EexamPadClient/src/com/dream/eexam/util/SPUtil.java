@@ -1,5 +1,6 @@
 package com.dream.eexam.util;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import android.util.Log;
 public class SPUtil {
 	public final static String LOG_TAG = "SPUtil";
 	
+	//User Information
 	public final static String CURRENT_USER_ID = "Current_User_Id";
 	public final static String CURRENT_USER_PWD = "Current_User_Pwd";
 	public final static String CURRENT_USER_HOME = "Current_User_Home";
@@ -16,6 +18,7 @@ public class SPUtil {
 	public final static String CURRENT_USER_EXAM_REMAINING_COUNT = "Current_User_Exam_Remaining_Count";
 	public final static String CURRENT_EXAM_SUBMITTED_IDS = "Current_Exam_Submitted_Ids";
 	
+	//Exam Status and Progress
 	public final static String CURRENT_EXAM_FILE_NAME = "Current_Exam_File";
 	public final static String CURRENT_EXAM_STATUS = "Current_Exam_Status";
 	public final static String CURRENT_EXAM_START_TIME = "Current_Exam_Start_Time";
@@ -23,6 +26,7 @@ public class SPUtil {
 	public final static String CURRENT_EXAM_CATALOG = "ccIndex";
 	public final static String CURRENT_EXAM_INDEX_IN_CATA = "cqIndex";
 	
+	//Exam Status Values
 	public final static int EXAM_STATUS_NOT_START = 1;
 	public final static int EXAM_STATUS_START_GOING = 2;
 	public final static int EXAM_STATUS_START_GOING_OBSOLETE =  3;
@@ -157,6 +161,20 @@ public class SPUtil {
 		}
 		
 		return sb.toString();
+	}
+	
+	public static Map<String,String> getAllSPDataMap(SharedPreferences sp){
+		Log.i(LOG_TAG,"----------------getAllSPData-----------------");
+		Map<String,String> dataMap = new HashMap<String,String>();
+		Map<String, ?> dataInSP = sp.getAll();
+		Iterator it = dataInSP.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry entry = (Map.Entry) it.next();
+			Object key = entry.getKey();
+			Object value = entry.getValue();
+			dataMap.put(key.toString(), value.toString());
+		}
+		return dataMap;
 	}
 	
 }

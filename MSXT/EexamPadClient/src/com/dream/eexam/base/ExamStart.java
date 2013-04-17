@@ -67,7 +67,6 @@ public class ExamStart extends BaseActivity {
 	
 	QUESTION_TYPE fQuestionType = null;
 	String[] questionTypes;
-
 	
 	private void loadExamList(){
 		questionTypes = getResources().getStringArray(R.array.question_types);
@@ -113,7 +112,7 @@ public class ExamStart extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		Log.i(LOG_TAG,"onCreate()...");
 		mContext = getApplicationContext();
-		setContentView(R.layout.exam_list);
+		setContentView(R.layout.exam_start);
 		
 		imgHome = (ImageView) findViewById(R.id.imgHome);
 		imgHome.setOnClickListener(new View.OnClickListener() {
@@ -233,8 +232,8 @@ public class ExamStart extends BaseActivity {
 	
 				//move question
 				Intent intent = new Intent();
-				intent.putExtra("ccIndex", String.valueOf(ccIndex));
-				intent.putExtra("cqIndex", String.valueOf(cqIndex));
+				intent.putExtra(SPUtil.CURRENT_EXAM_CATALOG, String.valueOf(ccIndex));
+				intent.putExtra(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, String.valueOf(cqIndex));
 				if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(fQuestionType)){
 					intent.putExtra("questionType",questionTypes[0]);
 					intent.setClass( getBaseContext(), MultiChoices.class);

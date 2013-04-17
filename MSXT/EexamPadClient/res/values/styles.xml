@@ -30,4 +30,12 @@
        	<item name="android:textColor">#FFFFFF</item>
     </style>
     
+    <style name="button_grid_style">
+        <item name="android:layout_width">fill_parent</item>
+   		<item name="android:layout_height">120dp</item>
+   		<item name="android:background">@drawable/button_grid</item>
+   		<item name="android:layout_centerHorizontal">true</item>
+       	<item name="android:textSize">28sp</item>
+    </style>
+    
 </resources>

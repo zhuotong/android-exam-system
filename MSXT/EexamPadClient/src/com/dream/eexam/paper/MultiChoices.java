@@ -58,7 +58,7 @@ public class MultiChoices extends BaseQuestion {
 	List<String> listItemID = new ArrayList<String>();
 	Integer indexInExam;
 	
-	public void loadComponents(){
+	void loadComponents(){
 		imgHome = (ImageView) findViewById(R.id.imgHome);
 		catalogsTL = (TableLayout)findViewById(R.id.catalogsTL);
 		remainingTime = (TextView)findViewById(R.id.remainingTime);
@@ -72,7 +72,7 @@ public class MultiChoices extends BaseQuestion {
     	nextArrow = (ImageView)findViewById(R.id.nextArrow);
 	}
 	
-	public void setHeader(){
+	void setHeader(){
 		imgHome.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -165,7 +165,6 @@ public class MultiChoices extends BaseQuestion {
         
     }
     
-    
     @Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -179,7 +178,7 @@ public class MultiChoices extends BaseQuestion {
 		}
 	}
 
-	public void setFooter(){
+	void setFooter(){
     	//set preBtn
     	
         if(cQuestionIndexOfExam == 1){
@@ -202,8 +201,8 @@ public class MultiChoices extends BaseQuestion {
 			public void onClick(View v) {
 				if(pendQuestions.size()>0){
     				Intent intent = new Intent();
-    				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
-    				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
+    				intent.putExtra(SPUtil.CURRENT_EXAM_CATALOG, String.valueOf(cCatalogIndex));
+    				intent.putExtra(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, String.valueOf(cQuestionIndex));
     				intent.putExtra("questionType", cQuestionType);
     				if(questionTypes[0].equals(cQuestionType)){
     					intent.setClass( getBaseContext(), PendQuestions.class);
@@ -278,7 +277,6 @@ public class MultiChoices extends BaseQuestion {
 
     }
     
-    //save answer if not empty 
     public void move2NewQuestion(){
 		if (listItemID.size() == 0) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(MultiChoices.this);

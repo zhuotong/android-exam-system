@@ -2,7 +2,14 @@ package com.dream.eexam.paper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.SQLException;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,15 +25,22 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import com.dream.eexam.base.R;
 import com.dream.eexam.server.DataParseUtil;
+import com.dream.eexam.util.DatabaseUtil;
+import com.dream.eexam.util.FileUtil;
+import com.dream.eexam.util.SPUtil;
 import com.msxt.client.model.QUESTION_TYPE;
+import com.msxt.client.model.SubmitSuccessResult;
 import com.msxt.client.model.Examination.Question;
+import com.msxt.client.server.ServerProxy;
+import com.msxt.client.server.WebServerProxy;
+import com.msxt.client.server.ServerProxy.Result;
+import com.msxt.client.server.ServerProxy.STATUS;
 
 public class PendQuestions extends BaseQuestion {
 	
 	public final static String LOG_TAG = "PendQuestions";
 
 	GridView gridList;
-	
     String qType = null;
     String qid = null;
 	
@@ -35,7 +49,7 @@ public class PendQuestions extends BaseQuestion {
 	List<String> listItemID = new ArrayList<String>();
 	Integer indexInExam;
 	
-	public void loadComponents(){
+	void loadComponents(){
 		//header components
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
 		
@@ -52,7 +66,7 @@ public class PendQuestions extends BaseQuestion {
     	
 	}
 	
-	public void setHeader(){
+	void setHeader(){
         //set catalog bar(Center) 
 		catalogsTV.setText(String.valueOf(cCatalogIndex)+". "+
 				cCatalog.getDesc() + 
@@ -85,17 +99,24 @@ public class PendQuestions extends BaseQuestion {
         });
         setFooter();
     }
+ 
+    @Override
+	protected void onDestroy() {
+		super.onDestroy();
+		
+		Log.i(LOG_TAG, "onDestroy()...");
+		if(timerTask!=null){
+			timerTask.cancel();
+		}
+		if(timer!=null){
+			timer.cancel();
+		}
+	}
     
-    public void setFooter(){
-    	
+    void setFooter(){
     	backArrow.setVisibility(View.INVISIBLE);
 		pendQueNumber.setVisibility(View.INVISIBLE);
-//		StringBuffer timeSB = new StringBuffer();
-//		if(lMinutes<10) timeSB.append("0");
-//		timeSB.append(String.valueOf(lMinutes));
-//		timeSB.append(String.valueOf(":"));
-//		if(lSeconds<10) timeSB.append("0");
-//		timeSB.append(String.valueOf(lSeconds));
+		
 		setRemainingTime();
 		
 		//set completedSeekBar
@@ -162,8 +183,8 @@ public class PendQuestions extends BaseQuestion {
     	            
     				//move question
     				Intent intent = new Intent();
-    				intent.putExtra("ccIndex", String.valueOf(DataParseUtil.getCidByQid(exam, nQuestion.getId())));
-    				intent.putExtra("cqIndex", String.valueOf(nQuestion.getIndex()));
+    				intent.putExtra(SPUtil.CURRENT_EXAM_CATALOG, String.valueOf(DataParseUtil.getCidByQid(exam, nQuestion.getId())));
+    				intent.putExtra(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, String.valueOf(nQuestion.getIndex()));
     				
     				if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(nQuestion.getType())){
     					intent.putExtra("questionType", questionTypes[0]);
@@ -189,7 +210,132 @@ public class PendQuestions extends BaseQuestion {
 
 	@Override
 	void setRemainingTime() {
-		// TODO Auto-generated method stub
+		Log.i(LOG_TAG, "setRemainingTime()...");
+		String rTimeStr = getRemainingTime();
+		
+		if(rTimeStr!=null){
+			Log.i(LOG_TAG, "rTimeStr():"+rTimeStr);
+			remainingTime.setText(rTimeStr);
+		}else{
+			Log.i(LOG_TAG, "Time Out!");
+			if(timerTask!=null){
+				timerTask.cancel();
+			}
+			if(timer!=null){
+				timer.cancel();
+			}
+    		new SubmitAnswerTask().execute(exam.getId());
+		}
 		
 	}
+	
+	class SubmitAnswerTask extends AsyncTask<String, Void, String> {
+    	String examId;
+    	Map<String, String> answers;
+    	
+    	ProgressDialog progressDialog;
+    	ServerProxy proxy;
+    	Result submitResult;
+    	
+    	
+    	@Override
+    	protected void onPreExecute() {
+    		Log.i(LOG_TAG, "onPreExecute() called");
+    		String displayMessage =  mContext.getResources().getString(R.string.msg_submiting);
+    		progressDialog = ProgressDialog.show(PendQuestions.this, null, displayMessage, true, true);
+    	}
+    	
+        @Override
+		protected String doInBackground(String... urls) {
+        	Log.i(LOG_TAG, "doInBackground()...");
+        	
+        	examId = urls[0];
+        	
+        	try {
+				proxy =  WebServerProxy.Factroy.getCurrrentInstance();
+				DatabaseUtil dbUtil = new DatabaseUtil(mContext);
+				dbUtil.open();
+				answers =  getAllAnswers(dbUtil);
+				dbUtil.close();
+				
+				Log.i(LOG_TAG, "proxy.submitAnswer..."+examId);
+				submitResult = proxy.submitAnswer(examId,answers);
+			} catch (SQLException e) {
+				Log.i(LOG_TAG, e.getMessage());
+				progressDialog.dismiss();
+			}
+        	
+			return null;
+		}
+
+        @Override
+        protected void onPostExecute(String result) {
+        	progressDialog.dismiss();
+        	
+        	if( submitResult!=null && submitResult.getStatus() == STATUS.SUCCESS ) {
+        		
+        		//get result file name
+           		String resultFileName = FileUtil.RESULT_FILE_PREFIX + exam.getId() + FileUtil.FILE_SUFFIX_XML;
+        		Log.i(LOG_TAG, "resultFileName: " + resultFileName);
+        		
+        		//save submit result file
+    			FileUtil fu = new FileUtil();
+        		fu.saveFile(SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences), resultFileName, submitResult.getSuccessMessage());
+        		
+        		//parse submit success result 
+        		SubmitSuccessResult succResult = DataParseUtil.getSubmitSuccessResult(submitResult);
+        		
+        		Log.i(LOG_TAG, "Exam " + exam.getId() + " Submitted Successfully!");
+        		
+        		//Save Update Exam Remaining Count to sharedPreferences
+        		String examCountBefore = SPUtil.getFromSP(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT, sharedPreferences);
+        		Log.i(LOG_TAG, "Exam Count Before Submitted: " +  examCountBefore);
+        		
+        		int remainingExamCount = Integer.valueOf(examCountBefore);
+        		SPUtil.save2SP(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT, String.valueOf(remainingExamCount-1), sharedPreferences);
+        		
+        		String examCountAfter = SPUtil.getFromSP(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT, sharedPreferences);
+        		Log.i(LOG_TAG, "Exam Count After Submitted: " +  examCountAfter);
+        		
+        		//Save Update Exam Submitted IDs to sharedPreferences
+        		SPUtil.append2SP(SPUtil.CURRENT_EXAM_SUBMITTED_IDS, exam.getId(), sharedPreferences);
+        		
+        		//Save Exam Score to sharedPreferences
+        		SPUtil.save2SP(SPUtil.CURRENT_EXAM_SCORE, String.valueOf(succResult.getScore()), sharedPreferences);
+        		
+        		//Save Exam Status
+        		SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_PENDING_NEW, sharedPreferences);
+        		
+				//move question
+        		go2ExamResult(mContext);
+        		
+        	}else{
+    			
+    			//save answer to local
+    			AlertDialog.Builder builder = new AlertDialog.Builder(PendQuestions.this);
+    			builder.setMessage(mContext.getResources().getString(R.string.warning_save_answer_local))
+    					.setCancelable(false)
+    					.setPositiveButton(mContext.getResources().getString(R.string.warning_save_answer_local_yes),
+    							new DialogInterface.OnClickListener() {
+    								public void onClick(DialogInterface dialog,int id) {
+    									String path = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
+    								    String examid = exam.getId();
+    									saveAnswer2Local(answers,path,examid);
+    									
+    									SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_PENDING_NEW, sharedPreferences);
+    									
+    					        		
+    								}
+    							})
+    					.setNegativeButton(mContext.getResources().getString(R.string.warning_save_answer_local_cancel),
+    							new DialogInterface.OnClickListener() {
+    								public void onClick(DialogInterface dialog,int id) {
+    									dialog.cancel();
+    								}
+    							});
+    			builder.show();
+    			
+        	} 
+        }
+    }
 }

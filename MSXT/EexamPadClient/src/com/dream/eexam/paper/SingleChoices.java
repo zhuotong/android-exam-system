@@ -49,13 +49,12 @@ public class SingleChoices extends BaseQuestion {
 	public final static String LOG_TAG = "SingleChoices";
 	
 	//components statement
-	
 	TextView questionTV = null;
 	ListView listView;
 	MyListAdapter adapter;
 	List<String> listItemID = new ArrayList<String>();
 
-	public void initialComponents(){
+	void loadComponents(){
 		imgHome = (ImageView) findViewById(R.id.imgHome);
 		catalogsTL = (TableLayout)findViewById(R.id.catalogsTL);
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
@@ -69,7 +68,7 @@ public class SingleChoices extends BaseQuestion {
     	nextArrow = (ImageView)findViewById(R.id.nextArrow);
 	}
 	
-	public void setHeader(){
+	void setHeader(){
 		imgHome.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -113,7 +112,7 @@ public class SingleChoices extends BaseQuestion {
         setContentView(R.layout.paper_single_choices);
         mContext = getApplicationContext();
         
-        initialComponents();
+        loadComponents();
         setHeader();
         
 		String questionHint = "Q"
@@ -180,7 +179,7 @@ public class SingleChoices extends BaseQuestion {
 		}
 	}
     
-    public void clearOldAnswer(){
+    void clearOldAnswer(){
     	Log.i(LOG_TAG, "clearOldAnswer()...");
     	
 		listItemID.clear();
@@ -197,7 +196,7 @@ public class SingleChoices extends BaseQuestion {
 
     }
 
-    public void clearOldAnswer(int checkedIndex){
+    void clearOldAnswer(int checkedIndex){
     	Log.i(LOG_TAG, "clearOldAnswer()...");
     	
 		listItemID.clear();
@@ -221,7 +220,7 @@ public class SingleChoices extends BaseQuestion {
 
     }
     
-    public void setAnswer(int location,boolean isChecked){
+    void setAnswer(int location,boolean isChecked){
     	Log.i(LOG_TAG, "setAnswer()...");
     	String label = adapter.choices.get(location).getLabel();
     	if(isChecked){
@@ -235,7 +234,7 @@ public class SingleChoices extends BaseQuestion {
 		Log.i(LOG_TAG, "setAnswer().");
     }
     
-    public void setFooter(){
+    void setFooter(){
     	//set preBtn
     	if(cQuestionIndexOfExam == 1){
         	Drawable firstQuestion = getResources().getDrawable(R.drawable.ic_first_question_64);
@@ -245,7 +244,7 @@ public class SingleChoices extends BaseQuestion {
     			@Override
     			public void onClick(View v) {
     				moveDirect = -1;
-    				relocationQuestion();
+    				move2NewQuestion();
     			}
     		});       	
         }
@@ -257,8 +256,8 @@ public class SingleChoices extends BaseQuestion {
 			public void onClick(View v) {
 				if(pendQuestions.size()>0){
     				Intent intent = new Intent();
-    				intent.putExtra("ccIndex", String.valueOf(cCatalogIndex));
-    				intent.putExtra("cqIndex", String.valueOf(cQuestionIndex));
+    				intent.putExtra(SPUtil.CURRENT_EXAM_CATALOG, String.valueOf(cCatalogIndex));
+    				intent.putExtra(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, String.valueOf(cQuestionIndex));
     				intent.putExtra("questionType", cQuestionType);
     				if(questionTypes[0].equals(cQuestionType)){
     					intent.setClass( getBaseContext(), PendQuestions.class);
@@ -326,15 +325,14 @@ public class SingleChoices extends BaseQuestion {
     			@Override
     			public void onClick(View v) {
     				moveDirect = 1;
-    				relocationQuestion();
+    				move2NewQuestion();
     			}
     		});       	
         }
 
     }
     
-    //save answer if not empty 
-    public void relocationQuestion(){
+    public void move2NewQuestion(){
 		//get selection
 		for (int i = 0; i < adapter.mChecked.size(); i++) {
 			if (adapter.mChecked.get(i)) {

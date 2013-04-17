@@ -111,8 +111,8 @@ public class ExamContinue extends BaseActivity {
 				
 				//move question
 				Intent intent = new Intent();
-				intent.putExtra("ccIndex", String.valueOf(ccIndex));
-				intent.putExtra("cqIndex", String.valueOf(cqIndex));
+				intent.putExtra(SPUtil.CURRENT_EXAM_CATALOG, String.valueOf(ccIndex));
+				intent.putExtra(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, String.valueOf(cqIndex));
 				if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(fQuestionType)){
 					intent.putExtra("questionType",questionTypes[0]);
 					intent.setClass( getBaseContext(), MultiChoices.class);
