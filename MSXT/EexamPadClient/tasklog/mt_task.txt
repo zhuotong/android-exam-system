@@ -36,6 +36,13 @@ ccIndex,cqIndex设置常量
 考试提交以后继续考试
 
 
+1 在setting server& host 页面里增加test 按钮，用来检测服务器是否可用
+2 修改“显示考试状态”（SettingExamStatus.java）页面
+3 修改“显示考试进度”（SettingExamProgress.java）页面
+4 在button里面增加答案（PendQuestions.java）页面
+5 发送系统奔溃页面Email
+
+
 
 
 

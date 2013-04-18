@@ -396,10 +396,10 @@ public abstract class BaseQuestion extends BaseActivity{
 		//set exam progress bar
 		examAnsweredQuestionSum = dbUtil.fetchAllAnswersCount();
 		int per = 100 * examAnsweredQuestionSum/examQuestionSum;
-		
 		completedSeekBar.setThumb(null);
 		completedSeekBar.setProgress(per);
 		completedSeekBar.setEnabled(false);
+		
 		
 		//set exam progress text
 		completedPercentage.setText(String.valueOf(per)+"%");
@@ -413,7 +413,7 @@ public abstract class BaseQuestion extends BaseActivity{
 		catalogInfos.clear();
 		loadCatalogInfos(dbUtil);
 		
-		dbUtil.close();
+//		dbUtil.close();
 		
 		Log.i(LOG_TAG, "updateAllData().");
 	}
@@ -625,7 +625,8 @@ public abstract class BaseQuestion extends BaseActivity{
 				//initial all items background color
         		for(int i=0;i<adapterView.getChildCount();i++){
         			View item = adapterView.getChildAt(i);
-        			item.setBackgroundColor(getResources().getColor(R.color.catalog_menu_bg));
+//        			item.setBackgroundColor(getResources().getColor(R.color.catalog_menu_bg));
+//        			item.setBackground(mContext.getResources().getDrawable(R.drawable.catalog_list_menu));
         		}
 				view.setBackgroundColor(getRequestedOrientation());
 				pressedItemIndex = position;

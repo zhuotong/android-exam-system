@@ -50,6 +50,8 @@ public class PendQuestions extends BaseQuestion {
 	Integer indexInExam;
 	
 	void loadComponents(){
+		imgHome = (ImageView) findViewById(R.id.imgHome);
+		
 		//header components
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
 		
@@ -67,6 +69,29 @@ public class PendQuestions extends BaseQuestion {
 	}
 	
 	void setHeader(){
+		
+		imgHome.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(PendQuestions.this);
+				builder.setMessage(mContext.getResources().getString(R.string.warning_go_home))
+						.setCancelable(false)
+						.setPositiveButton(mContext.getResources().getString(R.string.warning_go_home_yes),
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,int id) {
+										goHome(mContext);
+									}
+								})
+						.setNegativeButton(mContext.getResources().getString(R.string.warning_go_home_cancel),
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,int id) {
+										dialog.cancel();
+									}
+								});
+				builder.show();
+			}
+		});
+		
         //set catalog bar(Center) 
 		catalogsTV.setText(String.valueOf(cCatalogIndex)+". "+
 				cCatalog.getDesc() + 
