@@ -41,6 +41,7 @@ ccIndex,cqIndex设置常量
 3 修改“显示考试进度”（SettingExamProgress.java）页面
 4 在button里面增加答案（PendQuestions.java）页面
 5 发送系统奔溃页面Email
+6 增加清理eExam下面的文件夹功能
 
 
 
