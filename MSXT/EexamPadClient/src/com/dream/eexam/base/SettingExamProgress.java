@@ -1,13 +1,28 @@
 package com.dream.eexam.base;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Message;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+
+import com.dream.eexam.model.ExamProgress;
 import com.dream.eexam.util.DatabaseUtil;
+import com.msxt.client.model.Examination.Choice;
 
 public class SettingExamProgress extends SettingBase {
 	TextView dbData ;
@@ -33,7 +48,7 @@ public class SettingExamProgress extends SettingBase {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.setting_examserver);
+		setContentView(R.layout.setting_exam_answer);
 		mContext = getApplicationContext();
 
 		setHeader((ImageView) findViewById(R.id.imgHome));
@@ -45,8 +60,70 @@ public class SettingExamProgress extends SettingBase {
 		clearBtn = (Button) this.findViewById(R.id.clearBtn);
 		clearBtn.setOnClickListener(clearListener);
 	}
-	 
+	
+ /*   class MyListAdapter extends BaseAdapter{
+    	List<ExamProgress> epList = new ArrayList<ExamProgress>();
+		HashMap<Integer,View> map = new HashMap<Integer,View>(); 
+    	
+    	public MyListAdapter(List<ExamProgress> epList){
+    		this.epList = epList;
+    	}
 
+		@Override
+		public int getCount() {
+			return epList.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return epList.get(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			View view;
+			ViewHolder holder = null;
+			if (map.get(position) == null) {
+				Log.i(LOG_TAG,"position1 = "+position);
+				LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				view = mInflater.inflate(R.layout.paper_multi_choices_item, null);
+				holder = new ViewHolder();
+				//set 3 component 
+				holder.seq = (TextView)view.findViewById(R.id.list_select);
+				holder.cId = (TextView)view.findViewById(R.id.list_index);
+				holder.qId = (TextView)view.findViewById(R.id.list_choiceDesc);
+				holder.qIdStr = (TextView)view.findViewById(R.id.list_choiceDesc);
+				holder.answer = (TextView)view.findViewById(R.id.list_choiceDesc);
+				final int p = position;
+				map.put(position, view);
+				view.setTag(holder);
+			}else{
+				view = map.get(position);
+				holder = (ViewHolder)view.getTag();
+			}
+			ExamProgress ep = epList.get(position);
+			holder.seq.setText(ep.getSeq());
+			holder.cId.setText(ep.getcId());
+			holder.qId.setText(ep.getqId());
+			holder.qIdStr.setText(ep.getqIdStr());
+			holder.answer.setText(ep.getAnswer());
+			return view;
+		}
+    	
+    }
+    
+    static class ViewHolder{
+    	TextView seq;
+    	TextView cId;
+    	TextView qId;
+    	TextView qIdStr;
+    	TextView answer;
+    }*/
 	
     View.OnClickListener clearListener = new View.OnClickListener() {  
         @Override  

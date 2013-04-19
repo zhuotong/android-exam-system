@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:orientation="vertical"
+  android:background="@drawable/bg_color_papers">
+  
+  <include
+        android:id="@+id/baseHeader"
+        layout="@layout/base_header" /> 
+  
+  <include layout="@layout/setting_footer" /> 
+
+  <ListView
+     	android:id="@+id/user_folder_list"
+     	android:layout_width="fill_parent"
+     	android:layout_height="fill_parent" 
+  		android:background="#000000"
+  />
+  		
+  <TableRow android:id="@+id/tableRow3" 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="30dp"
+		android:layout_marginLeft="40dp"
+		android:layout_marginRight="40dp"
+		android:padding="10dp">
+	   	<Button android:id="@+id/saveBtn"
+	   	    android:text="@string/label_btn_save"
+			style="@style/button_style"	>
+		</Button>
+		<Button android:id="@+id/clearBtn"
+			android:text="@string/label_btn_clear"
+			style="@style/button_style">
+		</Button>
+   </TableRow>
+   
+</LinearLayout>

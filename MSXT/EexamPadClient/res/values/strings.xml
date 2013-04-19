@@ -39,9 +39,11 @@
     <string name="label_btn_clear">Clear</string>
     <string name="label_btn_clear_history">Clear History</string>
     <string name="msg_history_be_cleared">History is cleared</string>
+    
     <string name="label_footer_server_setting">Server Setting:</string>
-    <string name="label_footer_current_exam_status">Current Exam Status:</string>
-    <string name="label_footer_current_exam_progress">Current Exam Progress:</string>
+    <string name="label_footer_current_exam_status">Exam Status</string>
+    <string name="label_footer_current_exam_progress">Exam Progress</string>
+    <string name="label_footer_user_folder">User Folder</string>
     <!-- Setting Page End-->
         
     <!-- Select Exam List Page Start-->

@@ -42,6 +42,12 @@ public class SettingBase extends BaseActivity {
 		intent.setClass( mContext, SettingExamProgress.class);
 		startActivity(intent); 
 	}
+
+	public void go2SettingUserFolder(View view){
+		Intent intent = new Intent();
+		intent.setClass( mContext, SettingUserFolder.class);
+		startActivity(intent); 
+	}
 	
     View.OnClickListener goBackListener = new View.OnClickListener() {  
         @Override  

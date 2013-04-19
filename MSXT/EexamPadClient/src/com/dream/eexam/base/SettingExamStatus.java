@@ -15,7 +15,7 @@ public class SettingExamStatus extends SettingBase {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.setting_examstatus);
+		setContentView(R.layout.setting_exam_status);
 		mContext = getApplicationContext();
 
 		setHeader((ImageView) findViewById(R.id.imgHome));
