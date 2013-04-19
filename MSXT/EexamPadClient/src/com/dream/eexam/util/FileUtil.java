@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.os.Environment;
 import android.util.Log;
@@ -62,5 +64,18 @@ public class FileUtil {
 			}
 			file.delete();
 		} 
+	}
+	
+	public static List<String> getFolderList(File parentFolder){
+		List<String> folderList = new ArrayList<String>();
+		if(parentFolder.exists()){
+			File subFolders[] = parentFolder.listFiles();
+			if(subFolders!=null && subFolders.length>0){
+				for (int i = 0; i < subFolders.length; i++) {
+					folderList.add(subFolders[i].getName());
+				}				
+			}
+		}
+		return folderList;
 	}
 }

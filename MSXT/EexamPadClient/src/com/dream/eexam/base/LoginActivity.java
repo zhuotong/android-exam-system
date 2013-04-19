@@ -131,12 +131,11 @@ public class LoginActivity extends BaseActivity {
         	
         	//If Current Exam User is empty, or Current Exam User not empty, but completed
         	//Then Connect server to login with a new User
-        	if(StringUtil.isEmpty(currentUserId) || (!StringUtil.isEmpty(currentUserId) && examStatus == SPUtil.EXAM_STATUS_END)){
+        	if(StringUtil.isEmpty(currentUserId)){
     			//clear last exam first,start a new exam
     			SPUtil.clearUserSP(sharedPreferences);
     			SPUtil.clearExamSP(sharedPreferences);
     			clearDB(mContext);
-    			
             	if (getWifiIP() != null && getWifiIP().trim().length() > 0 && !getWifiIP().trim().equals("0.0.0.0")){
             		Log.i(LOG_TAG,"start connect server...");
             		new LoginTask().execute(new String[]{loginUserId,loginUserPwd});
@@ -154,8 +153,23 @@ public class LoginActivity extends BaseActivity {
 	    				case SPUtil.EXAM_STATUS_END:go2ExamResult(mContext);break;//Go to ExamResult Page
         			}
         		}else{
-            		ShowDialog(mContext.getResources().getString(R.string.dialog_note),
-            				mContext.getResources().getString(R.string.msg_user_in_exam_error));
+        			if(examStatus == SPUtil.EXAM_STATUS_END){
+            			//clear last exam first,start a new exam
+            			SPUtil.clearUserSP(sharedPreferences);
+            			SPUtil.clearExamSP(sharedPreferences);
+            			clearDB(mContext);
+                    	if (getWifiIP() != null && getWifiIP().trim().length() > 0 && !getWifiIP().trim().equals("0.0.0.0")){
+                    		Log.i(LOG_TAG,"start connect server...");
+                    		new LoginTask().execute(new String[]{loginUserId,loginUserPwd});
+                    	}else{
+                    		ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+                    				mContext.getResources().getString(R.string.msg_network_error));
+                    	}
+        			}else{
+                		ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+                				mContext.getResources().getString(R.string.msg_user_in_exam_error));        				
+        			}
+
         		}
         	}
         }
