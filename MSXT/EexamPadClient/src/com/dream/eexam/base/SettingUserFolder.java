@@ -146,10 +146,12 @@ public class SettingUserFolder extends SettingBase {
     public void deleteSelectedUserFolder(){
     	Log.i(LOG_TAG, "deleteSelectedUserFolder()...");
     	for(String ufSelected: ufSelectedList){
+    		String path = appHome+File.separator+ ufSelected;
     		File ufFile = new File(appHome+File.separator+ ufSelected);
     		if(ufFile.isDirectory()){
-    			Log.i(LOG_TAG, ufFile.getAbsolutePath()+" will be deleted...");
-    			ufFile.delete();
+    			Log.i(LOG_TAG, path +" will be deleted...");
+//    			ufFile.delete();
+    			FileUtil.deleteDirectory(path);
     		}
     	}    	
     }
