@@ -44,6 +44,9 @@
     <string name="label_footer_current_exam_status">Exam Status</string>
     <string name="label_footer_current_exam_progress">Exam Progress</string>
     <string name="label_footer_user_folder">User Folder</string>
+    
+    <string name="msg_del_user_folder">Are you sure to delete below user folders:</string>
+    
     <!-- Setting Page End-->
         
     <!-- Select Exam List Page Start-->

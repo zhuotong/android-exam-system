@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="60dp"
-    android:padding="1dp"
-    android:background="@drawable/footer_common">
+    android:padding="1dp">
     
    <Button android:id="@+id/server_setting"
         android:text="@string/label_footer_server_setting"
