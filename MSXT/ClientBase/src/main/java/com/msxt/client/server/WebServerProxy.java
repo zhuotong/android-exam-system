@@ -14,9 +14,7 @@ public class WebServerProxy implements ServerProxy{
 	private String conversationId;
 	private String server;
 	private int port;
-	private Locale locale = Locale.getDefault();
-	private ResourceBundle resourceBundle = ResourceBundle.getBundle("ClientBase", locale);
-	
+
 	private static final String LOGIN_URI = "/msxt2/RequestDispatchServlet/InterviewRunAction/login";
 	private static final String GET_EXAM_URI = "/msxt2/RequestDispatchServlet/InterviewExamRunAction/getExam";
 	private static final String SUBMIT_ANSWER_URI = "/msxt2/RequestDispatchServlet/InterviewExamRunAction/submitAnswer";
@@ -179,9 +177,4 @@ public class WebServerProxy implements ServerProxy{
 		this.conversationId = conversationId;
 	}
 
-	@Override
-	public void setLocale(Locale locale) {
-		this.locale = locale;
-		resourceBundle = ResourceBundle.getBundle("ClientBase", locale);
-	}
 }
