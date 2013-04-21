@@ -142,6 +142,7 @@ public class WebServerProxy implements ServerProxy{
 			conn.connect();
 			
 			OutputStream os = conn.getOutputStream();
+			os.write( "Content-Type:text/xml\r\n\r\n".getBytes( "utf-8") );
 			os.write( sb.toString().getBytes("utf-8") );
 			os.close();
 			
