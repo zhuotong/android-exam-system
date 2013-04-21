@@ -9,8 +9,77 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class SettingExamStatus extends SettingBase {
-	TextView spData;
+	TextView userInfoTV;
+	TextView examInfoTV;
 	Button clearBtn;
+	
+	public String getUserInfo(){
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("UserId:");
+		String userId = SPUtil.getFromSP(SPUtil.CURRENT_USER_ID, sharedPreferences);
+		sb.append(userId==null? "":userId);
+		sb.append("\n");
+		
+		sb.append("User Password:");
+		String userPassword = SPUtil.getFromSP(SPUtil.CURRENT_USER_PWD, sharedPreferences);
+		sb.append(userPassword==null? "":userPassword);
+		sb.append("\n");
+		
+		sb.append("User File Home:");
+		String userFileHome = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
+		sb.append(userFileHome==null? "":userFileHome);
+		sb.append("\n");
+		
+		sb.append("User Completed Exam:");
+		String userCompletedExam = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_SUBMITTED_IDS, sharedPreferences);
+		sb.append(userCompletedExam==null? "":userCompletedExam);
+		return sb.toString();
+	}
+
+	public String getExamInfo(){
+		StringBuilder sb = new StringBuilder();
+		sb.append("ExamFileName:");
+		String examFileName = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_FILE_NAME,sharedPreferences);
+		sb.append(examFileName == null ? "" : examFileName);
+		sb.append("\n");
+
+		sb.append("ExamStartTime:");
+		long examStartTime = SPUtil.getLongFromSP(SPUtil.CURRENT_EXAM_START_TIME,sharedPreferences);
+		sb.append(String.valueOf(examStartTime));
+		sb.append("\n");
+
+		sb.append("ExamStatus:");
+		int examStatus = SPUtil.getIntegerFromSP(SPUtil.CURRENT_EXAM_STATUS,sharedPreferences);
+		switch(examStatus){
+			case 1:sb.append("Exam Not Start");break;
+			case 2:sb.append("Exam Start Going");break;
+			case 3:sb.append("Exam Start Going Obsolete");break;
+			case 4:sb.append("EXAM_Start Pending New");break;
+			case 5:sb.append("Exam End");
+			default:sb.append("");
+		}
+		
+		sb.append("\n");
+
+		sb.append("ExamCurrentCatalog:");
+		int examCurrentCatalog = SPUtil.getIntegerFromSP(SPUtil.CURRENT_EXAM_CATALOG, sharedPreferences);
+		sb.append(examCurrentCatalog == 0 ? "" : String.valueOf(examCurrentCatalog));
+		sb.append("\n");
+
+		sb.append("ExamCurrentIndexInCatalog:");
+		int examCurrentIndexInCatalog = SPUtil.getIntegerFromSP(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, sharedPreferences);
+		sb.append(examCurrentIndexInCatalog == 0 ? "": String.valueOf(examCurrentCatalog));
+		sb.append("\n");
+
+		sb.append("ExamScore:");
+		String examScore = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_SCORE,sharedPreferences);
+		sb.append(examScore == null ? "" : examScore);
+		sb.append(SPUtil.getFromSP(SPUtil.CURRENT_EXAM_SCORE, sharedPreferences));
+
+		return sb.toString();
+	}
+	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -21,8 +90,11 @@ public class SettingExamStatus extends SettingBase {
 		setHeader((ImageView) findViewById(R.id.imgHome));
 		setFooter((Button) findViewById(R.id.examstatus_setting));
 
-		spData = (TextView) this.findViewById(R.id.spData);
-		spData.setText(SPUtil.getAllSPData(sharedPreferences));
+		userInfoTV = (TextView) this.findViewById(R.id.userInfoTV);
+		userInfoTV.setText(getUserInfo());
+
+		examInfoTV = (TextView) this.findViewById(R.id.examInfoTV);
+		examInfoTV.setText(getExamInfo());
 		
 		clearBtn = (Button) this.findViewById(R.id.clearBtn);
 		clearBtn.setOnClickListener(clearListener);

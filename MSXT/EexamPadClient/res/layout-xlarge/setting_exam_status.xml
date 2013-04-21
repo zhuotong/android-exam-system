@@ -11,7 +11,27 @@
         layout="@layout/base_header" /> 
 
   <include layout="@layout/setting_footer" />
-  
+
+    <!-- User Info title -->
+  	<TableRow
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginLeft="20dp"
+		 android:layout_marginRight="20dp"		 
+		 android:layout_gravity="center_horizontal"
+		 android:gravity="center_horizontal"
+		 android:padding="5dp"
+		 android:background="@drawable/tr_title">
+ 		<TextView 
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:text="@string/title_setting_user_infor">
+		</TextView> 
+   	</TableRow>
+   	
+   	 <!-- User Info-->
 	<TableRow
          android:layout_width="fill_parent"
 		 android:layout_height="wrap_content"
@@ -19,16 +39,52 @@
 		 android:layout_marginRight="20dp"		 
 		 android:layout_gravity="center_horizontal"
 		 android:gravity="center_horizontal">
- 		<TextView android:id="@+id/spData"
+ 		<TextView android:id="@+id/userInfoTV"
 			android:layout_width="fill_parent" 
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:textSize="22sp"
+			android:textColor="#000000"
+			>
+		</TextView> 
+   	</TableRow>
+
+	<!-- Exam Info title -->
+	<TableRow
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginLeft="20dp"
+		 android:layout_marginRight="20dp"		 
+		 android:layout_gravity="center_horizontal"
+		 android:gravity="center_horizontal"
+		 android:padding="5dp"
+		 android:background="@drawable/tr_title">
+ 		<TextView 
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:text="@string/title_setting_exam_infor">
+		</TextView> 
+   	</TableRow>
+   	
+   	<!-- Exam Info -->	
+	<TableRow 
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginLeft="20dp"
+		 android:layout_marginRight="20dp"		 
+		 android:layout_gravity="center_horizontal"
+		 android:gravity="center_horizontal">
+ 		<TextView android:id="@+id/examInfoTV"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:textSize="22sp"
 			android:textColor="#000000">
 		</TextView> 
    	</TableRow>
-	<!-- data in SharedPreferences End-->
-	
+   	
 	<TableRow
          android:layout_width="fill_parent"
 		 android:layout_height="wrap_content"
@@ -45,6 +101,5 @@
 			android:text="@string/label_btn_clear_history">
 		</Button>
    	</TableRow>	
-   	
 	 	
 </LinearLayout>
