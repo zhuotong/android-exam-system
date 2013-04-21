@@ -93,9 +93,14 @@
 		 android:layout_marginTop="50dp"
 		 android:layout_gravity="center_horizontal"
 		 android:gravity="center_horizontal">
- 		<Button android:id="@+id/startBtn"
-			android:text="@string/label_btn_start"
-			style="@style/button_style">
+
+ 		<Button
+ 		    android:id="@+id/startBtn"
+ 		    style="@style/button_style"
+ 		    android:paddingLeft="100dp"
+ 		    android:paddingRight="100dp"
+ 		    android:text="@string/label_btn_start" >
+
 		</Button>
    	</TableRow>
    	

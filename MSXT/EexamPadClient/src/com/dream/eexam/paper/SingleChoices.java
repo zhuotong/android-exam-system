@@ -554,14 +554,7 @@ public class SingleChoices extends BaseQuestion {
         		
 				//move question
         		go2ExamResult(mContext);
-        		
-        			
-//    			if(timerTask!=null){
-//    				timerTask.cancel();
-//    			}
-//    			if(timer!=null){
-//    				timer.cancel();
-//    			}
+
         		
         	}else {
     			
@@ -572,15 +565,12 @@ public class SingleChoices extends BaseQuestion {
     					.setPositiveButton(mContext.getResources().getString(R.string.warning_save_answer_local_yes),
     							new DialogInterface.OnClickListener() {
     								public void onClick(DialogInterface dialog,int id) {
-    									String path = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
-    								    String examid = exam.getId();
-    									saveAnswer2Local(answers,path,examid);
-    									
-    									SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_PENDING_NEW, sharedPreferences);
-    									
-    									go2ExamResult(mContext);
-//    					        		timerTask.cancel();
-//    					        		timer.cancel();
+//    									String path = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
+//    								    String examid = exam.getId();
+//    									saveAnswer2Local(answers,path,examid);
+//    									
+//    									SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_PENDING_NEW, sharedPreferences);
+//    									go2ExamResult(mContext);
     								}
     							})
     					.setNegativeButton(mContext.getResources().getString(R.string.warning_save_answer_local_cancel),

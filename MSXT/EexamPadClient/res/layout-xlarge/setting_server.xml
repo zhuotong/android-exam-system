@@ -78,20 +78,25 @@
 	   	</TableRow>
    	</TableLayout> 
    	
-	<TableRow android:id="@+id/tableRow3" 
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginTop="30dp"
-		android:layout_marginLeft="40dp"
-		android:layout_marginRight="40dp"
-		android:padding="10dp">
+	<TableRow
+	    android:id="@+id/tableRow3"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginLeft="40dp"
+	    android:layout_marginRight="40dp"
+	    android:layout_marginTop="30dp"
+	    android:padding="15dp" >
+
     	<Button android:id="@+id/saveBtn"
     	    android:text="@string/label_btn_save"
-			style="@style/button_style"	>
+			style="@style/button_style"
+			android:layout_marginRight="5dp">
 		</Button>
-		<Button android:id="@+id/clearBtn"
-			android:text="@string/label_btn_clear"
+		
+		<Button android:id="@+id/testBtn"
+			android:text="@string/label_btn_test_connect"
 			style="@style/button_style">
 		</Button>
     </TableRow>
+    
 </LinearLayout>

@@ -2,6 +2,10 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <string name="app_name">EexamClient</string>
     <string name="msg_header_tv_home">Home</string>
+    
+    <string name="dialog_note">Note</string>
+    <string name="dialog_warning">Warning</string>
+    <string name="dialog_ok">OK</string>
 
     <!-- Common Message Start-->
     
@@ -36,7 +40,7 @@
     <string name="label_tv_host">Host:</string>
     <string name="label_tv_port">Port:</string>
     <string name="label_btn_save">Save</string>
-    <string name="label_btn_clear">Clear</string>
+    <string name="label_btn_test_connect">Test Connect</string>
     <string name="label_btn_clear_history">Clear History</string>
     <string name="msg_history_be_cleared">History is cleared</string>
     
@@ -110,8 +114,8 @@
     <!-- Exam End Page End -->
 
 	<!-- Other -->
-	<string name="dialog_note">Note</string>
-	<string name="dialog_warning">Warning</string>
+	
+	
  	<string-array name="question_types">
         <item>M</item>
         <item>S</item>

@@ -26,6 +26,7 @@ public class BaseActivity extends Activity {
 
 	public final static String LOG_TAG = "BaseActivity";
 	protected SharedPreferences sharedPreferences;
+	Context mContext;
 	
 	public void printStoredDataInDB(Context mContext){
 		Log.i(LOG_TAG,"----------------Start print data in SQLLite-----------------");
@@ -47,6 +48,8 @@ public class BaseActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.i(LOG_TAG,"onCreate()...");
+		
+		mContext = getApplicationContext();
 		
 		//add Activity to ActivityStackControlUtil to manage
 		ActivityManage.add(this);
@@ -105,8 +108,9 @@ public class BaseActivity extends Activity {
 	
 	public void ShowDialog(String title,String msg) {
 		new AlertDialog.Builder(this).setTitle(title).setMessage(msg)
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				.setPositiveButton(mContext.getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
+						
 					}
 		}).show();
 	}
@@ -163,23 +167,6 @@ public class BaseActivity extends Activity {
 		return baos.toString();
 	}
 	
-	
-	public void deleteFile(String path, String fileName) {
-		Log.i(LOG_TAG,"deleteFile...");
-		try {
-	        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {  
-	            File file = new File(path+File.separator+fileName);  
-	            if (file.exists()) {  
-	                file.delete();  
-	            } 
-	        }  
-		} catch (Exception e) {
-			Log.e(LOG_TAG, "an error occured while writing file...", e);
-		}
-		Log.i(LOG_TAG,"deleteFile end.");
-	}
-	
-	//
 	private long exitTime = 0;
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -237,19 +224,4 @@ public class BaseActivity extends Activity {
     	dbUtil.close();
 	}
 	
-	//delete file fold and file under it
-	public void deleteFile(File file) {
-		if (file.exists()) {
-			if (file.isFile()) {
-				file.delete();
-			} else if (file.isDirectory()) {
-				File files[] = file.listFiles();
-				for (int i = 0; i < files.length; i++) {
-					this.deleteFile(files[i]);
-				}
-			}
-			file.delete();
-		}
-	}
-
 }

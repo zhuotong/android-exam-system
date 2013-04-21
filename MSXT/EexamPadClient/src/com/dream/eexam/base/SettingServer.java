@@ -1,5 +1,11 @@
 package com.dream.eexam.base;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import com.dream.eexam.util.SPUtil;
 import com.dream.eexam.util.ValidateUtil;
 import android.os.Bundle;
@@ -12,13 +18,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class SettingServer extends SettingBase {
+	
 	TextView valiMessageTV = null;
 	String[] valiMessageArray = null;
 	EditText hostET = null;
 	EditText portET = null;
 	
 	Button saveHostBtn = null;
-	Button clearBtn = null;
+	Button testBtn = null;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,8 +53,8 @@ public class SettingServer extends SettingBase {
 		saveHostBtn = (Button) this.findViewById(R.id.saveBtn);
 		saveHostBtn.setOnClickListener(btnOnClickListener);
 
-		clearBtn = (Button) this.findViewById(R.id.clearBtn);
-		clearBtn.setOnClickListener(btnOnClickListener);
+		testBtn = (Button) this.findViewById(R.id.testBtn);
+		testBtn.setOnClickListener(btnOnClickListener);
 
     }
     
@@ -56,7 +63,7 @@ public class SettingServer extends SettingBase {
         public void onClick(View v) {
         	switch(v.getId()){
         		case R.id.saveBtn:save();break;
-        		case R.id.clearBtn:clear();
+        		case R.id.testBtn:testConnect();
         	}
         }  
     };
@@ -72,11 +79,38 @@ public class SettingServer extends SettingBase {
     		valiMessageTV.setVisibility(View.VISIBLE);
     		valiMessageTV.setText(valiMessageArray[0]);
     	}
+    	
+    	goHome(mContext);
+    	
     }
     
-    private void clear(){
-    	hostET.getText().clear();
-    	portET.getText().clear();
-		Toast.makeText(mContext, "Host And Port is cleared, please input again", Toast.LENGTH_SHORT).show();
+    private void testConnect(){
+		String host = hostET.getText().toString();
+		String port = portET.getText().toString();
+		
+		URL url;
+		HttpURLConnection conn;
+		try {
+			url = new URL("http://" + host + ":" + port);
+			conn = (HttpURLConnection) url.openConnection();
+			conn.setDoOutput(true);
+			conn.setUseCaches(false);
+			conn.setConnectTimeout(10000);
+			conn.setRequestMethod( "POST" );
+			conn.connect();
+			
+			OutputStream os = conn.getOutputStream();
+			if(os!=null){
+				ShowDialog(getResources().getString(R.string.dialog_note),"Connect Successfully!");
+			}else{
+				ShowDialog(getResources().getString(R.string.dialog_warning),"Connect Failed!");
+			}
+		} catch (MalformedURLException e) {
+			Log.i(LOG_TAG,"MalformedURLException:"+ e.getMessage());
+		} catch (ProtocolException e) {
+			Log.i(LOG_TAG,"ProtocolException:"+ e.getMessage());
+		} catch (IOException e) {
+			Log.i(LOG_TAG,"IOException:"+ e.getMessage());
+		}
     }
 }

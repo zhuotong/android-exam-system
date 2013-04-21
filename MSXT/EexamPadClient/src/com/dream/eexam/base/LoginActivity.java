@@ -232,6 +232,7 @@ public class LoginActivity extends BaseActivity {
     		        
     		        if( status.equals("failed") ) {
     		        	String desc = root.getElementsByTagName("desc").item(0).getTextContent();
+//    		        	desc = ResourceBundleHandler.getString( desc );
     		        	ShowDialog(mContext.getResources().getString(R.string.dialog_note),desc);
     		        } else {//Login successfully
     		        	String conversation = root.getElementsByTagName( "conversation" ).item(0).getTextContent();
