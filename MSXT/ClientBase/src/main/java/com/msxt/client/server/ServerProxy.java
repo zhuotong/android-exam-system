@@ -1,5 +1,6 @@
 package com.msxt.client.server;
 
+import java.util.Locale;
 import java.util.Map;
 
 public interface ServerProxy {
@@ -11,6 +12,8 @@ public interface ServerProxy {
 	public Result submitAnswer( String examinationid, Map<String, String> answers);
 	
 	public void setConversationId(String conversationId);
+	
+	public void setLocale( Locale locale );
 	
 	public static enum STATUS{
 		SUCCESS, ERROR
@@ -31,6 +34,7 @@ public interface ServerProxy {
 		public void setStatus(STATUS status) {
 			this.status = status;
 		}
+		
 		public String getErrorMessage() {
 			return errorMessage;
 		}
