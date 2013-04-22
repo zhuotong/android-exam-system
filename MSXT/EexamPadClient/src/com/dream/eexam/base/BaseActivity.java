@@ -4,9 +4,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+
+import com.dream.eexam.paper.MultiChoices;
+import com.dream.eexam.paper.PendQuestions;
+import com.dream.eexam.paper.SingleChoices;
 import com.dream.eexam.util.ActivityManage;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SPUtil;
+import com.msxt.client.model.QUESTION_TYPE;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -207,6 +213,44 @@ public class BaseActivity extends Activity {
     	Intent intent = new Intent();
 		intent.setClass( context, ResultActivity.class);
 		startActivity(intent); 
+	}
+	
+	public void go2MultiQuestion(Context context){
+    	Intent intent = new Intent();
+		intent.setClass( context, MultiChoices.class);
+		startActivity(intent); 		
+	}
+	
+	public void go2SingleQuestion(Context context){
+    	Intent intent = new Intent();
+		intent.setClass( context, SingleChoices.class);
+		startActivity(intent); 		
+	}
+	
+	public void saveQuestionMovePara(int cId,int qId,QUESTION_TYPE qt,SharedPreferences sp){
+		SPUtil.save2SP(SPUtil.CURRENT_EXAM_CATALOG, cId, sp);
+		SPUtil.save2SP(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, qId, sp);
+		int qType;
+		if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(qt)){
+			qType=2;
+		}else{
+			qType=1;
+		}
+		SPUtil.save2SP(SPUtil.CURRENT_EXAM_QUESTION_TYPE, qType, sp);
+	}
+	
+	public void go2QuestionByType(QUESTION_TYPE qt,Context context){
+		if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(qt)){
+			go2MultiQuestion(context);
+		}else if(QUESTION_TYPE.SINGLE_CHOICE.equals(qt)){
+			go2SingleQuestion(context);
+		}
+	}
+	
+	public void go2PendingQuestions(Context context){
+    	Intent intent = new Intent();
+		intent.setClass( context, PendQuestions.class);
+		startActivity(intent); 		
 	}
 	
 	//clear data in SP

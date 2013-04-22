@@ -142,7 +142,6 @@ public class ExamStart extends BaseActivity {
 		});
 	}
 	
-	
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -153,8 +152,6 @@ public class ExamStart extends BaseActivity {
 		spinner.setOnItemSelectedListener(new SpinnerSelectedListener());
 		spinner.setVisibility(View.VISIBLE);
 	}
-
-
 
 	class SpinnerSelectedListener implements OnItemSelectedListener{
 		public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
@@ -246,9 +243,13 @@ public class ExamStart extends BaseActivity {
 					ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Invalid qeustion type.");
 				}
 				
-				Log.i(LOG_TAG, "Start a New Exam!");
-				
-				SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_GOING, sharedPreferences);
+//				Log.i(LOG_TAG, "----------Start a New Exam!-----------------");
+//				
+//				SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_GOING, sharedPreferences);
+//				go2QuestionByType(fQuestionType,mContext);
+//				saveQuestionMovePara(ccIndex,cqIndex,fQuestionType,sharedPreferences);
+//				
+//				Log.i(LOG_TAG, "--------------------------------------------");
 				
 				//save exam start time
 				saveStartTime();

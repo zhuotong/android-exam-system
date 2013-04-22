@@ -222,6 +222,12 @@ public class PendQuestions extends BaseQuestion {
     				}
     				finish();
     				startActivity(intent);
+    				
+//    				Log.i(LOG_TAG, "----------Move to New Question!-----------------");
+//    				SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_GOING, sharedPreferences);
+//    				go2QuestionByType(nQuestion.getType(),mContext);
+//    				saveQuestionMovePara(DataParseUtil.getCidByQid(exam, nQuestion.getId()),nQuestion.getIndex(),nQuestion.getType(),sharedPreferences);
+//    				Log.i(LOG_TAG, "--------------------------------------------");
     			}
     		});
             return convertView; 

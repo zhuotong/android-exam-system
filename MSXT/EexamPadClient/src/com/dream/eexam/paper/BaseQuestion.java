@@ -88,6 +88,7 @@ public abstract class BaseQuestion extends BaseActivity{
 	
 	//page data
 	protected String cQuestionType;//current questionType
+//	protected int cQType;
 	protected int cCatalogIndex;//current catalog index
 	
 	protected int cCatalog1stQuestionIndex;//current 1st question index
@@ -229,6 +230,10 @@ public abstract class BaseQuestion extends BaseActivity{
 		cQuestionType  = bundle.getString("questionType");
 		cCatalogIndex  = Integer.valueOf(bundle.getString(SPUtil.CURRENT_EXAM_CATALOG));
 		cQuestionIndex  = Integer.valueOf(bundle.getString(SPUtil.CURRENT_EXAM_INDEX_IN_CATA));
+
+//		cQType  = SPUtil.getIntegerFromSP(SPUtil.CURRENT_EXAM_QUESTION_TYPE, sharedPreferences);
+//		cCatalogIndex  = SPUtil.getIntegerFromSP(SPUtil.CURRENT_EXAM_CATALOG, sharedPreferences);
+//		cQuestionIndex  = SPUtil.getIntegerFromSP(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, sharedPreferences);
 		
 		Log.i(LOG_TAG, "cQuestionIndex:" + String.valueOf(cQuestionIndex));
 		Log.i(LOG_TAG, "cCatalogIndex:" + String.valueOf(cCatalogIndex));
@@ -651,6 +656,13 @@ public abstract class BaseQuestion extends BaseActivity{
 					ShowDialog(mContext.getResources().getString(R.string.dialog_note),
 							"Wrong Question Type: " + cQuestionType);
 				}
+				
+//				Log.i(LOG_TAG, "----------Start a New Exam!-----------------");
+//				SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_GOING, sharedPreferences);
+//				go2QuestionByType(nQuestionType,mContext);
+//				saveQuestionMovePara(info.getIndex(),nQuestion.getIndex(),nQuestionType,sharedPreferences);
+//				Log.i(LOG_TAG, "--------------------------------------------");
+				
 				finish();
 				startActivity(intent);
 			}

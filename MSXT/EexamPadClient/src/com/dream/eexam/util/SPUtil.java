@@ -25,6 +25,7 @@ public class SPUtil {
 	public final static String CURRENT_EXAM_SCORE = "Current_Exam_Score";
 	public final static String CURRENT_EXAM_CATALOG = "ccIndex";
 	public final static String CURRENT_EXAM_INDEX_IN_CATA = "cqIndex";
+	public final static String CURRENT_EXAM_QUESTION_TYPE = "examType";
 	
 	//Exam Status Values
 	public final static int EXAM_STATUS_NOT_START = 1;
@@ -32,6 +33,9 @@ public class SPUtil {
 	public final static int EXAM_STATUS_START_GOING_OBSOLETE =  3;
 	public final static int EXAM_STATUS_START_PENDING_NEW =  4;
 	public final static int EXAM_STATUS_END =  5;
+	
+	public final static int EXAM_STATUS_START_SINGLE = 1;
+	public final static int EXAM_QUESTION_TYPE_MULTI = 2;
 	
 	//login infor key
 	public final static String SP_KEY_HOST = "host";
