@@ -110,28 +110,25 @@ public class ExamContinue extends BaseActivity {
 				fQuestionType = fQuestion.getType();
 				
 				//move question
-				Intent intent = new Intent();
-				intent.putExtra(SPUtil.CURRENT_EXAM_CATALOG, String.valueOf(ccIndex));
-				intent.putExtra(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, String.valueOf(cqIndex));
-				if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(fQuestionType)){
-					intent.putExtra("questionType",questionTypes[0]);
-					intent.setClass( getBaseContext(), MultiChoices.class);
-					startActivity(intent);
-				}else if(QUESTION_TYPE.SINGLE_CHOICE.equals(fQuestionType)){
-					intent.putExtra("questionType",questionTypes[1]);
-					intent.setClass( getBaseContext(), SingleChoices.class);
-					startActivity(intent);
-				}else{
-					ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Invalid qeustion type.");
-				}
+//				Intent intent = new Intent();
+//				intent.putExtra(SPUtil.CURRENT_EXAM_CATALOG, String.valueOf(ccIndex));
+//				intent.putExtra(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, String.valueOf(cqIndex));
+//				if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(fQuestionType)){
+//					intent.putExtra("questionType",questionTypes[0]);
+//					intent.setClass( getBaseContext(), MultiChoices.class);
+//					startActivity(intent);
+//				}else if(QUESTION_TYPE.SINGLE_CHOICE.equals(fQuestionType)){
+//					intent.putExtra("questionType",questionTypes[1]);
+//					intent.setClass( getBaseContext(), SingleChoices.class);
+//					startActivity(intent);
+//				}else{
+//					ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Invalid qeustion type.");
+//				}
 				
-//				Log.i(LOG_TAG, "----------Start a New Exam!-----------------");
-//				
-//				SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_GOING, sharedPreferences);
-//				go2QuestionByType(fQuestionType,mContext);
-//				saveQuestionMovePara(ccIndex,cqIndex,fQuestionType,sharedPreferences);
-//				
-//				Log.i(LOG_TAG, "--------------------------------------------");
+				Log.i(LOG_TAG, "----------Continue a New Exam!-----------------");
+				go2QuestionByType(fQuestionType,mContext);
+				saveQuestionMovePara(ccIndex,cqIndex,fQuestionType,sharedPreferences);
+				Log.i(LOG_TAG, "--------------------------------------------");
 			}			
 		});
 		

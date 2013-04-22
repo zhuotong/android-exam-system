@@ -41,6 +41,7 @@
     <string name="label_tv_port">Port:</string>
     <string name="label_btn_save">Save</string>
     <string name="label_btn_test_connect">Test Connect</string>
+    <string name="label_btn_delete">Delete</string>
     <string name="label_btn_clear_history">Clear History</string>
     <string name="msg_history_be_cleared">History is cleared</string>
     

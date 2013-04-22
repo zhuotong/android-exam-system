@@ -7,9 +7,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.dream.eexam.paper.MultiChoices;
-import com.dream.eexam.paper.SingleChoices;
 import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.util.FileUtil;
 import com.dream.eexam.util.SPUtil;
@@ -22,7 +19,6 @@ import com.msxt.client.server.ServerProxy.Result;
 import com.msxt.client.server.ServerProxy.STATUS;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -226,30 +222,13 @@ public class ExamStart extends BaseActivity {
 				}
 				
 				fQuestionType = fQuestion.getType();
-	
-				//move question
-				Intent intent = new Intent();
-				intent.putExtra(SPUtil.CURRENT_EXAM_CATALOG, String.valueOf(ccIndex));
-				intent.putExtra(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, String.valueOf(cqIndex));
-				if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(fQuestionType)){
-					intent.putExtra("questionType",questionTypes[0]);
-					intent.setClass( getBaseContext(), MultiChoices.class);
-					startActivity(intent);
-				}else if(QUESTION_TYPE.SINGLE_CHOICE.equals(fQuestionType)){
-					intent.putExtra("questionType",questionTypes[1]);
-					intent.setClass( getBaseContext(), SingleChoices.class);
-					startActivity(intent);
-				}else{
-					ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Invalid qeustion type.");
-				}
+				Log.i(LOG_TAG, "----------Start a New Exam!-----------------");
 				
-//				Log.i(LOG_TAG, "----------Start a New Exam!-----------------");
-//				
-//				SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_GOING, sharedPreferences);
-//				go2QuestionByType(fQuestionType,mContext);
-//				saveQuestionMovePara(ccIndex,cqIndex,fQuestionType,sharedPreferences);
-//				
-//				Log.i(LOG_TAG, "--------------------------------------------");
+				SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_GOING, sharedPreferences);
+				go2QuestionByType(fQuestionType,mContext);
+				saveQuestionMovePara(ccIndex,cqIndex,fQuestionType,sharedPreferences);
+				
+				Log.i(LOG_TAG, "--------------------------------------------");
 				
 				//save exam start time
 				saveStartTime();

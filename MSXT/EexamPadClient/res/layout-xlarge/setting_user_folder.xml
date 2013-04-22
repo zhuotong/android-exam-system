@@ -27,8 +27,10 @@
 		android:layout_marginRight="40dp"
 		android:padding="10dp">
 		<Button android:id="@+id/deleteBtn"
-			android:text="@string/label_btn_test_connect"
-			style="@style/button_style">
+			android:text="@string/label_btn_delete"
+			style="@style/button_style"
+			android:paddingLeft="100dp"
+ 		    android:paddingRight="100dp">
 		</Button>
    </TableRow>
    

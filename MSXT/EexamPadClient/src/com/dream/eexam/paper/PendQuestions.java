@@ -207,27 +207,27 @@ public class PendQuestions extends BaseQuestion {
     	            Question nQuestion = DataParseUtil.getQuestionByIndexInExam(exam, Integer.valueOf(indexInExam));
     	            
     				//move question
-    				Intent intent = new Intent();
-    				intent.putExtra(SPUtil.CURRENT_EXAM_CATALOG, String.valueOf(DataParseUtil.getCidByQid(exam, nQuestion.getId())));
-    				intent.putExtra(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, String.valueOf(nQuestion.getIndex()));
-    				
-    				if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(nQuestion.getType())){
-    					intent.putExtra("questionType", questionTypes[0]);
-    					intent.setClass( mContext, MultiChoices.class);
-    				}else if(QUESTION_TYPE.SINGLE_CHOICE.equals(nQuestion.getType())){
-    					intent.putExtra("questionType", questionTypes[1]);
-    					intent.setClass( mContext, SingleChoices.class);
-    				}else{
-    					ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Invalid qeustion type!");
-    				}
+//    				Intent intent = new Intent();
+//    				intent.putExtra(SPUtil.CURRENT_EXAM_CATALOG, String.valueOf(DataParseUtil.getCidByQid(exam, nQuestion.getId())));
+//    				intent.putExtra(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, String.valueOf(nQuestion.getIndex()));
+//    				
+//    				if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(nQuestion.getType())){
+//    					intent.putExtra("questionType", questionTypes[0]);
+//    					intent.setClass( mContext, MultiChoices.class);
+//    				}else if(QUESTION_TYPE.SINGLE_CHOICE.equals(nQuestion.getType())){
+//    					intent.putExtra("questionType", questionTypes[1]);
+//    					intent.setClass( mContext, SingleChoices.class);
+//    				}else{
+//    					ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Invalid qeustion type!");
+//    				}
     				finish();
-    				startActivity(intent);
+//    				startActivity(intent);
     				
-//    				Log.i(LOG_TAG, "----------Move to New Question!-----------------");
-//    				SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_GOING, sharedPreferences);
-//    				go2QuestionByType(nQuestion.getType(),mContext);
-//    				saveQuestionMovePara(DataParseUtil.getCidByQid(exam, nQuestion.getId()),nQuestion.getIndex(),nQuestion.getType(),sharedPreferences);
-//    				Log.i(LOG_TAG, "--------------------------------------------");
+    				Log.i(LOG_TAG, "----------Go to Selected Question!-----------------");
+    				SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_GOING, sharedPreferences);
+    				go2QuestionByType(nQuestion.getType(),mContext);
+    				saveQuestionMovePara(DataParseUtil.getCidByQid(exam, nQuestion.getId()),nQuestion.getIndex(),nQuestion.getType(),sharedPreferences);
+    				Log.i(LOG_TAG, "--------------------------------------------");
     			}
     		});
             return convertView; 

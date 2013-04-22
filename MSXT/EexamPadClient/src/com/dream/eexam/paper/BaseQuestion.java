@@ -87,8 +87,8 @@ public abstract class BaseQuestion extends BaseActivity{
 	protected Context mContext;
 	
 	//page data
-	protected String cQuestionType;//current questionType
-//	protected int cQType;
+//	protected String cQuestionType;//current questionType
+	protected int cQType;
 	protected int cCatalogIndex;//current catalog index
 	
 	protected int cCatalog1stQuestionIndex;//current 1st question index
@@ -226,14 +226,14 @@ public abstract class BaseQuestion extends BaseActivity{
 		Log.i(LOG_TAG, "examFilePath:" + examFilePath);
 		Log.i(LOG_TAG, "examFileName:" + examFileName);
 		
-		Bundle bundle = this.getIntent().getExtras();
-		cQuestionType  = bundle.getString("questionType");
-		cCatalogIndex  = Integer.valueOf(bundle.getString(SPUtil.CURRENT_EXAM_CATALOG));
-		cQuestionIndex  = Integer.valueOf(bundle.getString(SPUtil.CURRENT_EXAM_INDEX_IN_CATA));
+//		Bundle bundle = this.getIntent().getExtras();
+//		cQuestionType  = bundle.getString("questionType");
+//		cCatalogIndex  = Integer.valueOf(bundle.getString(SPUtil.CURRENT_EXAM_CATALOG));
+//		cQuestionIndex  = Integer.valueOf(bundle.getString(SPUtil.CURRENT_EXAM_INDEX_IN_CATA));
 
-//		cQType  = SPUtil.getIntegerFromSP(SPUtil.CURRENT_EXAM_QUESTION_TYPE, sharedPreferences);
-//		cCatalogIndex  = SPUtil.getIntegerFromSP(SPUtil.CURRENT_EXAM_CATALOG, sharedPreferences);
-//		cQuestionIndex  = SPUtil.getIntegerFromSP(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, sharedPreferences);
+		cQType  = SPUtil.getIntegerFromSP(SPUtil.CURRENT_EXAM_QUESTION_TYPE, sharedPreferences);
+		cCatalogIndex  = SPUtil.getIntegerFromSP(SPUtil.CURRENT_EXAM_CATALOG, sharedPreferences);
+		cQuestionIndex  = SPUtil.getIntegerFromSP(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, sharedPreferences);
 		
 		Log.i(LOG_TAG, "cQuestionIndex:" + String.valueOf(cQuestionIndex));
 		Log.i(LOG_TAG, "cCatalogIndex:" + String.valueOf(cCatalogIndex));
@@ -276,84 +276,30 @@ public abstract class BaseQuestion extends BaseActivity{
 		return submitResult;
 	}
 	
-	/*class SubmitAnswerTask extends AsyncTask<String, Void, String> {
-		Result submitResult;
-		String examId;
-		
-    	@Override
-    	protected void onPreExecute() {
-    		Log.i(LOG_TAG, "onPreExecute()...");
-    		Toast.makeText(mContext, "Exam time out, system will auto submit!", Toast.LENGTH_LONG).show();
-    	}
-    	
-		@Override
-		protected String doInBackground(String... arg0) {
-			Log.i(LOG_TAG, "doInBackground()...");
-			examId = arg0[0];
-			try {
-				submitResult = submitExam(examId);
-			} catch (Exception e) {
-				Log.i(LOG_TAG, e.getMessage());
-//				progressDialog.cancel();
-//				progressDialog.dismiss();
-				
-			}
-			return null;
-		}
-		
-        @Override
-        protected void onPostExecute(String result) {
-        	Log.i(LOG_TAG, "onPostExecute()...");
-        	
-//        	progressDialog.cancel();
-        	
-        	if( submitResult!=null && submitResult.getStatus() == STATUS.SUCCESS ) {
-        		timer.cancel();
-        		timerTask.cancel();
-        		
-        		Log.i(LOG_TAG, "Answer Submitted Successfully!");
-        		//save Exam Status
-        		saveExamStatusAfterSubmittedSuccess(submitResult);
-        		//move question
-        		go2ExamResult(mContext);
-        	}else{
-        		DatabaseUtil dbUtil = new DatabaseUtil(mContext);
-            	dbUtil.open();
-            	Map<String, String> answers =  getAllAnswers(dbUtil);
-            	dbUtil.close();
-            	String path = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
-			    String examid = exam.getId();
-			    saveAnswer2Local(answers,path,examid);
-			    saveExamStatusAfterSubmittedLocal();
-        	}
-        	
-
-        }
-		
-	}*/
 	
-/*	public void saveExamStatusAfterSubmittedSuccess(Result submitResult){
-   		String resultFileName = FileUtil.RESULT_FILE_PREFIX + exam.getId() + FileUtil.FILE_SUFFIX_XML;
-		Log.i(LOG_TAG, "resultFileName: " + resultFileName);
-		FileUtil fu = new FileUtil();
-		fu.saveFile(SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences), resultFileName, submitResult.getSuccessMessage());
-		SubmitSuccessResult succResult = DataParseUtil.getSubmitSuccessResult(submitResult);
-		//Save Exam Score to sharedPreferences
+	//Save CURRENT_USER_EXAM_REMAINING_COUNT,CURRENT_EXAM_SUBMITTED_IDS,CURRENT_EXAM_STATUS
+	public void saveExamStatusAfterSubmitted(){
+		//print log
 		Log.i(LOG_TAG, "Exam " + exam.getId() + " Submitted Successfully!");
-		//Save Update Exam Remaining Count to sharedPreferences
+		
+		//print log
 		String examCountBefore = SPUtil.getFromSP(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT, sharedPreferences);
 		Log.i(LOG_TAG, "Exam Count Before Submitted: " +  examCountBefore);
+		
+		//Save Update Exam Remaining Count to sharedPreferences
 		int remainingExamCount = Integer.valueOf(examCountBefore);
 		SPUtil.save2SP(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT, String.valueOf(remainingExamCount-1), sharedPreferences);
+		
+		//print log
 		String examCountAfter = SPUtil.getFromSP(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT, sharedPreferences);
 		Log.i(LOG_TAG, "Exam Count After Submitted: " +  examCountAfter);
+		
 		//Save Update Exam Submitted IDs to sharedPreferences
 		SPUtil.append2SP(SPUtil.CURRENT_EXAM_SUBMITTED_IDS, exam.getId(), sharedPreferences);
-		//Save Exam Score to sharedPreferences
-		SPUtil.save2SP(SPUtil.CURRENT_EXAM_SCORE, String.valueOf(succResult.getScore()), sharedPreferences);
+		
 		//Save Exam Status
 		SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_PENDING_NEW, sharedPreferences);
-	}*/
+	}
 	
 /*	public void saveExamStatusAfterSubmittedLocal(){
 		//Save Exam Score to sharedPreferences
@@ -470,20 +416,22 @@ public abstract class BaseQuestion extends BaseActivity{
 				finish();
 				
 				//move question
-				Intent intent = new Intent();
-				intent.putExtra(SPUtil.CURRENT_EXAM_CATALOG,String.valueOf(DataParseUtil.getCidByQid(exam, newQuestion.getId())));
-				intent.putExtra(SPUtil.CURRENT_EXAM_INDEX_IN_CATA,String.valueOf(newQuestion.getIndex()));
+//				Intent intent = new Intent();
+//				intent.putExtra(SPUtil.CURRENT_EXAM_CATALOG,String.valueOf(DataParseUtil.getCidByQid(exam, newQuestion.getId())));
+//				intent.putExtra(SPUtil.CURRENT_EXAM_INDEX_IN_CATA,String.valueOf(newQuestion.getIndex()));
+//				if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(newQuestionType)){
+//					intent.putExtra("questionType", questionTypes[0]);
+//					intent.setClass( context, MultiChoices.class);
+//				}else if(QUESTION_TYPE.SINGLE_CHOICE.equals(newQuestionType)){
+//					intent.putExtra("questionType", questionTypes[1]);
+//					intent.setClass( context, SingleChoices.class);
+//				}
+//				startActivity(intent);
 				
-				
-				if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(newQuestionType)){
-					intent.putExtra("questionType", questionTypes[0]);
-					intent.setClass( context, MultiChoices.class);
-				}else if(QUESTION_TYPE.SINGLE_CHOICE.equals(newQuestionType)){
-					intent.putExtra("questionType", questionTypes[1]);
-					intent.setClass( context, SingleChoices.class);
-				}
-				
-				startActivity(intent);
+				Log.i(LOG_TAG, "----------Start a New Question!-----------------");
+				go2QuestionByType(newQuestionType,mContext);
+				saveQuestionMovePara(DataParseUtil.getCidByQid(exam, newQuestion.getId()),newQuestion.getIndex(),newQuestionType,sharedPreferences);
+				Log.i(LOG_TAG, "--------------------------------------------");
 			}			
 		}else{
 			if(diret==1){
@@ -643,28 +591,29 @@ public abstract class BaseQuestion extends BaseActivity{
 				CatalogInfo info = catalogInfos.get(position);
 				Question nQuestion = DataParseUtil.getQuestionByCidQid(exam, info.getIndex(),1);
 				QUESTION_TYPE nQuestionType = nQuestion.getType();
-				Intent intent = new Intent();
-				intent.putExtra(SPUtil.CURRENT_EXAM_CATALOG, String.valueOf(info.getIndex()));
-				intent.putExtra(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, String.valueOf(nQuestion.getIndex()));
-				if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(nQuestionType)){
-					intent.putExtra("questionType", questionTypes[0]);
-					intent.setClass( mContext, MultiChoices.class);
-				}else if(QUESTION_TYPE.SINGLE_CHOICE.equals(nQuestionType)){
-					intent.putExtra("questionType", questionTypes[1]);
-					intent.setClass( mContext, SingleChoices.class);
-				}else{
-					ShowDialog(mContext.getResources().getString(R.string.dialog_note),
-							"Wrong Question Type: " + cQuestionType);
-				}
-				
-//				Log.i(LOG_TAG, "----------Start a New Exam!-----------------");
-//				SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_GOING, sharedPreferences);
-//				go2QuestionByType(nQuestionType,mContext);
-//				saveQuestionMovePara(info.getIndex(),nQuestion.getIndex(),nQuestionType,sharedPreferences);
-//				Log.i(LOG_TAG, "--------------------------------------------");
-				
+//				Intent intent = new Intent();
+//				intent.putExtra(SPUtil.CURRENT_EXAM_CATALOG, String.valueOf(info.getIndex()));
+//				intent.putExtra(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, String.valueOf(nQuestion.getIndex()));
+//				if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(nQuestionType)){
+//					intent.putExtra("questionType", questionTypes[0]);
+//					intent.setClass( mContext, MultiChoices.class);
+//				}else if(QUESTION_TYPE.SINGLE_CHOICE.equals(nQuestionType)){
+//					intent.putExtra("questionType", questionTypes[1]);
+//					intent.setClass( mContext, SingleChoices.class);
+//				}else{
+//					ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+//							"Wrong Question Type: " + cQuestionType);
+//				}
 				finish();
-				startActivity(intent);
+//				startActivity(intent);
+				
+				Log.i(LOG_TAG, "----------Start a New Exam!-----------------");
+				SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_GOING, sharedPreferences);
+				go2QuestionByType(nQuestionType,mContext);
+				saveQuestionMovePara(info.getIndex(),nQuestion.getIndex(),nQuestionType,sharedPreferences);
+				Log.i(LOG_TAG, "--------------------------------------------");
+				
+
 			}
 		});
 	}

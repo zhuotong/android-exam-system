@@ -247,6 +247,14 @@ public class BaseActivity extends Activity {
 		}
 	}
 	
+	public void go2QuestionByType(int qt,Context context){
+		if(qt==2){
+			go2MultiQuestion(context);
+		}else if(qt==1){
+			go2SingleQuestion(context);
+		}
+	}
+	
 	public void go2PendingQuestions(Context context){
     	Intent intent = new Intent();
 		intent.setClass( context, PendQuestions.class);
