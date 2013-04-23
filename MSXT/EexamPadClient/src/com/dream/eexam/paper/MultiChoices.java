@@ -128,8 +128,8 @@ public class MultiChoices extends BaseQuestion {
         questionTV = (TextView)findViewById(R.id.questionTV);
         questionTV.setMovementMethod(ScrollingMovementMethod.getInstance()); 
         questionTV.setText(questionHint+ "\n"+ cQuestion.getContent());
-        questionTV.setTextColor(Color.BLACK);
-        questionTV.setBackgroundColor(Color.argb(0, 0, 255, 0));
+//        questionTV.setTextColor(Color.BLACK);
+//        questionTV.setBackgroundColor(Color.argb(0, 0, 255, 0));
         
         //set List
         listView = (ListView)findViewById(R.id.lvChoices);

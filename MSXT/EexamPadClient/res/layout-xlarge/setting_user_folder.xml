@@ -4,7 +4,7 @@
   android:layout_width="fill_parent"
   android:layout_height="fill_parent"
   android:orientation="vertical"
-  android:background="@drawable/bg_color_papers">
+  android:background="@drawable/page_setting">
   
   <include
         android:id="@+id/baseHeader"
@@ -19,13 +19,13 @@
   		android:background="#000000"
   />
   		
-  <TableRow android:id="@+id/tableRow3" 
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginTop="30dp"
-		android:layout_marginLeft="40dp"
-		android:layout_marginRight="40dp"
-		android:padding="10dp">
+    <TableRow
+         android:layout_width="wrap_content"
+		 android:layout_height="wrap_content"
+		 android:layout_marginTop="50dp"
+		 android:layout_gravity="center_horizontal"
+		 android:gravity="center_horizontal">
+		 
 		<Button android:id="@+id/deleteBtn"
 			android:text="@string/label_btn_delete"
 			style="@style/button_style"
