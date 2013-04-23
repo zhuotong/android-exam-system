@@ -101,8 +101,6 @@ public class SingleChoices extends BaseQuestion {
         //set catalog bar(Center) 
 		catalogsTV.setText(String.valueOf(cCatalogIndex)+". "+ cCatalog.getDesc() + 
 				"(Q" + String.valueOf(cCatalog1stQuestionIndex)+" - " + "Q" + String.valueOf(cCataloglastQuestionIndex)+")");
-		
-		
 	}
 	
     @Override
@@ -127,8 +125,8 @@ public class SingleChoices extends BaseQuestion {
         questionTV = (TextView)findViewById(R.id.questionTV);
         questionTV.setMovementMethod(ScrollingMovementMethod.getInstance()); 
         questionTV.setText(questionHint+ "\n"+cQuestion.getContent());
-        questionTV.setTextColor(Color.BLACK);
-        questionTV.setBackgroundColor(Color.argb(0, 0, 255, 0));
+//        questionTV.setTextColor(Color.BLACK);
+//        questionTV.setBackgroundColor(Color.argb(0, 0, 255, 0));
         
         //set List
         listView = (ListView)findViewById(R.id.lvChoices);
@@ -147,28 +145,24 @@ public class SingleChoices extends BaseQuestion {
         		
         		//clear answer first
         		clearOldAnswer();
-        		
         		Log.i(LOG_TAG, "after clear:"+String.valueOf(cb.isChecked()));
-        		
         		cb.setChecked(!oldStatus);
-        		
         		Log.i(LOG_TAG, "after set:"+String.valueOf(cb.isChecked()));
         		setAnswer(arg2,cb.isChecked());
         		
         		//send message
-				Message msg = new Message();
-				msg.what = 1;
-				handler.sendMessage(msg);
+//				Message msg = new Message();
+//				msg.what = 1;
+//				handler.sendMessage(msg);
+				updateAllData();
 			}      	
         });
         setFooter();
-        
     }
     
     @Override
 	protected void onDestroy() {
 		super.onDestroy();
-		
 		Log.i(LOG_TAG, "onDestroy()...");
 		if(timerTask!=null){
 			timerTask.cancel();
@@ -180,7 +174,6 @@ public class SingleChoices extends BaseQuestion {
     
     void clearOldAnswer(){
     	Log.i(LOG_TAG, "clearOldAnswer()...");
-    	
 		listItemID.clear();
     	answerLabels.setLength(0);
 		//initial all items background color
@@ -190,14 +183,11 @@ public class SingleChoices extends BaseQuestion {
 			adapter.mChecked.set(i, false);
 			Log.i(LOG_TAG, String.valueOf(i)+":"+"false");
 		} 
-		
 		Log.i(LOG_TAG, "clearOldAnswer().");
-
     }
 
     void clearOldAnswer(int checkedIndex){
     	Log.i(LOG_TAG, "clearOldAnswer()...");
-    	
 		listItemID.clear();
     	answerLabels.setLength(0);
 		//initial all items background color
@@ -211,10 +201,8 @@ public class SingleChoices extends BaseQuestion {
 				aRb.setChecked(false);
 				adapter.mChecked.set(i, false);				
 			}
-
 			Log.i(LOG_TAG, String.valueOf(i)+":"+"false");
 		} 
-		
 		Log.i(LOG_TAG, "clearOldAnswer().");
 
     }
@@ -254,18 +242,7 @@ public class SingleChoices extends BaseQuestion {
 			@Override
 			public void onClick(View v) {
 				if(pendQuestions.size()>0){
-//    				Intent intent = new Intent();
-//    				intent.putExtra(SPUtil.CURRENT_EXAM_CATALOG, String.valueOf(cCatalogIndex));
-//    				intent.putExtra(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, String.valueOf(cQuestionIndex));
-//    				intent.putExtra("questionType", cQuestionType);
-//    				if(questionTypes[0].equals(cQuestionType)){
-//    					intent.setClass( getBaseContext(), PendQuestions.class);
-//    				}else if(questionTypes[1].equals(cQuestionType)){
-//    					intent.setClass( getBaseContext(), PendQuestions.class);
-//    				}
     				finish();
-//    				startActivity(intent); 
-    				
     				Log.i(LOG_TAG, "----------Go to Pending Question!-----------------");
     				go2PendingQuestions(mContext);
     				Log.i(LOG_TAG, "--------------------------------------------");
@@ -447,9 +424,11 @@ public class SingleChoices extends BaseQuestion {
 		        		setAnswer(p,rb.isChecked());
 		        		
 		        		//send message
-						Message msg = new Message();
-						msg.what = 1;
-						handler.sendMessage(msg);
+//						Message msg = new Message();
+//						msg.what = 1;
+//						handler.sendMessage(msg);
+						
+						updateAllData();
 					}
 				});
 				view.setTag(holder);
@@ -460,7 +439,6 @@ public class SingleChoices extends BaseQuestion {
 			
 			Choice choice = choices.get(position);
 			holder.radioButton.setChecked(mChecked.get(position));
-//			holder.radioButton.setText(choicesLabels[position]);
 			holder.index.setText(choice.getLabel());
 			holder.choiceDesc.setText(choice.getContent());
 			

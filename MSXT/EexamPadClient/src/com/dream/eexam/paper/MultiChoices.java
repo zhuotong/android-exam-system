@@ -13,7 +13,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Message;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -148,9 +147,11 @@ public class MultiChoices extends BaseQuestion {
 		    	answerLabels.setLength(0);
 				setAnswer();
 				
-				Message msg = new Message();
-				msg.what = 1;
-				handler.sendMessage(msg);
+//				Message msg = new Message();
+//				msg.what = 1;
+//				handler.sendMessage(msg);
+				
+				updateAllData();
 			}      	
         });
         listView.setOnTouchListener(new OnTouchListener(){
@@ -377,9 +378,11 @@ public class MultiChoices extends BaseQuestion {
 						setAnswer();
 
 						//send message
-						Message msg = new Message();
-						msg.what = 1;
-						handler.sendMessage(msg);
+//						Message msg = new Message();
+//						msg.what = 1;
+//						handler.sendMessage(msg);
+						
+						updateAllData();
 					}
 				});
 				view.setTag(holder);
