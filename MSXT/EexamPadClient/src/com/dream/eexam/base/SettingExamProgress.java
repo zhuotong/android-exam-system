@@ -1,28 +1,13 @@
 package com.dream.eexam.base;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Message;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-
-import com.dream.eexam.model.ExamProgress;
 import com.dream.eexam.util.DatabaseUtil;
-import com.msxt.client.model.Examination.Choice;
 
 public class SettingExamProgress extends SettingBase {
 	TextView dbData ;
@@ -60,6 +45,17 @@ public class SettingExamProgress extends SettingBase {
 		clearBtn = (Button) this.findViewById(R.id.clearBtn);
 		clearBtn.setOnClickListener(clearListener);
 	}
+	
+    View.OnClickListener clearListener = new View.OnClickListener() {  
+        @Override  
+        public void onClick(View v) { 
+        	clearSP();
+        	clearDB(mContext);
+        	
+        	ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+        			mContext.getResources().getString(R.string.msg_history_be_cleared));	
+        }  
+    }; 
 	
  /*   class MyListAdapter extends BaseAdapter{
     	List<ExamProgress> epList = new ArrayList<ExamProgress>();
@@ -125,16 +121,7 @@ public class SettingExamProgress extends SettingBase {
     	TextView answer;
     }*/
 	
-    View.OnClickListener clearListener = new View.OnClickListener() {  
-        @Override  
-        public void onClick(View v) { 
-        	clearSP();
-        	clearDB(mContext);
-        	
-        	ShowDialog(mContext.getResources().getString(R.string.dialog_note),
-        			mContext.getResources().getString(R.string.msg_history_be_cleared));	
-        }  
-    }; 
+
 	
 	
 }

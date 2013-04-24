@@ -46,21 +46,19 @@ public class ExamStart extends BaseActivity {
 	
 	//declare components
 	ImageView imgHome = null;
-	private TextView nameTV = null;
-	private TextView jobTitleTV = null;
-	private TextView examDesc = null;
-	private Spinner spinner;
-	private Button startBtn;
+	TextView nameTV = null;
+	TextView jobTitleTV = null;
+	TextView examDesc = null;
+	Spinner spinner;
+	Button startBtn;
 	
 	LoginSuccessResult succResult = new LoginSuccessResult();
 	List<com.msxt.client.model.LoginSuccessResult.Examination> examinations;
 	String conversation = null;
-	
 	String selectedExamId = null;
 	Map<Integer,String> examIdsMap = new HashMap<Integer,String>();
 	List<String> examNames = new ArrayList<String>();
 	ArrayAdapter<String> adapter;
-	
 	QUESTION_TYPE fQuestionType = null;
 	String[] questionTypes;
 	
@@ -198,8 +196,7 @@ public class ExamStart extends BaseActivity {
     			String examFileName = FileUtil.EXAM_FILE_PREFIX + selectedExamId+ FileUtil.FILE_SUFFIX_XML;
     			
     			//save to SD card
-    			FileUtil fu = new FileUtil();
-        		fu.saveFile(SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences), examFileName, examResult.getSuccessMessage());
+    			FileUtil.saveFile(SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences), examFileName, examResult.getSuccessMessage());
         		
     			//save to SharedPreferences
     			SPUtil.save2SP(SPUtil.CURRENT_EXAM_FILE_NAME, examFileName, sharedPreferences);

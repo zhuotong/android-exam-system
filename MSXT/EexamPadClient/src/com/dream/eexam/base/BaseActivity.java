@@ -1,10 +1,8 @@
 package com.dream.eexam.base;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-
 import com.dream.eexam.paper.MultiChoices;
 import com.dream.eexam.paper.PendQuestions;
 import com.dream.eexam.paper.SingleChoices;
@@ -12,7 +10,6 @@ import com.dream.eexam.util.ActivityManage;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SPUtil;
 import com.msxt.client.model.QUESTION_TYPE;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -22,7 +19,6 @@ import android.content.SharedPreferences;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Window;

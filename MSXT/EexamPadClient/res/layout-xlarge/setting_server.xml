@@ -12,7 +12,6 @@
   
   <include layout="@layout/setting_footer" /> 
 
-
 	<TableLayout android:id="@+id/tableLayout1"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content" 
@@ -53,7 +52,8 @@
 				android:layout_marginLeft="5dp"
 				android:textSize="22sp"
 				android:textColor="#000000"
-				android:background="@drawable/et_common">
+				android:background="@drawable/et_common"
+				android:text="@string/default_host" android:inputType="">
 			</EditText> 
    		</TableRow>
 	    <TableRow
@@ -73,7 +73,9 @@
 				android:layout_marginLeft="5dp"
 				android:textSize="22sp"
 				android:textColor="#000000"
-				android:background="@drawable/et_common">
+				android:background="@drawable/et_common"
+				android:text="@string/default_port" 
+				android:inputType="number">
 			</EditText> 
 	   	</TableRow>
    	</TableLayout> 

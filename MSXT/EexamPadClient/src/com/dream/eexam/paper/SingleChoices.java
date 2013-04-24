@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
@@ -31,6 +32,8 @@ import android.widget.SeekBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
+
 import com.dream.eexam.base.R;
 import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.util.DatabaseUtil;
@@ -60,7 +63,7 @@ public class SingleChoices extends BaseQuestion {
 		imgDownArrow = (ImageView) findViewById(R.id.imgDownArrow);
     	pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);//TextView[Pending([count])]
 		remainingTime = (TextView)findViewById(R.id.remainingTime);//TextView[Time Value]
-		submitTV = (TextView)findViewById(R.id.submitTV);
+		submitBtn = (Button)findViewById(R.id.submitBtn);
 		backArrow = (ImageView)findViewById(R.id.backArrow);
 		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
 		completedPercentage = (TextView)findViewById(R.id.completedPercentage);   	
@@ -125,7 +128,7 @@ public class SingleChoices extends BaseQuestion {
         questionTV = (TextView)findViewById(R.id.questionTV);
         questionTV.setMovementMethod(ScrollingMovementMethod.getInstance()); 
         questionTV.setText(questionHint+ "\n"+cQuestion.getContent());
-//        questionTV.setTextColor(Color.BLACK);
+        questionTV.setTextColor(Color.BLACK);
 //        questionTV.setBackgroundColor(Color.argb(0, 0, 255, 0));
         
         //set List
@@ -264,8 +267,8 @@ public class SingleChoices extends BaseQuestion {
 		completedSeekBar.setEnabled(false);
 		
 		//set exam header(Right)
-		submitTV.setText(mContext.getResources().getString(R.string.label_tv_submit));
-        submitTV.setOnClickListener(new View.OnClickListener() {
+		submitBtn.setText(mContext.getResources().getString(R.string.label_tv_submit));
+        submitBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Log.i(LOG_TAG, "submitTV.onClick()...");
@@ -423,11 +426,6 @@ public class SingleChoices extends BaseQuestion {
 		        		//set answer
 		        		setAnswer(p,rb.isChecked());
 		        		
-		        		//send message
-//						Message msg = new Message();
-//						msg.what = 1;
-//						handler.sendMessage(msg);
-						
 						updateAllData();
 					}
 				});
@@ -466,7 +464,7 @@ public class SingleChoices extends BaseQuestion {
     		
     		String displayMessage =  mContext.getResources().getString(R.string.msg_submiting);
     		progressDialog = ProgressDialog.show(SingleChoices.this, null, displayMessage, true, false);
-    		submitTV.setEnabled(false);
+    		submitBtn.setEnabled(false);
     	}
     	
         @Override
@@ -485,9 +483,16 @@ public class SingleChoices extends BaseQuestion {
 				Log.i(LOG_TAG, "proxy.submitAnswer..."+examId);
 				
 				submitResult = proxy.submitAnswer(examId,answers);
-			} catch (SQLException e) {
-				Log.i(LOG_TAG, e.getMessage());
+			} catch (SQLException se) {
+				Log.i(LOG_TAG, se.getMessage());
 				progressDialog.dismiss();
+			} catch (Exception e){
+//				Log.i(LOG_TAG, e.getMessage());
+				progressDialog.dismiss();
+				Toast.makeText(mContext, "Error happens when submit Answer!", Toast.LENGTH_LONG).show();
+				
+				finish();
+				goHome(mContext);
 			}
 			return null;
 		}
@@ -496,15 +501,15 @@ public class SingleChoices extends BaseQuestion {
         protected void onPostExecute(String result) {
         	Log.i(LOG_TAG, "SubmitAnswerTask.onPostExecute()...");
         	progressDialog.dismiss();
-        	submitTV.setEnabled(true);
+        	submitBtn.setEnabled(true);
 
         	if(submitResult!= null && submitResult.getStatus() == STATUS.SUCCESS ) {
         		
         		String resultFileName = FileUtil.RESULT_FILE_PREFIX + exam.getId() + FileUtil.FILE_SUFFIX_XML;
         		Log.i(LOG_TAG, "resultFileName: " + resultFileName);
         		
-    			FileUtil fu = new FileUtil();
-        		fu.saveFile(SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences), resultFileName, submitResult.getSuccessMessage());
+    			FileUtil.saveFile(SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences), resultFileName, submitResult.getSuccessMessage());
+    			
         		SubmitSuccessResult succResult = DataParseUtil.getSubmitSuccessResult(submitResult);
         		SPUtil.save2SP(SPUtil.CURRENT_EXAM_SCORE, String.valueOf(succResult.getScore()), sharedPreferences);
 

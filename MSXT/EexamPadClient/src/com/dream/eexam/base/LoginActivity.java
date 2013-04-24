@@ -215,7 +215,7 @@ public class LoginActivity extends BaseActivity {
         		//save login file
         		FileUtil fu = new FileUtil();
         		fu.deleteFolder(new File(userHome));
-        		fu.saveFile(userHome, loginResultFile, loginResult.getSuccessMessage());
+        		FileUtil.saveFile(userHome, loginResultFile, loginResult.getSuccessMessage());
         		
         		//save login result file
         		SPUtil.save2SP(SPUtil.CURRENT_USER_LOGIN_FILE_NAME, loginResultFile, sharedPreferences);

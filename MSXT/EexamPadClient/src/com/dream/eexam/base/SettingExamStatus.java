@@ -1,6 +1,7 @@
 package com.dream.eexam.base;
 
 import com.dream.eexam.util.SPUtil;
+import com.dream.eexam.util.TimeDateUtil;
 
 import android.os.Bundle;
 import android.view.View;
@@ -39,17 +40,18 @@ public class SettingExamStatus extends SettingBase {
 
 	public String getExamInfo(){
 		StringBuilder sb = new StringBuilder();
-		sb.append("ExamFileName:");
+		sb.append("Exam File Name:");
 		String examFileName = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_FILE_NAME,sharedPreferences);
 		sb.append(examFileName == null ? "" : examFileName);
 		sb.append("\n");
 
-		sb.append("ExamStartTime:");
+		sb.append("Exam Start Time:");
 		long examStartTime = SPUtil.getLongFromSP(SPUtil.CURRENT_EXAM_START_TIME,sharedPreferences);
-		sb.append(String.valueOf(examStartTime));
+//		sb.append(String.valueOf(examStartTime));
+		sb.append(TimeDateUtil.transferTime2Str(examStartTime));
 		sb.append("\n");
 
-		sb.append("ExamStatus:");
+		sb.append("Exam Status:");
 		int examStatus = SPUtil.getIntegerFromSP(SPUtil.CURRENT_EXAM_STATUS,sharedPreferences);
 		switch(examStatus){
 			case 1:sb.append("Exam Not Start");break;
@@ -62,17 +64,17 @@ public class SettingExamStatus extends SettingBase {
 		
 		sb.append("\n");
 
-		sb.append("ExamCurrentCatalog:");
+		sb.append("Exam Current Catalog:");
 		int examCurrentCatalog = SPUtil.getIntegerFromSP(SPUtil.CURRENT_EXAM_CATALOG, sharedPreferences);
 		sb.append(examCurrentCatalog == 0 ? "" : String.valueOf(examCurrentCatalog));
 		sb.append("\n");
 
-		sb.append("ExamCurrentIndexInCatalog:");
+		sb.append("Exam Current Index In Catalog:");
 		int examCurrentIndexInCatalog = SPUtil.getIntegerFromSP(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, sharedPreferences);
 		sb.append(examCurrentIndexInCatalog == 0 ? "": String.valueOf(examCurrentCatalog));
 		sb.append("\n");
 
-		sb.append("ExamScore:");
+		sb.append("Exam Score:");
 		String examScore = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_SCORE,sharedPreferences);
 		sb.append(examScore == null ? "" : examScore);
 		sb.append(SPUtil.getFromSP(SPUtil.CURRENT_EXAM_SCORE, sharedPreferences));

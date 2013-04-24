@@ -76,7 +76,5 @@
                   android:launchMode="singleTask">
         </activity>
         
- 	    <service android:name="com.dream.eexam.service.CountDownService" />
-        
     </application>
 </manifest>

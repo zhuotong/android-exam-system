@@ -34,7 +34,7 @@ public class FileUtil {
 		return inputStream;
 	}
 	
-	public void saveFile(String path, String fileName,String content) {
+	public static void saveFile(String path, String fileName,String content) {
 		try {
 	        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {  
 	            File dir = new File(path);  

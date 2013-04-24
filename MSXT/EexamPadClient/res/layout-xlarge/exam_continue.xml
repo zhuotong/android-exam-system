@@ -10,6 +10,7 @@
         android:id="@+id/baseHeader"
         layout="@layout/base_header" /> 
 
+  <!-- User Information -->
     <TableRow
          android:layout_width="fill_parent"
 		 android:layout_height="wrap_content"
@@ -33,7 +34,6 @@
 			android:background="@drawable/common_tv_value">
 		</TextView>          
    	</TableRow> 
-   		
     <TableRow
          android:layout_width="fill_parent"
 		 android:layout_height="wrap_content"
@@ -56,28 +56,30 @@
 			android:background="@drawable/common_tv_value">
 		</TextView>          
    	</TableRow>
+    <!-- User Information End-->
 
-  	<TextView 
-  			android:layout_width="fill_parent" 
-  			android:layout_height="wrap_content"
-  			android:layout_marginTop="20dp"
-  			android:layout_marginLeft="20dp" 
-  			android:layout_marginRight="20dp" 			
-  			android:textSize="22sp"
-  			android:textColor="#000000"
-  			android:text="@string/label_tv_unfinished_exam">
-  	</TextView>
-  
-	<TextView android:id="@+id/continueExam"
-		android:layout_width="fill_parent" 
-		android:layout_height="wrap_content"
-		android:layout_marginTop="5dp"
-		android:layout_marginLeft="20dp"
-		android:layout_marginRight="20dp"
-		android:textSize="20sp"
-		android:textColor="#000000"
-		android:background="@drawable/common_tv_value">
-	</TextView>
+	<!-- Exam Information -->
+	  	<TextView 
+	  			android:layout_width="fill_parent" 
+	  			android:layout_height="wrap_content"
+	  			android:layout_marginTop="20dp"
+	  			android:layout_marginLeft="20dp" 
+	  			android:layout_marginRight="20dp" 			
+	  			android:textSize="22sp"
+	  			android:textColor="#000000"
+	  			android:text="@string/label_tv_unfinished_exam">
+	  	</TextView>
+		<TextView android:id="@+id/continueExam"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:layout_marginTop="5dp"
+			android:layout_marginLeft="20dp"
+			android:layout_marginRight="20dp"
+			android:textSize="20sp"
+			android:textColor="#000000"
+			android:background="@drawable/common_tv_value">
+		</TextView>
+	<!-- Exam Information End-->
 
     <TableRow
          android:layout_width="fill_parent"

@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -63,7 +64,7 @@ public abstract class BaseQuestion extends BaseActivity{
 	
 	//set exam footer
 	protected TextView remainingTime = null;	
-	protected TextView submitTV = null;
+	protected Button submitBtn = null;
 	protected ImageView imgDownArrow = null;
 	protected TextView waitTV = null;
 	protected SeekBar completedSeekBar= null;

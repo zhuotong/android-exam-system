@@ -63,7 +63,7 @@ public class PendQuestions extends BaseQuestion {
 		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
 		completedPercentage = (TextView)findViewById(R.id.completedPercentage);   	
     	
-		submitTV = (TextView)findViewById(R.id.submitTV);
+		submitBtn = (Button)findViewById(R.id.submitBtn);
 		nextArrow = (ImageView)findViewById(R.id.nextArrow);
     	
 	}
@@ -152,7 +152,7 @@ public class PendQuestions extends BaseQuestion {
 		//set completedSeekBar label
 		completedPercentage.setText(String.valueOf(per)+"%");
 		
-		submitTV.setVisibility(View.INVISIBLE);
+		submitBtn.setVisibility(View.INVISIBLE);
 		nextArrow.setVisibility(View.INVISIBLE);
     }
     
@@ -310,34 +310,16 @@ public class PendQuestions extends BaseQuestion {
         		Log.i(LOG_TAG, "resultFileName: " + resultFileName);
         		
         		//save submit result file
-    			FileUtil fu = new FileUtil();
-        		fu.saveFile(SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences), resultFileName, submitResult.getSuccessMessage());
-        		
-        		//parse submit success result 
+    			FileUtil.saveFile(SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences), resultFileName, submitResult.getSuccessMessage());
         		SubmitSuccessResult succResult = DataParseUtil.getSubmitSuccessResult(submitResult);
-        		
-        		Log.i(LOG_TAG, "Exam " + exam.getId() + " Submitted Successfully!");
-        		
-        		//Save Update Exam Remaining Count to sharedPreferences
-        		String examCountBefore = SPUtil.getFromSP(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT, sharedPreferences);
-        		Log.i(LOG_TAG, "Exam Count Before Submitted: " +  examCountBefore);
-        		
-        		int remainingExamCount = Integer.valueOf(examCountBefore);
-        		SPUtil.save2SP(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT, String.valueOf(remainingExamCount-1), sharedPreferences);
-        		
-        		String examCountAfter = SPUtil.getFromSP(SPUtil.CURRENT_USER_EXAM_REMAINING_COUNT, sharedPreferences);
-        		Log.i(LOG_TAG, "Exam Count After Submitted: " +  examCountAfter);
-        		
-        		//Save Update Exam Submitted IDs to sharedPreferences
-        		SPUtil.append2SP(SPUtil.CURRENT_EXAM_SUBMITTED_IDS, exam.getId(), sharedPreferences);
         		
         		//Save Exam Score to sharedPreferences
         		SPUtil.save2SP(SPUtil.CURRENT_EXAM_SCORE, String.valueOf(succResult.getScore()), sharedPreferences);
         		
-        		//Save Exam Status
-        		SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_PENDING_NEW, sharedPreferences);
+				//save user status and exam status
+				saveExamStatusAfterSubmitted();
         		
-				//move question
+				//go to ExamResult Page
         		go2ExamResult(mContext);
         		
         	}else{
@@ -353,9 +335,10 @@ public class PendQuestions extends BaseQuestion {
     								    String examid = exam.getId();
     									saveAnswer2Local(answers,path,examid);
     									
-    									SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_PENDING_NEW, sharedPreferences);
-    									
-    					        		
+    									//save user status and exam status
+    									saveExamStatusAfterSubmitted();
+    									//go to ExamResult Page
+    									go2ExamResult(mContext);
     								}
     							})
     					.setNegativeButton(mContext.getResources().getString(R.string.warning_save_answer_local_cancel),

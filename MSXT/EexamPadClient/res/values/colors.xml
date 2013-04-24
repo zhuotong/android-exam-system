@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?> 
 <resources> 
 	<color name="catalog_menu_text_color">#FFFFFF</color>
-	<color name="success_message_color">#5326FF</color>
+	<color name="success_message_color">#8EFE03</color>
+	<color name="remind_message_color">#FFDE63</color>
 	<color name="failure_message_color">#FF0000</color>
 </resources>

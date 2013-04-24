@@ -50,7 +50,7 @@
 				        android:layout_weight="1"
 				        android:layout_gravity="center_vertical"
 				        android:gravity="right"
-				        android:textColor="#000000"
+				        android:textColor="#31FF07"
 				        android:textSize="20sp"
 				        android:text="@string/label_tv_time_remaning"/>   
 				     <TextView
@@ -88,7 +88,7 @@
 		        </TableRow>
 		    </TableLayout>	
 		        
-   		    <TextView android:id="@+id/submitTV"
+   		    <Button android:id="@+id/submitBtn"
 		        android:layout_width="fill_parent"
 		        android:layout_height="fill_parent"
 		        android:layout_weight="1"
@@ -97,7 +97,7 @@
 		        android:textColor="#134316"
 		        android:textSize="22sp"
 		        android:text="@string/label_tv_submit"
-		        android:background="@drawable/tv_sys"/>
+		        android:background="@drawable/button_exam"/>
    		    
 	 	    <ImageView android:id="@+id/nextArrow"
 	    	    	android:src="@drawable/ic_next_64"

@@ -24,7 +24,7 @@
     <string name="label_chb_save_password">Save Password</string>
     <string name="label_btn_login">Sign In</string>
     <string name="label_btn_reset">Setting</string>
-    <string name="msg_login_server">Login to server...</string>
+    <string name="msg_login_server">Login to Server</string>
     <string name="msg_userid_password_empty_error">UserId And Password can not be null!</string>
     <string name="msg_host_port_empty_error">Server address or port is not set, please contact the Administrator!</string>
     <string name="msg_network_error">Your mobile is not in a available NetWork!</string>
@@ -41,6 +41,8 @@
     <string name="label_tv_port">Port:</string>
     <string name="label_btn_save">Save</string>
     <string name="label_btn_test_connect">Test Connect</string>
+    <string name="msg_wait_test_connect">Waiting Test Connect</string>
+    
     <string name="label_btn_delete">Delete</string>
     <string name="label_btn_clear_history">Clear History</string>
     <string name="msg_history_be_cleared">History is cleared</string>
@@ -115,8 +117,6 @@
     <!-- Exam End Page End -->
 
 	<!-- Other -->
-	
-	
  	<string-array name="question_types">
         <item>M</item>
         <item>S</item>
@@ -142,4 +142,6 @@
     <string name="setting_password">admin</string>
     
     <!-- Other -->
+    <string name="default_host">192.168.1.100</string>
+    <string name="default_port">8080</string>
 </resources>

@@ -12,6 +12,7 @@
         layout="@layout/base_header" 
         android:layout_gravity="top"/>
 
+    <!-- Display Successfully Message -->
   	<TextView 
   			android:layout_width="wrap_content" 
   			android:layout_height="wrap_content"
@@ -25,6 +26,7 @@
   			android:text="@string/tv_label_submit_success">
   	</TextView>    
 
+  	<!-- Display Result Message -->
   	<TableRow
          android:layout_width="fill_parent"
 		 android:layout_height="wrap_content"
@@ -49,7 +51,7 @@
 		</TextView>          
    	</TableRow>
    		
-      <TableRow
+    <TableRow
          android:layout_width="fill_parent"
 		 android:layout_height="wrap_content"
 		 android:layout_marginLeft="50dp"
@@ -73,6 +75,7 @@
 		</TextView>          
    	</TableRow>
 
+    <!-- Display Remind Message -->
     <TextView android:id="@+id/examLeftTV"
   			android:layout_width="wrap_content" 
   			android:layout_height="wrap_content"
@@ -82,7 +85,7 @@
   			android:layout_gravity="center_vertical|center_horizontal"
   			android:gravity="center_vertical|center_horizontal"
   			android:textSize="22sp"
-  			android:textColor="@color/success_message_color">
+  			android:textColor="@color/remind_message_color">
   	</TextView>
   		
 	<TableRow

@@ -20,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnTouchListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -60,7 +61,7 @@ public class MultiChoices extends BaseQuestion {
 		imgHome = (ImageView) findViewById(R.id.imgHome);
 		catalogsTL = (TableLayout)findViewById(R.id.catalogsTL);
 		remainingTime = (TextView)findViewById(R.id.remainingTime);
-		submitTV = (TextView)findViewById(R.id.submitTV);
+		submitBtn = (Button) findViewById(R.id.submitBtn);
 		imgDownArrow = (ImageView) findViewById(R.id.imgDownArrow);
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
 		pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);
@@ -128,7 +129,7 @@ public class MultiChoices extends BaseQuestion {
         questionTV = (TextView)findViewById(R.id.questionTV);
         questionTV.setMovementMethod(ScrollingMovementMethod.getInstance()); 
         questionTV.setText(questionHint+ "\n"+ cQuestion.getContent());
-//        questionTV.setTextColor(Color.BLACK);
+        questionTV.setTextColor(Color.BLACK);
 //        questionTV.setBackgroundColor(Color.argb(0, 0, 255, 0));
         
         //set List
@@ -225,8 +226,8 @@ public class MultiChoices extends BaseQuestion {
 
         
 		//set exam header(Right)
-		submitTV.setText(mContext.getResources().getString(R.string.label_tv_submit));
-        submitTV.setOnClickListener(new View.OnClickListener() {
+		submitBtn.setText(mContext.getResources().getString(R.string.label_tv_submit));
+        submitBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Log.i(LOG_TAG, "submitTV.onClick()...");
@@ -423,7 +424,7 @@ public class MultiChoices extends BaseQuestion {
     		Log.i(LOG_TAG, "onPreExecute() called");
     		String displayMessage =  mContext.getResources().getString(R.string.msg_submiting);
     		progressDialog = ProgressDialog.show(MultiChoices.this, null, displayMessage, true, true);
-    		submitTV.setEnabled(false);
+    		submitBtn.setEnabled(false);
     	}
     	
         @Override
@@ -450,15 +451,17 @@ public class MultiChoices extends BaseQuestion {
         @Override
         protected void onPostExecute(String result) {
         	progressDialog.dismiss();
-        	submitTV.setEnabled(true);
+        	submitBtn.setEnabled(true);
         	
         	if( submitResult!=null && submitResult.getStatus() == STATUS.SUCCESS ) {
-        		
+        		//get result file name
            		String resultFileName = FileUtil.RESULT_FILE_PREFIX + exam.getId() + FileUtil.FILE_SUFFIX_XML;
         		Log.i(LOG_TAG, "resultFileName: " + resultFileName);
-    			FileUtil fu = new FileUtil();
-        		fu.saveFile(SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences), resultFileName, submitResult.getSuccessMessage());
+    			
+        		//save submit result file
+        		FileUtil.saveFile(SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences), resultFileName, submitResult.getSuccessMessage());
         		SubmitSuccessResult succResult = DataParseUtil.getSubmitSuccessResult(submitResult);
+        		
         		//Save Exam Score to sharedPreferences
         		SPUtil.save2SP(SPUtil.CURRENT_EXAM_SCORE, String.valueOf(succResult.getScore()), sharedPreferences);
         		

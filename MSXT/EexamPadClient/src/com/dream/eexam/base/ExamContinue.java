@@ -2,20 +2,18 @@ package com.dream.eexam.base;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Calendar;
 
-import com.dream.eexam.paper.MultiChoices;
-import com.dream.eexam.paper.SingleChoices;
 import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.FileUtil;
 import com.dream.eexam.util.SPUtil;
+import com.dream.eexam.util.TimeDateUtil;
 import com.msxt.client.model.Examination;
 import com.msxt.client.model.LoginSuccessResult;
 import com.msxt.client.model.QUESTION_TYPE;
 import com.msxt.client.model.Examination.Question;
-
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -100,30 +98,12 @@ public class ExamContinue extends BaseActivity {
 					ccIndex = getccIndex();
 					cqIndex = getcqIndex();
 				}
-				
 				Question fQuestion = DataParseUtil.getQuestionByCidQid(exam, ccIndex, cqIndex);
 				if(fQuestion==null){
 					ShowDialog(getResources().getString(R.string.dialog_warning),"Can not get question!");
 					return;
 				}
-				
 				fQuestionType = fQuestion.getType();
-				
-				//move question
-//				Intent intent = new Intent();
-//				intent.putExtra(SPUtil.CURRENT_EXAM_CATALOG, String.valueOf(ccIndex));
-//				intent.putExtra(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, String.valueOf(cqIndex));
-//				if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(fQuestionType)){
-//					intent.putExtra("questionType",questionTypes[0]);
-//					intent.setClass( getBaseContext(), MultiChoices.class);
-//					startActivity(intent);
-//				}else if(QUESTION_TYPE.SINGLE_CHOICE.equals(fQuestionType)){
-//					intent.putExtra("questionType",questionTypes[1]);
-//					intent.setClass( getBaseContext(), SingleChoices.class);
-//					startActivity(intent);
-//				}else{
-//					ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Invalid qeustion type.");
-//				}
 				
 				Log.i(LOG_TAG, "----------Continue a New Exam!-----------------");
 				go2QuestionByType(fQuestionType,mContext);
@@ -150,6 +130,18 @@ public class ExamContinue extends BaseActivity {
 		continueExamInfo = "  ("+String.valueOf(per)+"% "+getResources().getString(R.string.msg_complete)+")";
 		dbUtil.close();
 		return continueExamInfo;
+	}
+	
+	protected String getExamRemainingTime(){
+		long startTime = SPUtil.getLongFromSP(SPUtil.CURRENT_EXAM_START_TIME, sharedPreferences);
+		long currentTime = Calendar.getInstance().getTimeInMillis();
+		long cosumeTime = TimeDateUtil.getTimeInterval(currentTime,startTime);
+		long examTime = exam.getTime() * 60;//second
+		if(cosumeTime<examTime){
+			return TimeDateUtil.getRemainingTime(examTime-cosumeTime);
+		}else{
+			return null;
+		}
 	}
 
 }
