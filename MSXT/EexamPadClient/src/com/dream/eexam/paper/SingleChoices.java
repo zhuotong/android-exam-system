@@ -61,7 +61,7 @@ public class SingleChoices extends BaseQuestion {
 		catalogsTL = (TableLayout)findViewById(R.id.catalogsTL);
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
 		imgDownArrow = (ImageView) findViewById(R.id.imgDownArrow);
-    	pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);//TextView[Pending([count])]
+    	pendQueNumber = (Button)findViewById(R.id.pendQueNumber);//TextView[Pending([count])]
 		remainingTime = (TextView)findViewById(R.id.remainingTime);//TextView[Time Value]
 		submitBtn = (Button)findViewById(R.id.submitBtn);
 		backArrow = (ImageView)findViewById(R.id.backArrow);
@@ -484,15 +484,9 @@ public class SingleChoices extends BaseQuestion {
 				
 				submitResult = proxy.submitAnswer(examId,answers);
 			} catch (SQLException se) {
-				Log.i(LOG_TAG, se.getMessage());
 				progressDialog.dismiss();
 			} catch (Exception e){
-//				Log.i(LOG_TAG, e.getMessage());
 				progressDialog.dismiss();
-				Toast.makeText(mContext, "Error happens when submit Answer!", Toast.LENGTH_LONG).show();
-				
-				finish();
-				goHome(mContext);
 			}
 			return null;
 		}

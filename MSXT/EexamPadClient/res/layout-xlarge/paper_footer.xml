@@ -22,15 +22,15 @@
 					android:contentDescription="back">
 			</ImageView>
 				
-		    <TextView android:id="@+id/pendQueNumber"
+		    <Button android:id="@+id/pendQueNumber"
 		        android:layout_width="fill_parent"
 		        android:layout_height="fill_parent"
 		        android:layout_weight="1"
 		        android:layout_margin="5dp"  
 		        android:textColor="#134316"
 		        android:textSize="22sp"
-		    	android:background="@drawable/tv_sys"
-		    	android:gravity="center_horizontal"/>
+		    	android:gravity="center_horizontal"
+		    	android:background="@drawable/button_exam"/>
 			
 		    <TableLayout android:layout_width="fill_parent"
 				android:layout_height="fill_parent"

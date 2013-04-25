@@ -69,7 +69,7 @@ public abstract class BaseQuestion extends BaseActivity{
 	protected TextView waitTV = null;
 	protected SeekBar completedSeekBar= null;
 	protected TextView completedPercentage = null;
-	protected TextView pendQueNumber = null;
+	protected Button pendQueNumber = null;
 	protected ImageView backArrow;
 	protected ImageView nextArrow;
 	

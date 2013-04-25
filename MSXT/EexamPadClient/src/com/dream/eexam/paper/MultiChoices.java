@@ -64,7 +64,7 @@ public class MultiChoices extends BaseQuestion {
 		submitBtn = (Button) findViewById(R.id.submitBtn);
 		imgDownArrow = (ImageView) findViewById(R.id.imgDownArrow);
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
-		pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);
+		pendQueNumber = (Button) findViewById(R.id.pendQueNumber);
 		backArrow = (ImageView)findViewById(R.id.backArrow);
 		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
 		completedPercentage = (TextView)findViewById(R.id.completedPercentage);   	
@@ -378,11 +378,6 @@ public class MultiChoices extends BaseQuestion {
 				    	answerLabels.setLength(0);
 						setAnswer();
 
-						//send message
-//						Message msg = new Message();
-//						msg.what = 1;
-//						handler.sendMessage(msg);
-						
 						updateAllData();
 					}
 				});
@@ -441,10 +436,10 @@ public class MultiChoices extends BaseQuestion {
 				Log.i(LOG_TAG, "proxy.submitAnswer..."+examId);
 				submitResult = proxy.submitAnswer(examId,answers);
 			} catch (SQLException e) {
-				Log.i(LOG_TAG, e.getMessage());
+				progressDialog.dismiss();
+			} catch (Exception e) {
 				progressDialog.dismiss();
 			}
-        	
 			return null;
 		}
 
@@ -452,8 +447,30 @@ public class MultiChoices extends BaseQuestion {
         protected void onPostExecute(String result) {
         	progressDialog.dismiss();
         	submitBtn.setEnabled(true);
-        	
-        	if( submitResult!=null && submitResult.getStatus() == STATUS.SUCCESS ) {
+        	if(submitResult==null || submitResult.getStatus() == STATUS.ERROR){
+    			//save answer to local
+    			AlertDialog.Builder builder = new AlertDialog.Builder(MultiChoices.this);
+    			builder.setMessage(mContext.getResources().getString(R.string.warning_save_answer_local))
+    					.setCancelable(false)
+    					.setPositiveButton(mContext.getResources().getString(R.string.warning_save_answer_local_yes),
+    							new DialogInterface.OnClickListener() {
+    								public void onClick(DialogInterface dialog,int id) {
+    									String path = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
+    								    String examid = exam.getId();
+    									saveAnswer2Local(answers,path,examid);
+    									//save user status and exam status
+    									saveExamStatusAfterSubmitted();
+    									go2ExamResult(mContext);
+    								}
+    							})
+    					.setNegativeButton(mContext.getResources().getString(R.string.warning_save_answer_local_cancel),
+    							new DialogInterface.OnClickListener() {
+    								public void onClick(DialogInterface dialog,int id) {
+    									dialog.cancel();
+    								}
+    							});
+    			builder.show();
+			}else{
         		//get result file name
            		String resultFileName = FileUtil.RESULT_FILE_PREFIX + exam.getId() + FileUtil.FILE_SUFFIX_XML;
         		Log.i(LOG_TAG, "resultFileName: " + resultFileName);
@@ -470,36 +487,7 @@ public class MultiChoices extends BaseQuestion {
         		
 				//move question
         		go2ExamResult(mContext);
-        		
-        	}else{
-    			
-    			//save answer to local
-    			AlertDialog.Builder builder = new AlertDialog.Builder(MultiChoices.this);
-    			builder.setMessage(mContext.getResources().getString(R.string.warning_save_answer_local))
-    					.setCancelable(false)
-    					.setPositiveButton(mContext.getResources().getString(R.string.warning_save_answer_local_yes),
-    							new DialogInterface.OnClickListener() {
-    								public void onClick(DialogInterface dialog,int id) {
-    									String path = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
-    								    String examid = exam.getId();
-    									saveAnswer2Local(answers,path,examid);
-    									
-    									//save user status and exam status
-    									saveExamStatusAfterSubmitted();
-    									
-    									go2ExamResult(mContext);
-    					        		
-    								}
-    							})
-    					.setNegativeButton(mContext.getResources().getString(R.string.warning_save_answer_local_cancel),
-    							new DialogInterface.OnClickListener() {
-    								public void onClick(DialogInterface dialog,int id) {
-    									dialog.cancel();
-    								}
-    							});
-    			builder.show();
-    			
-        	} 
+			}
         }
     }
 
@@ -507,7 +495,6 @@ public class MultiChoices extends BaseQuestion {
 	void setRemainingTime() {
 		Log.i(LOG_TAG, "setRemainingTime()...");
 		String rTimeStr = getRemainingTime();
-		
 		if(rTimeStr!=null){
 			Log.i(LOG_TAG, "rTimeStr():"+rTimeStr);
 			remainingTime.setText(rTimeStr);
@@ -519,9 +506,7 @@ public class MultiChoices extends BaseQuestion {
 			if(timer!=null){
 				timer.cancel();
 			}
-    		
     		new SubmitAnswerTask().execute(exam.getId());
 		}
-		
 	}
 }

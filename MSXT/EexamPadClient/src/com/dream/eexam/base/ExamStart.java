@@ -176,8 +176,15 @@ public class ExamStart extends BaseActivity {
 	    protected String doInBackground(String... urls) {
 	    	Log.i(LOG_TAG, "doInBackground() called");
         	ServerProxy proxy =  WebServerProxy.Factroy.getCurrrentInstance();
-        	examResult = proxy.getExam(urls[0]);
-	        return "success";
+        	
+        	String examId = urls[0];
+        	Log.i(LOG_TAG, "Get exam "+examId+"...");
+        	try {
+        		examResult = proxy.getExam(examId);
+        	} catch (Exception e) {
+				progressDialog.dismiss();
+			}
+	        return null;
 	    }
 	
 	    @Override
@@ -185,53 +192,54 @@ public class ExamStart extends BaseActivity {
 	    	Log.i(LOG_TAG, "onPostExecute()...");
 	    	
 			progressDialog.dismiss();
-			if(STATUS.SUCCESS.equals(examResult.getStatus())){
-				
-				Log.i(LOG_TAG, "download exam successfully!");
-				
-				//clear Exam status and Exam record first
-    			SPUtil.clearExamSP(sharedPreferences);
-    			clearDB(mContext);
-				
-    			String examFileName = FileUtil.EXAM_FILE_PREFIX + selectedExamId+ FileUtil.FILE_SUFFIX_XML;
-    			
-    			//save to SD card
-    			FileUtil.saveFile(SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences), examFileName, examResult.getSuccessMessage());
-        		
-    			//save to SharedPreferences
-    			SPUtil.save2SP(SPUtil.CURRENT_EXAM_FILE_NAME, examFileName, sharedPreferences);
-    			
-    			//parse exam
-				Examination exam = DataParseUtil.getExam(examResult);
-				int ccIndex = 1;
-				int cqIndex = 1;
-				if(getccIndex()>0 && getcqIndex()>0){
-					ccIndex = getccIndex();
-					cqIndex = getcqIndex();
+			if(examResult==null){
+				ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Fail to Download Exam, Please Connect Administrator!");
+			}else{
+				if(STATUS.SUCCESS.equals(examResult.getStatus())){
+					
+					Log.i(LOG_TAG, "download exam successfully!");
+					
+					//clear Exam status and Exam record first
+	    			SPUtil.clearExamSP(sharedPreferences);
+	    			clearDB(mContext);
+					
+	    			String examFileName = FileUtil.EXAM_FILE_PREFIX + selectedExamId+ FileUtil.FILE_SUFFIX_XML;
+	    			//save to SD card
+	    			FileUtil.saveFile(SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences), examFileName, examResult.getSuccessMessage());
+	    			//save to SharedPreferences
+	    			SPUtil.save2SP(SPUtil.CURRENT_EXAM_FILE_NAME, examFileName, sharedPreferences);
+	    			
+	    			//parse exam
+					Examination exam = DataParseUtil.getExam(examResult);
+					int ccIndex = 1;
+					int cqIndex = 1;
+					if(getccIndex()>0 && getcqIndex()>0){
+						ccIndex = getccIndex();
+						cqIndex = getcqIndex();
+					}
+					
+					Question fQuestion = DataParseUtil.getQuestionByCidQid(exam, ccIndex, cqIndex);
+					if(fQuestion==null){
+						ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Can not get question!");
+						this.cancel(true);
+						return;
+					}
+					
+					fQuestionType = fQuestion.getType();
+					Log.i(LOG_TAG, "----------Start a New Exam!-----------------");
+					
+					SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_GOING, sharedPreferences);
+					go2QuestionByType(fQuestionType,mContext);
+					saveQuestionMovePara(ccIndex,cqIndex,fQuestionType,sharedPreferences);
+					
+					Log.i(LOG_TAG, "--------------------------------------------");
+					
+					//save exam start time
+					saveStartTime();
+					   					
+				}else if(STATUS.ERROR.equals(examResult.getStatus())){
+			    	ShowDialog(mContext.getResources().getString(R.string.dialog_note),examResult.getErrorMessage());
 				}
-				
-				Question fQuestion = DataParseUtil.getQuestionByCidQid(exam, ccIndex, cqIndex);
-				if(fQuestion==null){
-					ShowDialog(mContext.getResources().getString(R.string.dialog_note),
-							"Can not get question!");
-					this.cancel(true);
-					return;
-				}
-				
-				fQuestionType = fQuestion.getType();
-				Log.i(LOG_TAG, "----------Start a New Exam!-----------------");
-				
-				SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_GOING, sharedPreferences);
-				go2QuestionByType(fQuestionType,mContext);
-				saveQuestionMovePara(ccIndex,cqIndex,fQuestionType,sharedPreferences);
-				
-				Log.i(LOG_TAG, "--------------------------------------------");
-				
-				//save exam start time
-				saveStartTime();
-				   					
-			}else if(STATUS.ERROR.equals(examResult.getStatus())){
-		    	ShowDialog(mContext.getResources().getString(R.string.dialog_note),examResult.getErrorMessage());
 			}
 	    }
 	}

@@ -17,22 +17,22 @@ public class SettingExamStatus extends SettingBase {
 	public String getUserInfo(){
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("UserId:");
+		sb.append("User Id:\t");
 		String userId = SPUtil.getFromSP(SPUtil.CURRENT_USER_ID, sharedPreferences);
 		sb.append(userId==null? "":userId);
 		sb.append("\n");
 		
-		sb.append("User Password:");
+		sb.append("User Password:\t");
 		String userPassword = SPUtil.getFromSP(SPUtil.CURRENT_USER_PWD, sharedPreferences);
 		sb.append(userPassword==null? "":userPassword);
 		sb.append("\n");
 		
-		sb.append("User File Home:");
+		sb.append("User File Home:\t");
 		String userFileHome = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
 		sb.append(userFileHome==null? "":userFileHome);
 		sb.append("\n");
 		
-		sb.append("User Completed Exam:");
+		sb.append("User Completed Exam:\t");
 		String userCompletedExam = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_SUBMITTED_IDS, sharedPreferences);
 		sb.append(userCompletedExam==null? "":userCompletedExam);
 		return sb.toString();

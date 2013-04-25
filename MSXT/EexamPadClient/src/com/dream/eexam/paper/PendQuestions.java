@@ -57,7 +57,7 @@ public class PendQuestions extends BaseQuestion {
 		
 		//footer components
 		backArrow = (ImageView)findViewById(R.id.backArrow);
-		pendQueNumber = (TextView)findViewById(R.id.pendQueNumber);
+		pendQueNumber = (Button) findViewById(R.id.pendQueNumber);
 		remainingTime = (TextView)findViewById(R.id.remainingTime);
 		
 		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
