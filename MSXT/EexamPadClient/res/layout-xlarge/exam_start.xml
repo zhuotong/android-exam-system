@@ -67,52 +67,72 @@
 		android:layout_marginRight="20dp"
 		android:textSize="20sp"
 		android:textColor="#000000"
-		android:background="@drawable/common_tv_value">
+		android:background="@drawable/common_tv_value"
+		android:visibility="invisible">
 	</TextView>
 
-	<!-- Exam Description -->	
-	<TableRow
-         android:layout_width="fill_parent"
+	<!-- Exam Description -->
+	<TableLayout
+	     android:layout_width="fill_parent"
 		 android:layout_height="wrap_content"
-		 android:layout_marginLeft="20dp"
-		 android:layout_marginRight="20dp">
- 		<TextView 
-			android:text="@string/label_exam_que_num"
-			style="@style/textview_label_style">
-		</TextView>
-		<TextView android:id="@+id/examQueNum"
-		    style="@style/textview_value_style"
-		    android:text="100">
-		</TextView>          
-   	</TableRow>
-	<TableRow
-         android:layout_width="fill_parent"
-		 android:layout_height="wrap_content"
-		 android:layout_marginLeft="20dp"
-		 android:layout_marginRight="20dp">
- 		<TextView 
-			android:text="@string/label_exam_time"
-			style="@style/textview_label_style">
-		</TextView>
-		<TextView android:id="@+id/examTime"
-		    style="@style/textview_value_style"
-		    android:text="60">
-		</TextView>          
-   	</TableRow>
-   <TableRow
-         android:layout_width="fill_parent"
-		 android:layout_height="wrap_content"
-		 android:layout_marginLeft="20dp"
-		 android:layout_marginRight="20dp">
- 		<TextView 
-			android:text="@string/label_exam_score"
-			style="@style/textview_label_style">
-		</TextView>
-		<TextView android:id="@+id/examScore"
-		    style="@style/textview_value_style"
-		    android:text="100">
-		</TextView>          
-   	</TableRow>
+		 android:layout_marginLeft="10dp"
+		 android:layout_marginRight="10dp"
+		 android:layout_marginTop="10dp"
+		 android:background="@drawable/table_about_exam">
+	    <TableRow
+	         android:layout_width="fill_parent"
+			 android:layout_height="wrap_content">
+	 		<TextView
+	 		    style="@style/textview_label_style"
+	 		    android:gravity="center_horizontal"
+	 		    android:text="@string/label_about_exam"
+	 		    android:textColor="#000000" 
+	 		    android:background="@drawable/tr_title">			</TextView>       
+	   	</TableRow>	
+		<TableRow
+	         android:layout_width="fill_parent"
+			 android:layout_height="wrap_content"
+			 android:layout_marginLeft="20dp"
+			 android:layout_marginRight="20dp">
+	 		<TextView 
+				android:text="@string/label_exam_que_num"
+				style="@style/textview_label_style">
+			</TextView>
+			<TextView android:id="@+id/examQueNum"
+			    style="@style/textview_value_style"
+			    android:text="100">
+			</TextView>          
+	   	</TableRow>
+		<TableRow
+	         android:layout_width="fill_parent"
+			 android:layout_height="wrap_content"
+			 android:layout_marginLeft="20dp"
+			 android:layout_marginRight="20dp">
+	 		<TextView 
+				android:text="@string/label_exam_time"
+				style="@style/textview_label_style">
+			</TextView>
+			<TextView android:id="@+id/examTime"
+			    style="@style/textview_value_style"
+			    android:text="60">
+			</TextView>          
+	   	</TableRow>
+	   <TableRow
+	         android:layout_width="fill_parent"
+			 android:layout_height="wrap_content"
+			 android:layout_marginLeft="20dp"
+			 android:layout_marginRight="20dp">
+	 		<TextView 
+				android:text="@string/label_exam_score"
+				style="@style/textview_label_style">
+			</TextView>
+			<TextView android:id="@+id/examScore"
+			    style="@style/textview_value_style"
+			    android:text="100">
+			</TextView>          
+	   	</TableRow>
+   	
+    </TableLayout>
    	<!-- Exam Description End!-->
    	
    	

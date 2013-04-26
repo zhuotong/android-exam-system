@@ -142,15 +142,22 @@ public class MultiChoices extends BaseQuestion {
 					long arg3) {
         		CheckBox cb = (CheckBox)view.findViewById(R.id.list_select);
         		cb.setChecked(!cb.isChecked());
+        		
+        		TextView tvIndex = (TextView)view.findViewById(R.id.list_index);
+        		TextView tvCD = (TextView)view.findViewById(R.id.list_choiceDesc);
+        		if(cb.isChecked()){
+        			tvIndex.setTextColor(Color.YELLOW);
+        			tvCD.setTextColor(Color.YELLOW);
+        		}else{
+        			tvIndex.setTextColor(Color.WHITE);
+        			tvCD.setTextColor(Color.WHITE);        			
+        		}
+        		
 				//set answer
 		    	//clear answer first
 		    	listItemID.clear();
 		    	answerLabels.setLength(0);
 				setAnswer();
-				
-//				Message msg = new Message();
-//				msg.what = 1;
-//				handler.sendMessage(msg);
 				
 				updateAllData();
 			}      	
@@ -314,6 +321,7 @@ public class MultiChoices extends BaseQuestion {
     }
     
     class MyListAdapter extends BaseAdapter{
+    	LayoutInflater mInflater;
     	List<Boolean> mChecked = new ArrayList<Boolean>();
     	List<Choice> choices = new ArrayList<Choice>();
 		HashMap<Integer,View> map = new HashMap<Integer,View>(); 
@@ -328,6 +336,8 @@ public class MultiChoices extends BaseQuestion {
 					mChecked.add(false);
 				}
     		}
+    		
+    		mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     		
     	}
 
@@ -348,23 +358,23 @@ public class MultiChoices extends BaseQuestion {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			View view;
+//			View view;
 			ViewHolder holder = null;
 			
-			if (map.get(position) == null) {
+			if (convertView == null) {
 				Log.i(LOG_TAG,"position1 = "+position);
+//				view = mInflater.inflate(R.layout.paper_multi_choices_item, null);
 				
-				LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				view = mInflater.inflate(R.layout.paper_multi_choices_item, null);
+				convertView = mInflater.inflate(R.layout.paper_multi_choices_item, null);
 				holder = new ViewHolder();
 				
 				//set 3 component 
-				holder.selected = (CheckBox)view.findViewById(R.id.list_select);
-				holder.index = (TextView)view.findViewById(R.id.list_index);
-				holder.choiceDesc = (TextView)view.findViewById(R.id.list_choiceDesc);
+				holder.selected = (CheckBox)convertView.findViewById(R.id.list_select);
+				holder.index = (TextView)convertView.findViewById(R.id.list_index);
+				holder.choiceDesc = (TextView)convertView.findViewById(R.id.list_choiceDesc);
 				
 				final int p = position;
-				map.put(position, view);
+				map.put(position, convertView);
 				
 				holder.selected.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 					@Override
@@ -381,11 +391,11 @@ public class MultiChoices extends BaseQuestion {
 						updateAllData();
 					}
 				});
-				view.setTag(holder);
+				convertView.setTag(holder);
 			}else{
-				Log.i(LOG_TAG,"position2 = "+position);
-				view = map.get(position);
-				holder = (ViewHolder)view.getTag();
+//				Log.i(LOG_TAG,"position2 = "+position);
+//				convertView = map.get(position);
+				holder = (ViewHolder)convertView.getTag();
 			}
 			
 			Choice choice = choices.get(position);
@@ -394,7 +404,15 @@ public class MultiChoices extends BaseQuestion {
 			holder.index.setText(choice.getLabel());
 			holder.choiceDesc.setText(choice.getContent());
 			
-			return view;
+    		if(holder.selected.isChecked()){
+    			holder.index.setTextColor(Color.YELLOW);
+    			holder.choiceDesc.setTextColor(Color.YELLOW);
+    		}else{
+    			holder.index.setTextColor(Color.WHITE);
+    			holder.choiceDesc.setTextColor(Color.WHITE);   			
+    		}
+			
+			return convertView;
 		}
     	
     }

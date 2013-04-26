@@ -150,13 +150,21 @@ public class SingleChoices extends BaseQuestion {
         		clearOldAnswer();
         		Log.i(LOG_TAG, "after clear:"+String.valueOf(cb.isChecked()));
         		cb.setChecked(!oldStatus);
+        		
+        		//set text color for selected item
+        		TextView tvIndex = (TextView)view.findViewById(R.id.index);
+        		TextView tvCD = (TextView)view.findViewById(R.id.choiceDesc);
+        		if(cb.isChecked()){
+        			tvIndex.setTextColor(Color.YELLOW);
+        			tvCD.setTextColor(Color.YELLOW);
+        		}else{
+        			tvIndex.setTextColor(Color.WHITE);
+        			tvCD.setTextColor(Color.WHITE);        			
+        		}
+        		
         		Log.i(LOG_TAG, "after set:"+String.valueOf(cb.isChecked()));
         		setAnswer(arg2,cb.isChecked());
         		
-        		//send message
-//				Message msg = new Message();
-//				msg.what = 1;
-//				handler.sendMessage(msg);
 				updateAllData();
 			}      	
         });
@@ -421,8 +429,11 @@ public class SingleChoices extends BaseQuestion {
 						Log.i(LOG_TAG, "---------------radioButton.onClick---------------");
 						//clear old answer
 						clearOldAnswer(p);
-		        		//get old status
+		        		
+						//get old status
 						RadioButton rb = (RadioButton)v;
+						mChecked.set(p, rb.isChecked());
+						
 		        		//set answer
 		        		setAnswer(p,rb.isChecked());
 		        		
@@ -440,6 +451,14 @@ public class SingleChoices extends BaseQuestion {
 			holder.index.setText(choice.getLabel());
 			holder.choiceDesc.setText(choice.getContent());
 			
+    		if(holder.radioButton.isChecked()){
+    			holder.index.setTextColor(Color.YELLOW);
+    			holder.choiceDesc.setTextColor(Color.YELLOW);
+    		}else{
+    			holder.index.setTextColor(Color.WHITE);
+    			holder.choiceDesc.setTextColor(Color.WHITE);        			
+    		}
+    		
 			return view;
 		}
     	

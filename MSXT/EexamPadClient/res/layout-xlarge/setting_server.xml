@@ -10,7 +10,7 @@
         android:id="@+id/baseHeader"
         layout="@layout/base_header" /> 
   
-  <include layout="@layout/setting_footer" /> 
+  <include layout="@layout/setting_menu" /> 
 
 	<TableLayout android:id="@+id/tableLayout1"
 		android:layout_width="fill_parent"
