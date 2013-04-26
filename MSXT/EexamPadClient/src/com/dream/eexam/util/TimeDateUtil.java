@@ -15,7 +15,7 @@ public class TimeDateUtil {
 	
 	public static String transferTime2Str(long time){
 		DateFormat df = new SimpleDateFormat(TIME_FORMAT_1);
-		if(time == 0){
+		if(time != 0){
 			return df.format(time);
 		}else{
 			return null;

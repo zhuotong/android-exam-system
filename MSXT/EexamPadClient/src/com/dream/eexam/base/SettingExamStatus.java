@@ -47,7 +47,6 @@ public class SettingExamStatus extends SettingBase {
 
 		sb.append("Exam Start Time:");
 		long examStartTime = SPUtil.getLongFromSP(SPUtil.CURRENT_EXAM_START_TIME,sharedPreferences);
-//		sb.append(String.valueOf(examStartTime));
 		sb.append(TimeDateUtil.transferTime2Str(examStartTime));
 		sb.append("\n");
 
@@ -76,8 +75,8 @@ public class SettingExamStatus extends SettingBase {
 
 		sb.append("Exam Score:");
 		String examScore = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_SCORE,sharedPreferences);
-		sb.append(examScore == null ? "" : examScore);
-		sb.append(SPUtil.getFromSP(SPUtil.CURRENT_EXAM_SCORE, sharedPreferences));
+		String scoreStr = (examScore == null) ? "" : examScore; 
+		sb.append(scoreStr);
 
 		return sb.toString();
 	}

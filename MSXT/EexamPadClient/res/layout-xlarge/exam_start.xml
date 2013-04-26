@@ -48,7 +48,8 @@
   			android:layout_marginRight="20dp" 			
   			android:textSize="22sp"
   			android:textColor="#000000"
-  			android:text="@string/label_tv_choose_exam">
+  			android:text="@string/label_tv_choose_exam"
+  			android:background="@drawable/tr_title">
   	</TextView>
   
 	<Spinner android:id="@+id/Spinner01" 
