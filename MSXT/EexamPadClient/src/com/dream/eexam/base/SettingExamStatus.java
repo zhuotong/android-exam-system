@@ -45,6 +45,11 @@ public class SettingExamStatus extends SettingBase {
 		sb.append(examFileName == null ? "" : examFileName);
 		sb.append("\n");
 
+		sb.append("Exam Name:");
+		String examName = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_NAME,sharedPreferences);
+		sb.append(examName == null ? "" : examName);
+		sb.append("\n");
+		
 		sb.append("Exam Start Time:");
 		long examStartTime = SPUtil.getLongFromSP(SPUtil.CURRENT_EXAM_START_TIME,sharedPreferences);
 		sb.append(TimeDateUtil.transferTime2Str(examStartTime));

@@ -56,6 +56,8 @@ public class ExamStart extends BaseActivity {
 	List<com.msxt.client.model.LoginSuccessResult.Examination> examinations;
 	String conversation = null;
 	String selectedExamId = null;
+	String selectedExamName = null;
+	
 	Map<Integer,String> examIdsMap = new HashMap<Integer,String>();
 	List<String> examNames = new ArrayList<String>();
 	ArrayAdapter<String> adapter;
@@ -152,6 +154,7 @@ public class ExamStart extends BaseActivity {
 			Log.i(LOG_TAG,"--------------------Spinner.onItemSelected()...-----------------");
 			Log.i(LOG_TAG,"arg2="+String.valueOf(arg2));
 			selectedExamId = examIdsMap.get(arg2);
+			selectedExamName = examNames.get(arg2);
 			Log.i(LOG_TAG, "examIdString:"+selectedExamId);
 			Log.i(LOG_TAG,"---------------------------End---------------------------------");
 		}
@@ -229,6 +232,7 @@ public class ExamStart extends BaseActivity {
 					Log.i(LOG_TAG, "----------Start a New Exam!-----------------");
 					
 					SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_GOING, sharedPreferences);
+					SPUtil.save2SP(SPUtil.CURRENT_EXAM_NAME, selectedExamName, sharedPreferences);
 					go2QuestionByType(fQuestionType,mContext);
 					saveQuestionMovePara(ccIndex,cqIndex,fQuestionType,sharedPreferences);
 					

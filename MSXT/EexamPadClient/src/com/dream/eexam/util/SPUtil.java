@@ -20,6 +20,7 @@ public class SPUtil {
 	
 	//Exam Status and Progress
 	public final static String CURRENT_EXAM_FILE_NAME = "Current_Exam_File";
+	public final static String CURRENT_EXAM_NAME = "Current_Exam_Name";
 	public final static String CURRENT_EXAM_STATUS = "Current_Exam_Status";
 	public final static String CURRENT_EXAM_START_TIME = "Current_Exam_Start_Time";
 	public final static String CURRENT_EXAM_SCORE = "Current_Exam_Score";
@@ -127,7 +128,9 @@ public class SPUtil {
 	//clear data in SP
 	public static void clearExamSP(SharedPreferences sp){
     	SharedPreferences.Editor editor = sp.edit(); 
+    	
     	editor.remove(SPUtil.CURRENT_EXAM_FILE_NAME);
+    	editor.remove(SPUtil.CURRENT_EXAM_NAME);
     	editor.remove(SPUtil.CURRENT_EXAM_STATUS);
     	editor.remove(SPUtil.CURRENT_EXAM_START_TIME);
     	editor.remove(SPUtil.CURRENT_EXAM_SCORE);
