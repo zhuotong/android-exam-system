@@ -41,7 +41,7 @@ public class SettingServer extends SettingBase {
         mContext = getApplicationContext();
         
         setHeader((ImageView)findViewById(R.id.imgHome));
-		setFooter((Button) findViewById(R.id.server_setting));
+//		setFooter((Button) findViewById(R.id.server_setting));
 		
         valiMessageTV = (TextView) this.findViewById(R.id.valiMessage);
         valiMessageArray = getResources().getStringArray(R.array.msg_settings_invalid);

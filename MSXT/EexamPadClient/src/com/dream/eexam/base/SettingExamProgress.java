@@ -37,7 +37,7 @@ public class SettingExamProgress extends SettingBase {
 		mContext = getApplicationContext();
 
 		setHeader((ImageView) findViewById(R.id.imgHome));
-		setFooter((Button) findViewById(R.id.examprogress_setting));
+//		setFooter((Button) findViewById(R.id.examprogress_setting));
 
 		dbData = (TextView) this.findViewById(R.id.dbData);
 		dbData.setText(getDBData(mContext));

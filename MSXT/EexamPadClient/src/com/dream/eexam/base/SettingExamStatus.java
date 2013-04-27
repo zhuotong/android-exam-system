@@ -89,7 +89,7 @@ public class SettingExamStatus extends SettingBase {
 		mContext = getApplicationContext();
 
 		setHeader((ImageView) findViewById(R.id.imgHome));
-		setFooter((Button) findViewById(R.id.examstatus_setting));
+//		setFooter((Button) findViewById(R.id.examstatus_setting));
 
 		userInfoTV = (TextView) this.findViewById(R.id.userInfoTV);
 		userInfoTV.setText(getUserInfo());

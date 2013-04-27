@@ -81,7 +81,7 @@ public class LoginActivity extends BaseActivity {
 //	        	if(settingId.endsWith(id)&&settingPwd.equals(password)){
 		        	//go to examList page
 		        	Intent intent = new Intent();
-					intent.setClass( LoginActivity.this, SettingServer.class);
+					intent.setClass( LoginActivity.this, SettingMain.class);
 					startActivity(intent);  	        		
 //	        	}else{
 //		        	ShowDialog(mContext.getResources().getString(R.string.dialog_note),

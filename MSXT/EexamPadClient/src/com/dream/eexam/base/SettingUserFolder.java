@@ -63,7 +63,7 @@ public class SettingUserFolder extends SettingBase {
         mContext = getApplicationContext();
         
         setHeader((ImageView)findViewById(R.id.imgHome));
-		setFooter((Button) findViewById(R.id.userfolder_setting));
+//		setFooter((Button) findViewById(R.id.userfolder_setting));
 		
         listView = (ListView)findViewById(R.id.user_folder_list);
         adapter = new MyListAdapter(loadufbList());
