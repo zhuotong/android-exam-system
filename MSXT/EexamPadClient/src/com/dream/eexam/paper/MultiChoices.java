@@ -143,15 +143,15 @@ public class MultiChoices extends BaseQuestion {
         		CheckBox cb = (CheckBox)view.findViewById(R.id.list_select);
         		cb.setChecked(!cb.isChecked());
         		
-        		TextView tvIndex = (TextView)view.findViewById(R.id.list_index);
-        		TextView tvCD = (TextView)view.findViewById(R.id.list_choiceDesc);
-        		if(cb.isChecked()){
-        			tvIndex.setTextColor(Color.YELLOW);
-        			tvCD.setTextColor(Color.YELLOW);
-        		}else{
-        			tvIndex.setTextColor(Color.WHITE);
-        			tvCD.setTextColor(Color.WHITE);        			
-        		}
+//        		TextView tvIndex = (TextView)view.findViewById(R.id.list_index);
+//        		TextView tvCD = (TextView)view.findViewById(R.id.list_choiceDesc);
+//        		if(cb.isChecked()){
+//        			tvIndex.setTextColor(Color.YELLOW);
+//        			tvCD.setTextColor(Color.YELLOW);
+//        		}else{
+//        			tvIndex.setTextColor(Color.WHITE);
+//        			tvCD.setTextColor(Color.WHITE);        			
+//        		}
         		
 				//set answer
 		    	//clear answer first
@@ -160,6 +160,8 @@ public class MultiChoices extends BaseQuestion {
 				setAnswer();
 				
 				updateAllData();
+				
+//				listRefresh();
 			}      	
         });
         listView.setOnTouchListener(new OnTouchListener(){
@@ -171,6 +173,11 @@ public class MultiChoices extends BaseQuestion {
         
         setFooter();
         
+    }
+    
+    void listRefresh(){
+    	adapter = new MyListAdapter(cChoices);
+    	listView.setAdapter(adapter);
     }
     
     @Override
@@ -324,7 +331,7 @@ public class MultiChoices extends BaseQuestion {
     	LayoutInflater mInflater;
     	List<Boolean> mChecked = new ArrayList<Boolean>();
     	List<Choice> choices = new ArrayList<Choice>();
-		HashMap<Integer,View> map = new HashMap<Integer,View>(); 
+//		HashMap<Integer,View> map = new HashMap<Integer,View>(); 
     	
     	public MyListAdapter(List<Choice> choices){
     		this.choices = choices;
@@ -374,7 +381,7 @@ public class MultiChoices extends BaseQuestion {
 				holder.choiceDesc = (TextView)convertView.findViewById(R.id.list_choiceDesc);
 				
 				final int p = position;
-				map.put(position, convertView);
+//				map.put(position, convertView);
 				
 				holder.selected.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 					@Override
@@ -389,6 +396,8 @@ public class MultiChoices extends BaseQuestion {
 						setAnswer();
 
 						updateAllData();
+						
+//						listRefresh();
 					}
 				});
 				convertView.setTag(holder);
@@ -404,13 +413,13 @@ public class MultiChoices extends BaseQuestion {
 			holder.index.setText(choice.getLabel());
 			holder.choiceDesc.setText(choice.getContent());
 			
-    		if(holder.selected.isChecked()){
-    			holder.index.setTextColor(Color.YELLOW);
-    			holder.choiceDesc.setTextColor(Color.YELLOW);
-    		}else{
-    			holder.index.setTextColor(Color.WHITE);
-    			holder.choiceDesc.setTextColor(Color.WHITE);   			
-    		}
+//    		if(mChecked.get(position)){
+//    			holder.index.setTextColor(Color.YELLOW);
+//    			holder.choiceDesc.setTextColor(Color.YELLOW);
+//    		}else{
+//    			holder.index.setTextColor(Color.WHITE);
+//    			holder.choiceDesc.setTextColor(Color.WHITE);   			
+//    		}
 			
 			return convertView;
 		}
