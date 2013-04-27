@@ -131,6 +131,16 @@ public class SingleChoices extends BaseQuestion {
         
         //set List
         listView = (ListView)findViewById(R.id.lvChoices);
+        
+//      List<Boolean> mCheckedList = new ArrayList<Boolean>();
+//		for (Choice choice: cChoices) {
+//			if (answerLabels.indexOf(String.valueOf(choice.getLabel())) != -1) {
+//				mCheckedList.add(true);
+//			} else {
+//				mCheckedList.add(false);
+//			}
+//		}
+		
         adapter = new MyListAdapter(cChoices);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new OnItemClickListener(){

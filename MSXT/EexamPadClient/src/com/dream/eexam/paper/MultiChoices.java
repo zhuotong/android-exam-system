@@ -1,7 +1,6 @@
 package com.dream.eexam.paper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import android.app.AlertDialog;
@@ -54,7 +53,7 @@ public class MultiChoices extends BaseQuestion {
 	
 	//data statement
 	MyListAdapter adapter;
-	List<String> listItemID = new ArrayList<String>();
+	List<String> answerItemList = new ArrayList<String>();
 	Integer indexInExam;
 	
 	void loadComponents(){
@@ -134,7 +133,17 @@ public class MultiChoices extends BaseQuestion {
         
         //set List
         listView = (ListView)findViewById(R.id.lvChoices);
-        adapter = new MyListAdapter(cChoices);
+        
+        List<Boolean> mCheckedList = new ArrayList<Boolean>();
+		for (Choice choice: cChoices) {
+			if (answerLabels.indexOf(String.valueOf(choice.getLabel())) != -1) {
+				mCheckedList.add(true);
+			} else {
+				mCheckedList.add(false);
+			}
+		}
+        
+        adapter = new MyListAdapter(cChoices,mCheckedList);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new OnItemClickListener(){
         	@Override
@@ -153,11 +162,13 @@ public class MultiChoices extends BaseQuestion {
 //        			tvCD.setTextColor(Color.WHITE);        			
 //        		}
         		
-				//set answer
-		    	//clear answer first
-		    	listItemID.clear();
-		    	answerLabels.setLength(0);
-				setAnswer();
+		    	//clear answer first,then set answer
+//		    	answerItemList.clear();
+//		    	answerLabels.setLength(0);
+//				setAnswer();
+				
+				//reSetAnswer
+				reSetAnswer();
 				
 				updateAllData();
 				
@@ -173,11 +184,6 @@ public class MultiChoices extends BaseQuestion {
         
         setFooter();
         
-    }
-    
-    void listRefresh(){
-    	adapter = new MyListAdapter(cChoices);
-    	listView.setAdapter(adapter);
     }
     
     @Override
@@ -287,7 +293,7 @@ public class MultiChoices extends BaseQuestion {
     }
     
     public void move2NewQuestion(){
-		if (listItemID.size() == 0) {
+		if (answerItemList.size() == 0) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(MultiChoices.this);
 			builder.setMessage(mContext.getResources().getString(R.string.warning_answer_later))
 					.setCancelable(false)
@@ -317,7 +323,7 @@ public class MultiChoices extends BaseQuestion {
 		for (int i = 0; i < mCheckedList.size(); i++) {
 			if (mCheckedList.get(i)) {
 				Choice choice = choices.get(i);
-				listItemID.add(String.valueOf(choice.getIndex()));
+				answerItemList.add(String.valueOf(choice.getIndex()));
 				if(i>0){
 					answerLabels.append(",");
 				}
@@ -327,22 +333,74 @@ public class MultiChoices extends BaseQuestion {
 		Log.i(LOG_TAG, "setAnswer().");
     }
     
+    public void reSetAnswer(){
+    	Log.i(LOG_TAG, "setAnswer()...");
+    	answerItemList.clear();
+    	answerLabels.setLength(0);
+    	
+    	//get selection choice and assembly to string
+    	List<Boolean> mCheckedList = adapter.mChecked;
+    	List<Choice> choices = adapter.choices;
+    	
+		for (int i = 0; i < mCheckedList.size(); i++) {
+			if (mCheckedList.get(i)) {
+				Choice choice = choices.get(i);
+				
+				String index = String.valueOf(choice.getIndex());
+				Log.i(LOG_TAG, "index " + index + "is Selected!");
+				
+				answerItemList.add(index);
+				if(i>0){
+					answerLabels.append(",");
+				}
+				answerLabels.append(String.valueOf(choice.getLabel()));
+			}
+		}
+		
+		Log.i(LOG_TAG, "answerLabels={" + answerLabels.toString()+"}");
+		
+		Log.i(LOG_TAG, "reSetAnswer().");
+    }
+    
+    void listRefresh(){
+    	Log.i(LOG_TAG, "listRefresh()...");
+    	
+    	Log.i(LOG_TAG, "answerLabels={"+answerLabels.toString()+"}");
+    	
+    	List<Boolean> mCheckedList = new ArrayList<Boolean>();
+		for (Choice choice: cChoices) {
+			if (answerLabels.indexOf(String.valueOf(choice.getLabel())) != -1) {
+				mCheckedList.add(true);
+			} else {
+				mCheckedList.add(false);
+			}
+		}
+    	
+    	adapter = new MyListAdapter(cChoices,mCheckedList);
+    	listView.setAdapter(adapter);
+    	
+    	Log.i(LOG_TAG, "listRefresh() end.");
+    }
+    
     class MyListAdapter extends BaseAdapter{
     	LayoutInflater mInflater;
-    	List<Boolean> mChecked = new ArrayList<Boolean>();
     	List<Choice> choices = new ArrayList<Choice>();
+    	List<Boolean> mChecked = new ArrayList<Boolean>();
 //		HashMap<Integer,View> map = new HashMap<Integer,View>(); 
     	
-    	public MyListAdapter(List<Choice> choices){
+    	public MyListAdapter(List<Choice> choices,List<Boolean> mCheckedList){
+    		
     		this.choices = choices;
-    		for(int i=0;i<choices.size();i++){
-    			Choice choice = choices.get(i);
-				if (answerLabels.indexOf(String.valueOf(choice.getLabel())) != -1) {
-					mChecked.add(true);
-				}else{
-					mChecked.add(false);
-				}
-    		}
+    		this.mChecked = mCheckedList;
+    		
+//    		for(int i=0;i<choices.size();i++){
+//    			Choice choice = choices.get(i);
+//				if (answerLabels.indexOf(String.valueOf(choice.getLabel())) != -1) {
+//					mChecked.add(true);
+//				}else{
+//					mChecked.add(false);
+//				}
+//    		}
     		
     		mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     		
@@ -391,9 +449,12 @@ public class MultiChoices extends BaseQuestion {
 						mChecked.set(p, cb.isChecked());
 						
 				    	//clear answer first
-				    	listItemID.clear();
-				    	answerLabels.setLength(0);
-						setAnswer();
+//				    	answerItemList.clear();
+//				    	answerLabels.setLength(0);
+//						setAnswer();
+						
+						//reSetAnswer
+						reSetAnswer();
 
 						updateAllData();
 						
@@ -413,13 +474,13 @@ public class MultiChoices extends BaseQuestion {
 			holder.index.setText(choice.getLabel());
 			holder.choiceDesc.setText(choice.getContent());
 			
-//    		if(mChecked.get(position)){
-//    			holder.index.setTextColor(Color.YELLOW);
-//    			holder.choiceDesc.setTextColor(Color.YELLOW);
-//    		}else{
-//    			holder.index.setTextColor(Color.WHITE);
-//    			holder.choiceDesc.setTextColor(Color.WHITE);   			
-//    		}
+    		if(mChecked.get(position)){
+    			holder.index.setTextColor(Color.YELLOW);
+    			holder.choiceDesc.setTextColor(Color.YELLOW);
+    		}else{
+    			holder.index.setTextColor(Color.WHITE);
+    			holder.choiceDesc.setTextColor(Color.WHITE);   			
+    		}
 			
 			return convertView;
 		}
@@ -520,10 +581,10 @@ public class MultiChoices extends BaseQuestion {
 
 	@Override
 	void setRemainingTime() {
-		Log.i(LOG_TAG, "setRemainingTime()...");
+//		Log.i(LOG_TAG, "setRemainingTime()...");
 		String rTimeStr = getRemainingTime();
 		if(rTimeStr!=null){
-			Log.i(LOG_TAG, "rTimeStr():"+rTimeStr);
+//			Log.i(LOG_TAG, "rTimeStr():"+rTimeStr);
 			remainingTime.setText(rTimeStr);
 		}else{
 			Log.i(LOG_TAG, "Time Out!");
