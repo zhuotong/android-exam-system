@@ -1,8 +1,11 @@
 package com.dream.eexam.base;
 
+import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SPUtil;
 import com.dream.eexam.util.TimeDateUtil;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +15,7 @@ import android.widget.TextView;
 public class SettingExamStatus extends SettingBase {
 	TextView userInfoTV;
 	TextView examInfoTV;
+	TextView examAnswerTV;
 	Button clearBtn;
 	
 	public String getUserInfo(){
@@ -86,6 +90,23 @@ public class SettingExamStatus extends SettingBase {
 		return sb.toString();
 	}
 	
+	public String getDBData(Context mContext){
+		DatabaseUtil dbUtil = new DatabaseUtil(mContext);
+		dbUtil.open();
+		StringBuffer sb = new StringBuffer();
+    	Cursor cursor = dbUtil.fetchAllAnswers();
+    	while(cursor.moveToNext()){
+    		int cid = cursor.getInt(0);
+    		int qid = cursor.getInt(1);
+			String qidStr = cursor.getString(2);
+			String answer = cursor.getString(3);
+			sb.append(String.valueOf(cid)+";" + String.valueOf(qid)+";"+qidStr+";"+answer+"\n");
+		}
+    	cursor.close();
+    	dbUtil.close();
+    	return sb.toString();
+	}
+	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -94,13 +115,15 @@ public class SettingExamStatus extends SettingBase {
 		mContext = getApplicationContext();
 
 		setHeader((ImageView) findViewById(R.id.imgHome));
-//		setFooter((Button) findViewById(R.id.examstatus_setting));
 
 		userInfoTV = (TextView) this.findViewById(R.id.userInfoTV);
 		userInfoTV.setText(getUserInfo());
 
 		examInfoTV = (TextView) this.findViewById(R.id.examInfoTV);
 		examInfoTV.setText(getExamInfo());
+		
+		examAnswerTV = (TextView) this.findViewById(R.id.examAnswerTV);
+		examAnswerTV.setText(getDBData(mContext));
 		
 		clearBtn = (Button) this.findViewById(R.id.clearBtn);
 		clearBtn.setOnClickListener(clearListener);

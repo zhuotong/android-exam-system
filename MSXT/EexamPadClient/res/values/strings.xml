@@ -52,6 +52,7 @@
     
     <string name="title_setting_user_infor">User Information</string>
     <string name="title_setting_exam_infor">Exam Information</string>
+    <string name="title_setting_exam_answer">Exam Answer</string>
       
     <string name="label_footer_current_exam_progress">Exam Progress</string>
     <string name="label_footer_user_folder">User Folder</string>
