@@ -41,28 +41,40 @@
     <!-- User Information End-->
 
 	<!-- Exam Information -->
-  	<TextView 
-  			android:layout_width="fill_parent" 
-  			android:layout_height="wrap_content"
-  			android:layout_marginTop="20dp"
-  			android:layout_marginLeft="20dp" 
-  			android:layout_marginRight="20dp" 			
-  			android:textSize="22sp"
-  			android:textColor="#000000"
-  			android:text="@string/label_tv_unfinished_exam"
-  			android:background="@drawable/tr_title">
-  	</TextView>
-  	
-	<TextView android:id="@+id/continueExam"
-		android:layout_width="fill_parent" 
-		android:layout_height="wrap_content"
-		android:layout_marginTop="5dp"
-		android:layout_marginLeft="20dp"
-		android:layout_marginRight="20dp"
-		android:textSize="20sp"
-		android:textColor="#000000"
-		android:background="@drawable/common_tv_value">
-	</TextView>
+	<TableLayout
+	     android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginLeft="10dp"
+		 android:layout_marginRight="10dp"
+		 android:layout_marginTop="10dp"
+		 android:background="@drawable/table_about_exam">
+		<TableRow
+	         android:layout_width="fill_parent"
+			 android:layout_height="wrap_content"
+			 android:gravity="center_horizontal"
+  			 android:layout_gravity="center_horizontal"
+			 android:background="@drawable/tr_exam_title">
+		  	<TextView 
+		  			android:layout_width="fill_parent" 
+		  			android:layout_height="wrap_content"
+		  			android:textSize="22sp"
+		  			android:textColor="#000000"
+		  			android:text="@string/label_tv_unfinished_exam">
+		  	</TextView>
+		 </TableRow>
+		 <TableRow
+	         android:layout_width="fill_parent"
+			 android:layout_height="fill_parent">
+			<TextView android:id="@+id/continueExam"
+				android:layout_width="fill_parent" 
+				android:layout_height="fill_parent"
+				android:textSize="22sp"
+				android:textColor="#000000"
+				android:background="@drawable/common_tv_value">
+			</TextView>
+		 </TableRow>
+	</TableLayout>
+	
 	<!-- Exam Information End-->
 
 	<!-- Exam Description -->
@@ -75,13 +87,13 @@
 		 android:background="@drawable/table_about_exam">
 	    <TableRow
 	         android:layout_width="fill_parent"
-			 android:layout_height="wrap_content">
+			 android:layout_height="wrap_content"
+			 android:background="@drawable/tr_exam_title">
 	 		<TextView
 	 		    style="@style/textview_label_style"
 	 		    android:gravity="center_horizontal"
 	 		    android:text="@string/label_about_exam"
-	 		    android:textColor="#000000" 
-	 		    android:background="@drawable/tr_title">
+	 		    android:textColor="#000000" >
 			</TextView>       
 	   	</TableRow>	
 		<TableRow
