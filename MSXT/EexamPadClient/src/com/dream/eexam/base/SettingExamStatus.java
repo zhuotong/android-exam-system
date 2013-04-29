@@ -56,7 +56,9 @@ public class SettingExamStatus extends SettingBase {
 		
 		sb.append("Exam Start Time:");
 		long examStartTime = SPUtil.getLongFromSP(SPUtil.CURRENT_EXAM_START_TIME,sharedPreferences);
-		sb.append(TimeDateUtil.transferTime2Str(examStartTime));
+		if(examStartTime != 0){
+			sb.append(TimeDateUtil.transferTime2Str(examStartTime));
+		}
 		sb.append("\n");
 
 		sb.append("Exam Status:");
@@ -117,16 +119,19 @@ public class SettingExamStatus extends SettingBase {
 		setHeader((ImageView) findViewById(R.id.imgHome));
 
 		userInfoTV = (TextView) this.findViewById(R.id.userInfoTV);
-		userInfoTV.setText(getUserInfo());
-
 		examInfoTV = (TextView) this.findViewById(R.id.examInfoTV);
-		examInfoTV.setText(getExamInfo());
-		
 		examAnswerTV = (TextView) this.findViewById(R.id.examAnswerTV);
-		examAnswerTV.setText(getDBData(mContext));
+		
+		setData();
 		
 		clearBtn = (Button) this.findViewById(R.id.clearBtn);
 		clearBtn.setOnClickListener(clearListener);
+	}
+	
+	void setData(){
+		userInfoTV.setText(getUserInfo());
+		examInfoTV.setText(getExamInfo());
+		examAnswerTV.setText(getDBData(mContext));
 	}
 	
     View.OnClickListener clearListener = new View.OnClickListener() {  
@@ -136,7 +141,9 @@ public class SettingExamStatus extends SettingBase {
         	clearDB(mContext);
         	
         	ShowDialog(mContext.getResources().getString(R.string.dialog_note),
-        			mContext.getResources().getString(R.string.msg_history_be_cleared));	
+        			mContext.getResources().getString(R.string.msg_history_be_cleared));
+        	
+        	setData(); 
         }  
     }; 
     

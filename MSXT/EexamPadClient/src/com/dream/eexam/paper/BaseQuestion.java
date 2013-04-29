@@ -305,7 +305,7 @@ public abstract class BaseQuestion extends BaseActivity{
 	}
 	
 	public void updateAllData(){
-		Log.i(LOG_TAG, "updateAllData()...");
+		Log.i(LOG_TAG, "-----updateAllData()--------");
 		
 		DatabaseUtil dbUtil = new DatabaseUtil(mContext);
 		dbUtil.open();
@@ -338,7 +338,7 @@ public abstract class BaseQuestion extends BaseActivity{
 		
 		dbUtil.close();
 		
-		Log.i(LOG_TAG, "updateAllData().");
+		Log.i(LOG_TAG, "-------updateAllData() End!--------");
 	}
 	
 	

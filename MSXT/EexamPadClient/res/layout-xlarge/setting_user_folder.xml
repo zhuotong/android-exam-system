@@ -12,12 +12,35 @@
   
 <!--   <include layout="@layout/setting_menu" />  -->
 
-  <ListView
-     	android:id="@+id/user_folder_list"
-     	android:layout_width="fill_parent"
-     	android:layout_height="wrap_content" 
-  		android:background="#000000"
-  />
+    <!-- User Info title -->
+  	<TableRow
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginTop="10dp"
+		 android:layout_marginLeft="20dp"
+		 android:layout_marginRight="20dp"		 
+		 android:layout_gravity="center_horizontal"
+		 android:gravity="center_horizontal"
+		 android:padding="5dp"
+		 android:background="@drawable/tr_title">
+ 		<TextView 
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:text="@string/title_setting_user_folder">
+		</TextView> 
+  </TableRow>
+   	
+	<ListView
+	     	android:id="@+id/user_folder_list"
+	     	android:layout_width="fill_parent"
+	     	android:layout_height="wrap_content" 
+	     	android:layout_marginTop="10dp"
+			android:layout_marginLeft="20dp"
+			android:layout_marginRight="20dp"	
+	  		android:background="#000000"
+	/>
   		
     <TableRow
          android:layout_width="wrap_content"

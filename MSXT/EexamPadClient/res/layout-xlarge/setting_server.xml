@@ -34,7 +34,8 @@
 				android:text="@string/label_tv_host"
 				android:visibility="invisible">
 			</TextView>
-	   	</TableRow>   	
+	   	</TableRow>
+	   	   	
     	<TableRow
 	         android:layout_width="fill_parent"
 			 android:layout_height="wrap_content"
@@ -53,9 +54,11 @@
 				android:textSize="22sp"
 				android:textColor="#000000"
 				android:background="@drawable/et_common"
-				android:text="@string/default_host" android:inputType="">
+				android:text="@string/default_host" 
+				android:inputType="text">
 			</EditText> 
    		</TableRow>
+   		
 	    <TableRow
 	         android:layout_width="fill_parent"
 			 android:layout_height="wrap_content"

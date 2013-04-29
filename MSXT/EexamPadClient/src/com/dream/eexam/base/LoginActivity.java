@@ -11,6 +11,7 @@ import com.dream.eexam.util.FileUtil;
 import com.dream.eexam.util.SPUtil;
 import com.dream.eexam.util.StringUtil;
 import com.dream.eexam.util.TimeDateUtil;
+//import com.msxt.client.i18n.ResourceBundleHandler;
 import com.msxt.client.server.ServerProxy;
 import com.msxt.client.server.WebServerProxy;
 import com.msxt.client.server.ServerProxy.Result;
