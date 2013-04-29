@@ -135,6 +135,7 @@ public class WebServerProxy implements ServerProxy{
         try {
 			URL loginURL = new URL("http://" + server + ":" + port + SUBMIT_ANSWER_URI);
 			conn = (HttpURLConnection)loginURL.openConnection();
+			conn.setRequestProperty("Content-Type", "text/xml;charset=utf-8");
 			conn.setDoOutput(true);
 			conn.setUseCaches(false);
 			conn.setConnectTimeout(10000);
@@ -142,7 +143,6 @@ public class WebServerProxy implements ServerProxy{
 			conn.connect();
 			
 			OutputStream os = conn.getOutputStream();
-			os.write( "Content-Type:text/xml\r\n\r\n".getBytes( "utf-8") );
 			os.write( sb.toString().getBytes("utf-8") );
 			os.close();
 			
