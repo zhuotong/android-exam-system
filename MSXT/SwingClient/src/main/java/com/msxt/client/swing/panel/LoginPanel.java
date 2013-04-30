@@ -28,6 +28,7 @@ import org.jdesktop.application.ResourceMap;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.msxt.client.i18n.ResourceBundleHandler;
 import com.msxt.client.model.LoginSuccessResult;
 import com.msxt.client.model.transfer.Message2ModelTransfer;
 import com.msxt.client.server.ServerProxy;
@@ -166,6 +167,7 @@ public class LoginPanel extends JPanel {
 		        String status = root.getElementsByTagName("status").item(0).getTextContent();
 		        if( status.equals("failed") ) {
 		        	String desc = root.getElementsByTagName("desc").item(0).getTextContent();
+		        	desc = ResourceBundleHandler.getString( desc );
 		        	JOptionPane.showMessageDialog(this, desc, resourceMap.getString("login.fail"), JOptionPane.ERROR_MESSAGE);
 		        } else {
 		        	String conversation = root.getElementsByTagName( "conversation" ).item(0).getTextContent();
