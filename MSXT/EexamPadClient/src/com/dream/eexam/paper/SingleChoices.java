@@ -24,6 +24,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.ListView;
@@ -33,6 +34,8 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.dream.eexam.base.R;
+import com.dream.eexam.model.ChoiceExt;
+import com.dream.eexam.paper.MultiChoices.ViewHolder;
 import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.FileUtil;
@@ -51,7 +54,8 @@ public class SingleChoices extends BaseQuestion {
 	//components statement
 	TextView questionTV = null;
 	ListView listView;
-	MyListAdapter adapter;
+	MyListAdapter myAdapter;
+	List<ChoiceExt> choiceExtList = new ArrayList<ChoiceExt>();
 	List<String> listItemID = new ArrayList<String>();
 
 	void loadComponents(){
@@ -140,9 +144,23 @@ public class SingleChoices extends BaseQuestion {
 //				mCheckedList.add(false);
 //			}
 //		}
+        
+		for(Choice choice:cChoices){
+			ChoiceExt choiceExt = new ChoiceExt();
+			choiceExt.setActualLabel(choice.getActualLabel());
+			choiceExt.setContent(choice.getContent());
+			choiceExt.setIndex(choice.getIndex());
+			choiceExt.setLabel(choice.getLabel());
+			if (answerLabels.indexOf(String.valueOf(choice.getLabel())) != -1) {
+				choiceExt.setChecked(true);
+			}else{
+				choiceExt.setChecked(false);
+			}
+			choiceExtList.add(choiceExt);
+		}
 		
-        adapter = new MyListAdapter(cChoices);
-        listView.setAdapter(adapter);
+        myAdapter = new MyListAdapter(choiceExtList);
+        listView.setAdapter(myAdapter);
         listView.setOnItemClickListener(new OnItemClickListener(){
         	@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int arg2,
@@ -154,26 +172,36 @@ public class SingleChoices extends BaseQuestion {
         		boolean oldStatus = cb.isChecked();
         		Log.i(LOG_TAG, "before clear:"+String.valueOf(oldStatus));
         		
-        		//clear answer first
-        		clearOldAnswer();
-        		Log.i(LOG_TAG, "after clear:"+String.valueOf(cb.isChecked()));
-        		cb.setChecked(!oldStatus);
-        		
-        		//set text color for selected item
-        		TextView tvIndex = (TextView)view.findViewById(R.id.index);
-        		TextView tvCD = (TextView)view.findViewById(R.id.choiceDesc);
-        		if(cb.isChecked()){
-        			tvIndex.setTextColor(Color.YELLOW);
-        			tvCD.setTextColor(Color.YELLOW);
-        		}else{
-        			tvIndex.setTextColor(Color.WHITE);
-        			tvCD.setTextColor(Color.WHITE);        			
-        		}
-        		
-        		Log.i(LOG_TAG, "after set:"+String.valueOf(cb.isChecked()));
-        		setAnswer(arg2,cb.isChecked());
-        		
+        		changeList(arg2,!oldStatus);
+				//reSetAnswer
+				reSetAnswer();
 				updateAllData();
+				
+				myAdapter.notifyDataSetChanged();
+				
+        		//clear answer first
+//        		clearOldAnswer();
+//        		Log.i(LOG_TAG, "after clear:"+String.valueOf(cb.isChecked()));
+//        		cb.setChecked(!oldStatus);
+//        		
+//        		//set text color for selected item
+//        		TextView tvIndex = (TextView)view.findViewById(R.id.index);
+//        		TextView tvCD = (TextView)view.findViewById(R.id.choiceDesc);
+//        		if(cb.isChecked()){
+//        			tvIndex.setTextColor(Color.YELLOW);
+//        			tvCD.setTextColor(Color.YELLOW);
+//        		}else{
+//        			tvIndex.setTextColor(Color.WHITE);
+//        			tvCD.setTextColor(Color.WHITE);        			
+//        		}
+//        		
+//        		Log.i(LOG_TAG, "after set:"+String.valueOf(cb.isChecked()));
+//        		setAnswer(arg2,cb.isChecked());
+//        		
+//				updateAllData();
+				
+				
+				
 			}      	
         });
         setFooter();
@@ -191,53 +219,77 @@ public class SingleChoices extends BaseQuestion {
 		}
 	}
     
-    void clearOldAnswer(){
-    	Log.i(LOG_TAG, "clearOldAnswer()...");
-		listItemID.clear();
-    	answerLabels.setLength(0);
-		//initial all items background color
-		for(int i=0;i<cChoices.size();i++){
-			RadioButton aRb =(RadioButton)adapter.getView(i, null, null).findViewById(R.id.radioButton);
-			aRb.setChecked(false);
-			adapter.mChecked.set(i, false);
-			Log.i(LOG_TAG, String.valueOf(i)+":"+"false");
-		} 
-		Log.i(LOG_TAG, "clearOldAnswer().");
-    }
-
-    void clearOldAnswer(int checkedIndex){
-    	Log.i(LOG_TAG, "clearOldAnswer()...");
-		listItemID.clear();
-    	answerLabels.setLength(0);
-		//initial all items background color
-		for(int i=0;i<cChoices.size();i++){
-			
-			RadioButton aRb =(RadioButton)adapter.getView(i, null, null).findViewById(R.id.radioButton);
-			if (i == checkedIndex){
-				aRb.setChecked(!aRb.isChecked());
-				adapter.mChecked.set(i, aRb.isChecked());	
-			}else{
-				aRb.setChecked(false);
-				adapter.mChecked.set(i, false);				
-			}
-			Log.i(LOG_TAG, String.valueOf(i)+":"+"false");
-		} 
-		Log.i(LOG_TAG, "clearOldAnswer().");
-
-    }
+//    void clearOldAnswer(){
+//    	Log.i(LOG_TAG, "clearOldAnswer()...");
+//		listItemID.clear();
+//    	answerLabels.setLength(0);
+//		//initial all items background color
+//		for(int i=0;i<cChoices.size();i++){
+//			RadioButton aRb =(RadioButton)myAdapter.getView(i, null, null).findViewById(R.id.radioButton);
+//			aRb.setChecked(false);
+//			myAdapter.mChecked.set(i, false);
+//			Log.i(LOG_TAG, String.valueOf(i)+":"+"false");
+//		} 
+//		Log.i(LOG_TAG, "clearOldAnswer().");
+//    }
     
-    void setAnswer(int location,boolean isChecked){
-    	Log.i(LOG_TAG, "setAnswer()...");
-    	String label = adapter.choices.get(location).getLabel();
-    	if(isChecked){
-    		listItemID.add(label);
-    		answerLabels.append(label);
-    	}else{
-    		listItemID.clear();
-    		answerLabels.setLength(0);
-    	}
-		Log.i(LOG_TAG, "answerString:"+answerLabels.toString());
-		Log.i(LOG_TAG, "setAnswer().");
+//    void clearOldAnswer(int checkedIndex){
+//    	Log.i(LOG_TAG, "clearOldAnswer()...");
+//		listItemID.clear();
+//    	answerLabels.setLength(0);
+//		//initial all items background color
+//		for(int i=0;i<cChoices.size();i++){
+//			
+//			RadioButton aRb =(RadioButton)myAdapter.getView(i, null, null).findViewById(R.id.radioButton);
+//			if (i == checkedIndex){
+//				aRb.setChecked(!aRb.isChecked());
+//				myAdapter.mChecked.set(i, aRb.isChecked());	
+//			}else{
+//				aRb.setChecked(false);
+//				myAdapter.mChecked.set(i, false);				
+//			}
+//			Log.i(LOG_TAG, String.valueOf(i)+":"+"false");
+//		} 
+//		Log.i(LOG_TAG, "clearOldAnswer().");
+//
+//    }
+    
+//    void setAnswer(int location,boolean isChecked){
+//    	Log.i(LOG_TAG, "setAnswer()...");
+//    	String label = myAdapter.choices.get(location).getLabel();
+//    	if(isChecked){
+//    		listItemID.add(label);
+//    		answerLabels.append(label);
+//    	}else{
+//    		listItemID.clear();
+//    		answerLabels.setLength(0);
+//    	}
+//		Log.i(LOG_TAG, "answerString:"+answerLabels.toString());
+//		Log.i(LOG_TAG, "setAnswer().");
+//    }
+    
+    public void reSetAnswer(){
+    	Log.i(LOG_TAG, "-----------reSetAnswer()...------------");
+    	
+    	Log.i(LOG_TAG, "Clear answerItemList and answerLabels first...");
+    	
+    	listItemID.clear(); 
+    	answerLabels.setLength(0);
+    	
+		int i=0;
+		for(ChoiceExt ce:choiceExtList){
+			if(ce.isChecked()){
+				listItemID.add(String.valueOf(ce.getIndex()));
+				if(i++>0){
+					answerLabels.append(",");
+				}
+				answerLabels.append(ce.getLabel());
+			}
+		}
+		
+		Log.i(LOG_TAG, "answerLabels={" + answerLabels.toString()+"}");
+		
+		Log.i(LOG_TAG, "-----------reSetAnswer() end.-----------");
     }
     
     void setFooter(){
@@ -333,14 +385,22 @@ public class SingleChoices extends BaseQuestion {
     
     public void move2NewQuestion(){
 		//get selection
-		for (int i = 0; i < adapter.mChecked.size(); i++) {
-			if (adapter.mChecked.get(i)) {
-				Choice choice = adapter.choices.get(i);
-				listItemID.add(String.valueOf(choice.getLabel()));
-				if(i>0){
-					answerLabels.append(",");
-				}
-				answerLabels.append(String.valueOf(choice.getLabel()));
+//		for (int i = 0; i < myAdapter.mChecked.size(); i++) {
+//			if (myAdapter.mChecked.get(i)) {
+//				Choice choice = myAdapter.choices.get(i);
+//				listItemID.add(String.valueOf(choice.getLabel()));
+//				if(i>0){
+//					answerLabels.append(",");
+//				}
+//				answerLabels.append(String.valueOf(choice.getLabel()));
+//			}
+//		}
+		
+		for(ChoiceExt ce:choiceExtList){
+			if(ce.isChecked()){
+				listItemID.add(String.valueOf(ce.getLabel()));
+				answerLabels.append(ce.getLabel());
+				break;
 			}
 		}
 		
@@ -367,34 +427,53 @@ public class SingleChoices extends BaseQuestion {
 		
     }
     
-    class MyListAdapter extends BaseAdapter{
-    	List<Boolean> mChecked = new ArrayList<Boolean>();
-    	List<Choice> choices = new ArrayList<Choice>();
-		HashMap<Integer,View> map = new HashMap<Integer,View>(); 
+    public void changeList(int p,boolean isChecked){
+    	Log.i(LOG_TAG, "------------changeList()...-------------");
+    	Log.i(LOG_TAG, "will change index "+String.valueOf(p)+" in choiceExtList to "+String.valueOf(isChecked));
     	
-    	public MyListAdapter(List<Choice> choices){
+    	Log.i(LOG_TAG, "Before Change:");
+    	for(ChoiceExt ext:choiceExtList){
+			Log.i(LOG_TAG, String.valueOf(ext.getIndex()) + " " + ext.getLabel() + " "+ String.valueOf(ext.isChecked()) );
+		}
+    	
+    	Log.i(LOG_TAG, "After Change:");
+		int i=0;
+		for(ChoiceExt ext:choiceExtList){
+			ChoiceExt nExt = new ChoiceExt();
+			nExt.setIndex(ext.getIndex());
+			nExt.setActualLabel(ext.getActualLabel());
+			nExt.setLabel(ext.getLabel());
+			nExt.setContent(ext.getContent());
+			nExt.setChecked(i==p?isChecked:false);
+			choiceExtList.set(i, nExt);
+			i++;
+		}
+		
+		for(ChoiceExt ext:choiceExtList){
+			Log.i(LOG_TAG, String.valueOf(ext.getIndex()) + " " + ext.getLabel() + " "+ String.valueOf(ext.isChecked()) );
+		}
+		
+		Log.i(LOG_TAG, "------------changeList() End------------");
+    }
+    
+    class MyListAdapter extends BaseAdapter{
+    	List<ChoiceExt> choiceExtList = new ArrayList<ChoiceExt>();
+    	LayoutInflater mInflater; 
+    	
+    	public MyListAdapter(List<ChoiceExt> choiceExtList){
     		Log.i(LOG_TAG,"MyListAdapter()...");
-    		this.choices = choices;
-			for (int i = 0; i < choices.size(); i++) {
-				Choice choice = choices.get(i);
-				if (answerLabels.indexOf(String.valueOf(choice.getLabel())) != -1) {
-					mChecked.add(true);
-					Log.i(LOG_TAG,String.valueOf(i)+":"+"true");
-				} else {
-					mChecked.add(false);
-					Log.i(LOG_TAG,String.valueOf(i)+":"+"false");
-				}
-			}
+    		this.choiceExtList = choiceExtList;
+    		mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     	}
 
 		@Override
 		public int getCount() {
-			return choices.size();
+			return choiceExtList.size();
 		}
 
 		@Override
 		public Object getItem(int position) {
-			return choices.get(position);
+			return choiceExtList.get(position);
 		}
 
 		@Override
@@ -404,62 +483,55 @@ public class SingleChoices extends BaseQuestion {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			View view;
+//			View view;
 			ViewHolder holder = null;
 			
-			if (map.get(position) == null) {
-				LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				view = mInflater.inflate(R.layout.paper_single_choices_item, null);
+			if (convertView == null)  {
+				convertView = mInflater.inflate(R.layout.paper_single_choices_item, null);
 				holder = new ViewHolder();
 				
 				//set 3 component 
-				holder.radioButton = (RadioButton)view.findViewById(R.id.radioButton);
-				holder.index = (TextView)view.findViewById(R.id.index);
-				holder.choiceDesc = (TextView)view.findViewById(R.id.choiceDesc);
+				holder.radioButton = (RadioButton)convertView.findViewById(R.id.radioButton);
+				holder.index = (TextView)convertView.findViewById(R.id.index);
+				holder.choiceDesc = (TextView)convertView.findViewById(R.id.choiceDesc);
 				
 				final int p = position;
-				map.put(position, view);
+//				map.put(position, view);
 				
 				holder.radioButton.setOnCheckedChangeListener(new OnCheckedChangeListener(){
-
 					@Override
 					public void onCheckedChanged(CompoundButton arg0,
 							boolean arg1) {
 						Log.i(LOG_TAG, "---------------radioButton.onCheckedChanged---------------");
 						
 					}
-					
 				});
 				holder.radioButton.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						
-						Log.i(LOG_TAG, "---------------radioButton.onClick---------------");
-						//clear old answer
-						clearOldAnswer(p);
-		        		
-						//get old status
+						Log.i(LOG_TAG, "-----------------------holder.selected.setOnClickListener...-----------------------");
 						RadioButton rb = (RadioButton)v;
-						mChecked.set(p, rb.isChecked());
 						
-		        		//set answer
-		        		setAnswer(p,rb.isChecked());
-		        		
+						changeList(p,rb.isChecked());
+						reSetAnswer();
 						updateAllData();
+						
+						myAdapter.notifyDataSetChanged();
+						Log.i(LOG_TAG, "-----------------------holder.selected.setOnClickListener End!-----------------------");
 					}
 				});
-				view.setTag(holder);
+				convertView.setTag(holder);
 			}else{
-				view = map.get(position);
-				holder = (ViewHolder)view.getTag();
+				holder = (ViewHolder)convertView.getTag();
 			}
 			
-			Choice choice = choices.get(position);
-			holder.radioButton.setChecked(mChecked.get(position));
-			holder.index.setText(choice.getLabel());
-			holder.choiceDesc.setText(choice.getContent());
+			ChoiceExt choiceExt = choiceExtList.get(position);
+			holder.radioButton.setChecked(choiceExt.isChecked());
+			holder.index.setText(choiceExt.getLabel());
+			holder.choiceDesc.setText(choiceExt.getContent());
 			
-    		if(holder.radioButton.isChecked()){
+    		if(choiceExt.isChecked()){
     			holder.index.setTextColor(Color.YELLOW);
     			holder.choiceDesc.setTextColor(Color.YELLOW);
     		}else{
@@ -467,7 +539,7 @@ public class SingleChoices extends BaseQuestion {
     			holder.choiceDesc.setTextColor(Color.WHITE);        			
     		}
     		
-			return view;
+			return convertView;
 		}
     	
     }

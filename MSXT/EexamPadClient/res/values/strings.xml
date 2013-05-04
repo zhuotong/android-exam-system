@@ -65,11 +65,11 @@
     <!-- Select Exam List Page Start-->
     <string name="label_your_name">Your name:</string>
     <string name="label_your_job">Your Applied Job:</string>
-    <string name="label_tv_choose_exam">Choose 1 Exam from below:</string>
+    <string name="label_tv_choose_exam">Choose Exam Paper from below:</string>
     
-    <string name="label_about_exam">About The Exam</string>
+    <string name="label_about_exam">About The Exam Paper</string>
     <string name="label_exam_que_num">Number of Questions:</string>
-    <string name="label_exam_time">Exam Time(Min):</string>
+    <string name="label_exam_time">Time Limit(Min):</string>
     <string name="label_exam_score">Total Score:</string>
     
     <string name="label_btn_start">Start</string>

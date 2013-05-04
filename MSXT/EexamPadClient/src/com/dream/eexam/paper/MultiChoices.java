@@ -169,31 +169,17 @@ public class MultiChoices extends BaseQuestion {
         		CheckBox cb = (CheckBox)view.findViewById(R.id.list_select);
 //        		cb.setChecked(!cb.isChecked());
         		
-//        		TextView tvIndex = (TextView)view.findViewById(R.id.list_index);
-//        		TextView tvCD = (TextView)view.findViewById(R.id.list_choiceDesc);
-//        		if(cb.isChecked()){
-//        			tvIndex.setTextColor(Color.YELLOW);
-//        			tvCD.setTextColor(Color.YELLOW);
-//        		}else{
-//        			tvIndex.setTextColor(Color.WHITE);
-//        			tvCD.setTextColor(Color.WHITE);        			
-//        		}
-        		
         		Log.i(LOG_TAG, "Item "+ arg2 +" is Clicked!");
         		Log.i(LOG_TAG, "CheckBox "+ arg2 +" change to " + !cb.isChecked());
         		
 //        		myAdapter.mChecked.set(arg2,!cb.isChecked());
-				
 //        		mCheckedList.set(arg2, !cb.isChecked());
         		
         		changeList(arg2,!cb.isChecked());
         		
 				//reSetAnswer
 				reSetAnswer();
-				
 				updateAllData();
-				
-//				reSetAdapter();
 				
 				myAdapter.notifyDataSetChanged();
 				
@@ -340,24 +326,6 @@ public class MultiChoices extends BaseQuestion {
 		}
     }
     
-//    public void setAnswer(){
-//    	Log.i(LOG_TAG, "setAnswer()...");
-//    	//get selection choice and assembly to string
-//    	List<Boolean> mCheckedList = myAdapter.mChecked;
-//    	List<Choice> choices = myAdapter.choices;
-//		for (int i = 0; i < mCheckedList.size(); i++) {
-//			if (mCheckedList.get(i)) {
-//				Choice choice = choices.get(i);
-//				answerItemList.add(String.valueOf(choice.getIndex()));
-//				if(i>0){
-//					answerLabels.append(",");
-//				}
-//				answerLabels.append(String.valueOf(choice.getLabel()));
-//			}
-//		}
-//		Log.i(LOG_TAG, "setAnswer().");
-//    }
-    
     public void reSetAnswer(){
     	Log.i(LOG_TAG, "-----------reSetAnswer()...------------");
     	
@@ -365,25 +333,6 @@ public class MultiChoices extends BaseQuestion {
     	
     	answerItemList.clear(); 
     	answerLabels.setLength(0);
-    	
-    	//get selection choice and assembly to string
-//    	List<Boolean> mCheckedList = myAdapter.mChecked;
-//    	List<Choice> choices = myAdapter.choices;
-//    	
-//		for (int i = 0; i < mCheckedList.size(); i++) {
-//			if (mCheckedList.get(i)) {
-//				Choice choice = choices.get(i);
-//				
-//				String index = String.valueOf(choice.getIndex());
-//				Log.i(LOG_TAG, "index " + index + "is Selected!");
-//				
-//				answerItemList.add(index);
-//				if(i>0){
-//					answerLabels.append(",");
-//				}
-//				answerLabels.append(String.valueOf(choice.getLabel()));
-//			}
-//		}
     	
 		int i=0;
 		for(ChoiceExt ce:choiceExtList){
@@ -401,25 +350,10 @@ public class MultiChoices extends BaseQuestion {
 		Log.i(LOG_TAG, "-----------reSetAnswer() end.-----------");
     }
     
-//    void reSetAdapter(){
-//    	Log.i(LOG_TAG, "----------------reSetAdapter()...----------------");
-//    	Log.i(LOG_TAG, "answerLabels={"+answerLabels.toString()+"}");
-//    	List<Boolean> mCheckedList = new ArrayList<Boolean>();
-//		for (Choice choice: cChoices) {
-//			if (answerLabels.indexOf(String.valueOf(choice.getLabel())) != -1) {
-//				mCheckedList.add(true);
-//			} else {
-//				mCheckedList.add(false);
-//			}
-//		}
-//    	
-//    	Log.i(LOG_TAG, "reSetAdapter() end.");
-//    }
-    
     public void changeList(int p,boolean isChecked){
     	Log.i(LOG_TAG, "------------changeList()...-------------");
     	
-    	Log.i(LOG_TAG, "Item Index: "+String.valueOf(p)+" is Checked: "+String.valueOf(isChecked));
+    	Log.i(LOG_TAG, "will change index "+String.valueOf(p)+" in choiceExtList to "+String.valueOf(isChecked));
     	
     	Log.i(LOG_TAG, "Before Change:");
     	for(ChoiceExt ext:choiceExtList){
@@ -427,14 +361,18 @@ public class MultiChoices extends BaseQuestion {
 		}
     	
 		ChoiceExt ce = choiceExtList.get(p);
-		ce.setChecked(isChecked);
-		choiceExtList.set(p, ce);
+		ChoiceExt nce = new ChoiceExt();
+		nce.setIndex(ce.getIndex());
+		nce.setActualLabel(ce.getActualLabel());
+		nce.setLabel(ce.getLabel());
+		nce.setContent(ce.getContent());
+		nce.setChecked(isChecked);
+		choiceExtList.set(p, nce);
 		
 		Log.i(LOG_TAG, "After Change:");
 		for(ChoiceExt ext:choiceExtList){
 			Log.i(LOG_TAG, String.valueOf(ext.getIndex()) + " " + ext.getLabel() + " "+ String.valueOf(ext.isChecked()) );
 		}
-		
 		
 		Log.i(LOG_TAG, "------------changeList() End------------");
     }
@@ -442,23 +380,9 @@ public class MultiChoices extends BaseQuestion {
     class MyListAdapter extends BaseAdapter{
     	LayoutInflater mInflater;
     	List<ChoiceExt> choiceExtList;
-//    	List<Boolean> mChecked = new ArrayList<Boolean>();
-//		HashMap<Integer,View> map = new HashMap<Integer,View>(); 
     	
     	public MyListAdapter(List<ChoiceExt> choiceExtList){
-    		
-//    		this.choices = choices;
     		this.choiceExtList = choiceExtList;
-    		
-//    		for(int i=0;i<choices.size();i++){
-//    			Choice choice = choices.get(i);
-//				if (answerLabels.indexOf(String.valueOf(choice.getLabel())) != -1) {
-//					mChecked.add(true);
-//				}else{
-//					mChecked.add(false);
-//				}
-//    		}
-    		
     		mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     		
     	}
@@ -485,8 +409,6 @@ public class MultiChoices extends BaseQuestion {
 			ViewHolder holder = null;
 			
 			if (convertView == null) {
-//				Log.i(LOG_TAG,"position = "+position);
-//				view = mInflater.inflate(R.layout.paper_multi_choices_item, null);
 				
 				convertView = mInflater.inflate(R.layout.paper_multi_choices_item, null);
 				holder = new ViewHolder();
@@ -504,15 +426,15 @@ public class MultiChoices extends BaseQuestion {
 					public void onCheckedChanged(CompoundButton buttonView,
 							boolean isChecked) {
 						Log.i(LOG_TAG, "-----------------------onCheckedChanged()...-----------------------");
-//						CheckBox cb = (CheckBox)buttonView;
-////						mChecked.set(p, cb.isChecked());
-//						//change data list
-//						changeList(p,cb.isChecked());
-//						//reSetAnswer
+						
+						Log.i(LOG_TAG, "Item " + String.valueOf(p) + " is changeed check:" + String.valueOf(isChecked));
+						
+//		        		changeList(p,isChecked);
 //						reSetAnswer();
 //						updateAllData();
-////						reSetAdapter();
+						
 //						myAdapter.notifyDataSetChanged();
+						
 						Log.i(LOG_TAG, "-----------------------onCheckedChanged() End!-----------------------");
 					}
 				});
@@ -522,9 +444,11 @@ public class MultiChoices extends BaseQuestion {
 					public void onClick(View arg0) {
 						Log.i(LOG_TAG, "-----------------------holder.selected.setOnClickListener...-----------------------");
 						CheckBox cb = (CheckBox)arg0;
+						
 						changeList(p,cb.isChecked());
 						reSetAnswer();
 						updateAllData();
+						
 						myAdapter.notifyDataSetChanged();
 						Log.i(LOG_TAG, "-----------------------holder.selected.setOnClickListener End!-----------------------");
 					}
