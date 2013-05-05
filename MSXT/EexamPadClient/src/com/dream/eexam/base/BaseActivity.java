@@ -30,7 +30,7 @@ public class BaseActivity extends Activity {
 	protected SharedPreferences sharedPreferences;
 	Context mContext;
 	
-	public void printStoredDataInDB(Context mContext){
+/*	public void printStoredDataInDB(Context mContext){
 		Log.i(LOG_TAG,"----------------Start print data in SQLLite-----------------");
 		DatabaseUtil dbUtil = new DatabaseUtil(mContext);
 		dbUtil.open();
@@ -38,13 +38,13 @@ public class BaseActivity extends Activity {
     	dbUtil.close();
     	Log.i(LOG_TAG,"----------------End print data in SQLLite-----------------");
     	
-	}
+	}*/
 	
-	public void printSharedPreferencesData(SharedPreferences sharedPreferences){
+/*	public void printSharedPreferencesData(SharedPreferences sharedPreferences){
 		Log.i(LOG_TAG,"----------------Start Print data in sharedPreferences-----------------");
 		SPUtil.printAllSPData(sharedPreferences);
 		Log.i(LOG_TAG,"----------------End Print data in sharedPreferences-----------------");
-	}
+	}*/
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +59,8 @@ public class BaseActivity extends Activity {
 		//get SharedPreferences Object
 		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
 		
-        printSharedPreferencesData(sharedPreferences);
-        printStoredDataInDB(getApplicationContext());
+//        printSharedPreferencesData(sharedPreferences);
+//        printStoredDataInDB(getApplicationContext());
 		
 		//hide title bar
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);

@@ -140,7 +140,7 @@ public class SPUtil {
     	editor.commit();
 	}
 	
-	public static void printAllSPData(SharedPreferences sp){
+	/*public static void printAllSPData(SharedPreferences sp){
 		Log.i(LOG_TAG,"----------------data in sharedPreferences-----------------");
 		
 		//print all stored data in sharedPreferences
@@ -152,7 +152,7 @@ public class SPUtil {
 			Object value = entry.getValue();
 			Log.i(LOG_TAG,"key=" + key + " value=" + value);
 		}
-	}
+	}*/
 	
 	public static String getAllSPData(SharedPreferences sp){
 		Log.i(LOG_TAG,"----------------getAllSPData-----------------");
@@ -166,7 +166,6 @@ public class SPUtil {
 			Object value = entry.getValue();
 			sb.append(String.valueOf(i++)+". "+key.toString()+": "+value.toString()+"\n");
 		}
-		
 		return sb.toString();
 	}
 	
