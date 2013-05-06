@@ -48,13 +48,10 @@ public class MultiChoices extends BaseQuestion {
 	
 	public final static String LOG_TAG = "MultiChoices";
 
-	//components statement
+	//components and data 
 	TextView questionTV = null;
 	ListView listView;
-//	List<Boolean> mCheckedList;
 	List<ChoiceExt> choiceExtList = new ArrayList<ChoiceExt>();
-	
-	//data statement
 	MyListAdapter myAdapter;
 	List<String> answerItemList = new ArrayList<String>();
 	Integer indexInExam;
@@ -136,15 +133,6 @@ public class MultiChoices extends BaseQuestion {
         //set List
         listView = (ListView)findViewById(R.id.lvChoices);
         
-//        mCheckedList = new ArrayList<Boolean>();
-//		for (Choice choice: cChoices) {
-//			if (answerLabels.indexOf(String.valueOf(choice.getLabel())) != -1) {
-//				mCheckedList.add(true);
-//			} else {
-//				mCheckedList.add(false);
-//			}
-//		}
-        
 		for(Choice choice:cChoices){
 			ChoiceExt choiceExt = new ChoiceExt();
 			choiceExt.setActualLabel(choice.getActualLabel());
@@ -168,12 +156,8 @@ public class MultiChoices extends BaseQuestion {
         		
         		CheckBox cb = (CheckBox)view.findViewById(R.id.list_select);
 //        		cb.setChecked(!cb.isChecked());
-        		
         		Log.i(LOG_TAG, "Item "+ arg2 +" is Clicked!");
         		Log.i(LOG_TAG, "CheckBox "+ arg2 +" change to " + !cb.isChecked());
-        		
-//        		myAdapter.mChecked.set(arg2,!cb.isChecked());
-//        		mCheckedList.set(arg2, !cb.isChecked());
         		
         		changeList(arg2,!cb.isChecked());
         		
@@ -200,7 +184,6 @@ public class MultiChoices extends BaseQuestion {
     @Override
 	protected void onDestroy() {
 		super.onDestroy();
-		
 		Log.i(LOG_TAG, "onDestroy()...");
 		if(timerTask!=null){
 			timerTask.cancel();
@@ -254,7 +237,6 @@ public class MultiChoices extends BaseQuestion {
 		
 		//set completedSeekBar label
 		completedPercentage.setText(String.valueOf(per)+"%");
-
         
 		//set exam header(Right)
 		submitBtn.setText(mContext.getResources().getString(R.string.label_tv_submit));
@@ -294,7 +276,6 @@ public class MultiChoices extends BaseQuestion {
             nextArrow.setOnClickListener(new View.OnClickListener() {
     			@Override
     			public void onClick(View v) {
-    				
     				moveDirect = 1;
     				move2NewQuestion();
     			}
@@ -328,7 +309,6 @@ public class MultiChoices extends BaseQuestion {
     
     public void reSetAnswer(){
     	Log.i(LOG_TAG, "-----------reSetAnswer()...------------");
-    	
     	Log.i(LOG_TAG, "Clear answerItemList and answerLabels first...");
     	
     	answerItemList.clear(); 
@@ -405,11 +385,9 @@ public class MultiChoices extends BaseQuestion {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			Log.i(LOG_TAG,"getView()..");
-//			View view;
 			ViewHolder holder = null;
 			
 			if (convertView == null) {
-				
 				convertView = mInflater.inflate(R.layout.paper_multi_choices_item, null);
 				holder = new ViewHolder();
 				
@@ -419,22 +397,13 @@ public class MultiChoices extends BaseQuestion {
 				holder.choiceDesc = (TextView)convertView.findViewById(R.id.list_choiceDesc);
 				
 				final int p = position;
-//				map.put(position, convertView);
 				
 				holder.selected.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView,
 							boolean isChecked) {
 						Log.i(LOG_TAG, "-----------------------onCheckedChanged()...-----------------------");
-						
 						Log.i(LOG_TAG, "Item " + String.valueOf(p) + " is changeed check:" + String.valueOf(isChecked));
-						
-//		        		changeList(p,isChecked);
-//						reSetAnswer();
-//						updateAllData();
-						
-//						myAdapter.notifyDataSetChanged();
-						
 						Log.i(LOG_TAG, "-----------------------onCheckedChanged() End!-----------------------");
 					}
 				});
@@ -456,11 +425,8 @@ public class MultiChoices extends BaseQuestion {
 				
 				convertView.setTag(holder);
 			}else{
-//				Log.i(LOG_TAG,"position2 = "+position);
-//				convertView = map.get(position);
 				holder = (ViewHolder)convertView.getTag();
 			}
-			
 			
 			ChoiceExt choiceExt = choiceExtList.get(position);
 			Log.i(LOG_TAG,"position = "+position + " label = "+String.valueOf(choiceExt.getLabel())+ " isChecked = "+String.valueOf(choiceExt.isChecked()));

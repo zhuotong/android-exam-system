@@ -9,6 +9,12 @@
     <string name="dialog_ok">OK</string>
     <string name="label_btn_continue">Continue</string>
     <string name="label_btn_quit">Quit</string>
+    <string name="app_file_home">eExam</string>
+    <string name="msg_exit_hint">Click again to exit</string>
+    <string name="setting_id">admin</string>
+    <string name="setting_password">admin</string>
+    <string name="default_host">192.168.1.100</string>
+    <string name="default_port">8080</string>
      <!-- Common Message End-->
     
     <!-- Login Page Start-->
@@ -125,13 +131,5 @@
         <item>I</item>
         <item>J</item>
     </string-array>
-<!--     <string name="port">8080</string> -->
-    <string name="app_file_home">eExam</string>
-    <string name="msg_exit_hint">Click again to exit</string>
-    <string name="setting_id">admin</string>
-    <string name="setting_password">admin</string>
-    
-    <!-- Other -->
-    <string name="default_host">192.168.1.100</string>
-    <string name="default_port">8080</string>
+
 </resources>

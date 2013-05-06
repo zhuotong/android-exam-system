@@ -27,7 +27,6 @@ import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.FileUtil;
 import com.dream.eexam.util.SPUtil;
-import com.msxt.client.model.QUESTION_TYPE;
 import com.msxt.client.model.SubmitSuccessResult;
 import com.msxt.client.model.Examination.Question;
 import com.msxt.client.server.ServerProxy;
@@ -50,25 +49,19 @@ public class PendQuestions extends BaseQuestion {
 	
 	void loadComponents(){
 		imgHome = (ImageView) findViewById(R.id.imgHome);
-		
 		//header components
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
-		
 		//footer components
 		backArrow = (ImageView)findViewById(R.id.backArrow);
 		pendQueNumber = (Button) findViewById(R.id.pendQueNumber);
 		remainingTime = (TextView)findViewById(R.id.remainingTime);
-		
 		completedSeekBar = (SeekBar) findViewById(R.id.completedSeekBar);
 		completedPercentage = (TextView)findViewById(R.id.completedPercentage);   	
-    	
 		submitBtn = (Button)findViewById(R.id.submitBtn);
 		nextArrow = (ImageView)findViewById(R.id.nextArrow);
-    	
 	}
 	
 	void setHeader(){
-		
 		imgHome.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -205,22 +198,7 @@ public class PendQuestions extends BaseQuestion {
     	            String indexInExam = sButton.getText().toString();
     	            Question nQuestion = DataParseUtil.getQuestionByIndexInExam(exam, Integer.valueOf(indexInExam));
     	            
-    				//move question
-//    				Intent intent = new Intent();
-//    				intent.putExtra(SPUtil.CURRENT_EXAM_CATALOG, String.valueOf(DataParseUtil.getCidByQid(exam, nQuestion.getId())));
-//    				intent.putExtra(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, String.valueOf(nQuestion.getIndex()));
-//    				
-//    				if(QUESTION_TYPE.MULTIPLE_CHOICE.equals(nQuestion.getType())){
-//    					intent.putExtra("questionType", questionTypes[0]);
-//    					intent.setClass( mContext, MultiChoices.class);
-//    				}else if(QUESTION_TYPE.SINGLE_CHOICE.equals(nQuestion.getType())){
-//    					intent.putExtra("questionType", questionTypes[1]);
-//    					intent.setClass( mContext, SingleChoices.class);
-//    				}else{
-//    					ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Invalid qeustion type!");
-//    				}
     				finish();
-//    				startActivity(intent);
     				
     				Log.i(LOG_TAG, "----------Go to Selected Question!-----------------");
     				SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_GOING, sharedPreferences);
@@ -262,11 +240,9 @@ public class PendQuestions extends BaseQuestion {
 	class SubmitAnswerTask extends AsyncTask<String, Void, String> {
     	String examId;
     	Map<String, String> answers;
-    	
     	ProgressDialog progressDialog;
     	ServerProxy proxy;
     	Result submitResult;
-    	
     	
     	@Override
     	protected void onPreExecute() {
@@ -278,9 +254,7 @@ public class PendQuestions extends BaseQuestion {
         @Override
 		protected String doInBackground(String... urls) {
         	Log.i(LOG_TAG, "doInBackground()...");
-        	
         	examId = urls[0];
-        	
         	try {
 				proxy =  WebServerProxy.Factroy.getCurrrentInstance();
 				DatabaseUtil dbUtil = new DatabaseUtil(mContext);
@@ -294,16 +268,13 @@ public class PendQuestions extends BaseQuestion {
 				Log.i(LOG_TAG, e.getMessage());
 				progressDialog.dismiss();
 			}
-        	
 			return null;
 		}
 
         @Override
         protected void onPostExecute(String result) {
         	progressDialog.dismiss();
-        	
         	if( submitResult!=null && submitResult.getStatus() == STATUS.SUCCESS ) {
-        		
         		//get result file name
            		String resultFileName = FileUtil.RESULT_FILE_PREFIX + exam.getId() + FileUtil.FILE_SUFFIX_XML;
         		Log.i(LOG_TAG, "resultFileName: " + resultFileName);
@@ -311,13 +282,10 @@ public class PendQuestions extends BaseQuestion {
         		//save submit result file
     			FileUtil.saveFile(SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences), resultFileName, submitResult.getSuccessMessage());
         		SubmitSuccessResult succResult = DataParseUtil.getSubmitSuccessResult(submitResult);
-        		
         		//Save Exam Score to sharedPreferences
         		SPUtil.save2SP(SPUtil.CURRENT_EXAM_SCORE, String.valueOf(succResult.getScore()), sharedPreferences);
-        		
 				//save user status and exam status
 				saveExamStatusAfterSubmitted();
-        		
 				//go to ExamResult Page
         		go2ExamResult(mContext);
         		

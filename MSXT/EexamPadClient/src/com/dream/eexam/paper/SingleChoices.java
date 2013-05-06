@@ -1,10 +1,8 @@
 package com.dream.eexam.paper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -24,7 +22,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.ListView;
@@ -32,10 +29,8 @@ import android.widget.SeekBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
-
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.ChoiceExt;
-import com.dream.eexam.paper.MultiChoices.ViewHolder;
 import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.FileUtil;
@@ -51,7 +46,7 @@ public class SingleChoices extends BaseQuestion {
 	
 	public final static String LOG_TAG = "SingleChoices";
 	
-	//components statement
+	//components and data 
 	TextView questionTV = null;
 	ListView listView;
 	MyListAdapter myAdapter;
@@ -136,15 +131,6 @@ public class SingleChoices extends BaseQuestion {
         //set List
         listView = (ListView)findViewById(R.id.lvChoices);
         
-//      List<Boolean> mCheckedList = new ArrayList<Boolean>();
-//		for (Choice choice: cChoices) {
-//			if (answerLabels.indexOf(String.valueOf(choice.getLabel())) != -1) {
-//				mCheckedList.add(true);
-//			} else {
-//				mCheckedList.add(false);
-//			}
-//		}
-        
 		for(Choice choice:cChoices){
 			ChoiceExt choiceExt = new ChoiceExt();
 			choiceExt.setActualLabel(choice.getActualLabel());
@@ -219,63 +205,12 @@ public class SingleChoices extends BaseQuestion {
 		}
 	}
     
-//    void clearOldAnswer(){
-//    	Log.i(LOG_TAG, "clearOldAnswer()...");
-//		listItemID.clear();
-//    	answerLabels.setLength(0);
-//		//initial all items background color
-//		for(int i=0;i<cChoices.size();i++){
-//			RadioButton aRb =(RadioButton)myAdapter.getView(i, null, null).findViewById(R.id.radioButton);
-//			aRb.setChecked(false);
-//			myAdapter.mChecked.set(i, false);
-//			Log.i(LOG_TAG, String.valueOf(i)+":"+"false");
-//		} 
-//		Log.i(LOG_TAG, "clearOldAnswer().");
-//    }
-    
-//    void clearOldAnswer(int checkedIndex){
-//    	Log.i(LOG_TAG, "clearOldAnswer()...");
-//		listItemID.clear();
-//    	answerLabels.setLength(0);
-//		//initial all items background color
-//		for(int i=0;i<cChoices.size();i++){
-//			
-//			RadioButton aRb =(RadioButton)myAdapter.getView(i, null, null).findViewById(R.id.radioButton);
-//			if (i == checkedIndex){
-//				aRb.setChecked(!aRb.isChecked());
-//				myAdapter.mChecked.set(i, aRb.isChecked());	
-//			}else{
-//				aRb.setChecked(false);
-//				myAdapter.mChecked.set(i, false);				
-//			}
-//			Log.i(LOG_TAG, String.valueOf(i)+":"+"false");
-//		} 
-//		Log.i(LOG_TAG, "clearOldAnswer().");
-//
-//    }
-    
-//    void setAnswer(int location,boolean isChecked){
-//    	Log.i(LOG_TAG, "setAnswer()...");
-//    	String label = myAdapter.choices.get(location).getLabel();
-//    	if(isChecked){
-//    		listItemID.add(label);
-//    		answerLabels.append(label);
-//    	}else{
-//    		listItemID.clear();
-//    		answerLabels.setLength(0);
-//    	}
-//		Log.i(LOG_TAG, "answerString:"+answerLabels.toString());
-//		Log.i(LOG_TAG, "setAnswer().");
-//    }
-    
     public void reSetAnswer(){
     	Log.i(LOG_TAG, "-----------reSetAnswer()...------------");
-    	
     	Log.i(LOG_TAG, "Clear answerItemList and answerLabels first...");
     	
     	listItemID.clear(); 
     	answerLabels.setLength(0);
-    	
 		int i=0;
 		for(ChoiceExt ce:choiceExtList){
 			if(ce.isChecked()){
@@ -288,7 +223,6 @@ public class SingleChoices extends BaseQuestion {
 		}
 		
 		Log.i(LOG_TAG, "answerLabels={" + answerLabels.toString()+"}");
-		
 		Log.i(LOG_TAG, "-----------reSetAnswer() end.-----------");
     }
     
@@ -384,18 +318,6 @@ public class SingleChoices extends BaseQuestion {
     }
     
     public void move2NewQuestion(){
-		//get selection
-//		for (int i = 0; i < myAdapter.mChecked.size(); i++) {
-//			if (myAdapter.mChecked.get(i)) {
-//				Choice choice = myAdapter.choices.get(i);
-//				listItemID.add(String.valueOf(choice.getLabel()));
-//				if(i>0){
-//					answerLabels.append(",");
-//				}
-//				answerLabels.append(String.valueOf(choice.getLabel()));
-//			}
-//		}
-		
 		for(ChoiceExt ce:choiceExtList){
 			if(ce.isChecked()){
 				listItemID.add(String.valueOf(ce.getLabel()));
@@ -430,7 +352,6 @@ public class SingleChoices extends BaseQuestion {
     public void changeList(int p,boolean isChecked){
     	Log.i(LOG_TAG, "------------changeList()...-------------");
     	Log.i(LOG_TAG, "will change index "+String.valueOf(p)+" in choiceExtList to "+String.valueOf(isChecked));
-    	
     	Log.i(LOG_TAG, "Before Change:");
     	for(ChoiceExt ext:choiceExtList){
 			Log.i(LOG_TAG, String.valueOf(ext.getIndex()) + " " + ext.getLabel() + " "+ String.valueOf(ext.isChecked()) );
@@ -448,11 +369,9 @@ public class SingleChoices extends BaseQuestion {
 			choiceExtList.set(i, nExt);
 			i++;
 		}
-		
 		for(ChoiceExt ext:choiceExtList){
 			Log.i(LOG_TAG, String.valueOf(ext.getIndex()) + " " + ext.getLabel() + " "+ String.valueOf(ext.isChecked()) );
 		}
-		
 		Log.i(LOG_TAG, "------------changeList() End------------");
     }
     
@@ -483,9 +402,7 @@ public class SingleChoices extends BaseQuestion {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-//			View view;
 			ViewHolder holder = null;
-			
 			if (convertView == null)  {
 				convertView = mInflater.inflate(R.layout.paper_single_choices_item, null);
 				holder = new ViewHolder();
@@ -496,8 +413,6 @@ public class SingleChoices extends BaseQuestion {
 				holder.choiceDesc = (TextView)convertView.findViewById(R.id.choiceDesc);
 				
 				final int p = position;
-//				map.put(position, view);
-				
 				holder.radioButton.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 					@Override
 					public void onCheckedChanged(CompoundButton arg0,
@@ -569,18 +484,14 @@ public class SingleChoices extends BaseQuestion {
         @Override
 		protected String doInBackground(String... urls) {
         	Log.i(LOG_TAG, "SubmitAnswerTask.doInBackground()...");
-        	
         	examId = urls[0];
-        	
         	try {
 				proxy =  WebServerProxy.Factroy.getCurrrentInstance();
 				DatabaseUtil dbUtil = new DatabaseUtil(mContext);
 				dbUtil.open();
 				answers =  getAllAnswers(dbUtil);
 				dbUtil.close();
-				
 				Log.i(LOG_TAG, "proxy.submitAnswer..."+examId);
-				
 				submitResult = proxy.submitAnswer(examId,answers);
 			} catch (SQLException se) {
 				progressDialog.dismiss();
@@ -648,7 +559,6 @@ public class SingleChoices extends BaseQuestion {
 	void setRemainingTime() {
 		Log.i(LOG_TAG, "setRemainingTime()...");
 		String rTimeStr = getRemainingTime();
-		
 		if(rTimeStr!=null){
 			Log.i(LOG_TAG, "rTimeStr():"+rTimeStr);
 			remainingTime.setText(rTimeStr);
