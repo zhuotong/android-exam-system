@@ -36,12 +36,6 @@ public class SettingBase extends BaseActivity {
 		intent.setClass( mContext, SettingExamStatus.class);
 		startActivity(intent); 
 	}
-	
-	public void go2SettingExamProgress(View view){
-		Intent intent = new Intent();
-		intent.setClass( mContext, SettingExamProgress.class);
-		startActivity(intent); 
-	}
 
 	public void go2SettingUserFolder(View view){
 		Intent intent = new Intent();

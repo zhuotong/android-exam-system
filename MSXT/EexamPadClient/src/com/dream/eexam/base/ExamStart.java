@@ -17,6 +17,7 @@ import com.msxt.client.server.ServerProxy;
 import com.msxt.client.server.WebServerProxy;
 import com.msxt.client.server.ServerProxy.Result;
 import com.msxt.client.server.ServerProxy.STATUS;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -52,12 +53,13 @@ public class ExamStart extends BaseActivity {
 	Spinner spinner;
 	Button startBtn;
 	
+	//declare data object
 	LoginSuccessResult succResult = new LoginSuccessResult();
 	List<com.msxt.client.model.LoginSuccessResult.Examination> examinations;
 	String conversation = null;
 	String selectedExamId = null;
 	String selectedExamName = null;
-	
+	@SuppressLint("UseSparseArrays")
 	Map<Integer,String> examIdsMap = new HashMap<Integer,String>();
 	List<String> examNames = new ArrayList<String>();
 	ArrayAdapter<String> adapter;
@@ -80,6 +82,7 @@ public class ExamStart extends BaseActivity {
 		}
 		
 		Log.i(LOG_TAG,"Load Pending Exams...");
+		
 		//get exam name list
 		examinations = succResult.getExaminations();
 		if(examinations!=null&&examinations.size()>0){
@@ -196,7 +199,8 @@ public class ExamStart extends BaseActivity {
 	    	
 			progressDialog.dismiss();
 			if(examResult==null){
-				ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Fail to Download Exam, Please Connect Administrator!");
+				String errorMessage = mContext.getResources().getString(R.string.msg_waiting_download_exam);
+				ShowDialog(mContext.getResources().getString(R.string.dialog_note),errorMessage);
 			}else{
 				if(STATUS.SUCCESS.equals(examResult.getStatus())){
 					
