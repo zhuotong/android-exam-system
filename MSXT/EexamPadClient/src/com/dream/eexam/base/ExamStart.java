@@ -174,7 +174,7 @@ public class ExamStart extends BaseActivity {
 		@Override
 		protected void onPreExecute() {
 			Log.i(LOG_TAG, "onPreExecute() called");
-			String displayMessage = mContext.getResources().getString(R.string.msg_download_exam)+"...";
+			String displayMessage = mContext.getResources().getString(R.string.msg_waiting_download_exam)+"...";
 			progressDialog = ProgressDialog.show(ExamStart.this, null,displayMessage, true, false); 
 		}
 		
