@@ -194,8 +194,12 @@ public class LoginActivity extends BaseActivity {
         	Log.i(LOG_TAG,"LoginTask.doInBackground()...");
         	loginUserId = urls[0];
         	loginUserPwd = urls[1];
-        	proxy =  WebServerProxy.Factroy.createInstance(saveHost, Integer.valueOf(savePort));
-    		loginResult = proxy.login(loginUserId, loginUserPwd);           	
+        	try {
+            	proxy =  WebServerProxy.Factroy.createInstance(saveHost, Integer.valueOf(savePort));
+        		loginResult = proxy.login(loginUserId, loginUserPwd);  
+        	} catch (Exception e) {
+				progressDialog.dismiss();
+			}
 			return null;
 		}
 
@@ -242,13 +246,14 @@ public class LoginActivity extends BaseActivity {
     		        	//exam ready but not start
     		        	go2ExamStart(mContext);
     		        	SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_NOT_START, sharedPreferences);
+    		        	
     	        		//save new exam to sharedPreferences
     	        		SPUtil.save2SP(SPUtil.CURRENT_USER_ID, loginUserId, sharedPreferences);
     	        		SPUtil.save2SP(SPUtil.CURRENT_USER_PWD, loginUserPwd, sharedPreferences);
     	        		SPUtil.save2SP(SPUtil.CURRENT_USER_HOME, userHome, sharedPreferences);
     		        }
         		} catch (Exception e) {
-        			ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Invalid XML Data");
+        			ShowDialog(mContext.getResources().getString(R.string.dialog_note),mContext.getResources().getString(R.string.msg_error_invalide_xml));
     			}
         	}
         }

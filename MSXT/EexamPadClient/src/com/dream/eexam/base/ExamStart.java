@@ -227,7 +227,7 @@ public class ExamStart extends BaseActivity {
 					
 					Question fQuestion = DataParseUtil.getQuestionByCidQid(exam, ccIndex, cqIndex);
 					if(fQuestion==null){
-						ShowDialog(mContext.getResources().getString(R.string.dialog_note),"Can not get question!");
+						ShowDialog(mContext.getResources().getString(R.string.dialog_note),mContext.getResources().getString(R.string.msg_fail2_load_question));
 						this.cancel(true);
 						return;
 					}

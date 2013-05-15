@@ -33,9 +33,11 @@
     <string name="msg_network_error">Your mobile is not in a available NetWork!</string>
     <string name="msg_user_in_exam_error">Last user exam is not finished!</string>
     <string name="msg_warning_setting">You are not allowed to go to setting page</string>
+    <string name="msg_error_invalide_xml">Invalid XML Data</string>
     <!-- Login Page End -->
     
-    <!-- Setting Page Start-->
+    <!-- All Setting Page Start-->
+    <!-- Server -->
     <string-array name="msg_settings_invalid">
         <item>Invalid IP Address!</item>
     </string-array>
@@ -44,19 +46,41 @@
     <string name="label_btn_save">Save</string>
     <string name="label_btn_test_connect">Test Connect</string>
     <string name="msg_wait_test_connect">Waiting Test Connect</string>
+    <string name="msg_history_be_cleared">History is cleared</string>
     <string name="label_btn_delete">Delete</string>
     <string name="label_btn_clear_history">Clear History</string>
-    <string name="msg_history_be_cleared">History is cleared</string>
     <string name="label_footer_server_setting">Server Setting:</string>
     <string name="label_footer_current_exam_status">Exam Status</string>
+    
+    <!-- Status -->
     <string name="title_setting_user_infor">User Information</string>
+	<string name="label_setting_user_id">User Id</string>
+    <string name="label_setting_user_password">User Password</string>
+    <string name="label_setting_user_file_home">User File Home</string>
+    <string name="label_setting_user_completed_exam">Completed Exam</string>
     <string name="title_setting_exam_infor">Exam Information</string>
+    <string name="label_setting_exam_file_name">Exam File Name</string>
+    <string name="label_setting_exam_name">Exam Name</string>
+    <string name="label_setting_exam_start_time">Exam Start Time</string>
+    <string name="label_setting_exam_status">Exam Status</string>
+    <string-array name="exam_status_values">
+        <item>Exam Not Start</item>
+        <item>Exam Start Going</item>
+        <item>Exam Start Going Obsolete</item>
+        <item>EXAM_Start Pending New</item>
+		<item>Exam End</item>
+    </string-array>
+    <string name="label_setting_exam_current_catalog">Exam Current Catalog</string>
+    <string name="label_setting_exam_current_index_in_catalog">Exam Current Index In Catalog</string>    
+    <string name="label_setting_exam_exam_score">Exam Score</string>
     <string name="title_setting_exam_answer">Exam Answer</string>
+    
+    <!-- Users -->
     <string name="title_setting_user_folder">User Folders</string>
     <string name="label_footer_current_exam_progress">Exam Progress</string>
     <string name="label_footer_user_folder">User Folder</string>
     <string name="msg_del_user_folder">Are you sure to delete below user folders:</string>
-    <!-- Setting Page End-->
+    <!-- All Setting Page End-->
         
     <!-- Exam Start Page -->
     <string name="label_your_name">Your name:</string>
@@ -69,6 +93,7 @@
     <string name="label_btn_start">Start</string>
     <string name="msg_waiting_download_exam">Download Exam data,Waiting</string>
     <string name="msg_fail2_download">Fail to Download Exam, Please Connect Administrator!</string>
+    <string name="msg_fail2_load_question">Failure to load question!</string>
     <!-- Exam Start Page End -->
 
     <!-- Exam Continue Page Start -->

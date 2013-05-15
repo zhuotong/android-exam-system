@@ -64,7 +64,7 @@
 				        android:textColor="#D71412"
 				        android:textSize="20sp"/>		            
 		        </TableRow>
-		        <TableRow  
+<!-- 		        <TableRow  
 		            android:layout_width="fill_parent"
 					android:layout_height="fill_parent"
 					android:layout_gravity="center_vertical|center_horizontal"
@@ -83,9 +83,9 @@
 				        android:layout_width="wrap_content"
 				        android:layout_height="wrap_content"
 				        android:layout_marginLeft="5dp"
-				        android:textColor="#134316"
+				        android:textColor="#31FF07"
 				        android:textSize="16sp"/>	            
-		        </TableRow>
+		        </TableRow> -->
 		    </TableLayout>	
 		        
    		    <Button android:id="@+id/submitBtn"

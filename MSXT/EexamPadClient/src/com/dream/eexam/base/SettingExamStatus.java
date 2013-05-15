@@ -21,22 +21,22 @@ public class SettingExamStatus extends SettingBase {
 	public String getUserInfo(){
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("User Id:\t");
+		sb.append(mContext.getResources().getString(R.string.label_setting_user_id)+":\t");
 		String userId = SPUtil.getFromSP(SPUtil.CURRENT_USER_ID, sharedPreferences);
 		sb.append(userId==null? "":userId);
 		sb.append("\n");
 		
-		sb.append("User Password:\t");
+		sb.append(mContext.getResources().getString(R.string.label_setting_user_password)+":\t");
 		String userPassword = SPUtil.getFromSP(SPUtil.CURRENT_USER_PWD, sharedPreferences);
 		sb.append(userPassword==null? "":userPassword);
 		sb.append("\n");
 		
-		sb.append("User File Home:\t");
+		sb.append(mContext.getResources().getString(R.string.label_setting_user_file_home)+":\t");
 		String userFileHome = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
 		sb.append(userFileHome==null? "":userFileHome);
 		sb.append("\n");
 		
-		sb.append("User Completed Exam:\t");
+		sb.append(mContext.getResources().getString(R.string.label_setting_user_completed_exam)+":\t");
 		String userCompletedExam = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_SUBMITTED_IDS, sharedPreferences);
 		sb.append(userCompletedExam==null? "":userCompletedExam);
 		return sb.toString();
@@ -44,24 +44,24 @@ public class SettingExamStatus extends SettingBase {
 
 	public String getExamInfo(){
 		StringBuilder sb = new StringBuilder();
-		sb.append("Exam File Name:");
+		sb.append(mContext.getResources().getString(R.string.label_setting_exam_file_name));
 		String examFileName = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_FILE_NAME,sharedPreferences);
 		sb.append(examFileName == null ? "" : examFileName);
 		sb.append("\n");
 
-		sb.append("Exam Name:");
+		sb.append(mContext.getResources().getString(R.string.label_setting_exam_name));
 		String examName = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_NAME,sharedPreferences);
 		sb.append(examName == null ? "" : examName);
 		sb.append("\n");
 		
-		sb.append("Exam Start Time:");
+		sb.append(mContext.getResources().getString(R.string.label_setting_exam_start_time));
 		long examStartTime = SPUtil.getLongFromSP(SPUtil.CURRENT_EXAM_START_TIME,sharedPreferences);
 		if(examStartTime != 0){
 			sb.append(TimeDateUtil.transferTime2Str(examStartTime));
 		}
 		sb.append("\n");
 
-		sb.append("Exam Status:");
+		sb.append(mContext.getResources().getString(R.string.label_setting_exam_status));
 		int examStatus = SPUtil.getIntegerFromSP(SPUtil.CURRENT_EXAM_STATUS,sharedPreferences);
 		switch(examStatus){
 			case 1:sb.append("Exam Not Start");break;
@@ -74,17 +74,17 @@ public class SettingExamStatus extends SettingBase {
 		
 		sb.append("\n");
 
-		sb.append("Exam Current Catalog:");
+		sb.append(mContext.getResources().getString(R.string.label_setting_exam_current_catalog));
 		int examCurrentCatalog = SPUtil.getIntegerFromSP(SPUtil.CURRENT_EXAM_CATALOG, sharedPreferences);
 		sb.append(examCurrentCatalog == 0 ? "" : String.valueOf(examCurrentCatalog));
 		sb.append("\n");
 
-		sb.append("Exam Current Index In Catalog:");
+		sb.append(mContext.getResources().getString(R.string.label_setting_exam_current_index_in_catalog));
 		int examCurrentIndexInCatalog = SPUtil.getIntegerFromSP(SPUtil.CURRENT_EXAM_INDEX_IN_CATA, sharedPreferences);
 		sb.append(examCurrentIndexInCatalog == 0 ? "": String.valueOf(examCurrentCatalog));
 		sb.append("\n");
 
-		sb.append("Exam Score:");
+		sb.append(mContext.getResources().getString(R.string.label_setting_exam_exam_score));
 		String examScore = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_SCORE,sharedPreferences);
 		String scoreStr = (examScore == null) ? "" : examScore; 
 		sb.append(scoreStr);
