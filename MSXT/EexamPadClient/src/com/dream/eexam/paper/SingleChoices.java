@@ -55,6 +55,7 @@ public class SingleChoices extends BaseQuestion {
 
 	void loadComponents(){
 		imgHome = (ImageView) findViewById(R.id.imgHome);
+		curExamName = (TextView)findViewById(R.id.curExamName);
 		catalogsTL = (TableLayout)findViewById(R.id.catalogsTL);
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
 		imgDownArrow = (ImageView) findViewById(R.id.imgDownArrow);
@@ -89,6 +90,8 @@ public class SingleChoices extends BaseQuestion {
 				builder.show();
 			}
 		});
+		
+		curExamName.setText(SPUtil.getFromSP(SPUtil.CURRENT_EXAM_NAME, sharedPreferences));
 		
 		catalogsTL.setOnClickListener(new View.OnClickListener() {
 			@Override

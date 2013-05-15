@@ -58,6 +58,7 @@ public class MultiChoices extends BaseQuestion {
 	
 	void loadComponents(){
 		imgHome = (ImageView) findViewById(R.id.imgHome);
+		curExamName = (TextView)findViewById(R.id.curExamName);
 		catalogsTL = (TableLayout)findViewById(R.id.catalogsTL);
 		remainingTime = (TextView)findViewById(R.id.remainingTime);
 		submitBtn = (Button) findViewById(R.id.submitBtn);
@@ -92,6 +93,8 @@ public class MultiChoices extends BaseQuestion {
 				builder.show();
 			}
 		});
+		
+		curExamName.setText(SPUtil.getFromSP(SPUtil.CURRENT_EXAM_NAME, sharedPreferences));
 		
 		catalogsTL.setOnClickListener(new View.OnClickListener() {
 			@Override

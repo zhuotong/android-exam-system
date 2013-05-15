@@ -31,7 +31,7 @@
 					android:layout_gravity="top|left"
 					android:gravity="top|left">
 				     <TextView
-				        android:id="@+id/paperName"
+				        android:id="@+id/curExamName"
 				        android:layout_width="wrap_content"
 				        android:layout_height="fill_parent"
 				        android:layout_gravity="center_vertical|left"

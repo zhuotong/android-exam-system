@@ -58,6 +58,7 @@ public abstract class BaseQuestion extends BaseActivity{
 	
 	//set exam header(
 	protected ImageView imgHome = null;
+	protected TextView curExamName = null;
 	protected TableLayout catalogsTL = null;
 	protected TextView catalogsTV = null;
 	protected TextView currentTV = null;
