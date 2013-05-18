@@ -77,8 +77,8 @@ public abstract class BaseQuestion extends BaseActivity{
 	protected InputStream inputStream;
 
 	//static data
-	protected String[] questionTypes;
-	protected String[] choicesLabels;
+//	protected String[] questionTypes;
+//	protected String[] choicesLabels;
 	
 	//data store in local database(question and answers)
 	protected StringBuffer answerLabels = new StringBuffer();//answer labels
@@ -212,8 +212,8 @@ public abstract class BaseQuestion extends BaseActivity{
 		
 		Log.i(LOG_TAG, "------------------------------onCreate()---------------------------------");
 		
-		questionTypes = getResources().getStringArray(R.array.question_types);
-		choicesLabels = getResources().getStringArray(R.array.display_choice_label);
+//		questionTypes = getResources().getStringArray(R.array.question_types);
+//		choicesLabels = getResources().getStringArray(R.array.display_choice_label);
 		
 		//set file home and file
 		examFilePath = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);

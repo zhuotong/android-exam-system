@@ -29,7 +29,6 @@ public class SettingServer extends SettingBase {
 	String[] valiMessageArray = null;
 	EditText hostET = null;
 	EditText portET = null;
-	
 	Button saveHostBtn = null;
 	Button testBtn = null;
 	

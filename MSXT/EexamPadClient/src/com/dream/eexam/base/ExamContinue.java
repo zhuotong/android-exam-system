@@ -43,7 +43,7 @@ public class ExamContinue extends BaseActivity {
 	private Button cancelBtn;
 	
 	QUESTION_TYPE fQuestionType = null;
-	String[] questionTypes;
+//	String[] questionTypes;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +71,7 @@ public class ExamContinue extends BaseActivity {
 			}
 		});
 		
-		questionTypes = getResources().getStringArray(R.array.question_types);
+//		questionTypes = getResources().getStringArray(R.array.question_types);
 		
 		//get Exam data
 		examFilePath = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);

@@ -51,7 +51,6 @@
     <string name="label_btn_clear_history">Clear History</string>
     <string name="label_footer_server_setting">Server Setting:</string>
     <string name="label_footer_current_exam_status">Exam Status</string>
-    
     <!-- Status -->
     <string name="title_setting_user_infor">User Information</string>
 	<string name="label_setting_user_id">User Id</string>
@@ -59,15 +58,15 @@
     <string name="label_setting_user_file_home">User File Home</string>
     <string name="label_setting_user_completed_exam">Completed Exam</string>
     <string name="title_setting_exam_infor">Exam Information</string>
-    <string name="label_setting_exam_file_name">Exam File Name</string>
-    <string name="label_setting_exam_name">Exam Name</string>
-    <string name="label_setting_exam_start_time">Exam Start Time</string>
-    <string name="label_setting_exam_status">Exam Status</string>
+    <string name="label_setting_exam_file_name">Exam File Name:</string>
+    <string name="label_setting_exam_name">Exam Name:</string>
+    <string name="label_setting_exam_start_time">Exam Start Time:</string>
+    <string name="label_setting_exam_status">Exam Status:</string>
     <string-array name="exam_status_values">
         <item>Exam Not Start</item>
         <item>Exam Start Going</item>
         <item>Exam Start Going Obsolete</item>
-        <item>EXAM_Start Pending New</item>
+        <item>Exam Start Pending New</item>
 		<item>Exam End</item>
     </string-array>
     <string name="label_setting_exam_current_catalog">Exam Current Catalog</string>
@@ -136,25 +135,5 @@
 	<string name="warning_quit_eexam_yes">Yes</string>
 	<string name="warning_quit_eexam_cancel">Cancel</string>
     <!-- Exam End Page End -->
-
-	<!-- Other -->
- 	<string-array name="question_types">
-        <item>M</item>
-        <item>S</item>
-        <item>F</item>
-        <item>E</item>
-    </string-array>
-    <string-array name="display_choice_label">
-        <item>A</item>
-        <item>B</item>
-        <item>C</item>
-        <item>D</item>
-        <item>E</item>
-        <item>F</item>
-        <item>G</item>
-        <item>H</item>
-        <item>I</item>
-        <item>J</item>
-    </string-array>
 
 </resources>

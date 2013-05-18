@@ -15,13 +15,9 @@ public class SettingMain extends TabActivity {
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
 		setContentView(R.layout.setting_main);
 		setTabs() ;
-		
-
 	}
 	
 	private void setTabs(){

@@ -64,10 +64,10 @@ public class ExamStart extends BaseActivity {
 	List<String> examNames = new ArrayList<String>();
 	ArrayAdapter<String> adapter;
 	QUESTION_TYPE fQuestionType = null;
-	String[] questionTypes;
+//	String[] questionTypes;
 	
 	private void loadExamList(){
-		questionTypes = getResources().getStringArray(R.array.question_types);
+//		questionTypes = getResources().getStringArray(R.array.question_types);
 		String loginResultFilePath  = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
 		String loginResultFile  = SPUtil.getFromSP(SPUtil.CURRENT_USER_LOGIN_FILE_NAME, sharedPreferences);
 		Log.i(LOG_TAG,"loginResultFilePath:"+loginResultFilePath);

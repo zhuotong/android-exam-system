@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import com.dream.eexam.model.UserFolderBean;
 import com.dream.eexam.util.FileUtil;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,8 +30,6 @@ import android.widget.TextView;
 
 public class SettingUserFolder extends SettingBase {
 	public final static String LOG_TAG = "SettingUserFolder";
-	
-	
 	public static String CRASH_FOLDER = "crash";
 	
 	Button deleteBtn = null;
@@ -234,7 +231,6 @@ public class SettingUserFolder extends SettingBase {
 			
 			return view;
 		}
-    	
     }
     
     static class ViewHolder{
@@ -242,6 +238,4 @@ public class SettingUserFolder extends SettingBase {
     	TextView index;
     	TextView name;
     }
-    
-
 }
