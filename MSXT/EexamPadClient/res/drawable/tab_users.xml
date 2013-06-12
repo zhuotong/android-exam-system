@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-	<item android:drawable="@drawable/search_selected"
+	<item android:drawable="@drawable/users_select_48"
 		android:state_selected="true" />
-	<item android:drawable="@drawable/search_normal" />
+	<item android:drawable="@drawable/users_normal_48" />
 </selector>

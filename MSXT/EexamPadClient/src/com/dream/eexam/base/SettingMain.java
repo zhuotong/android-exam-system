@@ -22,8 +22,8 @@ public class SettingMain extends TabActivity {
 	
 	private void setTabs(){
 		addTab("Server", R.drawable.tab_home, SettingServer.class);
-		addTab("Status", R.drawable.tab_search, SettingExamStatus.class);
-		addTab("Users", R.drawable.tab_search, SettingUserFolder.class);
+		addTab("Status", R.drawable.tab_status, SettingExamStatus.class);
+		addTab("Users", R.drawable.tab_users, SettingUserFolder.class);
 	}
 	
 	private void addTab(String labelId, int drawableId, Class<?> c){
