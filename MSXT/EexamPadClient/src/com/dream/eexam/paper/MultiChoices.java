@@ -131,7 +131,6 @@ public class MultiChoices extends BaseQuestion {
         questionTV.setMovementMethod(ScrollingMovementMethod.getInstance()); 
         questionTV.setText(questionHint+ "\n"+ cQuestion.getContent());
         questionTV.setTextColor(Color.BLACK);
-//        questionTV.setBackgroundColor(Color.argb(0, 0, 255, 0));
         
         //set List
         listView = (ListView)findViewById(R.id.lvChoices);
@@ -158,7 +157,6 @@ public class MultiChoices extends BaseQuestion {
         		Log.i(LOG_TAG, "-----------------------onItemClick()...-----------------------");
         		
         		CheckBox cb = (CheckBox)view.findViewById(R.id.list_select);
-//        		cb.setChecked(!cb.isChecked());
         		Log.i(LOG_TAG, "Item "+ arg2 +" is Clicked!");
         		Log.i(LOG_TAG, "CheckBox "+ arg2 +" change to " + !cb.isChecked());
         		
