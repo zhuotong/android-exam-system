@@ -1,16 +1,21 @@
 package com.dream.ivpc;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.artifex.mupdfdemo.MuPDFActivity;
+import com.dream.ivpc.activity.TestActivity;
 import com.dream.ivpc.adapter.CandidateListAdapter;
 import com.dream.ivpc.model.CandiateBean;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -91,22 +96,32 @@ public class CandidateList extends BaseActivity {
         		
         		CandiateBean bean = candiateList.get(arg2);
         		
-            	Intent intent = new Intent();
+/*            	Intent intent = new Intent();
 //    			intent.setClass( mContext, CandidateResumePNG.class);
     			intent.putExtra("name", bean.getName());
     			intent.putExtra("position", bean.getPosition());
-    			
 //    			intent.setClass( mContext, CandidateResumeGroup.class);
-    			
-    			intent.setClass( mContext, CandidateResumeGroup.class);
-    			
-    			
-    			
-    			startActivity(intent);  
+    			intent.setClass( mContext, TestActivity.class);
+    			startActivity(intent);  */
+        		
+        		String basePath = Environment.getExternalStorageDirectory().getPath();
+        		String pdfFile = basePath + File.separator + "books" + File.separator
+        				+ "Android" + File.separator + "Develop" + File.separator
+        				+ "Android Users Guide.pdf";
+        		
+        		openPdf(pdfFile,mContext);
 			}      	
         });
 
         
+    }
+    
+    public void openPdf(String pdfFile,Context mContext){
+		Uri uri = Uri.parse(pdfFile);
+		Intent intent = new Intent(mContext,MuPDFActivity.class);
+		intent.setAction(Intent.ACTION_VIEW);
+		intent.setData(uri);
+		startActivity(intent);
     }
     
     View.OnClickListener goHomeListener = new View.OnClickListener(){
@@ -115,6 +130,8 @@ public class CandidateList extends BaseActivity {
 			goHome(mContext);
 		}
 	};
+	
+	
 	
 /*    View.OnClickListener sortListener = new View.OnClickListener(){
 		@Override
