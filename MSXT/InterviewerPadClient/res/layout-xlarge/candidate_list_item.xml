@@ -1,36 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="fill_parent"
-  android:layout_height="wrap_content"
-  android:descendantFocusability="blocksDescendants"
-  android:background="@drawable/bg_color_candidate_even"
-  android:layout_margin="8dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	  android:layout_width="fill_parent"
+	  android:layout_height="wrap_content"
+	  android:descendantFocusability="blocksDescendants"
+	  android:background="@drawable/bg_color_candidate_even"
+	  android:layout_margin="8dp">
 
       <TextView
+	     android:id="@+id/index"
+	     style="@style/can_list_tv_style"/>
+          
+      <TextView
 	     android:id="@+id/time"
-		 android:layout_width="0dp"
-	     android:layout_height="wrap_content"
-	     android:layout_weight="1"
-	     android:padding="10dp"
-	     android:textSize="25sp"/>
+		 style="@style/can_list_tv_style"/>
 
 	  <TextView
 	     android:id="@+id/position"
-	     android:layout_width="0dp"
-	     android:layout_height="wrap_content"
-	     android:layout_weight="1"
-	     android:padding="10dp"
-	     android:textSize="25sp"/>
+	     style="@style/can_list_tv_style"/>
 	         	  
 	  <TextView
 	     android:id="@+id/name"
-	     android:layout_width="0dp"
-	     android:layout_height="wrap_content"
-	     android:layout_weight="1"
-	     android:padding="10dp"
-	     android:textSize="25sp"/>
-	     
-
+		 style="@style/can_list_tv_style"/>
 	  
 </LinearLayout>

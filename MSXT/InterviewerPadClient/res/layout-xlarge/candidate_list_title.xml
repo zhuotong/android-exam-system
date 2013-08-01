@@ -1,90 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="fill_parent"
-  android:layout_height="wrap_content"
-  android:descendantFocusability="blocksDescendants">
-  
-  	   <TableLayout android:id="@+id/timeSortTable"
-		    android:layout_width="0dp"
-		    android:layout_height="wrap_content"
-		    android:layout_weight="1"
-	        android:background="@drawable/bg_sub_title"
-	        android:onClick="sortEvent">
-	   	    <TableRow
-	   	    	android:layout_width="wrap_content"
-		        android:layout_height="wrap_content">
-				  <TextView
-				     android:layout_width="0dp"
-				     android:layout_height="wrap_content"
-				     android:layout_weight="1"
-				     android:textSize="25sp"
-				     android:textColor="#000000"
-				     android:text="@string/label_candidate_title_time"/>
-				  <ImageView android:id="@+id/timeSortIcon"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_gravity="center_vertical|left"
-						android:src="@drawable/down_32"
-						android:contentDescription="@string/msg_logo_desc">
-				  </ImageView>
-	  	   </TableRow> 
-	   </TableLayout> 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#6A42FE"
+    android:descendantFocusability="blocksDescendants" >
 
-  	   <TableLayout android:id="@+id/positionSortTable"
-		    android:layout_width="0dp"
-		    android:layout_height="wrap_content"
-		    android:layout_weight="1"
-	        android:layout_gravity="center_vertical|right"
-	        android:background="@drawable/bg_sub_title"
-	        android:onClick="sortEvent">
-	   	    <TableRow
-	   	    	android:layout_width="wrap_content"
-		        android:layout_height="wrap_content">
-				  <TextView
-				     android:layout_width="0dp"
-				     android:layout_height="wrap_content"
-				     android:layout_weight="1"
-				     android:textSize="25sp"
-				     android:textColor="#000000"
-				     android:text="@string/label_candidate_title_position"/>
-				  <ImageView android:id="@+id/positionSortIcon"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_gravity="center_vertical|left"
-				        android:paddingLeft="8dp"
-						android:contentDescription="@string/msg_logo_desc">
-				  </ImageView>
-	  	   </TableRow> 
-	   </TableLayout>	     
+    <TextView
+        style="@style/can_list_title_style"
+        android:layout_width="120dp"
+        android:layout_marginLeft="20dp"
+        android:text="@string/label_candidate_title_index" />
 
+    <TextView
+        android:id="@+id/timeSortTable"
+        style="@style/can_list_title_style"
+        android:layout_width="150dp"
+        android:onClick="sortEvent"
+        android:text="@string/label_candidate_title_time" />
 
-  	   <TableLayout android:id="@+id/nameSortTable"
-		    android:layout_width="0dp"
-		    android:layout_height="wrap_content"
-		    android:layout_weight="1"
-	        android:layout_gravity="center_vertical|right"
-	        android:background="@drawable/bg_sub_title"
-	        android:onClick="sortEvent">
-	   	    <TableRow
-	   	    	android:layout_width="wrap_content"
-		        android:layout_height="wrap_content">
-				  <TextView
-					     android:layout_width="0dp"
-					     android:layout_height="wrap_content"
-					     android:layout_weight="1"
-					     android:textSize="25sp"
-					     android:textColor="#000000"
-					     android:text="@string/label_candidate_title_name"/>
-				  <ImageView android:id="@+id/nameSortIcon"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_gravity="center_vertical|left"
-				        android:paddingLeft="8dp"
-						android:contentDescription="@string/msg_logo_desc">
-				  </ImageView>
-	  	   </TableRow> 
-	   </TableLayout>	     
+    <ImageView
+        android:id="@+id/timeSortIcon"
+		style="@style/can_list_title_img_style"
+        android:contentDescription="@string/msg_logo_desc"
+        android:src="@drawable/down_32" >
+    </ImageView>
 
-	  
+    <TextView
+        android:id="@+id/positionSortTable"
+        style="@style/can_list_title_style"
+        android:layout_width="150dp"
+        android:onClick="sortEvent"
+        android:text="@string/label_candidate_title_position" />
+
+    <ImageView
+        android:id="@+id/positionSortIcon"
+		style="@style/can_list_title_img_style"
+        android:contentDescription="@string/msg_logo_desc" >
+    </ImageView>
+
+    <TextView
+        android:id="@+id/nameSortTable"
+        style="@style/can_list_title_style"
+        android:layout_width="150dp"
+        android:onClick="sortEvent"
+        android:text="@string/label_candidate_title_name" />
+
+    <ImageView
+        android:id="@+id/nameSortIcon"
+		style="@style/can_list_title_img_style"
+        android:contentDescription="@string/msg_logo_desc" >
+    </ImageView>
+
 </LinearLayout>

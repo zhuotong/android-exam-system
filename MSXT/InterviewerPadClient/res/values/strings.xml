@@ -17,6 +17,7 @@
     <!-- Login Page End -->
     
     <!-- candidate_list_title -->
+<!--     <string name="label_candidate_title_index">Index</string> -->
     <string name="label_candidate_title_time">Time</string>
     <string name="label_candidate_title_position">Position</string>
     <string name="label_candidate_title_name">Name</string>

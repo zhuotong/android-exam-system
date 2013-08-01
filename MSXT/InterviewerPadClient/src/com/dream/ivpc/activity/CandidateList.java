@@ -1,6 +1,5 @@
 package com.dream.ivpc.activity;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,9 +8,6 @@ import java.util.List;
 import com.artifex.mupdfdemo.MuPDFActivity;
 import com.dream.ivpc.BaseActivity;
 import com.dream.ivpc.R;
-import com.dream.ivpc.R.drawable;
-import com.dream.ivpc.R.id;
-import com.dream.ivpc.R.layout;
 import com.dream.ivpc.adapter.CandidateListAdapter;
 import com.dream.ivpc.model.CandiateBean;
 
@@ -19,7 +15,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -45,8 +40,8 @@ public class CandidateList extends BaseActivity {
 	public List<CandiateBean> getCandiateList(){
 		List<CandiateBean> candiateList = new ArrayList<CandiateBean>();
 		
-		candiateList.add(new CandiateBean("2012-10-12 08:00","Java Engineer","Timothy"));
-		candiateList.add(new CandiateBean("2012-10-12 09:00","Java Engineer","Jack"));
+		candiateList.add(new CandiateBean("2012-10-12 08:00","Java Engineer","Timothy Qi"));
+		candiateList.add(new CandiateBean("2012-10-12 09:00","Java Engineer","Jack Zhangsan"));
 		candiateList.add(new CandiateBean("2012-10-12 10:00","Java Engineer","Tom"));
 		
 		candiateList.add(new CandiateBean("2012-10-13 08:00","Java Designer","LiLei"));
@@ -60,6 +55,14 @@ public class CandidateList extends BaseActivity {
 		
 		candiateList.add(new CandiateBean("2012-10-16 09:00","Java Designer","Amy"));
 		candiateList.add(new CandiateBean("2012-10-16 10:00","Java Tester","Michael"));
+		
+		candiateList.add(new CandiateBean("2013-10-16 09:00","Java Designer","Amy"));
+		candiateList.add(new CandiateBean("2013-10-16 10:00","Java Tester","Michael"));
+		candiateList.add(new CandiateBean("2013-10-16 09:00","Java Designer","Amy"));
+		candiateList.add(new CandiateBean("2013-10-16 10:00","Java Tester","Michael"));
+		
+		candiateList.add(new CandiateBean("2013-10-16 09:00","Java Designer","Amy"));
+		candiateList.add(new CandiateBean("2013-10-16 10:00","Java Tester","Michael"));
 		return candiateList;
 	}
 	

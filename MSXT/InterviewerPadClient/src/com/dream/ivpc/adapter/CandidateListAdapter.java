@@ -47,6 +47,7 @@ public class CandidateListAdapter extends BaseAdapter {
 			view = mInflater.inflate(R.layout.candidate_list_item, null);
 			holder = new ViewHolder();
 			//set 3 component 
+			holder.index = (TextView)view.findViewById(R.id.index);
 			holder.time = (TextView)view.findViewById(R.id.time);
 			holder.position = (TextView)view.findViewById(R.id.position);
 			holder.name = (TextView)view.findViewById(R.id.name);
@@ -61,16 +62,17 @@ public class CandidateListAdapter extends BaseAdapter {
 		
 		CandiateBean bean = candiateList.get(position);
 		
+		holder.index.setText(String.valueOf(position+1));
 		holder.time.setText(bean.getTime());
 		holder.position.setText(bean.getPosition());
 		holder.name.setText(bean.getName());
-		
 		
 		return view;
 	}
 	
 
 	static class ViewHolder{
+		TextView index;
 		TextView time;
 		TextView position;
 		TextView name;
