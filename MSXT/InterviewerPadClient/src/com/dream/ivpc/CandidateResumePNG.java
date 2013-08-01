@@ -1,6 +1,8 @@
 package com.dream.ivpc;
 
 import java.io.IOException;
+
+import com.dream.ivpc.activity.CandidateBase;
 import com.dream.ivpc.util.ImageUtil;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
@@ -14,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 	@Deprecated 
-	public class CandidateResumePNG extends CandidateInfoBase {
+	public class CandidateResumePNG extends CandidateBase {
 //		private final static String TAG = "CandidateResumePNG";
 	    private final static String ALBUM_PATH = Environment.getExternalStorageDirectory() + "/download_test/";
 	    private ImageView imageView;

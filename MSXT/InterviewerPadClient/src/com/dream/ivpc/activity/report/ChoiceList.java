@@ -1,7 +1,13 @@
-package com.dream.ivpc;
+package com.dream.ivpc.activity.report;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.dream.ivpc.BaseActivity;
+import com.dream.ivpc.R;
+import com.dream.ivpc.R.id;
+import com.dream.ivpc.R.layout;
+import com.dream.ivpc.adapter.ChoiceListAdapter;
 import com.dream.ivpc.model.ChoiceBean;
 import com.dream.ivpc.model.QuestionDetailBean;
 

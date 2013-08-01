@@ -29,5 +29,5 @@
 	     </org.viewflow.android.widget.ViewFlow>
 	</FrameLayout>
 	    
-	<include layout="@layout/candidate_footer" />
+<!-- 	<include layout="@layout/candidate_footer" /> -->
 </LinearLayout>

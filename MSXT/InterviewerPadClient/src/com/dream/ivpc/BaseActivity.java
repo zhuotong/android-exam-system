@@ -3,6 +3,8 @@ package com.dream.ivpc;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import com.dream.ivpc.activity.LoginActivity;
 import com.dream.ivpc.util.ActivityStackControlUtil;
 import android.app.Activity;
 import android.app.AlertDialog;

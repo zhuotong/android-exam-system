@@ -13,4 +13,10 @@
     <color name="text_border_focused">#000000</color>
     <color name="seek_thumb">#2572AC</color>
     <color name="seek_progress">#FFFFFF</color>
+    
+    <!-- For Tab Setting -->
+    <color name="tabMedium">#2B2B2B</color>
+    <color name="tabDark">#000000</color>
+    <color name="tabTransparent">#10ffffff</color>
+    <!-- For Tab Setting End-->
 </resources>

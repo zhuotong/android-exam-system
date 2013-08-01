@@ -1,15 +1,18 @@
-package com.dream.ivpc;
+package com.dream.ivpc.activity;
+
+import com.dream.ivpc.BaseActivity;
+import com.dream.ivpc.activity.report.CandidateInfoExamDetail;
+import com.dream.ivpc.activity.report.CandidateInfoExamRpt;
+import com.dream.ivpc.activity.resume.ResumePicture;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class CandidateInfoBase extends BaseActivity {
+public class CandidateBase extends BaseActivity {
 
 	protected Context mContext;
 	protected String name = "";
@@ -23,12 +26,12 @@ public class CandidateInfoBase extends BaseActivity {
 	
 	protected void setHeader(TextView candidateInfoTV,ImageView goBack){
 		//set candidateInfoTV
-		Bundle bundle = this.getIntent().getExtras();
-		name  = bundle.getString("name");
-		position  = bundle.getString("position");
-		if(name!=null&&position!=null){
-			candidateInfoTV.setText(position +":" + name);
-		}
+//		Bundle bundle = this.getIntent().getExtras();
+//		name  = bundle.getString("name");
+//		position  = bundle.getString("position");
+//		if(name!=null&&position!=null){
+//			candidateInfoTV.setText(position +":" + name);
+//		}
 		
 		goBack.setOnClickListener(new View.OnClickListener(){
 			@Override
@@ -42,16 +45,16 @@ public class CandidateInfoBase extends BaseActivity {
 		
     }
 
-	protected void setFooter(Button button){
+/*	protected void setFooter(Button button){
 		//set candidateInfoTV
 		button.setBackgroundColor(R.drawable.bg_footer_button_select);
-    }
+    }*/
 	
 	public void go2Resume(View view){
 		Intent intent = new Intent();
 		intent.putExtra("name", name);
 		intent.putExtra("position", position);
-		intent.setClass( mContext, CandidateResumeGroup.class);
+		intent.setClass( mContext, ResumePicture.class);
 		startActivity(intent); 
 	}
 	
@@ -71,7 +74,7 @@ public class CandidateInfoBase extends BaseActivity {
 		startActivity(intent); 
 	}
 	
-    View.OnClickListener goBackListener = new View.OnClickListener() {  
+    protected View.OnClickListener goBackListener = new View.OnClickListener() {  
         @Override  
         public void onClick(View v) { 
         	Intent intent = new Intent();

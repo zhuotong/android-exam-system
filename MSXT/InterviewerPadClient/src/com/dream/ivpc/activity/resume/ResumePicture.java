@@ -1,10 +1,12 @@
-package com.dream.ivpc;
+package com.dream.ivpc.activity.resume;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import org.viewflow.android.widget.CircleFlowIndicator;
 import org.viewflow.android.widget.ViewFlow;
+import com.dream.ivpc.R;
+import com.dream.ivpc.activity.CandidateBase;
 import com.dream.ivpc.adapter.ResumeGroupAdapter;
 import com.dream.ivpc.model.ResumeBean;
 import com.dream.ivpc.model.ResumePageBean;
@@ -23,10 +25,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CandidateResumeGroup extends CandidateInfoBase {
+public class ResumePicture extends CandidateBase {
 	
-	private final static String ALBUM_PATH = Environment.getExternalStorageDirectory() + "/interviewer/";
-	private final static String ALBUM_NAME = "sample_resume.xml";
+	private final static String ALBUM_PATH = Environment.getExternalStorageDirectory() + "/interviewer/tangqi";
+	private final static String ALBUM_NAME = "tangqi_resume.xml";
 	
 	private ProgressDialog myDialog = null;
 	private ViewFlow viewFlow;
@@ -41,10 +43,10 @@ public class CandidateResumeGroup extends CandidateInfoBase {
 		setContentView(R.layout.candidate_resume_group);
 		
 		mContext = getApplicationContext();
-		setHeader((TextView)findViewById(R.id.candidateInfo),(ImageView)findViewById(R.id.imgGoBack));
-		setFooter((Button) findViewById(R.id.resume));
+//		setHeader((TextView)findViewById(R.id.candidateInfo),(ImageView)findViewById(R.id.imgGoBack));
+//		setFooter((Button) findViewById(R.id.resume));
 
-        myDialog = ProgressDialog.show(CandidateResumeGroup.this, "Download File...", "Please Wait!", true);      
+        myDialog = ProgressDialog.show(ResumePicture.this, "Download File...", "Please Wait!", true);      
         new LoadTask().execute(new String[]{});
       
 		viewFlow = (ViewFlow) findViewById(R.id.viewflow);
@@ -112,7 +114,7 @@ public class CandidateResumeGroup extends CandidateInfoBase {
 	        	viewFlow.setAdapter(new ResumeGroupAdapter(mContext,bitmapList), bitmapList.size());
 	        	viewFlow.setFlowIndicator(indic);
 	        	
-	        	Toast.makeText(CandidateResumeGroup.this, message, Toast.LENGTH_SHORT).show();
+	        	Toast.makeText(ResumePicture.this, message, Toast.LENGTH_SHORT).show();
 	        }
 	    	
 	    }

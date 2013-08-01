@@ -8,10 +8,10 @@
 
     <!-- Login Page Start-->
 	<string name="msg_logo_desc">Easy Interview</string>
-	<string name="label_tv_username">Username:</string>
-	<string name="label_et_username_hint">Input Username</string>
-    <string name="label_tv_password">Password :</string>
-    <string name="label_et_password_hint">Input Password</string>
+	<string name="label_tv_username">Username</string>
+	<string name="label_et_username_hint">Input Username Here</string>
+    <string name="label_tv_password">Password</string>
+    <string name="label_et_password_hint">Input Password Here</string>
     <string name="label_btn_login">Sign In</string>
     <string name="label_btn_reset">Setting</string>
     <!-- Login Page End -->

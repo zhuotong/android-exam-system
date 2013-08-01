@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
 
+import com.dream.ivpc.activity.CandidateBase;
 import com.dream.ivpc.model.ResumeBean;
 import com.dream.ivpc.model.ResumePageBean;
 import com.dream.ivpc.util.DataParseUtil;
@@ -20,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 @Deprecated
-public class CandidateResumeXML extends CandidateInfoBase {
+public class CandidateResumeXML extends CandidateBase {
 	private final static String LOG_TAG = "CandidateResumeXML";
     private final static String ALBUM_PATH = Environment.getExternalStorageDirectory() + "/interviewer/";
     private final static String ALBUM_NAME = "sample_resume.xml";

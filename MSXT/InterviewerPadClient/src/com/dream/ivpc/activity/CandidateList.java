@@ -1,4 +1,4 @@
-package com.dream.ivpc;
+package com.dream.ivpc.activity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -7,7 +7,11 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.artifex.mupdfdemo.MuPDFActivity;
-import com.dream.ivpc.activity.TestActivity;
+import com.dream.ivpc.BaseActivity;
+import com.dream.ivpc.R;
+import com.dream.ivpc.R.drawable;
+import com.dream.ivpc.R.id;
+import com.dream.ivpc.R.layout;
 import com.dream.ivpc.adapter.CandidateListAdapter;
 import com.dream.ivpc.model.CandiateBean;
 
@@ -96,20 +100,18 @@ public class CandidateList extends BaseActivity {
         		
         		CandiateBean bean = candiateList.get(arg2);
         		
-/*            	Intent intent = new Intent();
-//    			intent.setClass( mContext, CandidateResumePNG.class);
-    			intent.putExtra("name", bean.getName());
-    			intent.putExtra("position", bean.getPosition());
-//    			intent.setClass( mContext, CandidateResumeGroup.class);
-    			intent.setClass( mContext, TestActivity.class);
-    			startActivity(intent);  */
+            	Intent intent = new Intent();
+//    			intent.putExtra("name", bean.getName());
+//    			intent.putExtra("position", bean.getPosition());
+    			intent.setClass( mContext, CandidateHome.class);
+    			startActivity(intent);  
         		
-        		String basePath = Environment.getExternalStorageDirectory().getPath();
-        		String pdfFile = basePath + File.separator + "books" + File.separator
-        				+ "Android" + File.separator + "Develop" + File.separator
-        				+ "Android Users Guide.pdf";
-        		
-        		openPdf(pdfFile,mContext);
+//        		String basePath = Environment.getExternalStorageDirectory().getPath();
+//        		String pdfFile = basePath + File.separator + "books" + File.separator
+//        				+ "Android" + File.separator + "Develop" + File.separator
+//        				+ "Android Users Guide.pdf";
+//        		
+//        		openPdf(pdfFile,mContext);
 			}      	
         });
 
@@ -131,8 +133,6 @@ public class CandidateList extends BaseActivity {
 		}
 	};
 	
-	
-	
 /*    View.OnClickListener sortListener = new View.OnClickListener(){
 		@Override
 		public void onClick(View v) {
@@ -141,7 +141,6 @@ public class CandidateList extends BaseActivity {
 				case(R.id.positionSortIcon):sortByPosition();break;
 				case(R.id.nameSortIcon):sortByName();
 			}
-			
 	        adapter = new CandidateListAdapter(candiateList,mContext);
 	        listView.setAdapter(adapter);
 			

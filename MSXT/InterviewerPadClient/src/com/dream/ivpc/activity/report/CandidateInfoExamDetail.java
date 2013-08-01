@@ -1,10 +1,15 @@
-package com.dream.ivpc;
+package com.dream.ivpc.activity.report;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.dream.ivpc.R;
+import com.dream.ivpc.R.drawable;
+import com.dream.ivpc.R.id;
+import com.dream.ivpc.R.layout;
+import com.dream.ivpc.activity.CandidateBase;
 import com.dream.ivpc.adapter.QuestionListAdapter;
 import com.dream.ivpc.model.QuestionDetailBean;
 
@@ -19,7 +24,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class CandidateInfoExamDetail extends CandidateInfoBase {
+public class CandidateInfoExamDetail extends CandidateBase {
 	public final static String LOG_TAG = "CandidateInfoExamDetail";
 
 	ImageView imgGoBack = null;
@@ -94,7 +99,7 @@ public class CandidateInfoExamDetail extends CandidateInfoBase {
         mContext = getApplicationContext();
 
         setHeader((TextView)findViewById(R.id.candidateInfo),(ImageView)findViewById(R.id.imgGoBack));
-		setFooter((Button) findViewById(R.id.examdetail));
+//		setFooter((Button) findViewById(R.id.examdetail));
 		
         imgGoBack = (ImageView) findViewById(R.id.imgGoBack);
         imgGoBack.setOnClickListener(goBackListener);

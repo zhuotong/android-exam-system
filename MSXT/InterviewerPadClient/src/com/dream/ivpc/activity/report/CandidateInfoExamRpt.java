@@ -1,8 +1,12 @@
-package com.dream.ivpc;
+package com.dream.ivpc.activity.report;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dream.ivpc.R;
+import com.dream.ivpc.R.id;
+import com.dream.ivpc.R.layout;
+import com.dream.ivpc.activity.CandidateBase;
 import com.dream.ivpc.chart.Bar2D;
 import com.dream.ivpc.chart.Bar2DVerView;
 import com.dream.ivpc.chart.Chart;
@@ -14,7 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class CandidateInfoExamRpt extends CandidateInfoBase {
+public class CandidateInfoExamRpt extends CandidateBase {
 	
 	public final static String LOG_TAG = "CandidateInfoExamRpt";
 	
@@ -49,7 +53,7 @@ public class CandidateInfoExamRpt extends CandidateInfoBase {
         mContext = getApplicationContext();
         
         setHeader((TextView)findViewById(R.id.candidateInfo),(ImageView)findViewById(R.id.imgGoBack));
-		setFooter((Button) findViewById(R.id.examrpt));
+//		setFooter((Button) findViewById(R.id.examrpt));
         
         imgGoBack = (ImageView) findViewById(R.id.imgGoBack);
         imgGoBack.setOnClickListener(goBackListener);

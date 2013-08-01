@@ -1,12 +1,7 @@
-package com.dream.ivpc.activity;
-
+package com.dream.ivpc.activity.resume;
 
 import java.io.File;
 
-import com.artifex.mupdfdemo.MuPDFActivity;
-import com.dream.ivpc.R;
-
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,8 +10,11 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 
-public class TestActivity extends Activity {
+import com.artifex.mupdfdemo.MuPDFActivity;
+import com.dream.ivpc.BaseActivity;
+import com.dream.ivpc.R;
 
+public class ResumePdf extends BaseActivity{
 	String pdfFile;
 	Context oContext;
 	
@@ -31,9 +29,8 @@ public class TestActivity extends Activity {
 		Button testBtn  = (Button) findViewById(R.id.testBtn);
 		
 		String basePath = Environment.getExternalStorageDirectory().getPath();
-		pdfFile = basePath + File.separator + "books" + File.separator
-				+ "Android" + File.separator + "Develop" + File.separator
-				+ "Android Users Guide.pdf";
+		pdfFile = basePath + File.separator + "interviewer" + File.separator
+				+ "tangqi" + File.separator + "tangqi_resume.pdf";
 		
 		testBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -47,5 +44,4 @@ public class TestActivity extends Activity {
 			}
 		});
 	}
-
 }

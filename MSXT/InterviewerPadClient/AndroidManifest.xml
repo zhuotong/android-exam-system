@@ -24,7 +24,8 @@
                   android:launchMode="singleTask">
         </activity>
         			 
-        <activity android:name=".LoginActivity"
+        <activity android:name="com.dream.ivpc.activity.LoginActivity"
+            	  android:theme="@android:style/Theme.Light.NoTitleBar"
         	      android:screenOrientation="portrait"
                   android:label="@string/app_name">
              <intent-filter>
@@ -33,52 +34,51 @@
             </intent-filter>
         </activity>
         
-        <activity android:name=".CandidateList"
+        <activity android:name="com.dream.ivpc.activity.CandidateList"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
+               
+        <activity android:name="com.dream.ivpc.activity.CandidateHome"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        
+        <!-- User Resume Start -->
+        <activity android:name="com.dream.ivpc.activity.resume.ResumePicture"
+            	  android:theme="@android:style/Theme.Light.NoTitleBar"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        <activity android:name="com.dream.ivpc.activity.resume.ResumePdf"
+            	  android:theme="@android:style/Theme.Light.NoTitleBar"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        <!-- User Resume End -->
+      
+        <!-- User Exam Report and Detail Start -->
+        <activity android:name="com.dream.ivpc.activity.report.CandidateInfoExamRpt"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        <activity android:name="com.dream.ivpc.activity.report.CandidateInfoExamDetail"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        <activity android:name="com.dream.ivpc.activity.report.ChoiceList"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        <!-- User Exam Report and Detail End -->
 
-        <activity android:name=".CandidateResumeXML"
-     	 	      android:screenOrientation="portrait"
-                  android:launchMode="singleTask">
-        </activity>
-        
-        <activity android:name=".CandidateResumeGroup"
-     	 	      android:screenOrientation="portrait"
-                  android:launchMode="singleTask">
-        </activity>
-        
-        <activity android:name=".CandidateInfoExamRpt"
-     	 	      android:screenOrientation="portrait"
-                  android:launchMode="singleTask">
-        </activity>
-        
-        <activity android:name=".CandidateInfoExamDetail"
-     	 	      android:screenOrientation="portrait"
-                  android:launchMode="singleTask">
-        </activity>
-        
-        <activity android:name=".ChoiceList"
-     	 	      android:screenOrientation="portrait"
-                  android:launchMode="singleTask">
-        </activity>
-        
-        <activity
-            android:name="com.dream.ivpc.activity.TestActivity"
-            android:theme="@android:style/Theme.Light"
-            android:label="@string/app_name">
-<!--             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter> -->
-        </activity>
-        
-        
+        <!-- PDF Activity Start -->
         <activity
             android:name="com.artifex.mupdfdemo.ChoosePDFActivity"
             android:theme="@android:style/Theme.Light"
             android:label="@string/app_name">
         </activity>
+        
         <activity
             android:name="com.artifex.mupdfdemo.MuPDFActivity"
             android:theme="@android:style/Theme.Light"
@@ -132,6 +132,7 @@
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"
             android:label="@string/outline_title">
         </activity>
+        <!-- PDF Activity END -->
     </application>
 
 </manifest>
