@@ -52,6 +52,13 @@
     <string name="label_footer_exam_report">Exam Report</string>
     <string name="label_footer_exam_detail">Exam Detail</string>
     
+    <!-- Pull to Refresh Widget -->
+    <string name="pull_to_refresh_pull_label">Pull to refresh...</string>
+    <string name="pull_to_refresh_release_label">Release to refresh...</string>
+    <string name="pull_to_refresh_refreshing_label">Loading...</string>
+    <string name="pull_to_refresh_tap_label">Tap to refresh...</string>
+    
+    <!-- Mupdf Widget -->
     <string name="version">1.2</string>
     <string name="no_media_warning">Storage Media not present</string>
     <string name="no_media_hint">Sharing the storage media with a PC can make it inaccessible</string>
