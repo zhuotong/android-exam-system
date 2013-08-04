@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="wrap_content"
+  android:descendantFocusability="blocksDescendants">
+
+  <TableRow   
+  	android:layout_width="fill_parent"
+  	android:layout_height="wrap_content"
+  	android:padding="5dp">
+  	
+   	  <RadioButton
+        android:id="@+id/radioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"/>
+         
+	  <TextView
+	     android:id="@+id/index"
+	     android:layout_width="50dp"
+	     android:layout_height="wrap_content"
+	     android:textSize="18sp"
+	     android:textColor="#FFFFFF"/>
+	     
+	  <TextView
+	     android:id="@+id/choiceDesc"
+	     android:layout_width="wrap_content"
+	     android:layout_height="wrap_content"
+	     android:singleLine="false"
+	     android:layout_marginLeft="3dp"
+	     android:textSize="18sp"
+	     android:textColor="#FFFFFF"
+	     android:background="@drawable/common_tv_choice"
+	     /> 
+  </TableRow>  
+
+</LinearLayout>

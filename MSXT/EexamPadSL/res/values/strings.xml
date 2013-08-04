@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- Common Message Start-->
+    <string name="app_name">EexamClient</string>
+    <string name="msg_header_tv_home">Home</string>
+    <string name="dialog_note">Note</string>
+    <string name="dialog_warning">Warning</string>
+    <string name="dialog_ok">OK</string>
+    <string name="label_btn_continue">Continue</string>
+    <string name="label_btn_quit">Quit</string>
+    <string name="app_file_home">eExam</string>
+    <string name="msg_exit_hint">Click again to exit</string>
+    <string name="setting_id">admin</string>
+    <string name="setting_password">admin</string>
+    <string name="default_host">192.168.1.100</string>
+    <string name="default_port">8080</string>
+     <!-- Common Message End-->
+    
+    <!-- Login Page Start-->
+	<string name="msg_logo_desc">eExam</string>
+	<string name="label_tv_username">Username:</string>
+	<string name="label_et_username_hint">Input Username</string>
+    <string name="label_tv_password">Password :</string>
+    <string name="label_et_password_hint">Input Password</string>
+	<string name="label_chb_save_id">Save Username</string>
+    <string name="label_chb_save_password">Save Password</string>
+    <string name="label_btn_login">Sign In</string>
+    <string name="label_btn_reset">Setting</string>
+    <string name="msg_login_server">Login to Server</string>
+    <string name="msg_userid_password_empty_error">UserId And Password can not be null!</string>
+    <string name="msg_host_port_empty_error">Server address or port is not set, please contact the Administrator!</string>
+    <string name="msg_network_error">Your mobile is not in a available NetWork!</string>
+    <string name="msg_user_in_exam_error">Last user exam is not finished!</string>
+    <string name="msg_warning_setting">You are not allowed to go to setting page</string>
+    <string name="msg_error_invalide_xml">Invalid XML Data</string>
+    <!-- Login Page End -->
+    
+    <!-- All Setting Page Start-->
+    <!-- Server -->
+    <string-array name="msg_settings_invalid">
+        <item>Invalid IP Address!</item>
+    </string-array>
+    <string name="label_tv_host">Host:</string>
+    <string name="label_tv_port">Port:</string>
+    <string name="label_btn_save">Save</string>
+    <string name="label_btn_test_connect">Test Connect</string>
+    <string name="msg_wait_test_connect">Waiting Test Connect</string>
+    <string name="msg_history_be_cleared">History is cleared</string>
+    <string name="label_btn_delete">Delete</string>
+    <string name="label_btn_clear_history">Clear History</string>
+    <string name="label_footer_server_setting">Server Setting:</string>
+    <string name="label_footer_current_exam_status">Exam Status</string>
+    <!-- Status -->
+    <string name="title_setting_user_infor">User Information</string>
+	<string name="label_setting_user_id">User Id</string>
+    <string name="label_setting_user_password">User Password</string>
+    <string name="label_setting_user_file_home">User File Home</string>
+    <string name="label_setting_user_completed_exam">Completed Exam</string>
+    <string name="title_setting_exam_infor">Exam Information</string>
+    <string name="label_setting_exam_file_name">Exam File Name:</string>
+    <string name="label_setting_exam_name">Exam Name:</string>
+    <string name="label_setting_exam_start_time">Exam Start Time:</string>
+    <string name="label_setting_exam_status">Exam Status:</string>
+    <string-array name="exam_status_values">
+        <item>Exam Not Start</item>
+        <item>Exam Start Going</item>
+        <item>Exam Start Going Obsolete</item>
+        <item>Exam Start Pending New</item>
+		<item>Exam End</item>
+    </string-array>
+    <string name="label_setting_exam_current_catalog">Exam Current Catalog</string>
+    <string name="label_setting_exam_current_index_in_catalog">Exam Current Index In Catalog</string>    
+    <string name="label_setting_exam_exam_score">Exam Score</string>
+    <string name="title_setting_exam_answer">Exam Answer</string>
+    
+    <!-- Users -->
+    <string name="title_setting_user_folder">User Folders</string>
+    <string name="label_footer_current_exam_progress">Exam Progress</string>
+    <string name="label_footer_user_folder">User Folder</string>
+    <string name="msg_del_user_folder">Are you sure to delete below user folders:</string>
+    <!-- All Setting Page End-->
+        
+    <!-- Exam Start Page -->
+    <string name="label_your_name">Your name:</string>
+    <string name="label_your_job">Your Applied Job:</string>
+    <string name="label_tv_choose_exam">Choose Exam Paper from below:</string>
+    <string name="label_about_exam">About The Exam Paper</string>
+    <string name="label_exam_que_num">Number of Questions:</string>
+    <string name="label_exam_time">Time Limit(Min):</string>
+    <string name="label_exam_score">Total Score:</string>
+    <string name="label_btn_start">Start</string>
+    <string name="msg_waiting_download_exam">Download Exam data,Waiting</string>
+    <string name="msg_fail2_download">Fail to Download Exam, Please Connect Administrator!</string>
+    <string name="msg_fail2_load_question">Failure to load question!</string>
+    <!-- Exam Start Page End -->
+
+    <!-- Exam Continue Page Start -->
+    <string name="label_tv_unfinished_exam">Your Have Unfinished Exam:</string>
+    <string name="label_btn_cancel">Cancel</string>
+    <string name="msg_complete">Complete</string>
+    <!-- Exam Continue Page End -->
+    
+    <!-- Exam Page(MultiChoice,SingChoice,PendingChoice) Start-->
+    <string name="msg_question_score">Score</string>
+    <string name="label_tv_waiting">Pending</string>
+    <string name="message_tv_no_question">No question Pending</string>
+    <string name="label_tv_submit">Submit</string>
+    <string name="label_tv_time_remaning">Time Remaining:</string>
+    <string name="msg_submiting_warning">question(s) are not answered, still submit?</string>
+    <string name="msg_submiting_warning_yes">Yes</string>
+    <string name="msg_submiting_warning_cancel">Cancel</string>
+ 	<string name="msg_submiting">Submitting answer,please waiting</string>
+	<string name="warning_go_home">Exam not submitted yet, still quit?</string>
+	<string name="warning_go_home_yes">Yes</string>
+	<string name="warning_go_home_cancel">Cancel</string> 
+	<string name="warning_answer_later">Answer this question later?</string>
+	<string name="warning_answer_later_yes">Yes</string>
+	<string name="warning_answer_later_cancel">Cancel</string> 	
+	<string name="warning_save_answer_local">Can not connect server, save answer to local?</string>
+	<string name="warning_save_answer_local_yes">Yes</string>
+	<string name="warning_save_answer_local_cancel">Cancel</string>	
+    <string name="connection_error">Unable to load content. Check your network connection.</string>
+    <string name="xml_error">Error parsing XML.</string>
+    <string name="popup_window_height">300</string>
+    <string name="popup_window_width">280</string> 
+    <!-- Exam Page(MultiChoice,SingChoice,PendingChoice) END-->
+        
+    <!-- Exam Result Page Start -->
+    <string name="label_tv_exam_score">Exam Score:</string>
+    <string name="lavel_tv_your_score">Your Score:</string>
+    <string name="msg_btn_quit">Quit:</string>
+    <string name="tv_label_submit_success">Answers have been submitted successfully!</string>
+    <string name="warning_quit_eexam">Exit System?</string>
+	<string name="warning_quit_eexam_yes">Yes</string>
+	<string name="warning_quit_eexam_cancel">Cancel</string>
+    <!-- Exam End Page End -->
+
+</resources>

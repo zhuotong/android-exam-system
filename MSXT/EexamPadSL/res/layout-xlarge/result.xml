@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:id="@+id/layout1"
+	android:background="@drawable/page_common" 
+	android:orientation="vertical">
+	
+	<!-- header -->
+    <include
+        android:id="@+id/baseHeader"
+        layout="@layout/base_header" 
+        android:layout_gravity="top"/>
+
+    <!-- Display Successfully Message -->
+  	<TextView 
+  			android:layout_width="wrap_content" 
+  			android:layout_height="wrap_content"
+  			android:layout_marginTop="100dp"
+  			android:layout_marginLeft="50dp" 
+  			android:layout_marginRight="50dp" 
+  			android:layout_gravity="center_vertical|center_horizontal"
+  			android:gravity="center_vertical|center_horizontal"
+  			android:textSize="22sp"
+  			android:textColor="@color/success_message_color"
+  			android:text="@string/tv_label_submit_success">
+  	</TextView>    
+
+  	<!-- Display Result Message -->
+  	<TableRow
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginLeft="50dp"
+		 android:layout_marginRight="50dp"
+		 android:layout_marginTop="50dp">
+ 		<TextView 
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:text="@string/label_tv_exam_score">
+		</TextView>
+		<TextView android:id="@+id/examScoreTV"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:background="@drawable/common_tv_value">
+		</TextView>          
+   	</TableRow>
+   		
+    <TableRow
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginLeft="50dp"
+		 android:layout_marginRight="50dp"
+		 android:layout_marginTop="10dp">
+ 		<TextView 
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:text="@string/lavel_tv_your_score">
+		</TextView>
+		<TextView android:id="@+id/yourScoreTV"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:background="@drawable/common_tv_value">
+		</TextView>          
+   	</TableRow>
+
+    <!-- Display Remind Message -->
+    <TextView android:id="@+id/examLeftTV"
+  			android:layout_width="wrap_content" 
+  			android:layout_height="wrap_content"
+  			android:layout_marginTop="100dp"
+  			android:layout_marginLeft="50dp" 
+  			android:layout_marginRight="50dp" 
+  			android:layout_gravity="center_vertical|center_horizontal"
+  			android:gravity="center_vertical|center_horizontal"
+  			android:textSize="22sp"
+  			android:textColor="@color/remind_message_color">
+  	</TextView>
+  		
+	<TableRow
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginTop="100dp"
+		 android:layout_gravity="center_horizontal"
+		 android:gravity="center_horizontal"
+		 android:padding="10dp">
+		
+		<Button android:id="@+id/continueBtn"
+		    android:text="@string/label_btn_continue" 
+			style="@style/button_style">
+		</Button>
+		
+		<Button android:id="@+id/quitBtn"
+		    android:text="@string/label_btn_quit" 
+		    style="@style/button_style"
+			android:layout_marginLeft="5dp">
+		</Button>          
+   	</TableRow>
+</LinearLayout>
+

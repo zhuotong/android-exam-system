@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:orientation="vertical"
+  android:background="@drawable/page_setting">
+  
+  <include
+        android:id="@+id/baseHeader"
+        layout="@layout/base_header" /> 
+  
+<!--   <include layout="@layout/setting_menu" />  -->
+
+    <!-- User Info title -->
+  	<TableRow
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginTop="10dp"
+		 android:layout_marginLeft="20dp"
+		 android:layout_marginRight="20dp"		 
+		 android:layout_gravity="center_horizontal"
+		 android:gravity="center_horizontal"
+		 android:padding="5dp"
+		 android:background="@drawable/tr_title">
+ 		<TextView 
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:text="@string/title_setting_user_folder">
+		</TextView> 
+  </TableRow>
+   	
+	<ListView
+	     	android:id="@+id/user_folder_list"
+	     	android:layout_width="fill_parent"
+	     	android:layout_height="wrap_content" 
+	     	android:layout_marginTop="10dp"
+			android:layout_marginLeft="20dp"
+			android:layout_marginRight="20dp"	
+	  		android:background="#000000"
+	/>
+  		
+    <TableRow
+         android:layout_width="wrap_content"
+		 android:layout_height="wrap_content"
+		 android:layout_marginTop="50dp"
+		 android:layout_gravity="center_horizontal"
+		 android:gravity="center_horizontal">
+		 
+		<Button android:id="@+id/deleteBtn"
+			android:text="@string/label_btn_delete"
+			style="@style/button_style"
+			android:paddingLeft="100dp"
+ 		    android:paddingRight="100dp">
+		</Button>
+   </TableRow>
+   
+</LinearLayout>

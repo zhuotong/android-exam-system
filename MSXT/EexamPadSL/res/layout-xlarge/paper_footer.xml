@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="85dp"
+    android:background="@drawable/page_header">
+
+    <TableLayout
+            android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:layout_gravity="center_vertical|center_horizontal"
+			android:gravity="center_vertical|center_horizontal">
+		<TableRow 
+		    android:layout_width="fill_parent"
+			android:layout_height="fill_parent">
+	    	
+	    	<ImageView android:id="@+id/backArrow"
+	    	    	android:src="@drawable/ic_back_64"
+			        android:layout_width="fill_parent" 
+					android:layout_height="fill_parent" 
+					android:layout_margin="5dp" 
+					android:layout_weight="1"
+					android:contentDescription="back">
+			</ImageView>
+				
+		    <Button android:id="@+id/pendQueNumber"
+		        android:layout_width="fill_parent"
+		        android:layout_height="fill_parent"
+		        android:layout_weight="1"
+		        android:layout_margin="5dp"  
+		        android:textColor="#134316"
+		        android:textSize="22sp"
+		    	android:gravity="center_horizontal"
+		    	android:background="@drawable/button_exam"/>
+			
+		    <TableLayout android:layout_width="fill_parent"
+				android:layout_height="fill_parent"
+				android:layout_weight="3"
+				android:layout_gravity="center_vertical|center_horizontal"
+				android:gravity="center_vertical|center_horizontal"
+				android:layout_margin="5dp">
+		        <TableRow  
+		            android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					android:layout_gravity="center_vertical|center_horizontal"
+					android:gravity="center_vertical|center_horizontal">
+				     <TextView
+				        android:id="@+id/remainingTimeLabel"
+				        android:layout_width="wrap_content"
+				        android:layout_height="fill_parent"
+				        android:layout_weight="1"
+				        android:layout_gravity="center_vertical"
+				        android:gravity="right"
+				        android:textColor="#31FF07"
+				        android:textSize="20sp"
+				        android:text="@string/label_tv_time_remaning"/>   
+				     <TextView
+				        android:id="@+id/remainingTime"
+				        android:layout_width="wrap_content"
+				        android:layout_height="fill_parent"
+				        android:layout_weight="3"
+				        android:layout_marginLeft="3dp"
+				        android:layout_gravity="center_vertical"
+				        android:gravity="center_vertical"
+				        android:textColor="#D71412"
+				        android:textSize="20sp"/>		            
+		        </TableRow>
+<!-- 		        <TableRow  
+		            android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					android:layout_gravity="center_vertical|center_horizontal"
+					android:gravity="center_vertical|center_horizontal">
+				     <SeekBar android:id="@+id/completedSeekBar" 
+					     android:layout_width="fill_parent"
+						 android:layout_height="wrap_content"
+						 android:layout_weight="4" 
+						 android:layout_gravity="center_vertical"
+				         android:gravity="center_vertical"
+						 android:max="100"
+						 android:progress="50" 
+						 android:minHeight="10dp"/>
+					<TextView
+				        android:id="@+id/completedPercentage"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_marginLeft="5dp"
+				        android:textColor="#31FF07"
+				        android:textSize="16sp"/>	            
+		        </TableRow> -->
+		    </TableLayout>	
+		        
+   		    <Button android:id="@+id/submitBtn"
+		        android:layout_width="fill_parent"
+		        android:layout_height="fill_parent"
+		        android:layout_weight="1"
+		        android:gravity="center_horizontal"
+		        android:layout_margin="5dp" 
+		        android:textColor="#134316"
+		        android:textSize="22sp"
+		        android:text="@string/label_tv_submit"
+		        android:background="@drawable/button_exam"/>
+   		    
+	 	    <ImageView android:id="@+id/nextArrow"
+	    	    	android:src="@drawable/ic_next_64"
+			        android:layout_width="fill_parent" 
+					android:layout_height="fill_parent" 
+					android:layout_margin="5dp" 
+					android:layout_weight="1"
+					android:contentDescription="nex">
+			</ImageView>
+	    </TableRow>
+	    
+    </TableLayout>
+</FrameLayout>
