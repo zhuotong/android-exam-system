@@ -37,7 +37,7 @@ public class BaseActivity extends Activity {
 		Log.i(LOG_TAG,"onCreate()...");
 		ActivityStackControlUtil.add(this);
 		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 	}
 
 	@Override
