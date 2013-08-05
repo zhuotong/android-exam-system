@@ -6,6 +6,7 @@ import com.artifex.mupdfdemo.MuPDFActivity;
 import com.dream.ivpc.BaseActivity;
 import com.dream.ivpc.R;
 import com.dream.ivpc.activity.report.CandidateInfoExamRpt;
+import com.dream.ivpc.activity.resume.ResumeWebView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,12 +16,18 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class CandidateDetail extends BaseActivity {
-	public final static String LOG_TAG = "LoginActivity";
+	public final static String LOG_TAG = "CandidateDetail";
+	
+	ImageView imgGoBack = null;
+	TextView canInfoTV;
 	
 	ImageView resumeBtn = null;
 	ImageView reportBtn = null;
+	ImageView webViewBtn = null;
+	
 	Context mContext;
 	
 	/** Called when the activity is first created. */
@@ -30,19 +37,40 @@ public class CandidateDetail extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.candidate);
         mContext = getApplicationContext();
+
+        imgGoBack = (ImageView) this.findViewById(R.id.imgGoBack);
+        imgGoBack.setOnClickListener(goBackListener);
+        
+        canInfoTV = (TextView) this.findViewById(R.id.candidateInfo);
+		Bundle bundle = this.getIntent().getExtras();
+		String name  = bundle.getString("name");
+		String position  = bundle.getString("position");
+		if(name!=null&&position!=null){
+			canInfoTV.setText(name+"("+position+")");
+		}
         
 		resumeBtn = (ImageView) this.findViewById(R.id.imageView1);
 		resumeBtn.setOnClickListener(resumeListener);
 		
 		reportBtn = (ImageView) this.findViewById(R.id.imageView2);
 		reportBtn.setOnClickListener(reportListener);
-		
+	
+		webViewBtn = (ImageView) this.findViewById(R.id.imageView3);
+		webViewBtn.setOnClickListener(webViewListener);
     }
 
+    View.OnClickListener goBackListener = new View.OnClickListener() {  
+        @Override  
+        public void onClick(View v) { 
+        	Intent intent = new Intent();
+			intent.setClass( mContext, CandidateList.class);
+			startActivity(intent);  
+        }  
+    };
+    
     View.OnClickListener resumeListener = new View.OnClickListener() {  
         @Override  
         public void onClick(View v) { 
-        	
 			String basePath = Environment.getExternalStorageDirectory()
 					.getPath();
 			String pdfPath = basePath + File.separator + "interviewer"
@@ -62,6 +90,15 @@ public class CandidateDetail extends BaseActivity {
         public void onClick(View v) { 
         	Intent intent = new Intent();
 			intent.setClass( mContext, CandidateInfoExamRpt.class);
+			startActivity(intent);  
+        }  
+    };
+    
+    View.OnClickListener webViewListener = new View.OnClickListener() {  
+        @Override  
+        public void onClick(View v) { 
+        	Intent intent = new Intent();
+			intent.setClass( mContext, ResumeWebView.class);
 			startActivity(intent);  
         }  
     };

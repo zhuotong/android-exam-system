@@ -63,6 +63,11 @@
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
+        <activity android:name="com.dream.ivpc.activity.resume.ResumeWebView"
+                  android:theme="@android:style/Theme.Dialog"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
         <!-- User Resume End -->
       
         <!-- User Exam Report and Detail Start -->

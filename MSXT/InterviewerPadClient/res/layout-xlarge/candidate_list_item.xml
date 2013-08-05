@@ -3,7 +3,7 @@
 	  android:layout_width="fill_parent"
 	  android:layout_height="wrap_content"
 	  android:descendantFocusability="blocksDescendants"
-	  android:background="@drawable/bg_color_candidate_even"
+	  android:background="@drawable/candidate_item_style"
 	  android:layout_margin="8dp">
 
       <TextView

@@ -26,7 +26,8 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class CandidateList extends ListActivity {
 	
-	ImageView imgHome = null;
+	ImageView imgGoHome = null;
+	
 	ImageView timeSortIcon = null;
 	ImageView positionSortIcon = null;
 	ImageView nameSortIcon = null;
@@ -48,7 +49,9 @@ public class CandidateList extends ListActivity {
         setContentView(R.layout.candidate_list);
         mContext = getApplicationContext();
 
-		imgHome = (ImageView) findViewById(R.id.imgHome);
+        imgGoHome = (ImageView) findViewById(R.id.imgGoHome);
+        imgGoHome.setOnClickListener(goHomeListener);
+        
 		timeSortIcon = (ImageView) findViewById(R.id.timeSortIcon);
 		positionSortIcon = (ImageView) findViewById(R.id.positionSortIcon);
 		nameSortIcon = (ImageView) findViewById(R.id.nameSortIcon);
@@ -70,8 +73,8 @@ public class CandidateList extends ListActivity {
 					long arg3) {
         		CandiateBean bean = candiateList.get(arg2);
             	Intent intent = new Intent();
-//    			intent.putExtra("name", bean.getName());
-//    			intent.putExtra("position", bean.getPosition());
+    			intent.putExtra("name", bean.getName());
+    			intent.putExtra("position", bean.getPosition());
     			intent.setClass( mContext, CandidateDetail.class);
     			startActivity(intent); 
     			
@@ -98,12 +101,14 @@ public class CandidateList extends ListActivity {
 		startActivity(intent);
     }
     
-//    View.OnClickListener goHomeListener = new View.OnClickListener(){
-//		@Override
-//		public void onClick(View v) {
-//			goHome(mContext);
-//		}
-//	};
+    View.OnClickListener goHomeListener = new View.OnClickListener(){
+		@Override
+		public void onClick(View v) {
+        	Intent intent = new Intent();
+			intent.setClass( mContext, LoginActivity.class);
+			startActivity(intent);  
+		}
+	};
 	
 /*    View.OnClickListener sortListener = new View.OnClickListener(){
 		@Override

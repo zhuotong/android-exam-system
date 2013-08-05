@@ -98,7 +98,7 @@ public class CandidateInfoExamDetail extends CandidateBase {
  
         mContext = getApplicationContext();
 
-        setHeader((TextView)findViewById(R.id.candidateInfo),(ImageView)findViewById(R.id.imgGoBack));
+//        setHeader((TextView)findViewById(R.id.candidateInfo),(ImageView)findViewById(R.id.imgGoBack));
 //		setFooter((Button) findViewById(R.id.examdetail));
 		
         imgGoBack = (ImageView) findViewById(R.id.imgGoBack);
