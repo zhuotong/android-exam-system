@@ -1,0 +1,69 @@
+package com.dream.ivpc.activity;
+
+import java.io.File;
+
+import com.artifex.mupdfdemo.MuPDFActivity;
+import com.dream.ivpc.BaseActivity;
+import com.dream.ivpc.R;
+import com.dream.ivpc.activity.report.CandidateInfoExamRpt;
+
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+
+public class CandidateDetail extends BaseActivity {
+	public final static String LOG_TAG = "LoginActivity";
+	
+	ImageView resumeBtn = null;
+	ImageView reportBtn = null;
+	Context mContext;
+	
+	/** Called when the activity is first created. */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+    	Log.i(LOG_TAG,"onCreate...");
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.candidate);
+        mContext = getApplicationContext();
+        
+		resumeBtn = (ImageView) this.findViewById(R.id.imageView1);
+		resumeBtn.setOnClickListener(resumeListener);
+		
+		reportBtn = (ImageView) this.findViewById(R.id.imageView2);
+		reportBtn.setOnClickListener(reportListener);
+		
+    }
+
+    View.OnClickListener resumeListener = new View.OnClickListener() {  
+        @Override  
+        public void onClick(View v) { 
+        	
+			String basePath = Environment.getExternalStorageDirectory()
+					.getPath();
+			String pdfPath = basePath + File.separator + "interviewer"
+					+ File.separator + "tangqi" + File.separator
+					+ "tangqi_resume.pdf";
+			
+			Uri uri = Uri.parse(pdfPath);
+			Intent intent = new Intent(mContext, MuPDFActivity.class);
+			intent.setAction(Intent.ACTION_VIEW);
+			intent.setData(uri);
+			startActivity(intent);
+        }  
+    };
+    
+    View.OnClickListener reportListener = new View.OnClickListener() {  
+        @Override  
+        public void onClick(View v) { 
+        	Intent intent = new Intent();
+			intent.setClass( mContext, CandidateInfoExamRpt.class);
+			startActivity(intent);  
+        }  
+    };
+    
+}

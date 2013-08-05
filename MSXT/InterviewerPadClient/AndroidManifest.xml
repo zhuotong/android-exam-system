@@ -40,6 +40,12 @@
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
+        
+        <activity android:name="com.dream.ivpc.activity.CandidateDetail"
+                  android:theme="@android:style/Theme.Light.NoTitleBar"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
                
         <activity android:name="com.dream.ivpc.activity.CandidateHome"
                   android:theme="@android:style/Theme.Light.NoTitleBar"
@@ -61,7 +67,7 @@
       
         <!-- User Exam Report and Detail Start -->
         <activity android:name="com.dream.ivpc.activity.report.CandidateInfoExamRpt"
-            	  android:theme="@android:style/Theme.Light.NoTitleBar"
+            	  android:theme="@android:style/Theme.Dialog"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
@@ -85,7 +91,7 @@
         
         <activity
             android:name="com.artifex.mupdfdemo.MuPDFActivity"
-            android:theme="@android:style/Theme.Light"
+            android:theme="@android:style/Theme.Dialog"
             android:screenOrientation="portrait"
             android:label="@string/app_name">
             <intent-filter>

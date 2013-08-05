@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="60dp" 
-    android:background="@drawable/bg_color_login_header">
+    android:background="#091AFE">
         
     	<ImageView android:id="@+id/imgGoBack"
 	        android:layout_width="wrap_content"

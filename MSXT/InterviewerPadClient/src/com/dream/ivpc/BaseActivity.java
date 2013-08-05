@@ -110,7 +110,7 @@ public class BaseActivity extends Activity {
 	}
 
 	
-	private long exitTime = 0;
+/*	private long exitTime = 0;
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 	    if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
@@ -125,7 +125,7 @@ public class BaseActivity extends Activity {
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
-	}
+	}*/
 
 	public void goHome(Context context){
 		Intent intent = new Intent();

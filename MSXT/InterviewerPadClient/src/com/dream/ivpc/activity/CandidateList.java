@@ -72,7 +72,7 @@ public class CandidateList extends ListActivity {
             	Intent intent = new Intent();
 //    			intent.putExtra("name", bean.getName());
 //    			intent.putExtra("position", bean.getPosition());
-    			intent.setClass( mContext, CandidateHome.class);
+    			intent.setClass( mContext, CandidateDetail.class);
     			startActivity(intent); 
     			
 //        		String basePath = Environment.getExternalStorageDirectory().getPath();

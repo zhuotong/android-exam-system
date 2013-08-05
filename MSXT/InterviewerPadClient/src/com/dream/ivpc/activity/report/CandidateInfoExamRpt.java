@@ -3,10 +3,8 @@ package com.dream.ivpc.activity.report;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dream.ivpc.BaseActivity;
 import com.dream.ivpc.R;
-import com.dream.ivpc.R.id;
-import com.dream.ivpc.R.layout;
-import com.dream.ivpc.activity.CandidateBase;
 import com.dream.ivpc.chart.Bar2D;
 import com.dream.ivpc.chart.Bar2DVerView;
 import com.dream.ivpc.chart.Chart;
@@ -14,11 +12,9 @@ import com.dream.ivpc.chart.Coordinate;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-public class CandidateInfoExamRpt extends CandidateBase {
+public class CandidateInfoExamRpt extends BaseActivity {
 	
 	public final static String LOG_TAG = "CandidateInfoExamRpt";
 	
@@ -50,13 +46,13 @@ public class CandidateInfoExamRpt extends CandidateBase {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.candidate_info_examrpt);
         
-        mContext = getApplicationContext();
+//        mContext = getApplicationContext();
         
-        setHeader((TextView)findViewById(R.id.candidateInfo),(ImageView)findViewById(R.id.imgGoBack));
+//        setHeader((TextView)findViewById(R.id.candidateInfo),(ImageView)findViewById(R.id.imgGoBack));
 //		setFooter((Button) findViewById(R.id.examrpt));
         
-        imgGoBack = (ImageView) findViewById(R.id.imgGoBack);
-        imgGoBack.setOnClickListener(goBackListener);
+//        imgGoBack = (ImageView) findViewById(R.id.imgGoBack);
+//        imgGoBack.setOnClickListener(goBackListener);
         
 //        examrpt = (Button) findViewById(R.id.examrpt);
 //        examrpt.setBackgroundResource(R.drawable.bg_footer_button_select);

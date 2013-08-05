@@ -23,6 +23,10 @@
     <string name="label_candidate_title_position">Position</string>
     <string name="label_candidate_title_name">Name</string>
     
+    
+    <string name="candidate_detail_resume">Resume</string>
+    <string name="candidate_detail_report">Report</string>
+    
     <!-- candidate resume -->
     <string name="msg_logo_go_back">Go back to candidate list</string>
     
