@@ -22,7 +22,7 @@
         android:layout_height="280dp"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/resume2"
-        android:layout_marginTop="50dp" />
+        android:layout_marginTop="20dp" />
  
     <ImageView
         android:id="@+id/imageView3"
@@ -30,7 +30,7 @@
         android:layout_height="280dp"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/resume2"
-        android:layout_marginTop="50dp" />
+        android:layout_marginTop="20dp" />
 
 </LinearLayout>
 
