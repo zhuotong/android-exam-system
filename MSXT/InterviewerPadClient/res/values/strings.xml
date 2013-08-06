@@ -22,7 +22,15 @@
     <string name="label_candidate_title_time">Time</string>
     <string name="label_candidate_title_position">Position</string>
     <string name="label_candidate_title_name">Name</string>
+    <string name="label_candidate_title_phase">Phase</string>
     
+    
+    <string-array name="candidate_detail_descs">
+        <item>Resume</item>
+        <item>Exam Report</item>
+        <item>Interview Status</item>
+        <item>Submit Result</item>
+    </string-array>
     
     <string name="candidate_detail_resume">Resume</string>
     <string name="candidate_detail_report">Report</string>
@@ -87,6 +95,7 @@
     <string name="Close">system_close_window</string>
     <string name="system_close_window">Close</string>
     <string name="system_logo_interview">interview</string>
+    <string name="candiate_detail_image">detail_image</string>
     
     
 </resources>

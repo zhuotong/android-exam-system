@@ -8,23 +8,27 @@
 
       <TextView
 	     android:id="@+id/index"
-         android:layout_width="100dp"
-         android:layout_marginLeft="20dp"
+         android:layout_width="80dp"
+         android:layout_marginLeft="10dp"
 	     style="@style/can_list_tv_style"/>
           
       <TextView
 	     android:id="@+id/time"
-	     android:layout_width="200dp"
+	     android:layout_width="190dp"
 		 style="@style/can_list_tv_style"/>
 
 	  <TextView
 	     android:id="@+id/position"
-	     android:layout_width="200dp"
+	     android:layout_width="170dp"
 	     style="@style/can_list_tv_style"/>
 	         	  
 	  <TextView
 	     android:id="@+id/name"
-	     android:layout_width="200dp"
+	     android:layout_width="170dp"
 		 style="@style/can_list_tv_style"/>
-	  
+
+	  <TextView
+	     android:id="@+id/phase"
+	     android:layout_width="170dp"
+		 style="@style/can_list_tv_style"/>	  
 </LinearLayout>
