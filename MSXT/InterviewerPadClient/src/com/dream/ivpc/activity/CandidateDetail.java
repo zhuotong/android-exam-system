@@ -6,6 +6,8 @@ import com.artifex.mupdfdemo.MuPDFActivity;
 import com.dream.ivpc.BaseActivity;
 import com.dream.ivpc.R;
 import com.dream.ivpc.activity.report.CandidateInfoExamRpt;
+import com.dream.ivpc.activity.report.ExamRptPicture;
+import com.dream.ivpc.activity.resume.ResumeTypeList;
 import com.dream.ivpc.activity.resume.ResumeWebView;
 
 import android.content.Context;
@@ -71,17 +73,9 @@ public class CandidateDetail extends BaseActivity {
     View.OnClickListener resumeListener = new View.OnClickListener() {  
         @Override  
         public void onClick(View v) { 
-			String basePath = Environment.getExternalStorageDirectory()
-					.getPath();
-			String pdfPath = basePath + File.separator + "interviewer"
-					+ File.separator + "tangqi" + File.separator
-					+ "tangqi_resume.pdf";
-			
-			Uri uri = Uri.parse(pdfPath);
-			Intent intent = new Intent(mContext, MuPDFActivity.class);
-			intent.setAction(Intent.ACTION_VIEW);
-			intent.setData(uri);
-			startActivity(intent);
+        	Intent intent = new Intent();
+			intent.setClass( mContext, ResumeTypeList.class);
+			startActivity(intent);  
         }  
     };
     
@@ -89,7 +83,7 @@ public class CandidateDetail extends BaseActivity {
         @Override  
         public void onClick(View v) { 
         	Intent intent = new Intent();
-			intent.setClass( mContext, CandidateInfoExamRpt.class);
+			intent.setClass( mContext, ExamRptPicture.class);
 			startActivity(intent);  
         }  
     };

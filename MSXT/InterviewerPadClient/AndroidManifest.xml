@@ -9,7 +9,6 @@
     
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-    
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/> 
@@ -54,8 +53,13 @@
         </activity>
         
         <!-- User Resume Start -->
+        <activity android:name="com.dream.ivpc.activity.resume.ResumeTypeList"
+            	  android:theme="@style/CustomTheme"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
         <activity android:name="com.dream.ivpc.activity.resume.ResumePicture"
-            	  android:theme="@android:style/Theme.Light.NoTitleBar"
+            	  android:theme="@android:style/Theme.Dialog"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
@@ -71,6 +75,12 @@
         <!-- User Resume End -->
       
         <!-- User Exam Report and Detail Start -->
+        <activity android:name="com.dream.ivpc.activity.report.ExamRptPicture"
+            	  android:theme="@android:style/Theme.Dialog"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        
         <activity android:name="com.dream.ivpc.activity.report.CandidateInfoExamRpt"
             	  android:theme="@android:style/Theme.Dialog"
      	 	      android:screenOrientation="portrait"
@@ -142,6 +152,7 @@
                 <data android:host="*"/>
             </intent-filter>
         </activity>
+        
         <activity
             android:name="OutlineActivity"
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"

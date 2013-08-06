@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	  android:layout_width="fill_parent"
+	  android:layout_height="wrap_content"
+	  android:descendantFocusability="blocksDescendants"
+	  android:background="@drawable/candidate_item_style"
+	  android:layout_margin="8dp">
+
+      <TextView
+	     android:id="@+id/index"
+         android:layout_width="100dp"
+         android:layout_marginLeft="20dp"
+	     style="@style/resume_list_tv_style"/>
+          
+      <TextView
+	     android:id="@+id/name"
+	     android:layout_width="200dp"
+		 style="@style/resume_list_tv_style"/>
+
+</LinearLayout>

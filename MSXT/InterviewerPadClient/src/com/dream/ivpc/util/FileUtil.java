@@ -105,6 +105,17 @@ public class FileUtil {
 		Log.i(LOG_TAG, "getExamStream() end.");
 		return inputStream;
 	}
+	
+	public static FileInputStream getFileInputStream(String filePath){
+		FileInputStream inputStream = null;
+		try {
+			inputStream = new FileInputStream(new File(filePath));
+		} catch (FileNotFoundException e) {
+			Log.i(LOG_TAG,e.getMessage());
+		}
+		Log.i(LOG_TAG, "getExamStream() end.");
+		return inputStream;
+	}
 
 }
 

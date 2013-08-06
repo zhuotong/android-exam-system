@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+     <style name="CustomWindowTitleText" parent="android:TextAppearance.WindowTitle">
+          <item name="android:textSize">22dp</item>
+          <item name="android:textColor">#ddd</item>
+          <item name="android:textStyle">bold</item>
+          <item name="android:gravity">center_horizontal</item>
+        
+          <item name="android:paddingRight">8dp</item>
+          <item name="android:paddingLeft">8dp</item>
+          
+     </style>
+     <!-- Changes the background color of the title bar -->
+     <style name="CustomWindowTitleBackground">
+           <item name="android:background">@drawable/login_bg_color</item>
+     </style>
+
+     <!-- Set the theme for the window title -->
+     <!-- NOTE: setting android:textAppearence to style defined above -->
+     <style name="CustomWindowTitle" parent="*android:WindowTitle">
+          <item name="android:layout_gravity">center</item>
+          <item name="android:gravity">center</item>
+          <item name="android:textAppearance">@style/CustomWindowTitleText</item>
+          <item name="android:shadowDx">0</item>
+          <item name="android:shadowDy">0</item>
+          <item name="android:shadowRadius">5</item>
+          <item name="android:shadowColor">#1155CC</item>
+      </style>
+      <!-- Override properties in the default theme -->
+      <!-- NOTE: you must explicitly the windowTitleSize property, the title bar will not re-size automatically, text will be clipped -->
+      <style name="CustomTheme" parent="android:Theme.Dialog">
+           <item name="android:windowTitleSize">36dp</item>
+           <item name="android:windowTitleStyle">@style/CustomWindowTitle</item>
+           <item name="android:windowTitleBackgroundStyle">@style/CustomWindowTitleBackground</item>
+      </style>
+      <color name="seg_list_color">#1368ac</color>
+</resources>

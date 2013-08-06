@@ -7,7 +7,7 @@ import java.util.List;
 import com.dream.ivpc.activity.CandidateBase;
 import com.dream.ivpc.model.ResumeBean;
 import com.dream.ivpc.model.ResumePageBean;
-import com.dream.ivpc.util.DataParseUtil;
+import com.dream.ivpc.util.XMLParseUtil;
 import com.dream.ivpc.util.FileUtil;
 import com.dream.ivpc.util.ImageUtil;
 import android.app.ProgressDialog;
@@ -116,7 +116,7 @@ public class CandidateResumeXML extends CandidateBase {
 				
 				//get image from local
 	            FileInputStream inputStream =  FileUtil.getFileInputStream(ALBUM_PATH, ALBUM_NAME);
-	            ResumeBean resume = DataParseUtil.parseResume(inputStream);
+	            ResumeBean resume = XMLParseUtil.parseResume(inputStream);
 	            List<ResumePageBean> pageList = resume.getRpbList();
 	            String encodedContent = null;
 	            for(ResumePageBean bean: pageList){

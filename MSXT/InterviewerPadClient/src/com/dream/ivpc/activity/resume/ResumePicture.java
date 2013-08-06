@@ -10,7 +10,7 @@ import com.dream.ivpc.activity.CandidateBase;
 import com.dream.ivpc.adapter.ResumeGroupAdapter;
 import com.dream.ivpc.model.ResumeBean;
 import com.dream.ivpc.model.ResumePageBean;
-import com.dream.ivpc.util.DataParseUtil;
+import com.dream.ivpc.util.XMLParseUtil;
 import com.dream.ivpc.util.FileUtil;
 import com.dream.ivpc.util.ImageUtil;
 import android.app.ProgressDialog;
@@ -20,9 +20,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class ResumePicture extends CandidateBase {
@@ -78,7 +75,7 @@ public class ResumePicture extends CandidateBase {
 		            FileInputStream inputStream =  FileUtil.getFileInputStream(ALBUM_PATH, ALBUM_NAME);
 		            
 		            //get resume bean
-		            ResumeBean resume = DataParseUtil.parseResume(inputStream);
+		            ResumeBean resume = XMLParseUtil.parseResume(inputStream);
 		            List<ResumePageBean> pageList = resume.getRpbList();
 		            
 //		            String encodedContent = null;

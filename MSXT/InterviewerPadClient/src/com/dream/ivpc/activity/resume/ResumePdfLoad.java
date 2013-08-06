@@ -15,6 +15,7 @@ import com.artifex.mupdfdemo.MuPDFActivity;
 import com.dream.ivpc.BaseActivity;
 import com.dream.ivpc.R;
 
+@Deprecated 
 public class ResumePdfLoad extends BaseActivity {
 //	String pdfFile;
 	Context oContext;
