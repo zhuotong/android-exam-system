@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
@@ -26,6 +27,8 @@ import com.markupartist.android.widget.PullToRefreshListView;
 
 public class ResumeTypeList extends ListActivity{
 	public final static String LOG_TAG = "ResumeTypeList";
+	
+	ImageButton closeIB;
 	
 	Context mContext;
 	PullToRefreshListView listView;
@@ -51,6 +54,13 @@ public class ResumeTypeList extends ListActivity{
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title);
         mContext = getApplicationContext();
         
+        closeIB = (ImageButton) findViewById(R.id.closeIB);
+        closeIB.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 
 		progressBar = (ProgressBar) findViewById(R.id.loading_spinner);
 		listView = (PullToRefreshListView) getListView();

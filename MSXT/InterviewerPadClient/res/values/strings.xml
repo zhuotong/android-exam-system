@@ -86,6 +86,7 @@
     <string name="strike_out">Strike out</string>
     <string name="Close">system_close_window</string>
     <string name="system_close_window">Close</string>
+    <string name="system_logo_interview">interview</string>
     
     
 </resources>

@@ -21,8 +21,8 @@
 		
 	 	<org.viewflow.android.widget.ViewFlow
 			android:id="@+id/viewflow" 
-			android:layout_width="600dp"
-			android:layout_height="600dp" 
+			android:layout_width="800dp"
+			android:layout_height="800dp" 
 			app:sidebuffer="3">
 	     </org.viewflow.android.widget.ViewFlow>
 	</FrameLayout>
