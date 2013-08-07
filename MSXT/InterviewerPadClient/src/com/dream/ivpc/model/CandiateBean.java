@@ -5,18 +5,18 @@ public class CandiateBean extends BaseBean {
 	private String time;
 	private String position;
 	private String name;
+	private String phase;
 	
 	public CandiateBean() {
 		super();
 	}
-	
-	public CandiateBean(String time, String position, String name) {
+	public CandiateBean(String time, String position, String name, String phase) {
 		super();
 		this.time = time;
 		this.position = position;
 		this.name = name;
+		this.phase = phase;
 	}
-
 	public String getTime() {
 		return time;
 	}
@@ -35,6 +35,11 @@ public class CandiateBean extends BaseBean {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+	public String getPhase() {
+		return phase;
+	}
+	public void setPhase(String phase) {
+		this.phase = phase;
+	}
 	
 }

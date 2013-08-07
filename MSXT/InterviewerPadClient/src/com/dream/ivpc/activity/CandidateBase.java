@@ -2,7 +2,7 @@ package com.dream.ivpc.activity;
 
 import com.dream.ivpc.BaseActivity;
 import com.dream.ivpc.activity.report.CandidateInfoExamDetail;
-import com.dream.ivpc.activity.report.CandidateInfoExamRpt;
+import com.dream.ivpc.activity.report.CandidateExamRpt;
 import com.dream.ivpc.activity.resume.ResumePicture;
 
 import android.content.Context;
@@ -62,7 +62,7 @@ public class CandidateBase extends BaseActivity {
 		Intent intent = new Intent();
 		intent.putExtra("name", name);
 		intent.putExtra("position", position);
-		intent.setClass( mContext, CandidateInfoExamRpt.class);
+		intent.setClass( mContext, CandidateExamRpt.class);
 		startActivity(intent); 
 	}
 	

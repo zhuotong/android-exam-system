@@ -14,7 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 
-public class CandidateInfoExamRpt extends BaseActivity {
+public class CandidateExamRpt extends BaseActivity {
 	
 	public final static String LOG_TAG = "CandidateInfoExamRpt";
 	

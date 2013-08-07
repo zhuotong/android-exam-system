@@ -47,11 +47,11 @@ public class ResumeTypeList extends ListActivity{
    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-        
         setContentView(R.layout.resume_type_list);
-        
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title);
+        
         mContext = getApplicationContext();
         
         closeIB = (ImageButton) findViewById(R.id.closeIB);
@@ -89,7 +89,7 @@ public class ResumeTypeList extends ListActivity{
         				loadPicture();
         			}
         			if("PDF".equalsIgnoreCase(type)){
-        				loadPdf();
+        				loadPdf("admin","tangqi");
         			}
         			if("Html".equalsIgnoreCase(type)){
         				loadHtml();
@@ -111,12 +111,13 @@ public class ResumeTypeList extends ListActivity{
 		startActivity(intent);     	
     }
     
-    public void loadPdf(){
+    public void loadPdf(String adminFolder, String candidateFolder){
 		String basePath = Environment.getExternalStorageDirectory()
 				.getPath();
 		String pdfPath = basePath + File.separator + "interviewer"
-				+ File.separator + "tangqi" + File.separator
-				+ "tangqi_resume.pdf";
+				+ File.separator + adminFolder 
+				+ File.separator + candidateFolder 
+				+ File.separator+ "resume.pdf";
 		
 		Uri uri = Uri.parse(pdfPath);
 		Intent intent = new Intent(mContext, MuPDFActivity.class);

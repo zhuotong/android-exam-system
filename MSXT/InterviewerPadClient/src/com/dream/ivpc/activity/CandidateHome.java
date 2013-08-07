@@ -2,7 +2,7 @@ package com.dream.ivpc.activity;
 
 import com.dream.ivpc.R;
 import com.dream.ivpc.activity.report.CandidateInfoExamDetail;
-import com.dream.ivpc.activity.report.CandidateInfoExamRpt;
+import com.dream.ivpc.activity.report.CandidateExamRpt;
 import com.dream.ivpc.activity.resume.ResumePdfLoad;
 import com.dream.ivpc.activity.resume.ResumePicture;
 
@@ -27,7 +27,7 @@ public class CandidateHome extends TabActivity{
 	private void setTabs() {
 		addTab("Resume Picture", R.drawable.ic_compose, ResumePicture.class);
 		addTab("Resume Pdf", R.drawable.ic_compose, ResumePdfLoad.class);
-		addTab("Report", R.drawable.ic_compose, CandidateInfoExamRpt.class);
+		addTab("Report", R.drawable.ic_compose, CandidateExamRpt.class);
 		addTab("Exam", R.drawable.ic_compose, CandidateInfoExamDetail.class);
 	}
 

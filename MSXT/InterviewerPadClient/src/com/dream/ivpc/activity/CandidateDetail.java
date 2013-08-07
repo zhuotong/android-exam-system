@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import com.dream.ivpc.BaseActivity;
 import com.dream.ivpc.R;
+import com.dream.ivpc.activity.report.ExamRptList;
 import com.dream.ivpc.activity.report.ExamRptPicture;
 import com.dream.ivpc.activity.resume.ResumeTypeList;
 import android.content.Context;
@@ -101,7 +102,7 @@ public class CandidateDetail extends BaseActivity {
     
     public void checkExamRpt(){
     	Intent intent = new Intent();
-		intent.setClass( mContext, ExamRptPicture.class);
+		intent.setClass( mContext, ExamRptList.class);
 		startActivity(intent);  
     }
 

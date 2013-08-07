@@ -75,13 +75,18 @@
         <!-- User Resume End -->
       
         <!-- User Exam Report and Detail Start -->
+        <activity android:name="com.dream.ivpc.activity.report.ExamRptList"
+            	  android:theme="@style/CustomTheme"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
         <activity android:name="com.dream.ivpc.activity.report.ExamRptPicture"
             	  android:theme="@android:style/Theme.Dialog"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
         
-        <activity android:name="com.dream.ivpc.activity.report.CandidateInfoExamRpt"
+        <activity android:name="com.dream.ivpc.activity.report.CandidateExamRpt"
             	  android:theme="@android:style/Theme.Dialog"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">

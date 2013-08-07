@@ -1,5 +1,6 @@
 package com.dream.ivpc.activity.resume;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,96 +24,111 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class ResumePicture extends CandidateBase {
-	
-	private final static String ALBUM_PATH = Environment.getExternalStorageDirectory() + "/interviewer/tangqi";
+
+	private final static String ALBUM_PATH = Environment
+			.getExternalStorageDirectory() + "/interviewer/tangqi";
 	private final static String ALBUM_NAME = "tangqi_resume.xml";
-	
+
 	private ProgressDialog myDialog = null;
 	private ViewFlow viewFlow;
 	private CircleFlowIndicator indic;
-	
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		setTitle(R.string.circle_title);
+		// setTitle(R.string.circle_title);
 		setContentView(R.layout.candidate_resume_group);
-		
-		mContext = getApplicationContext();
-//		setHeader((TextView)findViewById(R.id.candidateInfo),(ImageView)findViewById(R.id.imgGoBack));
-//		setFooter((Button) findViewById(R.id.resume));
 
-        myDialog = ProgressDialog.show(ResumePicture.this, "Download File...", "Please Wait!", true);      
-        new LoadTask().execute(new String[]{});
-      
+		mContext = getApplicationContext();
+		// setHeader((TextView)findViewById(R.id.candidateInfo),(ImageView)findViewById(R.id.imgGoBack));
+		// setFooter((Button) findViewById(R.id.resume));
+
+		myDialog = ProgressDialog.show(ResumePicture.this, "Download File...",
+				"Please Wait!", true);
+		new LoadTask().execute(new String[] {});
+
 		viewFlow = (ViewFlow) findViewById(R.id.viewflow);
-//		viewFlow.setAdapter(new ResumeGroupAdapter(this), 5);
-		
+		// viewFlow.setAdapter(new ResumeGroupAdapter(this), 5);
+
 		indic = (CircleFlowIndicator) findViewById(R.id.viewflowindic);
-//		viewFlow.setFlowIndicator(indic);
+		// viewFlow.setFlowIndicator(indic);
 	}
-	/* If your min SDK version is < 8 you need to trigger the onConfigurationChanged in ViewFlow manually, like this */	
+
+	/*
+	 * If your min SDK version is < 8 you need to trigger the
+	 * onConfigurationChanged in ViewFlow manually, like this
+	 */
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		viewFlow.onConfigurationChanged(newConfig);
 	}
-	
-	 private class LoadTask extends AsyncTask<String, Void, String>{
-	    	private List<Bitmap> bitmapList =new ArrayList<Bitmap>();
-	    	private String message;
-	    	
-	    	@Override
-	    	protected void onPreExecute() {
-	    		Log.i(LOG_TAG, "onPreExecute() called");
-	    	}
-	    	
-	        @Override
-			protected String doInBackground(String... urls) {
-	        	try {
-					//get image from local
-		            FileInputStream inputStream =  FileUtil.getFileInputStream(ALBUM_PATH, ALBUM_NAME);
-		            
-		            //get resume bean
-		            ResumeBean resume = XMLParseUtil.parseResume(inputStream);
-		            List<ResumePageBean> pageList = resume.getRpbList();
-		            
-//		            String encodedContent = null;
-		            for(ResumePageBean bean: pageList){
-//		            	if(bean.getIndex() == 1){
-//		            		Log.i(LOG_TAG,"Resume Page: "+String.valueOf(bean.getIndex()));
-//		            		encodedContent = bean.getContent().toString();
-//							Log.i(LOG_TAG, "Resume encodedContent:" + encodedContent);
-//							
-//							break;
-//		            	}
-//			            ImageUtil.saveAsFileWriter(bean.getContent().toString(), ALBUM_PATH+File.separator+"base64(2).txt");
-			            Bitmap bitmap = ImageUtil.decodeBase64(bean.getContent().toString());
-			            bitmapList.add(bitmap);
-		            }
 
-		            message = "success";
-					
-				} catch (Exception e) {
-					message = "fail";
-					Log.e(LOG_TAG, message+":"+e.getMessage());
-				} 
-				return null;
+	private class LoadTask extends AsyncTask<String, Void, String> {
+		private List<Bitmap> bitmapList = new ArrayList<Bitmap>();
+		private String message;
+
+		@Override
+		protected void onPreExecute() {
+			Log.i(LOG_TAG, "onPreExecute() called");
+		}
+
+		@Override
+		protected String doInBackground(String... urls) {
+			try {
+				// get image from local
+				FileInputStream inputStream = FileUtil.getFileInputStream(getRptPath("admin","tangqi"));
+
+				// get resume bean
+				ResumeBean resume = XMLParseUtil.parseResume(inputStream);
+				List<ResumePageBean> pageList = resume.getRpbList();
+
+				// String encodedContent = null;
+				for (ResumePageBean bean : pageList) {
+					// if(bean.getIndex() == 1){
+					// Log.i(LOG_TAG,"Resume Page: "+String.valueOf(bean.getIndex()));
+					// encodedContent = bean.getContent().toString();
+					// Log.i(LOG_TAG, "Resume encodedContent:" +
+					// encodedContent);
+					//
+					// break;
+					// }
+					// ImageUtil.saveAsFileWriter(bean.getContent().toString(),
+					// ALBUM_PATH+File.separator+"base64(2).txt");
+					Bitmap bitmap = ImageUtil.decodeBase64(bean.getContent()
+							.toString());
+					bitmapList.add(bitmap);
+				}
+
+				message = "success";
+
+			} catch (Exception e) {
+				message = "fail";
+				Log.e(LOG_TAG, message + ":" + e.getMessage());
 			}
-			
-	        @Override
-	        protected void onPostExecute(String result){
-	        	myDialog.dismiss();
-	        	
-//	        	if("success".equals(message)&&bitmap!=null){
-//	        		imageView.setImageBitmap(bitmap);
-//	        	}
-	        	viewFlow.setAdapter(new ResumeGroupAdapter(mContext,bitmapList), bitmapList.size());
-	        	viewFlow.setFlowIndicator(indic);
-	        	
-	        	Toast.makeText(ResumePicture.this, message, Toast.LENGTH_SHORT).show();
-	        }
-	    	
-	    }
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			myDialog.dismiss();
+
+			// if("success".equals(message)&&bitmap!=null){
+			// imageView.setImageBitmap(bitmap);
+			// }
+			viewFlow.setAdapter(new ResumeGroupAdapter(mContext, bitmapList),
+					bitmapList.size());
+			viewFlow.setFlowIndicator(indic);
+
+			Toast.makeText(ResumePicture.this, message, Toast.LENGTH_SHORT)
+					.show();
+		}
+
+	}
+	
+	public String getRptPath(String admin,String candidate) {
+		String basePath = Environment.getExternalStorageDirectory() + "/interviewer";
+		return basePath + File.separator + admin + File.separator + candidate + File.separator + "resume.xml";
+	}
 }

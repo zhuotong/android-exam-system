@@ -1,5 +1,7 @@
 package com.dream.ivpc.activity;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,7 +11,9 @@ import com.artifex.mupdfdemo.MuPDFActivity;
 import com.dream.ivpc.R;
 import com.dream.ivpc.adapter.CandidateListAdapter;
 import com.dream.ivpc.model.CandiateBean;
+import com.dream.ivpc.util.FileUtil;
 import com.dream.ivpc.util.NetWorkUtil;
+import com.dream.ivpc.util.XMLParseUtil;
 import com.markupartist.android.widget.PullToRefreshListView;
 import android.app.ListActivity;
 import android.content.Context;
@@ -17,6 +21,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -77,12 +82,6 @@ public class CandidateList extends ListActivity {
     			intent.putExtra("position", bean.getPosition());
     			intent.setClass( mContext, CandidateDetail.class);
     			startActivity(intent); 
-    			
-//        		String basePath = Environment.getExternalStorageDirectory().getPath();
-//        		String pdfFile = basePath + File.separator + "books" + File.separator
-//        				+ "Android" + File.separator + "Develop" + File.separator
-//        				+ "Android Users Guide.pdf";
-//        		openPdf(pdfFile,mContext);
 			}      	
         });
         
@@ -110,39 +109,14 @@ public class CandidateList extends ListActivity {
 		}
 	};
 	
-/*    View.OnClickListener sortListener = new View.OnClickListener(){
-		@Override
-		public void onClick(View v) {
-			switch(v.getId()){
-				case(R.id.timeSortIcon): sortByTime(); break;
-				case(R.id.positionSortIcon):sortByPosition();break;
-				case(R.id.nameSortIcon):sortByName();
-			}
-	        adapter = new CandidateListAdapter(candiateList,mContext);
-	        listView.setAdapter(adapter);
-			
-		}
-	};*/
+	public String getRptPath(String name) {
+		String basePath = Environment.getExternalStorageDirectory() + "/interviewer";
+		return basePath + File.separator + name + File.separator + "candidates.xml";
+	}
 	
 	public void loadData(){
-		candiateList.add(new CandiateBean("2012-10-12 08:00","Java Engineer","Timothy Qi"));
-		candiateList.add(new CandiateBean("2012-10-12 09:00","Java Engineer","Jack Zhangsan"));
-		candiateList.add(new CandiateBean("2012-10-12 10:00","Java Engineer","Tom"));
-		candiateList.add(new CandiateBean("2012-10-13 08:00","Java Designer","LiLei"));
-		candiateList.add(new CandiateBean("2012-10-13 09:00","Java Tester","Hanmeimei"));
-		candiateList.add(new CandiateBean("2012-10-14 08:00","Java Engineer","Robin"));
-		candiateList.add(new CandiateBean("2012-10-14 09:00","Java Engineer","Calvin"));
-		candiateList.add(new CandiateBean("2012-10-15 08:00","Java Engineer","Charlie"));
-		candiateList.add(new CandiateBean("2012-10-16 09:00","Java Tester","Grace"));
-		candiateList.add(new CandiateBean("2012-10-16 09:00","Java Designer","Amy"));
-		candiateList.add(new CandiateBean("2012-10-16 10:00","Java Tester","Michael"));
-		candiateList.add(new CandiateBean("2013-10-16 09:00","Java Designer","Amy"));
-		candiateList.add(new CandiateBean("2013-10-16 10:00","Java Tester","Michael"));
-		candiateList.add(new CandiateBean("2013-10-16 09:00","Java Designer","Amy"));
-		candiateList.add(new CandiateBean("2013-10-16 10:00","Java Tester","Michael"));
-		candiateList.add(new CandiateBean("2013-10-16 09:00","Java Designer","Amy"));
-		candiateList.add(new CandiateBean("2013-10-16 10:00","Java Tester","Michael"));	
-		
+		FileInputStream inputStream = FileUtil.getFileInputStream(getRptPath("admin"));
+		candiateList = XMLParseUtil.parseCandidates(inputStream);
 		Collections.sort(candiateList,new Comparator<CandiateBean>(){  
             public int compare(CandiateBean arg0, CandiateBean arg1) {  
                 return arg1.getTime().compareTo(arg0.getTime());  
@@ -179,14 +153,12 @@ public class CandidateList extends ListActivity {
         }
     }
 	
-	
 	public void sortEvent(View view){
 		switch(view.getId()){
 			case(R.id.timeSortTable): sortByTime(); break;
 			case(R.id.positionSortTable):sortByPosition();break;
 			case(R.id.nameSortTable):sortByName();
 		}
-	
 	    adapter = new CandidateListAdapter(candiateList,mContext);
 	    listView.setAdapter(adapter);
 	}

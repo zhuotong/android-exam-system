@@ -8,14 +8,92 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import android.util.Log;
 import android.util.Xml;
+
+import com.dream.ivpc.model.CandiateBean;
+import com.dream.ivpc.model.ExamBean;
 import com.dream.ivpc.model.ExamRptBean;
 import com.dream.ivpc.model.ExamRptPageBean;
+import com.dream.ivpc.model.LoginResult;
 import com.dream.ivpc.model.ResumeBean;
 import com.dream.ivpc.model.ResumePageBean;
 
 public class XMLParseUtil {
-	public final static String LOG_TAG = "DataParseUtil";
+	public final static String LOG_TAG = "XMLParseUtil";
 
+	public static LoginResult parseLoginResult(InputStream is) {
+		LoginResult bean = null;
+		XmlPullParser parser = Xml.newPullParser();
+		try {
+			parser.setInput(is, "UTF-8");
+			int eventType = parser.getEventType();
+			while ((eventType = parser.next()) != XmlPullParser.END_DOCUMENT) {
+				switch (eventType) {
+				case XmlPullParser.START_TAG:
+					if (parser.getName().equals("result")) {
+						bean = new LoginResult();
+					} else if (parser.getName().equals("success") && bean!=null ) {
+						boolean success = (parser.nextText()).equalsIgnoreCase("yes")? true:false;
+						bean.setSuccess(success);
+					} else if (parser.getName().equals("sessionid") && bean!=null) {
+						bean.setSessionId(parser.nextText());
+					} 
+					break;
+				case XmlPullParser.END_TAG:
+					break;
+				}
+			}
+		} catch (XmlPullParserException e) {
+			Log.e(LOG_TAG, e.getMessage());
+		} catch (NumberFormatException e) {
+			Log.e(LOG_TAG, e.getMessage());
+		} catch (IOException e) {
+			Log.e(LOG_TAG, e.getMessage());
+		}
+
+		return bean;
+	}
+	
+	public static List<CandiateBean> parseCandidates(InputStream is) {
+		List<CandiateBean> beanList = new ArrayList<CandiateBean>();
+		CandiateBean bean = null;
+		XmlPullParser parser = Xml.newPullParser();
+		try {
+			parser.setInput(is, "UTF-8");
+			int eventType = parser.getEventType();
+			while ((eventType = parser.next()) != XmlPullParser.END_DOCUMENT) {
+				switch (eventType) {
+				case XmlPullParser.START_TAG:
+					if (parser.getName().equals("candidate")) {
+						bean = new CandiateBean();
+					} else if (parser.getName().equals("time") && bean!=null ) {
+						bean.setTime(parser.nextText());
+					} else if (parser.getName().equals("position") && bean!=null) {
+						bean.setPosition(parser.nextText());
+					} else if (parser.getName().equals("name") && bean!=null ) {
+						bean.setName(parser.nextText());
+					} else if (parser.getName().equals("phase") && bean!=null ) {
+						bean.setPhase(parser.nextText());
+					}
+					break;
+				case XmlPullParser.END_TAG:
+					if (parser.getName().equals("candidate")) {
+						beanList.add(bean);
+						bean = null;
+					}
+					break;
+				}
+			}
+		} catch (XmlPullParserException e) {
+			Log.e(LOG_TAG, e.getMessage());
+		} catch (NumberFormatException e) {
+			Log.e(LOG_TAG, e.getMessage());
+		} catch (IOException e) {
+			Log.e(LOG_TAG, e.getMessage());
+		}
+
+		return beanList;
+	}
+	
 	public static ResumeBean parseResume(InputStream is) {
 		ResumeBean resumeBean = new ResumeBean();
 		List<ResumePageBean> beanList = null;
@@ -57,6 +135,43 @@ public class XMLParseUtil {
 		}
 
 		return resumeBean;
+	}
+
+	public static List<ExamBean> parseExams(InputStream is) {
+		List<ExamBean> beanList = new ArrayList<ExamBean>();
+		ExamBean bean = null;
+		XmlPullParser parser = Xml.newPullParser();
+		try {
+			parser.setInput(is, "UTF-8");
+			int eventType = parser.getEventType();
+			while ((eventType = parser.next()) != XmlPullParser.END_DOCUMENT) {
+				switch (eventType) {
+				case XmlPullParser.START_TAG:
+					if (parser.getName().equals("exam")) {
+						bean = new ExamBean();
+					} else if (parser.getName().equals("examid") && bean!=null ) {
+						bean.setExamId(parser.nextText());
+					} else if (parser.getName().equals("examname") && bean!=null) {
+						bean.setExamName(parser.nextText());
+					} 
+					break;
+				case XmlPullParser.END_TAG:
+					if (parser.getName().equals("exam")) {
+						beanList.add(bean);
+						bean = null;
+					}
+					break;
+				}
+			}
+		} catch (XmlPullParserException e) {
+			Log.e(LOG_TAG, e.getMessage());
+		} catch (NumberFormatException e) {
+			Log.e(LOG_TAG, e.getMessage());
+		} catch (IOException e) {
+			Log.e(LOG_TAG, e.getMessage());
+		}
+
+		return beanList;
 	}
 	
 	public static ExamRptBean parseExamRpt(InputStream is) {

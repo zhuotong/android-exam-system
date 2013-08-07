@@ -26,7 +26,6 @@ import com.dream.ivpc.util.ImageUtil;
 public class ExamRptPicture extends BaseActivity {
 
 	Context mContext;
-	private String userName = "tangqi";
 	private ProgressDialog myDialog = null;
 	private ViewFlow viewFlow;
 	private CircleFlowIndicator indic;
@@ -55,9 +54,9 @@ public class ExamRptPicture extends BaseActivity {
 		viewFlow.onConfigurationChanged(newConfig);
 	}
 	
-	public String getRptPath(String name) {
+	public String getRptPath(String admin,String candiate) {
 		String basePath = Environment.getExternalStorageDirectory() + "/interviewer";
-		return basePath + File.separator + name + File.separator + name + "_exam_result.xml";
+		return basePath + File.separator + admin + File.separator + candiate + File.separator + "exam_rpt.xml";
 	}
 
 	private class LoadTask extends AsyncTask<String, Void, String> {
@@ -74,7 +73,7 @@ public class ExamRptPicture extends BaseActivity {
 			try {
 
 				// get image from local
-				FileInputStream inputStream = FileUtil.getFileInputStream(getRptPath(userName));
+				FileInputStream inputStream = FileUtil.getFileInputStream(getRptPath("admin","tangqi"));
 
 				// get resume bean
 				ExamRptBean rptBean = XMLParseUtil.parseExamRpt(inputStream);
