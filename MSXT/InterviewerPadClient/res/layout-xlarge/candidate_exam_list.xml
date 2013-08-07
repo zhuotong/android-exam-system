@@ -4,10 +4,11 @@
     android:layout_height="300dp"
     android:background="@drawable/login_bg_color">
 
-	<ListView
-	    android:id="@+id/android:list"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent" />
+		<ListView
+		    android:id="@+id/android:list"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent" 
+		    android:layout_margin="1dp"/>
 	
 	    <!-- The "loading indicator" view. This view overlaps with
 	         the content, so the visibility of these two views

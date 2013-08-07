@@ -33,6 +33,7 @@ import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
@@ -336,7 +337,9 @@ public class MuPDFActivity extends Activity
 			return;
 		}
 
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);//custom
 		createUI(savedInstanceState);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title2);
 	}
 
 	public void requestPassword(final Bundle savedInstanceState) {

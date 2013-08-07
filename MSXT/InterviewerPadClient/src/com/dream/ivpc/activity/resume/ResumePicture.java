@@ -21,31 +21,39 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 public class ResumePicture extends CandidateBase {
 
-	private final static String ALBUM_PATH = Environment
-			.getExternalStorageDirectory() + "/interviewer/tangqi";
-	private final static String ALBUM_NAME = "tangqi_resume.xml";
-
-	private ProgressDialog myDialog = null;
-	private ViewFlow viewFlow;
-	private CircleFlowIndicator indic;
+	ImageButton closeIB;
+	ProgressDialog myDialog = null;
+	ViewFlow viewFlow;
+	CircleFlowIndicator indic;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// setTitle(R.string.circle_title);
-		setContentView(R.layout.candidate_resume_group);
-
+		
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        setContentView(R.layout.candidate_resume_group);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title2);
+        
 		mContext = getApplicationContext();
-		// setHeader((TextView)findViewById(R.id.candidateInfo),(ImageView)findViewById(R.id.imgGoBack));
-		// setFooter((Button) findViewById(R.id.resume));
+		
+        closeIB = (ImageButton) findViewById(R.id.closeIB);
+        closeIB.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 
-		myDialog = ProgressDialog.show(ResumePicture.this, "Download File...",
-				"Please Wait!", true);
+		myDialog = ProgressDialog.show(ResumePicture.this, "Download File...","Please Wait!", true);
 		new LoadTask().execute(new String[] {});
 
 		viewFlow = (ViewFlow) findViewById(R.id.viewflow);

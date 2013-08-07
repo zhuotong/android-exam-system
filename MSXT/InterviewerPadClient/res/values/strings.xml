@@ -26,10 +26,10 @@
     
     
     <string-array name="candidate_detail_descs">
-        <item>Resume</item>
+        <item>Candiadate Resume</item>
         <item>Exam Report</item>
-        <item>Interview Status</item>
-        <item>Submit Result</item>
+        <item>Interview History</item>
+        <item>Interview Submit</item>
     </string-array>
     
     <string name="candidate_detail_resume">Resume</string>
