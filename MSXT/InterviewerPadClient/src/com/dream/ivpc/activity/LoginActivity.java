@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 
 import com.dream.ivpc.BaseActivity;
 import com.dream.ivpc.R;
+import com.dream.ivpc.custom.CustomDialog;
 import com.dream.ivpc.model.LoginResult;
 import com.dream.ivpc.util.FileUtil;
 import com.dream.ivpc.util.NetWorkUtil;
@@ -17,6 +18,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -36,6 +39,7 @@ public class LoginActivity extends BaseActivity {
 	Context mContext;
 	
 	ProgressDialog myDialog = null;
+	CustomDialog cusDialog = null;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -80,12 +84,29 @@ public class LoginActivity extends BaseActivity {
 		private boolean succFlag = false;
 		@Override
 		protected void onPreExecute() {
-			myDialog = ProgressDialog.show(LoginActivity.this, "Login...","Please Wait!", true);
+//			myDialog = ProgressDialog.show(LoginActivity.this, "Login...","Please Wait!", true);
+//			myDialog = new ProgressDialog(LoginActivity.this,R.style.custom_dialog_style);
+//			myDialog=new ProgressDialog(mContext);
+//			myDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//			myDialog.setTitle("Login");
+//			myDialog.setMessage("Login,plase wait...");
+//			myDialog.setIcon(R.drawable.android);
+//			myDialog.setIndeterminate(false);
+//			myDialog.setCancelable(true);
+//			myDialog.show();
+			cusDialog = new CustomDialog(LoginActivity.this,R.style.custom_dialog_style);
+			//set alpha
+			Window wd = cusDialog.getWindow();
+			WindowManager.LayoutParams lp = wd.getAttributes();
+			lp.alpha = 0.8f;
+			wd.setAttributes(lp);
+			cusDialog.show();
+
 		}
 		@Override
 		protected String doInBackground(String... urls) {
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(5000);
 				succFlag = true;
 			} catch (Exception e) {
 				Log.e(LOG_TAG, "erro message:" + e.getMessage());
@@ -94,7 +115,9 @@ public class LoginActivity extends BaseActivity {
 		}
 		@Override
 		protected void onPostExecute(String result) {
-			myDialog.dismiss();
+//			myDialog.dismiss();
+			cusDialog.dismiss();
+			
 			if (succFlag) {
 				FileInputStream inputStream = FileUtil.getFileInputStream(getPath("admin"));
 				LoginResult lResult = XMLParseUtil.parseLoginResult(inputStream);
@@ -119,5 +142,5 @@ public class LoginActivity extends BaseActivity {
 		String basePath = Environment.getExternalStorageDirectory() + "/interviewer";
 		return basePath + File.separator + admin  + File.separator + "login_result.xml";
 	}
-    
+	
 }

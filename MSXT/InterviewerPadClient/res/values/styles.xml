@@ -94,4 +94,12 @@
         <item name="android:textSize">22sp</item>
         <item name="android:textColor">#000000</item>
     </style>
+    
+    <style name="custom_dialog_style" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
 </resources>

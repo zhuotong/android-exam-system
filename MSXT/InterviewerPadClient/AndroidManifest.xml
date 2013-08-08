@@ -45,7 +45,13 @@
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
-               
+
+        <activity android:name="com.dream.ivpc.activity.CandidateDetail2"
+                  android:theme="@android:style/Theme.Light.NoTitleBar"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        
         <activity android:name="com.dream.ivpc.activity.CandidateHome"
                   android:theme="@android:style/Theme.Light.NoTitleBar"
      	 	      android:screenOrientation="portrait"

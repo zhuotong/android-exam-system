@@ -1,11 +1,8 @@
 package com.dream.ivpc.adapter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import com.dream.ivpc.R;
-import com.dream.ivpc.R.id;
-import com.dream.ivpc.R.layout;
 import com.dream.ivpc.model.ExamBean;
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -80,7 +80,7 @@ public class CandidateList extends ListActivity {
             	Intent intent = new Intent();
     			intent.putExtra("name", bean.getName());
     			intent.putExtra("position", bean.getPosition());
-    			intent.setClass( mContext, CandidateDetail.class);
+    			intent.setClass( mContext, CandidateDetail2.class);
     			startActivity(intent); 
 			}      	
         });
@@ -119,7 +119,7 @@ public class CandidateList extends ListActivity {
 		candiateList = XMLParseUtil.parseCandidates(inputStream);
 		Collections.sort(candiateList,new Comparator<CandiateBean>(){  
             public int compare(CandiateBean arg0, CandiateBean arg1) {  
-                return arg1.getTime().compareTo(arg0.getTime());  
+                return arg0.getTime().compareTo(arg1.getTime());  
             }  
         });
 	}

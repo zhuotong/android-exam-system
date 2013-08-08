@@ -14,6 +14,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.widget.ImageButton;
+
 import com.dream.ivpc.BaseActivity;
 import com.dream.ivpc.R;
 import com.dream.ivpc.adapter.ExamResultRptAdapter;
@@ -34,8 +38,18 @@ public class ExamRptPicture extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.candidate_resume_group);
-
+		
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        setContentView(R.layout.candidate_resume_group);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title);
+        ImageButton closeIB = (ImageButton) findViewById(R.id.closeIB);
+        closeIB.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
+        
 		mContext = getApplicationContext();
 		myDialog = ProgressDialog.show(ExamRptPicture.this, "Download File...","Please Wait!", true);
 
