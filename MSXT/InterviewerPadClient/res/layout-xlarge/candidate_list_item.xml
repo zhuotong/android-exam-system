@@ -7,9 +7,13 @@
 
       <TextView
 	     android:id="@+id/index"
-         android:layout_width="80dp"
+         android:layout_width="60dp"
+         android:layout_marginTop="2dp"
+         android:layout_marginBottom="2dp"
          android:layout_marginLeft="10dp"
-	     style="@style/can_list_tv_style"/>
+	     style="@style/can_list_tv_style"
+	     android:background="@drawable/index_tv"
+	     android:textColor="#FFFFFF"/>
           
       <TextView
 	     android:id="@+id/time"

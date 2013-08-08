@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="60dp"
-    android:background="#091AFE"
+    android:background="@drawable/candidate_list_header"
     android:orientation="horizontal" >
 
     <ImageView android:id="@+id/imgGoHome"

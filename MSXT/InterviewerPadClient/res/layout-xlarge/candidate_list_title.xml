@@ -2,12 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="#6A42FE"
     android:descendantFocusability="blocksDescendants" >
 
     <TextView
         style="@style/can_list_title_style"
-        android:layout_width="80dp"
+        android:layout_width="60dp"
         android:layout_marginLeft="10dp"
         android:text="@string/label_candidate_title_index" />
 

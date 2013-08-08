@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="60dp"
-    android:background="#091AFE"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:background="@drawable/candidate_list_header" >
         
        <ImageView android:id="@+id/imgGoBack"
 	        android:layout_width="wrap_content"
