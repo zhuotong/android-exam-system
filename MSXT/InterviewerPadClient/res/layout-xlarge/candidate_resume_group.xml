@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/com.dream.ivpc"
 	android:orientation="vertical" 
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@drawable/resume_bg">
 
 <!--    <include layout="@layout/candidate_header" /> -->
     
-   <FrameLayout
+<!--    <FrameLayout
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent">	
+	android:layout_height="fill_parent"
+	android:layout_marginLeft="10dp"
+	android:layout_marginRight="10dp"
+	android:layout_marginTop="0dp"
+	android:layout_marginBottom="30dp">	 -->
 	 	<org.viewflow.android.widget.CircleFlowIndicator
 			android:padding="50dip"
 			android:layout_height="wrap_content"
@@ -21,11 +26,18 @@
 		
 	 	<org.viewflow.android.widget.ViewFlow
 			android:id="@+id/viewflow" 
-			android:layout_width="850dp"
-			android:layout_height="850dp" 
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
 			app:sidebuffer="3">
 	     </org.viewflow.android.widget.ViewFlow>
-	</FrameLayout>
+	     
+	 	<ProgressBar android:id="@+id/loading_resume"
+	        style="?android:progressBarStyle"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center" />
+	 		    
+<!-- 	</FrameLayout> -->
 	    
 <!-- 	<include layout="@layout/candidate_footer" /> -->
-</LinearLayout>
+</FrameLayout>

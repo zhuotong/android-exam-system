@@ -16,7 +16,6 @@ import com.dream.ivpc.model.ResumePageBean;
 import com.dream.ivpc.util.XMLParseUtil;
 import com.dream.ivpc.util.FileUtil;
 import com.dream.ivpc.util.ImageUtil;
-import android.app.ProgressDialog;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -27,12 +26,13 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class ResumePicture extends CandidateBase {
 
 	ImageButton closeIB;
-	ProgressDialog myDialog = null;
+//	ProgressDialog myDialog = null;
 	ViewFlow viewFlow;
 	CircleFlowIndicator indic;
 
@@ -63,8 +63,7 @@ public class ResumePicture extends CandidateBase {
 		((ImageView) findViewById(R.id.imgLogout)).setOnClickListener(ocLister);
         
 //		setHeader(null,(ImageView) findViewById(R.id.imgGoBack));
-
-		myDialog = ProgressDialog.show(ResumePicture.this, "Download File...","Please Wait!", true);
+//		myDialog = ProgressDialog.show(ResumePicture.this, "Download File...","Please Wait!", true);
 		new LoadTask().execute(new String[] {});
 
 		viewFlow = (ViewFlow) findViewById(R.id.viewflow);
@@ -87,10 +86,13 @@ public class ResumePicture extends CandidateBase {
 	private class LoadTask extends AsyncTask<String, Void, String> {
 		private List<Bitmap> bitmapList = new ArrayList<Bitmap>();
 		private String message;
-
+		private ProgressBar progressBar;
+		
 		@Override
 		protected void onPreExecute() {
 			Log.i(LOG_TAG, "onPreExecute() called");
+			progressBar = (ProgressBar) findViewById(R.id.loading_resume);
+			progressBar.setVisibility(View.VISIBLE);
 		}
 
 		@Override
@@ -105,18 +107,7 @@ public class ResumePicture extends CandidateBase {
 
 				// String encodedContent = null;
 				for (ResumePageBean bean : pageList) {
-					// if(bean.getIndex() == 1){
-					// Log.i(LOG_TAG,"Resume Page: "+String.valueOf(bean.getIndex()));
-					// encodedContent = bean.getContent().toString();
-					// Log.i(LOG_TAG, "Resume encodedContent:" +
-					// encodedContent);
-					//
-					// break;
-					// }
-					// ImageUtil.saveAsFileWriter(bean.getContent().toString(),
-					// ALBUM_PATH+File.separator+"base64(2).txt");
-					Bitmap bitmap = ImageUtil.decodeBase64(bean.getContent()
-							.toString());
+					Bitmap bitmap = ImageUtil.decodeBase64(bean.getContent().toString());
 					bitmapList.add(bitmap);
 				}
 
@@ -131,17 +122,15 @@ public class ResumePicture extends CandidateBase {
 
 		@Override
 		protected void onPostExecute(String result) {
-			myDialog.dismiss();
+			progressBar.setVisibility(View.GONE);
 
 			// if("success".equals(message)&&bitmap!=null){
 			// imageView.setImageBitmap(bitmap);
 			// }
-			viewFlow.setAdapter(new ResumeGroupAdapter(mContext, bitmapList),
-					bitmapList.size());
+			viewFlow.setAdapter(new ResumeGroupAdapter(mContext, bitmapList),bitmapList.size());
 			viewFlow.setFlowIndicator(indic);
 
-			Toast.makeText(ResumePicture.this, message, Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(ResumePicture.this, message, Toast.LENGTH_SHORT).show();
 		}
 
 	}

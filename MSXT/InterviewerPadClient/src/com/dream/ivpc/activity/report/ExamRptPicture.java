@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.dream.ivpc.BaseActivity;
 import com.dream.ivpc.PageChange;
@@ -31,7 +32,6 @@ import com.dream.ivpc.util.ImageUtil;
 public class ExamRptPicture extends BaseActivity {
 
 	Context mContext;
-	private ProgressDialog myDialog = null;
 	private ViewFlow viewFlow;
 	private CircleFlowIndicator indic;
 
@@ -67,8 +67,6 @@ public class ExamRptPicture extends BaseActivity {
 		((ImageView) findViewById(R.id.customBack)).setOnClickListener(ocLister);
 		((ImageView) findViewById(R.id.imgLogout)).setOnClickListener(ocLister);
 		
-		myDialog = ProgressDialog.show(ExamRptPicture.this, "Download File...","Please Wait!", true);
-
 		new LoadTask().execute(new String[] {});
 		viewFlow = (ViewFlow) findViewById(R.id.viewflow);
 		indic = (CircleFlowIndicator) findViewById(R.id.viewflowindic);
@@ -92,10 +90,13 @@ public class ExamRptPicture extends BaseActivity {
 	private class LoadTask extends AsyncTask<String, Void, String> {
 		private List<Bitmap> bitmapList = new ArrayList<Bitmap>();
 		private boolean succFlag = false;
+		private ProgressBar progressBar;
 
 		@Override
 		protected void onPreExecute() {
 			Log.i(LOG_TAG, "onPreExecute() called");
+			progressBar = (ProgressBar) findViewById(R.id.loading_resume);
+			progressBar.setVisibility(View.VISIBLE);
 		}
 
 		@Override
@@ -122,7 +123,7 @@ public class ExamRptPicture extends BaseActivity {
 
 		@Override
 		protected void onPostExecute(String result) {
-			myDialog.dismiss();
+			progressBar.setVisibility(View.GONE);
 			if (succFlag) {
 				viewFlow.setAdapter(new ExamResultRptAdapter(mContext, bitmapList),bitmapList.size());
 				viewFlow.setFlowIndicator(indic);
