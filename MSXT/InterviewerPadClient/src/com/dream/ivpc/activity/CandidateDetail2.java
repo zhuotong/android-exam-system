@@ -52,8 +52,10 @@ public class CandidateDetail2 extends BaseActivity {
 		//load GridView
         GridView gridview = (GridView) findViewById(R.id.gridview);
         String[] descs = this.getResources().getStringArray(R.array.candidate_detail_descs);
+        int[] imgIds = new int[]{R.drawable.detail_btn1_selector,R.drawable.detail_btn2_selector,R.drawable.detail_btn3_selector,R.drawable.detail_btn4_selector};
+        
         for(int i=0;i<descs.length;i++){
-        	detailList.add(new DetailBean(descs[i],R.drawable.resume_selector));
+        	detailList.add(new DetailBean(descs[i],imgIds[i]));
         }
         
         adapter =  new CandidateDetailAdapter(detailList,mContext);

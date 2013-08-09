@@ -62,7 +62,7 @@ public class CandidateList extends ListActivity {
 		nameSortIcon = (ImageView) findViewById(R.id.nameSortIcon);
 		timeSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.down_32));
 		
-		progressBar = (ProgressBar) findViewById(R.id.loading_spinner);
+		progressBar = (ProgressBar) findViewById(R.id.loading_can_list);
 		listView = (PullToRefreshListView) getListView();
 		// Set a listener to be invoked when the list should be refreshed.
 		listView.setOnRefreshListener(new PullToRefreshListView.OnRefreshListener() {

@@ -7,31 +7,39 @@
 
       <TextView
 	     android:id="@+id/index"
-         android:layout_width="60dp"
-         android:layout_marginTop="2dp"
-         android:layout_marginBottom="2dp"
+         android:layout_width="40dp"
+         android:layout_height="40dp"
          android:layout_marginLeft="10dp"
+         android:layout_marginRight="11dp"
 	     style="@style/can_list_tv_style"
 	     android:background="@drawable/index_tv"
 	     android:textColor="#FFFFFF"/>
-          
       <TextView
 	     android:id="@+id/time"
-	     android:layout_width="190dp"
+	     android:layout_width="191dp"
 		 style="@style/can_list_tv_style"/>
 
 	  <TextView
 	     android:id="@+id/position"
-	     android:layout_width="170dp"
+	     android:layout_width="171dp"
 	     style="@style/can_list_tv_style"/>
 	         	  
 	  <TextView
 	     android:id="@+id/name"
-	     android:layout_width="170dp"
+	     android:layout_width="171dp"
 		 style="@style/can_list_tv_style"/>
 
 	  <TextView
 	     android:id="@+id/phase"
-	     android:layout_width="170dp"
-		 style="@style/can_list_tv_style"/>	  
+	     android:layout_width="135dp"
+		 style="@style/can_list_tv_style"/>	
+		 
+	  <ImageView
+	        android:id="@+id/forwardIcon"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_vertical"
+	        android:contentDescription="@string/msg_logo_desc"
+	        android:src="@drawable/forward_48" >
+      </ImageView>
 </LinearLayout>

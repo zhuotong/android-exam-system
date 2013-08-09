@@ -60,21 +60,22 @@
         
         <!-- User Resume Start -->
         <activity android:name="com.dream.ivpc.activity.resume.ResumeTypeList"
-            	  android:theme="@style/CustomTheme"
+            	  android:theme="@style/CustomNoWindowTitleTheme"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
         <activity android:name="com.dream.ivpc.activity.resume.ResumePicture"
-            	  android:theme="@style/CustomTheme2"
+            	  android:theme="@style/CustomWindowTitleTheme"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
+        <!-- Deprecated -->
         <activity android:name="com.dream.ivpc.activity.resume.ResumePdfLoad"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
         <activity android:name="com.dream.ivpc.activity.resume.ResumeWebView"
-                  android:theme="@android:style/Theme.Dialog"
+                  android:theme="@style/CustomWindowTitleTheme"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
@@ -82,12 +83,12 @@
       
         <!-- User Exam Report and Detail Start -->
         <activity android:name="com.dream.ivpc.activity.report.ExamRptList"
-            	  android:theme="@style/CustomTheme"
+            	  android:theme="@style/CustomNoWindowTitleTheme"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
         <activity android:name="com.dream.ivpc.activity.report.ExamRptPicture"
-            	  android:theme="@android:style/Theme.Dialog"
+            	  android:theme="@style/CustomWindowTitleTheme"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
@@ -117,7 +118,7 @@
         
         <activity
             android:name="com.artifex.mupdfdemo.MuPDFActivity"
-            android:theme="@style/CustomTheme2"
+            android:theme="@style/CustomWindowTitleTheme"
             android:screenOrientation="portrait"
             android:label="@string/app_name">
             <intent-filter>

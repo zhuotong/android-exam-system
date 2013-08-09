@@ -37,7 +37,7 @@ public class CandidateBase extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 	        	Intent intent = new Intent();
-				intent.setClass( mContext, CandidateList.class);
+				intent.setClass( mContext, CandidateDetail2.class);
 				startActivity(intent);  
 			}
 			

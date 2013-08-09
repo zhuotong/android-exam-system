@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.viewflow.android.widget.CircleFlowIndicator;
 import org.viewflow.android.widget.ViewFlow;
+
+import com.dream.ivpc.PageChange;
 import com.dream.ivpc.R;
 import com.dream.ivpc.activity.CandidateBase;
 import com.dream.ivpc.adapter.ResumeGroupAdapter;
@@ -24,6 +26,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class ResumePicture extends CandidateBase {
@@ -33,6 +36,17 @@ public class ResumePicture extends CandidateBase {
 	ViewFlow viewFlow;
 	CircleFlowIndicator indic;
 
+    View.OnClickListener ocLister = new View.OnClickListener() {  
+        @Override  
+        public void onClick(View v) {
+        	finish();
+        	switch(v.getId()){
+        		case (R.id.customBack):PageChange.go2CandidateDeatil(mContext);break;
+        		case (R.id.imgLogout):PageChange.logout(mContext);break;
+        	}
+        }  
+    };
+    
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -45,13 +59,10 @@ public class ResumePicture extends CandidateBase {
         
 		mContext = getApplicationContext();
 		
-        closeIB = (ImageButton) findViewById(R.id.closeIB);
-        closeIB.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-		});
+		((ImageView) findViewById(R.id.customBack)).setOnClickListener(ocLister);
+		((ImageView) findViewById(R.id.imgLogout)).setOnClickListener(ocLister);
+        
+//		setHeader(null,(ImageView) findViewById(R.id.imgGoBack));
 
 		myDialog = ProgressDialog.show(ResumePicture.this, "Download File...","Please Wait!", true);
 		new LoadTask().execute(new String[] {});

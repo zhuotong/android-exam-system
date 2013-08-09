@@ -4,6 +4,7 @@ import java.util.concurrent.Executor;
 import java.io.InputStream;
 import java.io.FileInputStream;
 
+import com.dream.ivpc.PageChange;
 import com.dream.ivpc.R;
 
 import android.animation.Animator;
@@ -40,6 +41,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -340,7 +342,20 @@ public class MuPDFActivity extends Activity
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);//custom
 		createUI(savedInstanceState);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title2);
+		((ImageView) findViewById(R.id.customBack)).setOnClickListener(ocLister);
+		((ImageView) findViewById(R.id.imgLogout)).setOnClickListener(ocLister);
 	}
+	
+    View.OnClickListener ocLister = new View.OnClickListener() {  
+        @Override  
+        public void onClick(View v) {
+        	finish();
+        	switch(v.getId()){
+        		case (R.id.customBack):PageChange.go2CandidateDeatil(MuPDFActivity.this);break;
+        		case (R.id.imgLogout):PageChange.logout(MuPDFActivity.this);break;
+        	}
+        }  
+    };
 
 	public void requestPassword(final Bundle savedInstanceState) {
 		mPasswordView = new EditText(this);

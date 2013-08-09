@@ -12,9 +12,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
@@ -23,15 +23,12 @@ import com.dream.ivpc.R;
 import com.dream.ivpc.adapter.ResumeTypeAdapter;
 import com.dream.ivpc.model.ResumeTypeBean;
 import com.dream.ivpc.util.NetWorkUtil;
-import com.markupartist.android.widget.PullToRefreshListView;
 
 public class ResumeTypeList extends ListActivity{
 	public final static String LOG_TAG = "ResumeTypeList";
 	
-	ImageButton closeIB;
-	
 	Context mContext;
-	PullToRefreshListView listView;
+	ListView listView;
 	ResumeTypeAdapter adapter;
 	List<ResumeTypeBean> resumeTypeList = new ArrayList<ResumeTypeBean>();
     ProgressBar progressBar;
@@ -48,14 +45,14 @@ public class ResumeTypeList extends ListActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+//        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.resume_type_list);
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title);
+//        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title);
         
         mContext = getApplicationContext();
         
-        closeIB = (ImageButton) findViewById(R.id.closeIB);
-        closeIB.setOnClickListener(new View.OnClickListener() {
+        ImageView closeIcon =  (ImageView) findViewById(R.id.closeIcon);
+        closeIcon.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				finish();
@@ -63,14 +60,14 @@ public class ResumeTypeList extends ListActivity{
 		});
 
 		progressBar = (ProgressBar) findViewById(R.id.loading_spinner);
-		listView = (PullToRefreshListView) getListView();
+		listView =  getListView();
 		// Set a listener to be invoked when the list should be refreshed.
-		listView.setOnRefreshListener(new PullToRefreshListView.OnRefreshListener() {
-			@Override
-			public void onRefresh() {
-				new GetDataTask().execute();
-			}
-		});
+//		listView.setOnRefreshListener(new PullToRefreshListView.OnRefreshListener() {
+//			@Override
+//			public void onRefresh() {
+//				new GetDataTask().execute();
+//			}
+//		});
 		
         listView.setOnItemClickListener(new OnItemClickListener(){
         	@Override
@@ -79,7 +76,7 @@ public class ResumeTypeList extends ListActivity{
         		
         		Log.i(LOG_TAG,"arg2:"+String.valueOf(arg2));
         		
-        		ResumeTypeBean bean = resumeTypeList.get(arg2-1);
+        		ResumeTypeBean bean = resumeTypeList.get(arg2);
         		if(bean.isAvailable()){
         			String type = bean.getTypeName();
         			
@@ -93,7 +90,9 @@ public class ResumeTypeList extends ListActivity{
         			}
         			if("Html".equalsIgnoreCase(type)){
         				loadHtml();
-        			}  
+        			}
+        			
+        			closeWindow();
         		}
 			}      	
         });
@@ -131,6 +130,10 @@ public class ResumeTypeList extends ListActivity{
 		intent.setClass( mContext, ResumeWebView.class);
 		startActivity(intent); 
     }
+    
+    public void closeWindow(){
+    	finish();
+    }
 	   
 	private class GetDataTask extends AsyncTask<Void, Void, String[]> {
         @Override
@@ -149,9 +152,9 @@ public class ResumeTypeList extends ListActivity{
             if(resumeTypeList!=null&&resumeTypeList.size()>0){
             	adapter = new ResumeTypeAdapter(resumeTypeList,mContext);
                 setListAdapter(adapter); 
+//                listView.setAdapter(adapter);
                 
                 // Call onRefreshComplete when the list has been refreshed.
-                listView.onRefreshComplete();
                 progressBar.setVisibility(View.GONE);
                 
             }else{

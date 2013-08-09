@@ -2,10 +2,10 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 	<item 
 	    android:state_pressed="true"
-		android:drawable="@drawable/resume2_sp" />
+		android:drawable="@drawable/detail_btn1_sp" />
 	<item 
 	    android:state_focused="true"
-		android:drawable="@drawable/resume2_sp" />
+		android:drawable="@drawable/detail_btn1_sp" />
 	<item 
-	    android:drawable="@drawable/resume2" />
+	    android:drawable="@drawable/detail_btn1" />
 </selector>

@@ -106,7 +106,7 @@ public class LoginActivity extends BaseActivity {
 		@Override
 		protected String doInBackground(String... urls) {
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(2000);
 				succFlag = true;
 			} catch (Exception e) {
 				Log.e(LOG_TAG, "erro message:" + e.getMessage());

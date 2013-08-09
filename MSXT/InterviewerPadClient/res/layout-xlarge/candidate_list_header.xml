@@ -8,14 +8,16 @@
     <ImageView android:id="@+id/imgGoHome"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_gravity="center_vertical|left"
-			android:src="@android:drawable/ic_menu_revert" 
+	        android:layout_weight="1"
+	        android:layout_gravity="center_vertical"
+			android:src="@drawable/back_64" 
 			android:contentDescription="@string/msg_logo_go_back">
 	</ImageView>
 	   
     <TextView
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="10"
         android:layout_gravity="center_vertical|center_horizontal"
         android:gravity="center_vertical|center_horizontal"
         android:text="@string/candidate_list_header_text"
@@ -23,5 +25,14 @@
         android:textSize="25sp" >
     </TextView>
 
+    <ImageView android:id="@+id/imgLogout"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:layout_gravity="center_vertical|right"
+			android:src="@drawable/logout_64" 
+			android:contentDescription="@string/msg_logo_go_back">
+	</ImageView>
+	
 </LinearLayout>
 

@@ -12,9 +12,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -31,7 +30,7 @@ public class ExamRptList extends ListActivity {
 	public final static String LOG_TAG = "CandidateExamList";
 	Context mContext;
 
-	ImageButton closeIB = null;
+	
 	ListView listView;
 	ProgressBar progressBar;
 	
@@ -58,14 +57,14 @@ public class ExamRptList extends ListActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		
-		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+//		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.candidate_exam_list);
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title);
+//		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title);
 		
 		mContext = getApplicationContext();
 		
-        closeIB = (ImageButton) findViewById(R.id.closeIB);
-        closeIB.setOnClickListener(new View.OnClickListener() {
+		ImageView closeIcon =  (ImageView) findViewById(R.id.closeIcon);
+        closeIcon.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				finish();

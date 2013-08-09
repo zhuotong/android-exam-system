@@ -27,7 +27,7 @@
 	    <!-- The "loading indicator" view. This view overlaps with
 	         the content, so the visibility of these two views
 	         should be mutually exclusive. -->
-	    <ProgressBar android:id="@+id/loading_spinner"
+	    <ProgressBar android:id="@+id/loading_can_list"
 	        style="?android:progressBarStyle"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"

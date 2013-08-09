@@ -16,9 +16,10 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.dream.ivpc.BaseActivity;
+import com.dream.ivpc.PageChange;
 import com.dream.ivpc.R;
 import com.dream.ivpc.adapter.ExamResultRptAdapter;
 import com.dream.ivpc.model.ExamRptBean;
@@ -34,6 +35,17 @@ public class ExamRptPicture extends BaseActivity {
 	private ViewFlow viewFlow;
 	private CircleFlowIndicator indic;
 
+    View.OnClickListener ocLister = new View.OnClickListener() {  
+        @Override  
+        public void onClick(View v) {
+        	finish();
+        	switch(v.getId()){
+        		case (R.id.customBack):PageChange.go2CandidateDeatil(mContext);break;
+        		case (R.id.imgLogout):PageChange.logout(mContext);break;
+        	}
+        }  
+    };
+    
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -41,16 +53,20 @@ public class ExamRptPicture extends BaseActivity {
 		
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.candidate_resume_group);
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title);
-        ImageButton closeIB = (ImageButton) findViewById(R.id.closeIB);
-        closeIB.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-		});
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title2);
+        
+//        ImageButton closeIB = (ImageButton) findViewById(R.id.closeIB);
+//        closeIB.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				finish();
+//			}
+//		});
         
 		mContext = getApplicationContext();
+		((ImageView) findViewById(R.id.customBack)).setOnClickListener(ocLister);
+		((ImageView) findViewById(R.id.imgLogout)).setOnClickListener(ocLister);
+		
 		myDialog = ProgressDialog.show(ExamRptPicture.this, "Download File...","Please Wait!", true);
 
 		new LoadTask().execute(new String[] {});
