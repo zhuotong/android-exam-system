@@ -32,10 +32,19 @@ public class XMLParseUtil {
 					if (parser.getName().equals("result")) {
 						bean = new LoginResult();
 					} else if (parser.getName().equals("success") && bean!=null ) {
-						boolean success = (parser.nextText()).equalsIgnoreCase("yes")? true:false;
-						bean.setSuccess(success);
-					} else if (parser.getName().equals("sessionid") && bean!=null) {
-						bean.setSessionId(parser.nextText());
+						bean.setSuccess(true);
+					} else if (parser.getName().equals("user_id") && bean!=null) {
+						bean.setUserId(parser.nextText());
+					} else if (parser.getName().equals("name") && bean!=null) {
+						bean.setUserName(parser.nextText());
+					} else if (parser.getName().equals("token") && bean!=null) {
+						bean.setToken(parser.nextText());
+					} else if (parser.getName().equals("failure") && bean!=null) {
+						bean.setSuccess(false);
+					} else if (parser.getName().equals("error_code") && bean!=null) {
+						bean.setError_code(parser.nextText());
+					} else if (parser.getName().equals("error_desc") && bean!=null) {
+						bean.setError_desc(parser.nextText());
 					} 
 					break;
 				case XmlPullParser.END_TAG:

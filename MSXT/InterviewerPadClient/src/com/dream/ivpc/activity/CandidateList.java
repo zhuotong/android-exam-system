@@ -36,10 +36,12 @@ public class CandidateList extends ListActivity {
 	ImageView timeSortIcon = null;
 	ImageView positionSortIcon = null;
 	ImageView nameSortIcon = null;
+	ImageView phaseSortIcon = null;
 	
 	int timeSortFlag = -1;
 	int positionSortFlag = -1;
 	int nameSortFlag = -1;
+	int phaseSortFlag = -1;
 	
 	Context mContext;
 	PullToRefreshListView listView;
@@ -60,6 +62,8 @@ public class CandidateList extends ListActivity {
 		timeSortIcon = (ImageView) findViewById(R.id.timeSortIcon);
 		positionSortIcon = (ImageView) findViewById(R.id.positionSortIcon);
 		nameSortIcon = (ImageView) findViewById(R.id.nameSortIcon);
+		phaseSortIcon = (ImageView) findViewById(R.id.phaseSortIcon);
+				
 		timeSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.down_32));
 		
 		progressBar = (ProgressBar) findViewById(R.id.loading_can_list);
@@ -80,6 +84,7 @@ public class CandidateList extends ListActivity {
             	Intent intent = new Intent();
     			intent.putExtra("name", bean.getName());
     			intent.putExtra("position", bean.getPosition());
+    			intent.putExtra("phase", bean.getPhase());
     			intent.setClass( mContext, CandidateDetail2.class);
     			startActivity(intent); 
 			}      	
@@ -130,12 +135,13 @@ public class CandidateList extends ListActivity {
         protected String[] doInBackground(Void... params) {
             // Simulates a background job.
             try {
-                Thread.sleep(2000);
+                Thread.sleep(500);
                 loadData();
             } catch (InterruptedException e) {
             }
             return null;
         }
+        
         @Override
         protected void onPostExecute(String[] result) {
             super.onPostExecute(result);
@@ -186,6 +192,7 @@ public class CandidateList extends ListActivity {
 		
 		positionSortIcon.setImageDrawable(null);
 		nameSortIcon.setImageDrawable(null);
+		phaseSortIcon.setImageDrawable(null);
 	}
 	
 	public void sortByPosition(){
@@ -211,6 +218,7 @@ public class CandidateList extends ListActivity {
 		
 		timeSortIcon.setImageDrawable(null);
 		nameSortIcon.setImageDrawable(null);
+		phaseSortIcon.setImageDrawable(null);
 	}
 	
 	public void sortByName(){
@@ -234,6 +242,32 @@ public class CandidateList extends ListActivity {
 				nameSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.down_32));
 		}
 		
+		timeSortIcon.setImageDrawable(null);
+		positionSortIcon.setImageDrawable(null);
+		phaseSortIcon.setImageDrawable(null);
+	}
+	
+	public void sortByPhase(){
+		switch(nameSortFlag){
+			case -1:
+				Collections.sort(candiateList,new Comparator<CandiateBean>(){  
+		            public int compare(CandiateBean arg0, CandiateBean arg1) {  
+		                return arg0.getPhase().compareTo(arg1.getPhase());  
+		            }  
+		        });	
+				phaseSortFlag = 1;	
+				phaseSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.up_32));
+				break;
+			case 1:
+				Collections.sort(candiateList,new Comparator<CandiateBean>(){  
+		            public int compare(CandiateBean arg0, CandiateBean arg1) {  
+		                return arg1.getPhase().compareTo(arg0.getPhase());  
+		            }  
+		        });
+				phaseSortFlag = -1;
+				phaseSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.down_32));
+		}
+		nameSortIcon.setImageDrawable(null);
 		timeSortIcon.setImageDrawable(null);
 		positionSortIcon.setImageDrawable(null);
 	}

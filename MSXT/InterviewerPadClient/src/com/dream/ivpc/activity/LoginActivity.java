@@ -1,8 +1,8 @@
 package com.dream.ivpc.activity;
 
 import java.io.File;
-import java.io.FileInputStream;
-
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import com.dream.ivpc.BaseActivity;
 import com.dream.ivpc.R;
 import com.dream.ivpc.custom.CustomDialog;
@@ -26,6 +26,10 @@ import android.widget.Toast;
 
 public class LoginActivity extends BaseActivity {
 	public final static String LOG_TAG = "LoginActivity";
+	
+	private static final String SERVER = "192.168.1.105";
+	private static final String PORT = "8080";
+	private static final String LOGIN_URI = "/msxt2/RequestDispatchServlet/interviewRunAction/interviewerLogin";
 	
 	String saveHost = null;
 	EditText idEt = null;
@@ -68,7 +72,7 @@ public class LoginActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 		        if(NetWorkUtil.isNetworkAvailable(mContext)){
-		        	new LoginTask().execute();
+		        	new LoginTask().execute(new String[]{"test","test"});
 		        }else{
 		        	Toast.makeText(mContext, "Your network is not available!", Toast.LENGTH_LONG).show();
 		        }
@@ -78,22 +82,14 @@ public class LoginActivity extends BaseActivity {
 		settingBtn = (Button) this.findViewById(R.id.settingBtn);
 		
     }
-    
-    
+ 
 	private class LoginTask extends AsyncTask<String, Void, String> {
 		private boolean succFlag = false;
+		HttpURLConnection conn = null;
+    	InputStream inputStream;
+		
 		@Override
 		protected void onPreExecute() {
-//			myDialog = ProgressDialog.show(LoginActivity.this, "Login...","Please Wait!", true);
-//			myDialog = new ProgressDialog(LoginActivity.this,R.style.custom_dialog_style);
-//			myDialog=new ProgressDialog(mContext);
-//			myDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-//			myDialog.setTitle("Login");
-//			myDialog.setMessage("Login,plase wait...");
-//			myDialog.setIcon(R.drawable.android);
-//			myDialog.setIndeterminate(false);
-//			myDialog.setCancelable(true);
-//			myDialog.show();
 			cusDialog = new CustomDialog(LoginActivity.this,R.style.custom_dialog_style);
 			//set alpha
 			Window wd = cusDialog.getWindow();
@@ -107,7 +103,23 @@ public class LoginActivity extends BaseActivity {
 		protected String doInBackground(String... urls) {
 			try {
 				Thread.sleep(2000);
+				
+//				URL loginURL = new URL("http://" + SERVER + ":" + PORT + LOGIN_URI);
+//				conn = (HttpURLConnection)loginURL.openConnection();
+//				conn.setDoOutput(true);
+//				conn.setUseCaches(false);
+//				conn.setConnectTimeout(10000);
+//				conn.setRequestMethod( "POST" );
+//				conn.connect();
+//				OutputStream os = conn.getOutputStream();
+//				os.write( ("loginName="+urls[0]+"&loginPassword=" + urls[1]).getBytes("utf-8") );
+//				os.close();
+//				inputStream = conn.getInputStream();
+				
+				inputStream = FileUtil.getFileInputStream(getPath("admin"));
 				succFlag = true;
+				
+				
 			} catch (Exception e) {
 				Log.e(LOG_TAG, "erro message:" + e.getMessage());
 			}
@@ -118,16 +130,16 @@ public class LoginActivity extends BaseActivity {
 //			myDialog.dismiss();
 			cusDialog.dismiss();
 			
-			if (succFlag) {
-				FileInputStream inputStream = FileUtil.getFileInputStream(getPath("admin"));
+			if(inputStream!=null){
 				LoginResult lResult = XMLParseUtil.parseLoginResult(inputStream);
 				if(lResult.isSuccess()){
 					go2CandiateList();
+					Toast.makeText(mContext, "Login Success! Name:"+  lResult.getUserName()+" token:"+lResult.getToken(), Toast.LENGTH_LONG).show();
 				}else{
-					ShowDialog("Warning","Fail to Login!");
+					ShowDialog("Warning",lResult.getError_code()+":"+lResult.getError_desc());
 				}
 			}else{
-				
+				ShowDialog("Warning","Fail to login!");
 			}
 		}
 	}

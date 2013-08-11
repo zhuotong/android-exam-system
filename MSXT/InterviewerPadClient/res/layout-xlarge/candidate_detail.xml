@@ -6,7 +6,9 @@
 	android:orientation="vertical"
 	android:background="#E8E8E8">
 
-    <include layout="@layout/candidate_header" />
+    <include layout="@layout/candidate_detail_header" />
+    
+	<include layout="@layout/candidate_detail_info" />
 
  	<GridView 
 	    android:id="@+id/gridview"

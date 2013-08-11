@@ -13,13 +13,7 @@
              android:contentDescription="@string/candiate_detail_image" >
          </ImageView>
  
-<!--           <ImageButton
-             android:id="@+id/detailImage"
-             android:layout_width="300dp"
-             android:layout_height="300dp"
-             android:contentDescription="@string/candiate_detail_image"/> -->
-                  
-         <TextView android:id="@+id/detailDesc"
+<!--          <TextView android:id="@+id/detailDesc"
                android:layout_width="wrap_content" 
                android:layout_height="wrap_content" 
                android:layout_below="@+id/detailImage"
@@ -27,7 +21,5 @@
                android:textColor="#0F5DFF"
                android:layout_centerHorizontal="true" >
          </TextView>
-
-
-
+ -->
 </RelativeLayout>

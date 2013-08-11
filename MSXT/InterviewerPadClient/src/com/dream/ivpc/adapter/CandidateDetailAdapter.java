@@ -11,7 +11,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.dream.ivpc.R;
-import com.dream.ivpc.activity.CandidateList;
 import com.dream.ivpc.activity.report.ExamRptList;
 import com.dream.ivpc.activity.resume.ResumeTypeList;
 import com.dream.ivpc.model.DetailBean;
@@ -52,7 +51,7 @@ public class CandidateDetailAdapter extends BaseAdapter{
 			holder = new ViewHolder();
 			//set 3 component 
 			holder.detailIV = (ImageView)convertView.findViewById(R.id.detailImage);
-			holder.detailTV = (TextView)convertView.findViewById(R.id.detailDesc);
+//			holder.detailTV = (TextView)convertView.findViewById(R.id.detailDesc);
 			
 			convertView.setTag(holder);
 		}else{
@@ -75,14 +74,14 @@ public class CandidateDetailAdapter extends BaseAdapter{
 			}
 		});
 		
-		holder.detailTV.setText(bean.getName());
+//		holder.detailTV.setText(bean.getName());
 		return convertView;
 	}
 	
 
 	static class ViewHolder{
 		ImageView detailIV;
-		TextView detailTV;
+//		TextView detailTV;
 	}
 	
     public void chooseResume(){

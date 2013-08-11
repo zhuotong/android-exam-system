@@ -62,8 +62,8 @@ public class CandidateDetail extends BaseActivity {
         }
         
 		SimpleAdapter saImageItems = new SimpleAdapter(this, lstImageItem,
-				R.layout.candidate_detail_item, new String[] { "ItemImage","ItemText" },
-				new int[] { R.id.detailImage, R.id.detailDesc });
+				R.layout.candidate_detail_item, new String[] { "ItemImage"},
+				new int[] { R.id.detailImage});
         gridview.setAdapter(saImageItems);
         gridview.setOnItemClickListener(new ItemClickListener());
     }

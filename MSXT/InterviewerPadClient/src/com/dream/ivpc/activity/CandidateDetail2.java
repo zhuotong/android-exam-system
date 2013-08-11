@@ -38,16 +38,20 @@ public class CandidateDetail2 extends BaseActivity {
         setContentView(R.layout.candidate_detail);
         mContext = getApplicationContext();
 
+        //set header
         imgGoBack = (ImageView) this.findViewById(R.id.imgGoBack);
         imgGoBack.setOnClickListener(goBackListener);
-        
         canInfoTV = (TextView) this.findViewById(R.id.candidateInfo);
+        canInfoTV.setText("Candidate Detail");
+        
+        //set candidate infor value
 		Bundle bundle = this.getIntent().getExtras();
 		String name  = bundle.getString("name");
 		String position  = bundle.getString("position");
-		if(name!=null&&position!=null){
-			canInfoTV.setText(name+"("+position+")");
-		}
+		String phase  = bundle.getString("phase");
+		((TextView) this.findViewById(R.id.nameTV)).setText(name);
+		((TextView) this.findViewById(R.id.positionTV)).setText(position);
+		((TextView) this.findViewById(R.id.phaseTV)).setText(phase);
         
 		//load GridView
         GridView gridview = (GridView) findViewById(R.id.gridview);
