@@ -1,5 +1,11 @@
 package com.dream.eexam.base;
 
+import com.dream.eexam.base.R;
+import com.dream.eexam.base.R.color;
+import com.dream.eexam.base.R.drawable;
+import com.dream.eexam.base.R.id;
+import com.dream.eexam.base.R.layout;
+import com.dream.eexam.base.R.string;
 import com.dream.eexam.util.ActivityManage;
 import com.dream.eexam.util.SPUtil;
 import android.app.AlertDialog;

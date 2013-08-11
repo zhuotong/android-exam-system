@@ -1,5 +1,8 @@
 package com.dream.eexam.base;
 
+import com.dream.eexam.base.R;
+import com.dream.eexam.base.R.drawable;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;

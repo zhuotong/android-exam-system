@@ -1,5 +1,9 @@
 package com.dream.eexam.base;
 
+import com.dream.eexam.base.R;
+import com.dream.eexam.base.R.id;
+import com.dream.eexam.base.R.layout;
+import com.dream.eexam.base.R.string;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SPUtil;
 import com.dream.eexam.util.TimeDateUtil;

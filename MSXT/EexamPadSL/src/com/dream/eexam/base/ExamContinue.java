@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Calendar;
 
+import com.dream.eexam.base.R;
+import com.dream.eexam.base.R.id;
+import com.dream.eexam.base.R.layout;
+import com.dream.eexam.base.R.string;
 import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.FileUtil;
