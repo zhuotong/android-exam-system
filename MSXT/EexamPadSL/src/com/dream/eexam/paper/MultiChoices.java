@@ -2,15 +2,11 @@ package com.dream.eexam.paper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.SQLException;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -33,16 +29,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.dream.eexam.base.R;
 import com.dream.eexam.model.ChoiceExt;
-import com.dream.eexam.server.DataParseUtil;
-import com.dream.eexam.util.DatabaseUtil;
-import com.dream.eexam.util.FileUtil;
 import com.dream.eexam.util.SPUtil;
 import com.msxt.client.model.Examination.Choice;
-import com.msxt.client.model.SubmitSuccessResult;
-import com.msxt.client.server.ServerProxy;
-import com.msxt.client.server.WebServerProxy;
-import com.msxt.client.server.ServerProxy.Result;
-import com.msxt.client.server.ServerProxy.STATUS;
 
 public class MultiChoices extends BaseQuestion {
 	
@@ -52,6 +40,7 @@ public class MultiChoices extends BaseQuestion {
 	TextView questionTV = null;
 	ListView listView;
 	List<ChoiceExt> choiceExtList = new ArrayList<ChoiceExt>();
+	
 	MyListAdapter myAdapter;
 	List<String> answerItemList = new ArrayList<String>();
 	Integer indexInExam;
@@ -196,7 +185,6 @@ public class MultiChoices extends BaseQuestion {
 
 	void setFooter(){
     	//set preBtn
-    	
         if(cQuestionIndexOfExam == 1){
         	Drawable firstQuestion = getResources().getDrawable(R.drawable.ic_first_question_64);
         	backArrow.setImageDrawable(firstQuestion);
@@ -253,7 +241,6 @@ public class MultiChoices extends BaseQuestion {
 							.setPositiveButton(mContext.getResources().getString(R.string.msg_submiting_warning_yes),
 									new DialogInterface.OnClickListener() {
 										public void onClick(DialogInterface dialog,int id) {
-											new SubmitAnswerTask().execute(exam.getId());
 										}
 									})
 							.setNegativeButton(mContext.getResources().getString(R.string.msg_submiting_warning_cancel),
@@ -263,9 +250,7 @@ public class MultiChoices extends BaseQuestion {
 										}
 									});
 					builder.show();
-				} else {
-					new SubmitAnswerTask().execute(exam.getId());
-				}
+				} 
 			}
 		});
         
@@ -455,99 +440,11 @@ public class MultiChoices extends BaseQuestion {
     	TextView index;
     	TextView choiceDesc;
     }
-    
-    class SubmitAnswerTask extends AsyncTask<String, Void, String> {
-    	String examId;
-    	Map<String, String> answers;
-    	
-    	ProgressDialog progressDialog;
-    	ServerProxy proxy;
-    	Result submitResult;
-    	
-    	
-    	@Override
-    	protected void onPreExecute() {
-    		Log.i(LOG_TAG, "onPreExecute() called");
-    		String displayMessage =  mContext.getResources().getString(R.string.msg_submiting);
-    		progressDialog = ProgressDialog.show(MultiChoices.this, null, displayMessage, true, true);
-    		submitBtn.setEnabled(false);
-    	}
-    	
-        @Override
-		protected String doInBackground(String... urls) {
-        	Log.i(LOG_TAG, "doInBackground()...");
-        	examId = urls[0];
-        	try {
-				proxy =  WebServerProxy.Factroy.getCurrrentInstance();
-				DatabaseUtil dbUtil = new DatabaseUtil(mContext);
-				dbUtil.open();
-				answers =  getAllAnswers(dbUtil);
-				dbUtil.close();
-				
-				Log.i(LOG_TAG, "proxy.submitAnswer..."+examId);
-				submitResult = proxy.submitAnswer(examId,answers);
-			} catch (SQLException e) {
-				progressDialog.dismiss();
-			} catch (Exception e) {
-				progressDialog.dismiss();
-			}
-			return null;
-		}
-
-        @Override
-        protected void onPostExecute(String result) {
-        	progressDialog.dismiss();
-        	submitBtn.setEnabled(true);
-        	if(submitResult==null || submitResult.getStatus() == STATUS.ERROR){
-    			//save answer to local
-    			AlertDialog.Builder builder = new AlertDialog.Builder(MultiChoices.this);
-    			builder.setMessage(mContext.getResources().getString(R.string.warning_save_answer_local))
-    					.setCancelable(false)
-    					.setPositiveButton(mContext.getResources().getString(R.string.warning_save_answer_local_yes),
-    							new DialogInterface.OnClickListener() {
-    								public void onClick(DialogInterface dialog,int id) {
-    									String path = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
-    								    String examid = exam.getId();
-    									saveAnswer2Local(answers,path,examid);
-    									//save user status and exam status
-    									saveExamStatusAfterSubmitted();
-    									go2ExamResult(mContext);
-    								}
-    							})
-    					.setNegativeButton(mContext.getResources().getString(R.string.warning_save_answer_local_cancel),
-    							new DialogInterface.OnClickListener() {
-    								public void onClick(DialogInterface dialog,int id) {
-    									dialog.cancel();
-    								}
-    							});
-    			builder.show();
-			}else{
-        		//get result file name
-           		String resultFileName = FileUtil.RESULT_FILE_PREFIX + exam.getId() + FileUtil.FILE_SUFFIX_XML;
-        		Log.i(LOG_TAG, "resultFileName: " + resultFileName);
-    			
-        		//save submit result file
-        		FileUtil.saveFile(SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences), resultFileName, submitResult.getSuccessMessage());
-        		SubmitSuccessResult succResult = DataParseUtil.getSubmitSuccessResult(submitResult);
-        		
-        		//Save Exam Score to sharedPreferences
-        		SPUtil.save2SP(SPUtil.CURRENT_EXAM_SCORE, String.valueOf(succResult.getScore()), sharedPreferences);
-        		
-        		//save user status and exam status 
-        		saveExamStatusAfterSubmitted();
-        		
-				//move question
-        		go2ExamResult(mContext);
-			}
-        }
-    }
 
 	@Override
 	void setRemainingTime() {
-//		Log.i(LOG_TAG, "setRemainingTime()...");
 		String rTimeStr = getRemainingTime();
 		if(rTimeStr!=null){
-//			Log.i(LOG_TAG, "rTimeStr():"+rTimeStr);
 			remainingTime.setText(rTimeStr);
 		}else{
 			Log.i(LOG_TAG, "Time Out!");
@@ -557,7 +454,6 @@ public class MultiChoices extends BaseQuestion {
 			if(timer!=null){
 				timer.cancel();
 			}
-    		new SubmitAnswerTask().execute(exam.getId());
 		}
 	}
 }

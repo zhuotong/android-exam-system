@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.dream.eexam.base.R;
-import com.dream.eexam.base.R.string;
 import com.dream.eexam.paper.MultiChoices;
 import com.dream.eexam.paper.PendQuestions;
 import com.dream.eexam.paper.SingleChoices;

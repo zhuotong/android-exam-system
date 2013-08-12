@@ -2,6 +2,7 @@ package com.dream.eexam.base;
 
 import com.dream.eexam.base.R;
 import com.dream.eexam.util.SPUtil;
+import com.dream.eexam.util.StringUtil;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +31,10 @@ public class LoginActivity extends BaseActivity {
 	String currentUserPwd = null;
 	String userHome = null;
 	
+
+	public void systemSetting(){
+		SPUtil.save2SP("tangqi1", "1234",sharedPreferences);
+	}
 	
 	/** Called when the activity is first created. */
     @Override
@@ -38,23 +43,30 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         
-        
-        currentUserId = SPUtil.getFromSP(SPUtil.CURRENT_USER_ID, sharedPreferences);
-        currentUserPwd = SPUtil.getFromSP(SPUtil.CURRENT_USER_PWD, sharedPreferences);
+        systemSetting();
         
         idEt = (EditText) this.findViewById(R.id.idEt);
-        idEt.setText(currentUserId==null?"":currentUserId);
+//        idEt.setText(currentUserId==null?"":currentUserId);
 		
 		passwordET = (EditText) this.findViewById(R.id.passwordET);
-		passwordET.setText(currentUserPwd==null?"":currentUserPwd);
+//		passwordET.setText(currentUserPwd==null?"":currentUserPwd);
 		
 		loginBtn = (Button) this.findViewById(R.id.loginBtn);
 		loginBtn.setOnClickListener(new View.OnClickListener() {  
 	        @Override  
 	        public void onClick(View v) {
-	        	Intent intent = new Intent();
-				intent.setClass( LoginActivity.this, ExamStart.class);
-				startActivity(intent); 	        	
+	        	if(emptyValidate(idEt,passwordET)){
+	        		ShowDialog("Warning","UserId or password can not be empty! ");
+	        	}else{
+		        	if(passValidate(idEt.getText().toString(),passwordET.getText().toString())){
+			        	Intent intent = new Intent();
+						intent.setClass( LoginActivity.this, ExamStart.class);
+						startActivity(intent); 		   
+						SPUtil.save2SP(SPUtil.CURRENT_USER_ID, idEt.getText().toString(), sharedPreferences);
+		        	}else{
+		        		ShowDialog("Warning","Wrong userId or password!");
+		        	}	        		
+	        	}
 	        }  
 	    });
 		
@@ -68,7 +80,26 @@ public class LoginActivity extends BaseActivity {
 	        }  
 	    });
     }
+    
+    public boolean emptyValidate(EditText userIdTV,EditText userPassTV){
+    	if(userIdTV.getText() == null || userPassTV.getText() == null){
+    		return true;
+    	}
+    	if(StringUtil.isEmpty(userIdTV.getText().toString()) || StringUtil.isEmpty(userPassTV.getText().toString()))  {
+    		return true;
+    	}else{
+    		return false;
+    	}
+    }
  
+    public boolean passValidate(String userId,String userPass){
+    	String rightPass = SPUtil.getFromSP(userId, sharedPreferences);
+    	if(rightPass.equals(userPass)){
+    		return true;
+    	}else{
+    		return false;
+    	}
+    }
 
 
 }

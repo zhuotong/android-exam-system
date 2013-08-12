@@ -1,21 +1,26 @@
 package com.dream.eexam.base;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import com.dream.eexam.base.R;
-import com.dream.eexam.server.DataParseUtil;
+import com.dream.eexam.paper.ChoiceQuestion;
+import com.dream.eexam.paper.MultiChoices;
+import com.dream.eexam.paper.SingleChoices;
 import com.dream.eexam.util.SPUtil;
-import com.msxt.client.model.Examination;
-import com.msxt.client.model.Examination.Question;
-import com.msxt.client.model.LoginSuccessResult;
-import com.msxt.client.server.ServerProxy.Result;
-import android.annotation.SuppressLint;
+import com.dream.exam.bean.Exam;
+import com.dream.exam.bean.ExamParse;
+import com.dream.exam.bean.ExamXMLParse;
+import com.dream.exam.bean.Question;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,7 +30,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import com.msxt.client.model.QUESTION_TYPE;
 
 /**
  * ExamStart Page
@@ -46,29 +50,19 @@ public class ExamStart extends BaseActivity {
 	Spinner spinner;
 	Button startBtn;
 	
-	//declare data object
-	LoginSuccessResult succResult = new LoginSuccessResult();
-	List<com.msxt.client.model.LoginSuccessResult.Examination> examinations;
-	String conversation = null;
-	String selectedExamId = null;
-	String selectedExamName = null;
-	@SuppressLint("UseSparseArrays")
-	Map<Integer,String> examIdsMap = new HashMap<Integer,String>();
-	List<String> examNames = new ArrayList<String>();
+	String appHomePath;
+	String userId;
+	String examId;
+	List<String> examIds = new ArrayList<String>();
+	
 	ArrayAdapter<String> adapter;
-	QUESTION_TYPE fQuestionType = null;
 	
-	private void loadExamList(){
-		String loginResultFilePath  = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
-		String loginResultFile  = SPUtil.getFromSP(SPUtil.CURRENT_USER_LOGIN_FILE_NAME, sharedPreferences);
-		
-		Log.i(LOG_TAG,"loginResultFilePath:"+loginResultFilePath);
-		Log.i(LOG_TAG,"loginResultFile:"+loginResultFile);
-		
-		examNames.add("Exam A");
-		examNames.add("Exam B");
-		examNames.add("Exam C");
-	
+	public void loadExamList(String path){
+		File parent = new File(path);
+		File subFiles[] = parent.listFiles();
+		for(File file:subFiles){
+			examIds.add(file.getName());
+		}
 	}
 	
 	@Override
@@ -86,43 +80,30 @@ public class ExamStart extends BaseActivity {
 			}
 		});
 		
+		appHomePath = Environment.getExternalStorageDirectory().getPath()+File.separator + getResources().getString(R.string.app_file_home);
+		userId = SPUtil.getFromSP(SPUtil.CURRENT_USER_ID, sharedPreferences);
+		
 		//load Exam List Information
-		loadExamList();
+		loadExamList(appHomePath+File.separator+userId);
 		
 		//initial component
 		nameTV = (TextView) this.findViewById(R.id.nameTV);
-		nameTV.setText(succResult.getInterviewer());
+		nameTV.setText("test");
 		
 		jobTitleTV = (TextView) this.findViewById(R.id.jobTitleTV);
-		jobTitleTV.setText(succResult.getJobtitle());
+		jobTitleTV.setText("test");
 		
 		examDesc = (TextView) this.findViewById(R.id.examDesc);
 		
 		startBtn = (Button) findViewById(R.id.startBtn);
 		startBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
-    			Result examResult = null;
-    			//parse exam
-				Examination exam = DataParseUtil.getExam(examResult);
-				int ccIndex = 1;
-				int cqIndex = 1;
-				if(getccIndex()>0 && getcqIndex()>0){
-					ccIndex = getccIndex();
-					cqIndex = getcqIndex();
-				}
-				
-				Question fQuestion = DataParseUtil.getQuestionByCidQid(exam, ccIndex, cqIndex);
-
-				fQuestionType = fQuestion.getType();
-				Log.i(LOG_TAG, "----------Start a New Exam!-----------------");
-				
-				SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_GOING, sharedPreferences);
-				SPUtil.save2SP(SPUtil.CURRENT_EXAM_NAME, selectedExamName, sharedPreferences);
-				go2QuestionByType(fQuestionType,mContext);
-				saveQuestionMovePara(ccIndex,cqIndex,fQuestionType,sharedPreferences);
-				
 				//save exam start time
-				saveStartTime();
+	        	Intent intent = new Intent();
+				intent.setClass( ExamStart.this, ChoiceQuestion.class);
+				startActivity(intent); 	
+				
+//				saveStartTime();
 			}			
 		});
 	}
@@ -131,7 +112,7 @@ public class ExamStart extends BaseActivity {
 	protected void onStart() {
 		super.onStart();
 		spinner = (Spinner) findViewById(R.id.Spinner01);
-		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,examNames);
+		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,examIds);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
 		spinner.setOnItemSelectedListener(new SpinnerSelectedListener());
@@ -140,14 +121,10 @@ public class ExamStart extends BaseActivity {
 
 	class SpinnerSelectedListener implements OnItemSelectedListener{
 		public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
-			Log.i(LOG_TAG,"--------------------Spinner.onItemSelected()...-----------------");
-			Log.i(LOG_TAG,"arg2="+String.valueOf(arg2));
-			selectedExamId = examIdsMap.get(arg2);
-			selectedExamName = examNames.get(arg2);
-			Log.i(LOG_TAG, "examIdString:"+selectedExamId);
-			Log.i(LOG_TAG,"---------------------------End---------------------------------");
+//			selectedExamId = examIdsMap.get(arg2);
+//			selectedExamName = examNames.get(arg2);
+			examId = examIds.get(arg2);
 		}
-		
 		public void onNothingSelected(AdapterView<?> arg0) {
 			Log.i(LOG_TAG,"onNothingSelected()...");
 		}
@@ -165,5 +142,46 @@ public class ExamStart extends BaseActivity {
 			editor.commit();		
 		}
 	}
+	
+	class GetExamTask extends AsyncTask<String, Void, String> {
+    	Exam exam;
+    	
+    	@Override
+    	protected void onPreExecute() {
+
+    	}
+    	
+        @Override
+		protected String doInBackground(String... urls) {
+        	Log.i(LOG_TAG, "doInBackground()...");
+        	String home = urls[0];
+        	String userId = urls[1];
+        	String examId = urls[2];
+        	FileInputStream inputStream;
+			try {
+				inputStream = new FileInputStream(new File(home+ File.separator+userId+ File.separator+examId));
+				exam = ExamXMLParse.parseExam(inputStream);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+        @Override
+        protected void onPostExecute(String result) {
+        	if(exam!=null){
+        		Question question = ExamParse.getFirstQuestion(exam);
+        		if(question.getType() == 1){
+		        	Intent intent = new Intent();
+					intent.setClass( ExamStart.this, MultiChoices.class);
+					startActivity(intent); 	
+        		}else{
+		        	Intent intent = new Intent();
+					intent.setClass( ExamStart.this, SingleChoices.class);
+					startActivity(intent); 	
+        		}
+        	}
+        }
+    }
 	
 }

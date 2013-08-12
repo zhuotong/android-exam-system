@@ -5,9 +5,6 @@ import java.io.FileInputStream;
 import java.util.Calendar;
 
 import com.dream.eexam.base.R;
-import com.dream.eexam.base.R.id;
-import com.dream.eexam.base.R.layout;
-import com.dream.eexam.base.R.string;
 import com.dream.eexam.server.DataParseUtil;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.FileUtil;
@@ -30,6 +27,7 @@ public class ExamContinue extends BaseActivity {
 
 	ImageView imgHome = null;
 	Context mContext;
+	String userId = null;
 	
 	//Get interviewer information
 	LoginSuccessResult succResult = null;
@@ -56,6 +54,8 @@ public class ExamContinue extends BaseActivity {
 		
 		setContentView(R.layout.exam_continue);
 		mContext = getApplicationContext();
+		
+		userId  = SPUtil.getFromSP(SPUtil.CURRENT_USER_ID, sharedPreferences);
 		
 		String loginResultFilePath  = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
 		String loginResultFile  = SPUtil.getFromSP(SPUtil.CURRENT_USER_LOGIN_FILE_NAME, sharedPreferences);

@@ -56,6 +56,8 @@ public abstract class BaseQuestion extends BaseActivity{
 	
 	public final static String LOG_TAG = "BaseQuestion";
 	
+	protected Context mContext;
+	
 	//set exam header(
 	protected ImageView imgHome = null;
 	protected TextView curExamName = null;
@@ -76,25 +78,16 @@ public abstract class BaseQuestion extends BaseActivity{
 	
 	protected InputStream inputStream;
 
-	//static data
-//	protected String[] questionTypes;
-//	protected String[] choicesLabels;
-	
 	//data store in local database(question and answers)
 	protected StringBuffer answerLabels = new StringBuffer();//answer labels
 	protected Integer queSumOfCCatalog = 0;//question sum for current catalog
 	protected Integer aQueSumOfCCatalog = 0;//answered question sum for current catalog
 	
-	protected Context mContext;
-	
 	//page data
-//	protected String cQuestionType;//current questionType
 	protected int cQType;
 	protected int cCatalogIndex;//current catalog index
-	
 	protected int cCatalog1stQuestionIndex;//current 1st question index
 	protected int cCataloglastQuestionIndex;//current last question index
-	
 	protected int cQuestionIndex;//question index in catalog
 	protected int cQuestionIndexOfExam;//question index in exam
 	protected String examFileName = null;
@@ -211,9 +204,6 @@ public abstract class BaseQuestion extends BaseActivity{
 		super.onCreate(savedInstanceState);
 		
 		Log.i(LOG_TAG, "------------------------------onCreate()---------------------------------");
-		
-//		questionTypes = getResources().getStringArray(R.array.question_types);
-//		choicesLabels = getResources().getStringArray(R.array.display_choice_label);
 		
 		//set file home and file
 		examFilePath = SPUtil.getFromSP(SPUtil.CURRENT_USER_HOME, sharedPreferences);
