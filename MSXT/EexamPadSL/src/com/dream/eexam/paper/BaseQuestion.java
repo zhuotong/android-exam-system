@@ -526,9 +526,11 @@ public abstract class BaseQuestion extends BaseActivity{
 				finish();
 				
 				Log.i(LOG_TAG, "----------Start a New Exam!-----------------");
+				
 				SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_GOING, sharedPreferences);
 				go2QuestionByType(nQuestionType,mContext);
 				saveQuestionMovePara(info.getIndex(),nQuestion.getIndex(),nQuestionType,sharedPreferences);
+				
 				Log.i(LOG_TAG, "--------------------------------------------");
 			}
 		});
