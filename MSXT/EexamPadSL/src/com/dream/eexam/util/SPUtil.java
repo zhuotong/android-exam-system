@@ -11,9 +11,21 @@ public class SPUtil {
 	public final static String LOG_TAG = "SPUtil";
 	
 	//User Information
+	public final static String CURRENT_APP_HOME = "Current_App_Home";
 	public final static String CURRENT_USER_ID = "Current_User_Id";
 	public final static String CURRENT_USER_PWD = "Current_User_Pwd";
+	public final static String CURRENT_EXAM_ID = "Current_Exam_Id";
+	
+	public final static String CURRENT_CATALOG_ID = "Current_Catalog_Id";
+	public final static String CURRENT_QUESTON_ID = "Current_Question_Id";
+	
+	
+	
+	
 	public final static String CURRENT_USER_HOME = "Current_User_Home";
+	
+	
+	
 	public final static String CURRENT_USER_LOGIN_FILE_NAME = "Current_Login_File";
 	public final static String CURRENT_USER_EXAM_REMAINING_COUNT = "Current_User_Exam_Remaining_Count";
 	public final static String CURRENT_EXAM_SUBMITTED_IDS = "Current_Exam_Submitted_Ids";

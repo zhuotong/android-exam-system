@@ -34,6 +34,8 @@ public class LoginActivity extends BaseActivity {
 
 	public void systemSetting(){
 		SPUtil.save2SP("tangqi1", "1234",sharedPreferences);
+		currentUserId = SPUtil.getFromSP(SPUtil.CURRENT_USER_ID, sharedPreferences);
+		currentUserPwd = SPUtil.getFromSP(SPUtil.CURRENT_USER_PWD, sharedPreferences);
 	}
 	
 	/** Called when the activity is first created. */
@@ -46,10 +48,10 @@ public class LoginActivity extends BaseActivity {
         systemSetting();
         
         idEt = (EditText) this.findViewById(R.id.idEt);
-//        idEt.setText(currentUserId==null?"":currentUserId);
+        idEt.setText(currentUserId==null?"":currentUserId);
 		
 		passwordET = (EditText) this.findViewById(R.id.passwordET);
-//		passwordET.setText(currentUserPwd==null?"":currentUserPwd);
+		passwordET.setText(currentUserPwd==null?"":currentUserPwd);
 		
 		loginBtn = (Button) this.findViewById(R.id.loginBtn);
 		loginBtn.setOnClickListener(new View.OnClickListener() {  
@@ -63,6 +65,7 @@ public class LoginActivity extends BaseActivity {
 						intent.setClass( LoginActivity.this, ExamStart.class);
 						startActivity(intent); 		   
 						SPUtil.save2SP(SPUtil.CURRENT_USER_ID, idEt.getText().toString(), sharedPreferences);
+						SPUtil.save2SP(SPUtil.CURRENT_USER_PWD, passwordET.getText().toString(), sharedPreferences);
 		        	}else{
 		        		ShowDialog("Warning","Wrong userId or password!");
 		        	}	        		

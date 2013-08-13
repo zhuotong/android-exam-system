@@ -4,12 +4,19 @@ import java.util.List;
 
 public class ExamParse{
 
-	public static Question getFirstQuestion(Exam exam){
+	public static Question getQuestion(Exam exam,int cId,int qId){
 		List<Catalog> catalogs = exam.getCatalogs();
-		Catalog catalog= catalogs.get(0);
-		List<Question> questions = catalog.getQuestions();
-		Question question = questions.get(0);
-		return question;
+		for(Catalog catalog: catalogs){
+			if(catalog.getIndex() == cId){
+				List<Question> questions = catalog.getQuestions();
+				for(Question question:questions)
+				if(question.getIndex() == qId){
+					return question;
+				}
+			}			
+		}
+		return null;
 	}
+	
 	
 }

@@ -104,6 +104,13 @@ public class ExamStart extends BaseActivity {
 				startActivity(intent); 	
 				
 //				saveStartTime();
+				
+				SPUtil.save2SP(SPUtil.CURRENT_APP_HOME, appHomePath, sharedPreferences);
+				SPUtil.save2SP(SPUtil.CURRENT_USER_ID, userId, sharedPreferences);
+				SPUtil.save2SP(SPUtil.CURRENT_EXAM_ID, examId, sharedPreferences);
+				
+				SPUtil.save2SP(SPUtil.CURRENT_CATALOG_ID, 1, sharedPreferences);
+				SPUtil.save2SP(SPUtil.CURRENT_QUESTON_ID, 1, sharedPreferences);
 			}			
 		});
 	}
@@ -170,7 +177,7 @@ public class ExamStart extends BaseActivity {
         @Override
         protected void onPostExecute(String result) {
         	if(exam!=null){
-        		Question question = ExamParse.getFirstQuestion(exam);
+        		Question question = ExamParse.getQuestion(exam,1,1);
         		if(question.getType() == 1){
 		        	Intent intent = new Intent();
 					intent.setClass( ExamStart.this, MultiChoices.class);

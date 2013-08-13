@@ -30,7 +30,7 @@ public class BaseActivity extends Activity {
 
 	public final static String LOG_TAG = "BaseActivity";
 	protected SharedPreferences sharedPreferences;
-	Context mContext;
+	protected Context mContext;
 	
 /*	public void printStoredDataInDB(Context mContext){
 		Log.i(LOG_TAG,"----------------Start print data in SQLLite-----------------");
