@@ -191,4 +191,13 @@ public class DatabaseUtil{
 		}
     	cursor.close();
 	}
+	
+	public void saveAnswer(DatabaseUtil dbUtil,Integer cid,Integer qid,String qidStr,String answers){
+    	Cursor cursor = dbUtil.fetchAnswer(cid,qid);
+    	if(cursor != null && cursor.moveToNext()){
+    		dbUtil.updateAnswer(cid,qid,qidStr,answers);
+    	}else{
+    		dbUtil.createAnswer(cid,qid,qidStr,answers);
+    	}
+    }
 }

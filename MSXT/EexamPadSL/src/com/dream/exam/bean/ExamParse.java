@@ -18,5 +18,29 @@ public class ExamParse{
 		return null;
 	}
 	
+	public static Catalog getCatalog(Exam exam,int cId){
+		for(Catalog catalog: exam.getCatalogs()){
+			if(catalog.getIndex() == cId){
+				return catalog;
+			}			
+		}
+		return null;
+	}
+	
+	public static int getMaxQuestion(Exam exam,int cId){
+		List<Question> questions = null;
+		for(Catalog catalog: exam.getCatalogs()){
+			if(catalog.getIndex() == cId){
+				questions = catalog.getQuestions();
+			}			
+		}
+		if(questions.size()>1){
+			return questions.size();
+		}else{
+			return 0;
+		}
+		
+	}
+	
 	
 }

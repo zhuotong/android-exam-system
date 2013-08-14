@@ -40,7 +40,6 @@
 	     	android:layout_height="fill_parent" 
 	     	android:layout_below="@id/listHeader"
 	  		android:layout_above="@id/listFooter"
-	  		android:background="#000000"
 	  		/>
 	</RelativeLayout>
 	

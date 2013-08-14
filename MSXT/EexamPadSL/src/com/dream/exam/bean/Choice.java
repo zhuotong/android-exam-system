@@ -4,15 +4,17 @@ public class Choice extends BaseBean {
 	private int index;
 	private String label;
 	private String content;
+	private boolean isSelect;
 	
 	public Choice() {
 		super();
 	}
-	public Choice(int index, String label, String content) {
+	public Choice(int index, String label, String content,boolean isSelect) {
 		super();
 		this.index = index;
 		this.label = label;
 		this.content = content;
+		this.isSelect = isSelect;
 	}
 	
 	public int getIndex() {
@@ -33,6 +35,11 @@ public class Choice extends BaseBean {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	
+	public boolean isSelect() {
+		return isSelect;
+	}
+	public void setSelect(boolean isSelect) {
+		this.isSelect = isSelect;
+	}
 	
 }

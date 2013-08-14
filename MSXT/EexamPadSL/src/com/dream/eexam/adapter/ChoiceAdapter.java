@@ -26,6 +26,11 @@ public class ChoiceAdapter extends BaseAdapter {
 	private int qustionType;
 	private String answers;
 	
+	public void refresh(List<Choice> choiceList) {
+		this.choiceList = choiceList;
+		notifyDataSetChanged();
+	}
+
 	public ChoiceAdapter(Context context, List<Choice> list,int questionType,String answers) {
 		Log.i(TAG, "GroupAdapter()...");
 		this.context = context;
@@ -68,19 +73,8 @@ public class ChoiceAdapter extends BaseAdapter {
 		}
 		
 		Choice choice = choiceList.get(position);
-//		if(answers.indexOf(choice.getLabel()) == -1){
-//			if(qustionType == 1){
-//				holder.chooseIV.setBackgroundResource(resid);
-//			}else{
-//				holder.chooseIV.setBackgroundResource(resid);
-//			}
-//		}else{
-//			if(qustionType == 1){
-//				holder.chooseIV.setBackgroundResource(resid);
-//			}else{
-//				holder.chooseIV.setBackgroundResource(resid);
-//			}
-//		}
+		
+		holder.chooseIV.setBackgroundResource(choice.isSelect() ? R.drawable.checkboxon_64: R.drawable.checkboxoff_64);
 		holder.label.setText(choice.getLabel());
 		holder.content.setText(choice.getContent());
 		

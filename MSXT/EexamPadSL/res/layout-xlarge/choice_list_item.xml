@@ -2,7 +2,8 @@
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
-  android:layout_height="wrap_content"
+  android:layout_height="72dp"
+  android:background="#FFFFFF"
   android:descendantFocusability="blocksDescendants">
 
 <!-- 	  <CheckBox
@@ -16,25 +17,26 @@
 	      android:layout_width="wrap_content"
 	      android:layout_height="wrap_content"
 	      android:layout_gravity="center_vertical"
-	      android:layout_marginRight="20dp"
-	      android:src="@android:drawable/checkbox_off_background" />
+	      android:layout_marginLeft="3dp"
+	      android:layout_marginRight="20dp"/>
 
 	  <TextView
 	     android:id="@+id/label"
 	     android:layout_width="50dp"
 	     android:layout_height="wrap_content"
 	     android:layout_gravity="center_vertical"
+	     android:layout_marginLeft="3dp"
 	     android:textSize="18sp"
-	     android:textColor="#FFFFFF"/>
+	     android:textColor="#000000"/>
 	  	  	     
 	  <TextView
 	     android:id="@+id/content"
 	     android:layout_width="wrap_content"
 	     android:layout_height="wrap_content"
+	     android:layout_gravity="center_vertical"
 	     android:singleLine="false"
 	     android:layout_marginLeft="3dp"
 	     android:textSize="18sp"
-	     android:textColor="#FFFFFF"
-	     android:background="@drawable/common_tv_choice"/>
+	     android:textColor="#000000"/>
 	     
 </LinearLayout>

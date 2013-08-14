@@ -28,6 +28,7 @@ import com.dream.eexam.model.CatalogInfo;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SPUtil;
 import com.dream.exam.bean.Catalog;
+import com.dream.exam.bean.Choice;
 import com.dream.exam.bean.Exam;
 import com.dream.exam.bean.ExamParse;
 import com.dream.exam.bean.ExamXMLParse;
@@ -39,10 +40,10 @@ public class ChoiceQuestion extends BaseActivity {
 	TextView questionTV;
 	Exam exam;
 	Question question;
-	
-	ListView listView;
-	ChoiceAdapter adapter;
-	
+	int cId;
+	int qId;
+	StringBuilder answers = new StringBuilder();
+
 	public void loadData(){
 		//get exam
     	String home = SPUtil.getFromSP(SPUtil.CURRENT_APP_HOME, sharedPreferences);
@@ -55,14 +56,32 @@ public class ChoiceQuestion extends BaseActivity {
 		} catch (FileNotFoundException e) {
 			Log.e(LOG_TAG,e.getMessage());
 		}
-		
-		//get question
-//		int cId = SPUtil.getIntegerFromSP(SPUtil.CURRENT_CATALOG_ID, sharedPreferences);
-//    	int qId = SPUtil.getIntegerFromSP(SPUtil.CURRENT_QUESTON_ID, sharedPreferences);
-    	question = ExamParse.getQuestion(exam, 1, 1);
+		// get question
+		cId = SPUtil.getIntegerFromSP(SPUtil.CURRENT_CATALOG_ID,sharedPreferences);
+		if (cId == 0) cId = 1;
+		qId = SPUtil.getIntegerFromSP(SPUtil.CURRENT_QUESTON_ID,sharedPreferences);
+		if (qId == 0) qId = 1;
+    	question = ExamParse.getQuestion(exam, cId, qId);
+    	
+    	
+    	loadAnswer();
+    	//set saved answer to choices
+    	List<Choice> answerChoices = new ArrayList<Choice>();
+    	for(Choice choice: question.getChoices()){
+    		if(answers.indexOf(choice.getLabel()) != -1){
+    			choice.setSelect(true);
+    		}else{
+    			choice.setSelect(false);
+    		}
+    		answerChoices.add(choice);
+    	}
+    	question.setChoices(answerChoices);
 	}
 	
 	TableLayout catalogsTL;
+	TextView catalogsTV = null;
+	ListView listView;
+	ChoiceAdapter choiceAdapter;
 	ImageView backArrow;
 	ImageView nextArrow;
 	
@@ -75,18 +94,34 @@ public class ChoiceQuestion extends BaseActivity {
 				showWindow(v);
 			}
 		});
+		
+		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
+		if(exam.getCatalogs().size()>1){
+			Catalog catalog = ExamParse.getCatalog(exam, cId);
+			catalogsTV.setText(String.valueOf(cId)+". "+ catalog.getName() + 
+					"(Q" + String.valueOf(1)+" - " + "Q" + String.valueOf(ExamParse.getMaxQuestion(exam, cId))+")");
+		}else{
+			//set catalogsTV invisible
+		}
+		
 		backArrow = (ImageView)findViewById(R.id.backArrow);
         backArrow.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				changeQuestion(1,1);
+				if(qId>1){
+					changeQuestion(cId,qId-1);
+				}
 			}
 		});  
 		nextArrow = (ImageView)findViewById(R.id.nextArrow);
 		nextArrow.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				changeQuestion(1,2);
+				int maxQuestion = ExamParse.getMaxQuestion(exam, cId);
+				Log.i(LOG_TAG,"maxQuestion of catalog "+ String.valueOf(cId)+":"+String.valueOf(maxQuestion));
+				if(qId< maxQuestion){
+					changeQuestion(cId,qId+1);
+				}
 			}
 		}); 
 	}
@@ -111,22 +146,85 @@ public class ChoiceQuestion extends BaseActivity {
         questionTV.setMovementMethod(ScrollingMovementMethod.getInstance()); 
         questionTV.setText(questionHint + question.getContent());
         
-        adapter = new ChoiceAdapter(mContext,question.getChoices(),question.getType(),"");
+        choiceAdapter = new ChoiceAdapter(mContext,question.getChoices(),question.getType(),answers.toString());
         listView = (ListView)findViewById(R.id.choicesListView);
-        listView.setAdapter(adapter);
+        listView.setAdapter(choiceAdapter);
+        listView.setOnItemClickListener(new OnItemClickListener(){
+        	@Override
+			public void onItemClick(AdapterView<?> adapter, View view, int arg2,
+					long arg3) {
+        		List<Choice> choices = question.getChoices();
+        		List<Choice> updChoices = new ArrayList<Choice>();
+        		for(Choice choice:choices){
+        			if(choice.getIndex() == (arg2+1)){
+        				choice.setSelect(!choice.isSelect());
+        			}else{
+            			if(question.getType() == 2){// single choices
+            				choice.setSelect(false);
+            			}	
+        			}
+
+        			updChoices.add(choice);
+        		}
+        		question.setChoices(updChoices);
+        		choiceAdapter.refresh(updChoices);
+        		saveAnswer();
+			}      	
+        });
+        
 	}
+
+    public void loadAnswer(){
+		DatabaseUtil dbUtil = new DatabaseUtil(mContext);
+		dbUtil.open();
+		Cursor cursor = dbUtil.fetchAnswer(cId,qId);
+		answers.setLength(0);
+		while(cursor.moveToNext()){
+			Log.i(LOG_TAG, "loadAnswer()...");
+			Log.i(LOG_TAG, "cid: " + cursor.getInt(0) + " qid " + cursor.getInt(1)+ " qid_str " + cursor.getString(2) + " answer " + cursor.getString(3));
+    		answers.append(cursor.getString(3));
+		}
+		dbUtil.close();
+    }
+    
+    public void saveAnswer(){
+		DatabaseUtil dbUtil = new DatabaseUtil(mContext);
+		dbUtil.open();
+		List<Choice> choices = question.getChoices();
+		answers.setLength(0);
+		for(Choice choice:choices){
+			answers.append(choice.getLabel());
+		}
+		//save answers
+		if(answers.length()==0){
+			dbUtil.deleteAnswer(cId, qId);
+		}else{
+			dbUtil.saveAnswer(dbUtil,cId,qId,question.getQuestionid(),answers.toString());
+		}
+		dbUtil.close();
+    }
 	
 	public void changeQuestion(int cId,int qId){
 		String questionHint = "Q"
-				+ String.valueOf(question.getIndex())
+				+ String.valueOf(qId)
 				+ " ("
 				+ mContext.getResources().getString(
 						R.string.msg_question_score) + ":"
 				+ String.valueOf(question.getScore()) + ")\n";
+		
 		question = ExamParse.getQuestion(exam,cId, qId);
 		questionTV.setText(questionHint + question.getContent());
-		adapter = new ChoiceAdapter(mContext,question.getChoices(),question.getType(),"");
-		listView.setAdapter(adapter);
+		choiceAdapter = new ChoiceAdapter(mContext,question.getChoices(),question.getType(),"");
+		listView.setAdapter(choiceAdapter);
+		
+		this.cId = cId;
+		this.qId = qId;
+		
+		SPUtil.save2SP(SPUtil.CURRENT_CATALOG_ID, cId, sharedPreferences);
+		SPUtil.save2SP(SPUtil.CURRENT_QUESTON_ID, qId, sharedPreferences);
+		
+		Log.i(LOG_TAG,"cId:"+String.valueOf(cId));
+		Log.i(LOG_TAG,"qId:"+String.valueOf(qId));
 	}
 
 	protected PopupWindow popupWindow;
@@ -200,27 +298,24 @@ public class ChoiceQuestion extends BaseActivity {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
-//				Log.i(LOG_TAG, "onItemClick()...");
 //				//initial all items background color
-//        		for(int i=0;i<adapterView.getChildCount();i++){
-//        			View item = adapterView.getChildAt(i);
-//        		}
-//				view.setBackgroundColor(getRequestedOrientation());
-//				pressedItemIndex = position;
-//				Log.i(LOG_TAG, "pressedItemIndex:" + pressedItemIndex);
-//				if (popupWindow != null) {
-//					popupWindow.dismiss();
-//				}
-//				CatalogInfo info = catalogInfos.get(position);
-//				Question nQuestion = DataParseUtil.getQuestionByCidQid(exam, info.getIndex(),1);
-//				QUESTION_TYPE nQuestionType = nQuestion.getType();
-//				finish();
-//				Log.i(LOG_TAG, "----------Start a New Exam!-----------------");
-//				SPUtil.save2SP(SPUtil.CURRENT_EXAM_STATUS, SPUtil.EXAM_STATUS_START_GOING, sharedPreferences);
-//				go2QuestionByType(nQuestionType,mContext);
-//				saveQuestionMovePara(info.getIndex(),nQuestion.getIndex(),nQuestionType,sharedPreferences);
-//				Log.i(LOG_TAG, "--------------------------------------------");
+        		for(int i=0;i<adapterView.getChildCount();i++){
+        			View item = adapterView.getChildAt(i);
+        		}
+				view.setBackgroundColor(getRequestedOrientation());
+				pressedItemIndex = position;
+				if (popupWindow != null) {
+					popupWindow.dismiss();
+				}
+				CatalogInfo info = catalogInfos.get(position);
+				
+				//change to first question of choose catalog
+				if(info.getIndex()!=cId){
+					changeQuestion(info.getIndex(),1);
+				}
+				
 			}
 		});
 	}
+	
 }
