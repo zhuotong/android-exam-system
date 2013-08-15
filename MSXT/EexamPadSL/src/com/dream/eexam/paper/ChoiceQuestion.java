@@ -43,9 +43,7 @@ public class ChoiceQuestion extends BaseActivity {
 	Question question;
 	int cId;
 	int qId;
-	StringBuilder answers = new StringBuilder();
-	List<Question> pendQuestions = new ArrayList<Question>();
-
+	
 	public void loadData(){
 		//get exam
     	String home = SPUtil.getFromSP(SPUtil.CURRENT_APP_HOME, sharedPreferences);
@@ -65,8 +63,8 @@ public class ChoiceQuestion extends BaseActivity {
 		if (qId == 0) qId = 1;
     	question = ExamParse.getQuestion(exam, cId, qId);
     	
-    	
     	loadAnswer();
+    	
     	//set saved answer to choices
     	List<Choice> answerChoices = new ArrayList<Choice>();
     	for(Choice choice: question.getChoices()){
@@ -78,8 +76,6 @@ public class ChoiceQuestion extends BaseActivity {
     		answerChoices.add(choice);
     	}
     	question.setChoices(answerChoices);
-    	
-
 	}
 	
 	TableLayout catalogsTL;
@@ -193,11 +189,14 @@ public class ChoiceQuestion extends BaseActivity {
         
 	}
 
-    public void loadAnswer(){
+	StringBuilder answers = new StringBuilder();
+	List<Question> pendQuestions = new ArrayList<Question>();
+	
+	public void loadAnswer(){
 		DatabaseUtil dbUtil = new DatabaseUtil(mContext);
 		dbUtil.open();
 		
-		dbUtil.printStoredDataInDB();
+//		dbUtil.printStoredDataInDB();
 		
 		Cursor cursor = dbUtil.fetchAnswer(cId,qId);
 		answers.setLength(0);
@@ -239,29 +238,6 @@ public class ChoiceQuestion extends BaseActivity {
 		}
 		dbUtil.close();
     }
-	
-	public void changeQuestion(int cId,int qId){
-		String questionHint = "Q"
-				+ String.valueOf(qId)
-				+ " ("
-				+ mContext.getResources().getString(
-						R.string.msg_question_score) + ":"
-				+ String.valueOf(question.getScore()) + ")\n";
-		
-		question = ExamParse.getQuestion(exam,cId, qId);
-		questionTV.setText(questionHint + question.getContent());
-		choiceAdapter = new ChoiceAdapter(mContext,question.getChoices(),question.getType(),"");
-		listView.setAdapter(choiceAdapter);
-		
-		this.cId = cId;
-		this.qId = qId;
-		
-		SPUtil.save2SP(SPUtil.CURRENT_CATALOG_ID, cId, sharedPreferences);
-		SPUtil.save2SP(SPUtil.CURRENT_QUESTON_ID, qId, sharedPreferences);
-		
-		Log.i(LOG_TAG,"cId:"+String.valueOf(cId));
-		Log.i(LOG_TAG,"qId:"+String.valueOf(qId));
-	}
 
 	protected PopupWindow popupWindow;
 	protected ListView lv_group;
@@ -303,7 +279,6 @@ public class ChoiceQuestion extends BaseActivity {
 			dbUtil.open();
 			catalogInfos.clear();
 			loadCatalogInfos(dbUtil); 
-			
 			dbUtil.close();
 			CatalogAdapter groupAdapter = new CatalogAdapter(this, catalogInfos);
 			lv_group.setAdapter(groupAdapter);
@@ -317,7 +292,6 @@ public class ChoiceQuestion extends BaseActivity {
 			catalogInfos.clear();
 			loadCatalogInfos(dbUtil);
 			dbUtil.close();
-			
 			CatalogAdapter groupAdapter = new CatalogAdapter(this, catalogInfos);
 			lv_group.setAdapter(groupAdapter);
 			popupWindow.dismiss();
@@ -326,9 +300,6 @@ public class ChoiceQuestion extends BaseActivity {
 		popupWindow.setFocusable(true);
 		popupWindow.setOutsideTouchable(true);//window will dismiss once touch out of it
 		popupWindow.setBackgroundDrawable(new BitmapDrawable());//window will dismiss once click back 
-//		WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-//		int xPos = windowManager.getDefaultDisplay().getWidth() / 3 ;
-//		Log.i(LOG_TAG, "xPos:" + xPos);
 		popupWindow.showAsDropDown(parent,0, 20);
 		lv_group.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -352,6 +323,29 @@ public class ChoiceQuestion extends BaseActivity {
 				
 			}
 		});
+	}
+	
+	public void changeQuestion(int newCId,int newQId){
+		String questionHint = "Q"
+				+ String.valueOf(newQId)
+				+ " ("
+				+ mContext.getResources().getString(
+						R.string.msg_question_score) + ":"
+				+ String.valueOf(question.getScore()) + ")\n";
+		
+		question = ExamParse.getQuestion(exam,newCId, newQId);
+		questionTV.setText(questionHint + question.getContent());
+		choiceAdapter = new ChoiceAdapter(mContext,question.getChoices(),question.getType(),"");
+		listView.setAdapter(choiceAdapter);
+		
+		this.cId = newCId;
+		this.qId = newQId;
+		
+		SPUtil.save2SP(SPUtil.CURRENT_CATALOG_ID, newCId, sharedPreferences);
+		SPUtil.save2SP(SPUtil.CURRENT_QUESTON_ID, newQId, sharedPreferences);
+		
+		Log.i(LOG_TAG,"cId:"+String.valueOf(newCId));
+		Log.i(LOG_TAG,"qId:"+String.valueOf(newQId));
 	}
 	
 }

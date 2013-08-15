@@ -56,7 +56,7 @@
                   android:launchMode="singleTask">
         </activity>
         <activity android:name="com.dream.eexam.paper.PendQuestion"
-            	  android:theme="@android:style/Theme.Light.NoTitleBar"
+            	  android:theme="@android:style/Theme.Dialog"
  	     	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
