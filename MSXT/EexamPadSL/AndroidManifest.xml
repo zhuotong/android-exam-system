@@ -55,6 +55,12 @@
  	     	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
+        <activity android:name="com.dream.eexam.paper.PendQuestion"
+            	  android:theme="@android:style/Theme.Light.NoTitleBar"
+ 	     	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        
      	<activity android:name="com.dream.eexam.paper.MultiChoices"
      			  android:screenOrientation="portrait"
                   android:launchMode="singleTask">
@@ -67,7 +73,6 @@
  	     	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
-        
  	    <activity android:name=".ResultActivity"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">

@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -43,6 +44,7 @@ public class ChoiceQuestion extends BaseActivity {
 	int cId;
 	int qId;
 	StringBuilder answers = new StringBuilder();
+	List<Question> pendQuestions = new ArrayList<Question>();
 
 	public void loadData(){
 		//get exam
@@ -76,6 +78,8 @@ public class ChoiceQuestion extends BaseActivity {
     		answerChoices.add(choice);
     	}
     	question.setChoices(answerChoices);
+    	
+
 	}
 	
 	TableLayout catalogsTL;
@@ -83,6 +87,7 @@ public class ChoiceQuestion extends BaseActivity {
 	ListView listView;
 	ChoiceAdapter choiceAdapter;
 	ImageView backArrow;
+	Button pendQueNumber = null;
 	ImageView nextArrow;
 	
 	void loadComponents(){
@@ -112,7 +117,21 @@ public class ChoiceQuestion extends BaseActivity {
 					changeQuestion(cId,qId-1);
 				}
 			}
-		});  
+		}); 
+        pendQueNumber = (Button) findViewById(R.id.pendQueNumber);
+		pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_waiting)+"("+Integer.valueOf(pendQuestions.size())+")");
+		pendQueNumber.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(pendQuestions.size()>0){
+    				finish();
+    				go2PendingQuestion(mContext);
+				}else{
+					ShowDialog(mContext.getResources().getString(R.string.dialog_note),
+							mContext.getResources().getString(R.string.message_tv_no_question));	
+				}
+			}
+		}); 
 		nextArrow = (ImageView)findViewById(R.id.nextArrow);
 		nextArrow.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -177,6 +196,9 @@ public class ChoiceQuestion extends BaseActivity {
     public void loadAnswer(){
 		DatabaseUtil dbUtil = new DatabaseUtil(mContext);
 		dbUtil.open();
+		
+		dbUtil.printStoredDataInDB();
+		
 		Cursor cursor = dbUtil.fetchAnswer(cId,qId);
 		answers.setLength(0);
 		while(cursor.moveToNext()){
@@ -184,6 +206,20 @@ public class ChoiceQuestion extends BaseActivity {
 			Log.i(LOG_TAG, "cid: " + cursor.getInt(0) + " qid " + cursor.getInt(1)+ " qid_str " + cursor.getString(2) + " answer " + cursor.getString(3));
     		answers.append(cursor.getString(3));
 		}
+		
+    	//load pending questions
+		for(Catalog catalog: exam.getCatalogs()){
+			List<Question> questions = catalog.getQuestions();
+			for(Question question: questions){
+				Cursor cursor2 = dbUtil.fetchAnswer(catalog.getIndex(),question.getIndex());
+				if(cursor2.moveToNext()){
+					continue;
+				}
+				cursor2.close();
+				pendQuestions.add(question);
+			}
+		}
+		
 		dbUtil.close();
     }
     

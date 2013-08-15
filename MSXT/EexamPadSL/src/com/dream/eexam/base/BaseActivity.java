@@ -6,6 +6,7 @@ import java.io.InputStream;
 
 import com.dream.eexam.base.R;
 import com.dream.eexam.paper.MultiChoices;
+import com.dream.eexam.paper.PendQuestion;
 import com.dream.eexam.paper.PendQuestions;
 import com.dream.eexam.paper.SingleChoices;
 import com.dream.eexam.util.ActivityManage;
@@ -256,6 +257,16 @@ public class BaseActivity extends Activity {
 	public void go2PendingQuestions(Context context){
     	Intent intent = new Intent();
 		intent.setClass( context, PendQuestions.class);
+		startActivity(intent); 		
+	}
+	
+	/**
+	 * New Pend Page
+	 * @param context
+	 */
+	public void go2PendingQuestion(Context context){
+    	Intent intent = new Intent();
+		intent.setClass( context, PendQuestion.class);
 		startActivity(intent); 		
 	}
 	

@@ -205,14 +205,11 @@ public class MultiChoices extends BaseQuestion {
 			public void onClick(View v) {
 				if(pendQuestions.size()>0){
     				finish();
-    				Log.i(LOG_TAG, "----------Go to Pending Question!-----------------");
     				go2PendingQuestions(mContext);
-    				Log.i(LOG_TAG, "--------------------------------------------");
 				}else{
 					ShowDialog(mContext.getResources().getString(R.string.dialog_note),
 							mContext.getResources().getString(R.string.message_tv_no_question));	
 				}
-				
 			}
 		});        	
 
