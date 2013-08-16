@@ -18,10 +18,10 @@
 
 	    <com.dream.ivpc.chart.TimeLineView
 		    android:id="@+id/timelineView"
-		    android:layout_width="200dp"
+		    android:layout_width="160dp"
 		    android:layout_height="fill_parent" />
 	    			
-	 	<GridView 
+<!-- 	 	<GridView 
 		    android:id="@+id/gridview"
 		    android:layout_width="fill_parent" 
 		    android:layout_height="fill_parent"
@@ -32,7 +32,13 @@
 		    android:columnWidth="90dp"
 		    android:stretchMode="columnWidth"
 		    android:gravity="center"
-		    android:background="#E8E8E8"/>   
+		    android:background="#E8E8E8"/> -->
+	 	
+	 	<ListView 
+		    android:id="@+id/listview"
+		    android:layout_width="fill_parent" 
+		    android:layout_height="fill_parent"
+		    android:background="#E8E8E8"/>  
 	</LinearLayout>
 
 

@@ -7,7 +7,6 @@ import com.dream.ivpc.R;
 import com.dream.ivpc.activity.report.ExamRptList;
 import com.dream.ivpc.activity.resume.ResumeTypeList;
 import com.dream.ivpc.adapter.CandidateDetailAdapter;
-import com.dream.ivpc.chart.Bar2D;
 import com.dream.ivpc.chart.Chart;
 import com.dream.ivpc.chart.Circle;
 import com.dream.ivpc.chart.Coordinate;
@@ -21,6 +20,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -40,11 +40,11 @@ public class CandidateDetail2 extends BaseActivity {
 	Coordinate c2;
 	public void loadTimeLineData(){
 		chartList = new ArrayList<Chart>();
-		c1 = new Coordinate(90,30);
-		c2 = new Coordinate(110,650);
-		Circle circle1 = new Circle("#00C66E",30,100,100);
-		Circle circle2 = new Circle("#00C66E",30,100,300);
-		Circle circle3 = new Circle("#00C66E",30,100,500);
+		c1 = new Coordinate(75,0);
+		c2 = new Coordinate(85,750);
+		Circle circle1 = new Circle("#00C66E",20,80,100);
+		Circle circle2 = new Circle("#00C66E",20,80,300);
+		Circle circle3 = new Circle("#00C66E",20,80,500);
 		chartList.add(circle1);
 		chartList.add(circle2);
 		chartList.add(circle3);
@@ -82,17 +82,19 @@ public class CandidateDetail2 extends BaseActivity {
 		timelineView.setChartList(chartList);
         
 		//load GridView
-        GridView gridview = (GridView) findViewById(R.id.gridview);
+//        GridView gridview = (GridView) findViewById(R.id.gridview);
+        
+        ListView listview = (ListView) findViewById(R.id.listview);
         String[] descs = this.getResources().getStringArray(R.array.candidate_detail_descs);
-        int[] imgIds = new int[]{R.drawable.detail_btn1_selector,R.drawable.detail_btn2_selector,R.drawable.detail_btn3_selector,R.drawable.detail_btn4_selector};
+        int[] imgIds = new int[]{R.drawable.detail_btn2_selector,R.drawable.detail_btn3_selector,R.drawable.detail_btn4_selector};
         
         for(int i=0;i<descs.length;i++){
         	detailList.add(new DetailBean(descs[i],imgIds[i]));
         }
         
         adapter =  new CandidateDetailAdapter(detailList,mContext);
-        gridview.setAdapter(adapter);
-        gridview.setOnItemClickListener(new ItemClickListener());
+        listview.setAdapter(adapter);
+        listview.setOnItemClickListener(new ItemClickListener());
     }
 
     View.OnClickListener goBackListener = new View.OnClickListener() {  

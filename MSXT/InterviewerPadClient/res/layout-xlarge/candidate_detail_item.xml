@@ -1,25 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
-      android:layout_height="wrap_content" 
-      android:layout_width="fill_parent"
-      android:paddingBottom="4dip" 
-      android:descendantFocusability="afterDescendants">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="260dp"
+    android:orientation="horizontal"> 
+    
+<!--          <TextView android:id="@+id/date"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content" 
+               android:layout_gravity="center_vertical"
+               android:gravity="center_vertical"
+               android:textSize="25sp" 
+               android:textColor="#0F5DFF"
+               android:text="2013-04-08"
+               android:background="#887733">
+         </TextView> -->
          
          <ImageView
              android:id="@+id/detailImage"
-             android:layout_width="320dp"
-             android:layout_height="320dp"
-             android:layout_centerHorizontal="true"
+             android:layout_width="250dp"
+             android:layout_height="250dp"
              android:contentDescription="@string/candiate_detail_image" >
          </ImageView>
  
-<!--          <TextView android:id="@+id/detailDesc"
+         <TextView android:id="@+id/detailDesc"
                android:layout_width="wrap_content" 
-               android:layout_height="wrap_content" 
-               android:layout_below="@+id/detailImage"
-               android:textSize="25sp" 
-               android:textColor="#0F5DFF"
-               android:layout_centerHorizontal="true" >
+               android:layout_height="wrap_content"
+               android:layout_gravity="center_vertical" 
+               android:gravity="center_vertical"
+               android:textSize="35sp" 
+               android:textColor="#0F5DFF">
          </TextView>
- -->
-</RelativeLayout>
+         
+</LinearLayout>

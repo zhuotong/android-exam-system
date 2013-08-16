@@ -30,7 +30,6 @@
     
     
     <string-array name="candidate_detail_descs">
-        <item>Candiadate Resume</item>
         <item>Exam Report</item>
         <item>Interview History</item>
         <item>Interview Submit</item>

@@ -7,8 +7,9 @@
   
     <ImageView
         android:id="@+id/canPhoto"
-        android:layout_width="120dp"
+        android:layout_width="0dp"
         android:layout_height="180dp"
+        android:layout_weight="1"
         android:layout_marginLeft="20dp"
         android:layout_gravity="center_vertical"
         android:contentDescription="@string/msg_logo_go_back"
@@ -16,8 +17,9 @@
     </ImageView>
     
     <TableLayout 	        
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
 	    android:layout_height="wrap_content"
+	    android:layout_weight="2"
 	    android:layout_marginLeft="50dp">
 	    <TableRow
 	        android:layout_width="match_parent"
@@ -53,4 +55,15 @@
 				style="@style/can_detail_value_tv_style"/>
 	    </TableRow>
 	</TableLayout>
+	
+    <ImageView
+        android:id="@+id/imgResume"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="20dp"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@string/msg_logo_go_back"
+        android:src="@drawable/detail_btn1_selector" >
+    </ImageView>
 </LinearLayout>
