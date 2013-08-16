@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="60dp" 
+    android:background="@drawable/page_header">
+
+  	<TextView
+	    android:id="@+id/pendQuestions"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:textColor="#000000"
+        android:textSize="22sp"/>
+   
+   <TableLayout android:id="@+id/pendCataTL"
+   				android:layout_width="0dp"
+		        android:layout_height="fill_parent"
+		        android:layout_weight="3"
+		        android:layout_gravity="center_vertical|right"
+		        android:layout_margin="5dp"
+		        android:background="@drawable/tv_sys"
+		        android:descendantFocusability="blocksDescendants">
+   	    <TableRow
+   	    	android:layout_width="wrap_content"
+	        android:layout_height="fill_parent">
+	 	    <TextView
+			    android:id="@+id/pendCatasTV"
+		        android:layout_width="wrap_content"
+		        android:layout_height="fill_parent"
+		        android:gravity="center_vertical"
+		        android:textColor="#000000"
+		        android:textSize="22sp"/>
+		    <ImageView android:id="@+id/imgDownArrow"
+		        android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 
+				android:src="@drawable/ic_down_arrow"
+				android:contentDescription="@string/msg_logo_desc">
+			</ImageView>
+  	    </TableRow> 
+    </TableLayout> 
+    
+   <ImageView android:id="@+id/imgClose"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical|right"
+        android:paddingLeft="2dp"
+		android:src="@drawable/close_64"
+		android:contentDescription="@string/msg_logo_desc">
+   </ImageView>
+
+</LinearLayout>

@@ -34,7 +34,7 @@ public class ExamParse{
 				questions = catalog.getQuestions();
 			}			
 		}
-		if(questions.size()>1){
+		if(questions.size()>0){
 			return questions.size();
 		}else{
 			return 0;

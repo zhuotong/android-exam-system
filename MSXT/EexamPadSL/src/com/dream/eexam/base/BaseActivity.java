@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.dream.eexam.base.R;
+import com.dream.eexam.paper.ChoiceQuestion;
 import com.dream.eexam.paper.MultiChoices;
 import com.dream.eexam.paper.PendQuestion;
 import com.dream.eexam.paper.PendQuestions;
@@ -267,6 +268,12 @@ public class BaseActivity extends Activity {
 	public void go2PendingQuestion(Context context){
     	Intent intent = new Intent();
 		intent.setClass( context, PendQuestion.class);
+		startActivity(intent); 		
+	}
+	
+	public void go2ChoiceQuestion(Context context){
+    	Intent intent = new Intent();
+		intent.setClass( context, ChoiceQuestion.class);
 		startActivity(intent); 		
 	}
 	

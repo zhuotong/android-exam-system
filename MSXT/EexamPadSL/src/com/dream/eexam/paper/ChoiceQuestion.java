@@ -8,7 +8,10 @@ import java.util.List;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,13 +41,9 @@ import com.dream.exam.bean.Question;
 public class ChoiceQuestion extends BaseActivity {
 	public final static String LOG_TAG = "ChoiceQuestion";
 	
-	TextView questionTV;
+	//data
 	Exam exam;
-	Question question;
-	int cId;
-	int qId;
-	
-	public void loadData(){
+	public void loadExam(){
 		//get exam
     	String home = SPUtil.getFromSP(SPUtil.CURRENT_APP_HOME, sharedPreferences);
     	String userId = SPUtil.getFromSP(SPUtil.CURRENT_USER_ID, sharedPreferences);
@@ -56,15 +55,48 @@ public class ChoiceQuestion extends BaseActivity {
 		} catch (FileNotFoundException e) {
 			Log.e(LOG_TAG,e.getMessage());
 		}
+	}
+	
+	Question question;
+	int cId;
+	int qId;
+	public void loadQuestion(){
 		// get question
 		cId = SPUtil.getIntegerFromSP(SPUtil.CURRENT_CATALOG_ID,sharedPreferences);
 		if (cId == 0) cId = 1;
 		qId = SPUtil.getIntegerFromSP(SPUtil.CURRENT_QUESTON_ID,sharedPreferences);
 		if (qId == 0) qId = 1;
-    	question = ExamParse.getQuestion(exam, cId, qId);
-    	
-    	loadAnswer();
-    	
+    	question = ExamParse.getQuestion(exam, cId, qId);		
+	}
+	
+	StringBuilder answers = new StringBuilder();
+	List<Question> pendQuestions = new ArrayList<Question>();
+	public void loadAnswer(){
+		DatabaseUtil dbUtil = new DatabaseUtil(mContext);
+		dbUtil.open();
+		Cursor cursor = dbUtil.fetchAnswer(cId,qId);
+		answers.setLength(0);
+		while(cursor.moveToNext()){
+    		answers.append(cursor.getString(3));
+		}
+		Log.i(LOG_TAG, "answers:"+answers.toString());
+    	//load pending questions
+		pendQuestions.clear();
+		for(Catalog catalog: exam.getCatalogs()){
+			List<Question> questions = catalog.getQuestions();
+			for(Question question: questions){
+				Cursor cursor2 = dbUtil.fetchAnswer(catalog.getIndex(),question.getIndex());
+				if(cursor2.moveToNext()){
+					continue;
+				}
+				cursor2.close();
+				pendQuestions.add(question);
+			}
+		}
+		dbUtil.close();
+    }
+	
+	public void resetQuestion(){
     	//set saved answer to choices
     	List<Choice> answerChoices = new ArrayList<Choice>();
     	for(Choice choice: question.getChoices()){
@@ -80,13 +112,15 @@ public class ChoiceQuestion extends BaseActivity {
 	
 	TableLayout catalogsTL;
 	TextView catalogsTV = null;
+	TextView questionTV;
 	ListView listView;
 	ChoiceAdapter choiceAdapter;
 	ImageView backArrow;
 	Button pendQueNumber = null;
 	ImageView nextArrow;
 	
-	void loadComponents(){
+	public void loadComponents(){
+		//set header components
 		catalogsTL = (TableLayout)findViewById(R.id.catalogsTL);
 		catalogsTL.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -95,75 +129,13 @@ public class ChoiceQuestion extends BaseActivity {
 				showWindow(v);
 			}
 		});
-		
 		catalogsTV = (TextView)findViewById(R.id.header_tv_catalogs);
-		if(exam.getCatalogs().size()>1){
-			Catalog catalog = ExamParse.getCatalog(exam, cId);
-			catalogsTV.setText(String.valueOf(cId)+". "+ catalog.getName() + 
-					"(Q" + String.valueOf(1)+" - " + "Q" + String.valueOf(ExamParse.getMaxQuestion(exam, cId))+")");
-		}else{
-			//set catalogsTV invisible
-		}
-		
-		backArrow = (ImageView)findViewById(R.id.backArrow);
-        backArrow.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if(qId>1){
-					changeQuestion(cId,qId-1);
-				}
-			}
-		}); 
-        pendQueNumber = (Button) findViewById(R.id.pendQueNumber);
-		pendQueNumber.setText(mContext.getResources().getString(R.string.label_tv_waiting)+"("+Integer.valueOf(pendQuestions.size())+")");
-		pendQueNumber.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if(pendQuestions.size()>0){
-    				finish();
-    				go2PendingQuestion(mContext);
-				}else{
-					ShowDialog(mContext.getResources().getString(R.string.dialog_note),
-							mContext.getResources().getString(R.string.message_tv_no_question));	
-				}
-			}
-		}); 
-		nextArrow = (ImageView)findViewById(R.id.nextArrow);
-		nextArrow.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				int maxQuestion = ExamParse.getMaxQuestion(exam, cId);
-				Log.i(LOG_TAG,"maxQuestion of catalog "+ String.valueOf(cId)+":"+String.valueOf(maxQuestion));
-				if(qId< maxQuestion){
-					changeQuestion(cId,qId+1);
-				}
-			}
-		}); 
-	}
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.choice_list);
-		mContext = getApplicationContext();
-		
-		loadData();
-		loadComponents();
-		
-		String questionHint = "Q"
-				+ String.valueOf(question.getIndex())
-				+ " ("
-				+ mContext.getResources().getString(
-						R.string.msg_question_score) + ":"
-				+ String.valueOf(question.getScore()) + ")\n";
 		
         questionTV = (TextView) findViewById(R.id.questionTV);
         questionTV.setMovementMethod(ScrollingMovementMethod.getInstance()); 
-        questionTV.setText(questionHint + question.getContent());
-        
-        choiceAdapter = new ChoiceAdapter(mContext,question.getChoices(),question.getType(),answers.toString());
+
         listView = (ListView)findViewById(R.id.choicesListView);
-        listView.setAdapter(choiceAdapter);
+        
         listView.setOnItemClickListener(new OnItemClickListener(){
         	@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int arg2,
@@ -178,57 +150,121 @@ public class ChoiceQuestion extends BaseActivity {
             				choice.setSelect(false);
             			}	
         			}
-
         			updChoices.add(choice);
         		}
         		question.setChoices(updChoices);
-        		choiceAdapter.refresh(updChoices);
+//        		choiceAdapter.refresh(updChoices);
+        		
         		saveAnswer();
+        		
+				Message msg = new Message();
+				msg.what = 0;
+				handler.sendMessage(msg);
 			}      	
         });
         
+        //set footer components
+        backArrow = (ImageView)findViewById(R.id.backArrow);
+        backArrow.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(qId>1){
+					changeQuestion(cId,qId-1);
+				}
+			}
+		}); 			
+        pendQueNumber = (Button) findViewById(R.id.pendQueNumber);
+		pendQueNumber.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(pendQuestions.size()>0){
+    				go2PendingQuestion(mContext);
+				}else{
+					ShowDialog(mContext.getResources().getString(R.string.dialog_note),mContext.getResources().getString(R.string.message_tv_no_question));	
+				}
+			}
+		}); 
+		nextArrow = (ImageView)findViewById(R.id.nextArrow);
+		nextArrow.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				int maxQuestion = ExamParse.getMaxQuestion(exam, cId);
+				Log.i(LOG_TAG,"maxQuestion of catalog "+ String.valueOf(cId)+":"+String.valueOf(maxQuestion));
+				if(qId< maxQuestion){
+					changeQuestion(cId,qId+1);
+				}
+			}
+		});
+		
+	}
+	
+	public void changeComponents(){
+		if(exam.getCatalogs().size()>1){
+			Catalog catalog = ExamParse.getCatalog(exam, cId);
+			catalogsTV.setText(String.valueOf(cId)+". "+ catalog.getName() + 
+					"(Q" + String.valueOf(1)+" - " + "Q" + String.valueOf(ExamParse.getMaxQuestion(exam, cId))+")");
+		}else{
+			//set catalogsTV invisible
+		}
+		
+		//change question content
+		String questionHint = "Q"
+				+ String.valueOf(question.getIndex())
+				+ " ("
+				+ mContext.getResources().getString(
+						R.string.msg_question_score) + ":"
+				+ String.valueOf(question.getScore()) + ")\n";
+		questionTV.setText(questionHint + question.getContent());
+		
+		//change choices
+		if(choiceAdapter==null){
+	        choiceAdapter = new ChoiceAdapter(mContext,question.getChoices(),question.getType(),answers.toString());
+	        listView.setAdapter(choiceAdapter);
+		}else{
+			choiceAdapter.refresh(question.getChoices());
+		}
+		
+		Drawable firstImg = getResources().getDrawable(R.drawable.ic_first_question_64);
+		Drawable backImg = getResources().getDrawable(R.drawable.ic_back_64);
+		backArrow.setImageDrawable(qId == 1?firstImg:backImg);
+		
+		String pendNumString = mContext.getResources().getString(R.string.label_tv_waiting)+"("+Integer.valueOf(pendQuestions.size())+")";
+	    pendQueNumber.setText(pendNumString);
+		
+		Drawable lastImg = getResources().getDrawable(R.drawable.ic_last_question_64);
+		Drawable nextImg = getResources().getDrawable(R.drawable.ic_next_64);
+		nextArrow.setImageDrawable(qId == ExamParse.getMaxQuestion(exam, cId)?lastImg:nextImg);		
+	}
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.choice_list);
+		mContext = getApplicationContext();
+		loadExam();
+		loadComponents();
+	}
+	
+    @Override
+	protected void onResume() {
+		super.onResume();
+		Log.i(LOG_TAG,"onResume()...");
+		loadQuestion();
+		loadAnswer();
+		resetQuestion();
+		
+		changeComponents();
 	}
 
-	StringBuilder answers = new StringBuilder();
-	List<Question> pendQuestions = new ArrayList<Question>();
-	
-	public void loadAnswer(){
-		DatabaseUtil dbUtil = new DatabaseUtil(mContext);
-		dbUtil.open();
-		
-//		dbUtil.printStoredDataInDB();
-		
-		Cursor cursor = dbUtil.fetchAnswer(cId,qId);
-		answers.setLength(0);
-		while(cursor.moveToNext()){
-			Log.i(LOG_TAG, "loadAnswer()...");
-			Log.i(LOG_TAG, "cid: " + cursor.getInt(0) + " qid " + cursor.getInt(1)+ " qid_str " + cursor.getString(2) + " answer " + cursor.getString(3));
-    		answers.append(cursor.getString(3));
-		}
-		
-    	//load pending questions
-		for(Catalog catalog: exam.getCatalogs()){
-			List<Question> questions = catalog.getQuestions();
-			for(Question question: questions){
-				Cursor cursor2 = dbUtil.fetchAnswer(catalog.getIndex(),question.getIndex());
-				if(cursor2.moveToNext()){
-					continue;
-				}
-				cursor2.close();
-				pendQuestions.add(question);
-			}
-		}
-		
-		dbUtil.close();
-    }
-    
     public void saveAnswer(){
 		DatabaseUtil dbUtil = new DatabaseUtil(mContext);
 		dbUtil.open();
 		List<Choice> choices = question.getChoices();
 		answers.setLength(0);
 		for(Choice choice:choices){
-			answers.append(choice.getLabel());
+			if(choice.isSelect()){
+				answers.append(choice.getLabel());
+			}
 		}
 		//save answers
 		if(answers.length()==0){
@@ -315,37 +351,36 @@ public class ChoiceQuestion extends BaseActivity {
 					popupWindow.dismiss();
 				}
 				CatalogInfo info = catalogInfos.get(position);
-				
 				//change to first question of choose catalog
 				if(info.getIndex()!=cId){
 					changeQuestion(info.getIndex(),1);
 				}
-				
 			}
 		});
 	}
+
+	protected Handler handler = new Handler(){
+		public void handleMessage(Message msg) {
+			if(msg.what==0){
+				loadAnswer();
+				//resetQuestion();
+				changeComponents();
+			}
+		}
+	};
 	
 	public void changeQuestion(int newCId,int newQId){
-		String questionHint = "Q"
-				+ String.valueOf(newQId)
-				+ " ("
-				+ mContext.getResources().getString(
-						R.string.msg_question_score) + ":"
-				+ String.valueOf(question.getScore()) + ")\n";
-		
-		question = ExamParse.getQuestion(exam,newCId, newQId);
-		questionTV.setText(questionHint + question.getContent());
-		choiceAdapter = new ChoiceAdapter(mContext,question.getChoices(),question.getType(),"");
-		listView.setAdapter(choiceAdapter);
-		
-		this.cId = newCId;
-		this.qId = newQId;
-		
+//		question = ExamParse.getQuestion(exam,newCId, newQId);
+//		this.cId = newCId;
+//		this.qId = newQId;
 		SPUtil.save2SP(SPUtil.CURRENT_CATALOG_ID, newCId, sharedPreferences);
 		SPUtil.save2SP(SPUtil.CURRENT_QUESTON_ID, newQId, sharedPreferences);
 		
-		Log.i(LOG_TAG,"cId:"+String.valueOf(newCId));
-		Log.i(LOG_TAG,"qId:"+String.valueOf(newQId));
+		loadQuestion();
+		loadAnswer();
+		resetQuestion();
+		
+		changeComponents();
 	}
 	
 }
