@@ -1,7 +1,7 @@
 package com.dream.ivpc.chart;
 
 public class Chart {
-	private String bgColor;
+	protected String bgColor;
 
 	public Chart() {
 		super();
