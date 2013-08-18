@@ -19,7 +19,16 @@
     <string name="label_btn_login">Sign In</string>
     <string name="label_btn_reset">Setting</string>
     <!-- Login Page End -->
-    
+
+    <!-- Setting Page Start-->
+	<string name="label_tv_host">Host</string>
+	<string name="label_et_host_hint">Input host here</string>
+    <string name="label_tv_port">Port</string>
+    <string name="label_et_port_hint">Input port Here</string>
+    <string name="label_btn_save">Save</string>
+    <string name="label_btn_cancel">Cancel</string>
+    <!-- Setting Page End -->
+        
     <!-- candidate_list_title -->
     <string name="candidate_list_header_text">Candidate List</string>
 <!--     <string name="label_candidate_title_index">Index</string> -->
@@ -31,8 +40,8 @@
     
     <string-array name="candidate_detail_descs">
         <item>Exam Report</item>
-        <item>Interview History</item>
-        <item>Interview Submit</item>
+        <item>HR Interview</item>
+        <item>Tech Interview </item>
     </string-array>
     
     <string name="candidate_detail_resume">Resume</string>

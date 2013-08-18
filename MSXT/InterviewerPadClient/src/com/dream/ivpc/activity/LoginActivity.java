@@ -80,6 +80,15 @@ public class LoginActivity extends BaseActivity {
 		});
 		
 		settingBtn = (Button) this.findViewById(R.id.settingBtn);
+		settingBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+		    	Intent intent = new Intent();
+				intent.setClass( mContext, SettingActivity.class);
+				startActivity(intent);  
+			}
+		});		
+
 		
     }
  

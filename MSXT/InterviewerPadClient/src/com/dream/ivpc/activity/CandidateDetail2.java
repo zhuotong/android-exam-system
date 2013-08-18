@@ -18,7 +18,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,11 +28,31 @@ public class CandidateDetail2 extends BaseActivity {
 	
 	ImageView imgGoBack = null;
 	TextView canInfoTV;
-	
 	CandidateDetailAdapter adapter;
 	List<DetailBean> detailList = new ArrayList<DetailBean>();
-	
 	Context mContext;
+	
+	public void loadCandidateDetail(){
+        //set candidate infor value
+		Bundle bundle = this.getIntent().getExtras();
+		String name  = bundle.getString("name");
+		String position  = bundle.getString("position");
+		String phase  = bundle.getString("phase");
+		((TextView) this.findViewById(R.id.nameTV)).setText(name);
+		((TextView) this.findViewById(R.id.positionTV)).setText(position);
+		((TextView) this.findViewById(R.id.phaseTV)).setText(phase);	
+		
+		ImageView imgResume = (ImageView) this.findViewById(R.id.imgResume);
+		imgResume.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+		    	Intent intent = new Intent();
+				intent.setClass( mContext, ResumeTypeList.class);
+				startActivity(intent);  
+			}
+		});
+	}
+	
 	TimeLineView timelineView;
 	List<Chart> chartList;
 	Coordinate c1;
@@ -44,7 +63,7 @@ public class CandidateDetail2 extends BaseActivity {
 		c2 = new Coordinate(85,750);
 		Circle circle1 = new Circle("#00C66E",20,80,100);
 		Circle circle2 = new Circle("#00C66E",20,80,300);
-		Circle circle3 = new Circle("#00C66E",20,80,500);
+		Circle circle3 = new Circle("#FFE255",20,80,500);
 		chartList.add(circle1);
 		chartList.add(circle2);
 		chartList.add(circle3);
@@ -64,14 +83,8 @@ public class CandidateDetail2 extends BaseActivity {
         canInfoTV = (TextView) this.findViewById(R.id.candidateInfo);
         canInfoTV.setText("Candidate Detail");
         
-        //set candidate infor value
-		Bundle bundle = this.getIntent().getExtras();
-		String name  = bundle.getString("name");
-		String position  = bundle.getString("position");
-		String phase  = bundle.getString("phase");
-		((TextView) this.findViewById(R.id.nameTV)).setText(name);
-		((TextView) this.findViewById(R.id.positionTV)).setText(position);
-		((TextView) this.findViewById(R.id.phaseTV)).setText(phase);
+        //set candidate detail
+        loadCandidateDetail();
 		
 		//get bar2DVerView and set bar2DVerView
 		loadTimeLineData();
@@ -108,24 +121,13 @@ public class CandidateDetail2 extends BaseActivity {
     
     class  ItemClickListener implements OnItemClickListener{
 		@Override
-		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-				long arg3) {
-//			HashMap<String, Object> item=(HashMap<String, Object>) arg0.getItemAtPosition(arg2);
-//			setTitle((String)item.get("ItemText"));
-//			
-//			switch(arg2){
-//				 case 0:checkResume();break;
-//				 case 1:checkExamRpt();break;
-//				 case 2:checkInterviewHistory();break;
-//				 case 3:submitInterviewResult();break;
-//			}
+		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+			switch(arg2){
+				 case 0:checkExamRpt();break;
+				 case 1:checkInterviewHistory();break;
+				 case 2:submitInterviewResult();break;
+			}
 		}
-    }
-
-    public void checkResume(){
-    	Intent intent = new Intent();
-		intent.setClass( mContext, ResumeTypeList.class);
-		startActivity(intent);      	
     }
     
     public void checkExamRpt(){

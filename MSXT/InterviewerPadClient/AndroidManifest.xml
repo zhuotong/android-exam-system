@@ -33,6 +33,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+  
+        <activity android:name="com.dream.ivpc.activity.SettingActivity"
+            	  android:theme="@android:style/Theme.Light.NoTitleBar"
+        	      android:screenOrientation="portrait">
+        </activity>
         
         <activity android:name="com.dream.ivpc.activity.CandidateList"
             	  android:theme="@android:style/Theme.Light.NoTitleBar"
@@ -41,12 +46,6 @@
         </activity>
 
         <activity android:name="com.dream.ivpc.activity.CandidateDetail2"
-                  android:theme="@android:style/Theme.Light.NoTitleBar"
-     	 	      android:screenOrientation="portrait"
-                  android:launchMode="singleTask">
-        </activity>
-        
-        <activity android:name="com.dream.ivpc.activity.CandidateHome"
                   android:theme="@android:style/Theme.Light.NoTitleBar"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
