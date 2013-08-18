@@ -27,7 +27,7 @@ import android.widget.TextView;
 import android.widget.SeekBar;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import com.dream.eexam.base.R;
+import com.dream.eexam.sl.R;
 import com.dream.eexam.model.ChoiceExt;
 import com.dream.eexam.util.SPUtil;
 import com.msxt.client.model.Examination.Choice;

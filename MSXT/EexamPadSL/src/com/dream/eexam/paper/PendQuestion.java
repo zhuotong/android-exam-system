@@ -18,6 +18,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import com.dream.eexam.sl.R;
+import com.dream.eexam.sl.BaseActivity;
+=======
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -27,6 +30,7 @@ import android.widget.TextView;
 import com.dream.eexam.adapter.CatalogAdapter;
 import com.dream.eexam.base.BaseActivity;
 import com.dream.eexam.base.R;
+>>>>>>> .r487
 import com.dream.eexam.model.CatalogInfo;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SPUtil;
