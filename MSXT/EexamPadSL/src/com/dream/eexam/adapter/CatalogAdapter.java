@@ -2,8 +2,8 @@ package com.dream.eexam.adapter;
 
 import java.util.List;
 
-import com.dream.eexam.base.R;
 import com.dream.eexam.model.CatalogInfo;
+import com.dream.eexam.sl.R;
 
 import android.content.Context;
 import android.util.Log;
