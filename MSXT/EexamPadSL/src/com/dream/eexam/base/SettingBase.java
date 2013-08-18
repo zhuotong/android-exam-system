@@ -1,7 +1,9 @@
 package com.dream.eexam.base;
 
-import com.dream.eexam.base.R;
-import com.dream.eexam.base.R.drawable;
+import com.dream.eexam.sl.R;
+import com.dream.eexam.sl.R.drawable;
+import com.dream.eexam.sl.BaseActivity;
+import com.dream.eexam.sl.LoginActivity;
 
 import android.content.Context;
 import android.content.Intent;

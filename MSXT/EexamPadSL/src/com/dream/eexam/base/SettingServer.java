@@ -9,6 +9,8 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
+
+import com.dream.eexam.sl.R;
 import com.dream.eexam.util.SPUtil;
 import com.dream.eexam.util.ValidateUtil;
 import android.app.ProgressDialog;
@@ -166,7 +168,6 @@ public class SettingServer extends SettingBase {
 		Socket socket = null;
 		try {
 			socket = new Socket();
-			// 端口号设置为 0 表示在本地挑选一个可用端口进行连接
 			SocketAddress localSocketAddr = new InetSocketAddress(localInetAddr, 0);
 			socket.bind(localSocketAddr);
 			InetSocketAddress endpointSocketAddr = new InetSocketAddress(remoteInetAddr, port);

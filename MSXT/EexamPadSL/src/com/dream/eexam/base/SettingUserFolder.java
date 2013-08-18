@@ -4,6 +4,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import com.dream.eexam.sl.R;
+import com.dream.eexam.sl.R.id;
+import com.dream.eexam.sl.R.layout;
+import com.dream.eexam.sl.R.string;
 import com.dream.eexam.model.UserFolderBean;
 import com.dream.eexam.util.FileUtil;
 import android.app.AlertDialog;

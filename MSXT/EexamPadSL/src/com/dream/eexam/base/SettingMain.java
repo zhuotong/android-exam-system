@@ -1,9 +1,9 @@
 package com.dream.eexam.base;
 
-import com.dream.eexam.base.R;
-import com.dream.eexam.base.R.drawable;
-import com.dream.eexam.base.R.id;
-import com.dream.eexam.base.R.layout;
+import com.dream.eexam.sl.R;
+import com.dream.eexam.sl.R.drawable;
+import com.dream.eexam.sl.R.id;
+import com.dream.eexam.sl.R.layout;
 
 import android.app.TabActivity;
 import android.content.Intent;
