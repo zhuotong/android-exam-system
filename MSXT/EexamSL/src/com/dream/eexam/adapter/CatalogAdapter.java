@@ -73,7 +73,8 @@ public class CatalogAdapter extends BaseAdapter {
 		Log.i(TAG, "indexStr="+indexStr+" desc="+desc+" qQuestionIndex="+ 
 				String.valueOf(qQuestionIndex)+" lQuestionIndex="+String.valueOf(lQuestionIndex));
 		
-		holder.groupItem.setText(indexStr+". " + desc +"(Q"+String.valueOf(qQuestionIndex)+" - Q"+ String.valueOf(lQuestionIndex)+ ")");
+//		holder.groupItem.setText(indexStr+". " + desc +"(Q"+String.valueOf(qQuestionIndex)+" - Q"+ String.valueOf(lQuestionIndex)+ ")");
+		holder.groupItem.setText(indexStr+". " + desc);
 		
 		double percentage = bean.getComPercentage();
 		Log.i(TAG, "percentage="+String.valueOf(percentage));
