@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:orientation="vertical"
+  android:background="@drawable/page_setting">
+  
+  <include
+        android:id="@+id/baseHeader"
+        layout="@layout/base_header" /> 
+
+<!--   <include layout="@layout/setting_menu" /> -->
+
+    <!-- User Info title -->
+  	<TableRow
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginTop="10dp"
+		 android:layout_marginLeft="20dp"
+		 android:layout_marginRight="20dp"		 
+		 android:layout_gravity="center_horizontal"
+		 android:gravity="center_horizontal"
+		 android:padding="5dp"
+		 android:background="@drawable/tr_title">
+ 		<TextView 
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:text="@string/title_setting_user_infor">
+		</TextView> 
+   	</TableRow>
+   	
+   	 <!-- User Info-->
+	<TableRow
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginLeft="20dp"
+		 android:layout_marginRight="20dp"		 
+		 android:layout_gravity="center_horizontal"
+		 android:gravity="center_horizontal">
+ 		<TextView android:id="@+id/userInfoTV"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			>
+		</TextView> 
+   	</TableRow>
+
+	<!-- Exam Info title -->
+	<TableRow
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginTop="10dp"
+		 android:layout_marginLeft="20dp"
+		 android:layout_marginRight="20dp"		 
+		 android:layout_gravity="center_horizontal"
+		 android:gravity="center_horizontal"
+		 android:padding="5dp"
+		 android:background="@drawable/tr_title">
+ 		<TextView 
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:text="@string/title_setting_exam_infor">
+		</TextView> 
+   	</TableRow>
+   	
+   	<!-- Exam Info -->	
+	<TableRow 
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginLeft="20dp"
+		 android:layout_marginRight="20dp"		 
+		 android:layout_gravity="center_horizontal"
+		 android:gravity="center_horizontal">
+ 		<TextView android:id="@+id/examInfoTV"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:textSize="22sp"
+			android:textColor="#000000">
+		</TextView> 
+   	</TableRow>
+
+	<!-- Exam Answer title -->
+	<TableRow
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginLeft="20dp"
+		 android:layout_marginRight="20dp"		 
+		 android:layout_gravity="center_horizontal"
+		 android:gravity="center_horizontal"
+		 android:padding="5dp"
+		 android:background="@drawable/tr_title">
+ 		<TextView 
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:text="@string/title_setting_exam_answer">
+		</TextView> 
+   	</TableRow>
+   	
+   	<!-- Exam Answer Info -->	
+	<TableRow 
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginLeft="20dp"
+		 android:layout_marginRight="20dp"		 
+		 android:layout_gravity="center_horizontal"
+		 android:gravity="center_horizontal">
+ 		<TextView android:id="@+id/examAnswerTV"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:textSize="22sp"
+			android:textColor="#000000">
+		</TextView> 
+   	</TableRow>
+   		
+	<TableRow
+         android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+		 android:layout_marginLeft="20dp"
+		 android:layout_marginRight="20dp"		 
+		 android:layout_gravity="center_horizontal"
+		 android:gravity="center_horizontal">
+		<Button android:id="@+id/clearBtn"
+			android:layout_width="300dp" 
+			android:layout_height="50dp"
+			android:textSize="22sp"
+			android:textColor="#000000"
+			android:background="@drawable/button_common"
+			android:text="@string/label_btn_clear_history">
+		</Button>
+   	</TableRow>	
+	 	
+</LinearLayout>

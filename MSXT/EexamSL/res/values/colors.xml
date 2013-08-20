@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<resources> 
+	<color name="catalog_menu_text_color">#FFFFFF</color>
+	<color name="success_message_color">#8EFE03</color>
+	<color name="remind_message_color">#FFDE63</color>
+	<color name="failure_message_color">#FF0000</color>
+	
+	<!-- For Tab Setting -->
+	<color name="tabMedium">#2B2B2B</color>
+	<color name="tabDark">#000000</color>
+	<color name="tabTransparent">#10ffffff</color>
+	<!-- For Tab Setting End-->
+	
+</resources>

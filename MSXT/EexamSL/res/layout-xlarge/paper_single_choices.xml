@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_margin="1dip">
+
+    <include
+	       android:id="@+id/baseHeader"
+	       layout="@layout/paper_header" /> 
+    	       
+	<RelativeLayout 
+	    android:orientation="vertical"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:layout_margin="1dip">
+	
+		<RelativeLayout 
+			android:id="@+id/listHeader"
+			android:layout_alignParentTop="true"
+			android:gravity="center_horizontal" 
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content">
+					<TextView android:id="@+id/questionTV" 
+						style="@style/textview_question_style"/>
+		</RelativeLayout>
+	
+	 	<RelativeLayout 
+		    android:id="@+id/listFooter"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true">
+		    <include
+			      android:id="@+id/examFooter"
+			      layout="@layout/paper_footer" /> 
+		</RelativeLayout>		   
+		
+		<ListView
+	     	android:id="@+id/lvChoices"
+	     	android:layout_width="fill_parent"
+	     	android:layout_height="fill_parent" 
+	     	android:layout_below="@id/listHeader"
+	  		android:layout_above="@id/listFooter"
+	  		android:background="#000000"
+	  		/>
+		
+</RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="60dp"
+    android:padding="1dp">
+    
+   <Button android:id="@+id/server_setting"
+        android:text="@string/label_footer_server_setting"
+        android:onClick="go2SettingServer"
+        style="@style/button_setting_tab_style">
+   </Button>
+   
+   <Button android:id="@+id/examstatus_setting"
+        android:text="@string/label_footer_current_exam_status"
+        android:onClick="go2SettingExamStatus"
+        style="@style/button_setting_tab_style">
+   </Button>
+   
+   <Button android:id="@+id/examprogress_setting"
+        android:text="@string/label_footer_current_exam_progress"
+        android:onClick="go2SettingExamProgress"
+        style="@style/button_setting_tab_style">
+   </Button>
+   
+   <Button android:id="@+id/userfolder_setting"
+        android:text="@string/label_footer_user_folder"
+        android:onClick="go2SettingUserFolder"
+        style="@style/button_setting_tab_style">
+   </Button>
+   
+</LinearLayout>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.dream.eexam.sl"
+      android:versionCode="1"
+      android:versionName="1.0 Beta">
+    <uses-sdk android:minSdkVersion="7" />
+    
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/> 
+	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/> 
+
+    <application android:icon="@drawable/ic_launcher" android:label="@string/app_name"
+    			 android:name="com.dream.eexam.crash.CrashApplication">
+        <activity android:name="com.dream.eexam.sl.LoginActivity"
+        	      android:screenOrientation="portrait"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+ 
+        <!-- Setting Activities, Only For Administrator -->
+        <activity android:name=".SettingMain"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        <activity android:name=".SettingServer"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+         <activity android:name=".SettingExamStatus"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        <activity android:name="com.dream.eexam.base.SettingUserFolder"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>             	  
+        <!-- Setting Activities, END! -->
+               
+     	<activity android:name="com.dream.eexam.sl.ExamStart"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+     	<activity android:name="com.dream.eexam.sl.ExamContinue"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+ 
+     	<activity android:name="com.dream.eexam.paper.ChoiceQuestion"
+ 	     	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        <activity android:name="com.dream.eexam.paper.PendQuestion"
+            	  android:theme="@android:style/Theme.Dialog"
+ 	     	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        
+     	<activity android:name="com.dream.eexam.paper.MultiChoices"
+     			  android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+ 	    <activity android:name="com.dream.eexam.paper.SingleChoices"
+ 	    		  android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+ 	    <activity android:name="com.dream.eexam.paper.PendQuestions"
+ 	     	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+ 	    <activity android:name="com.dream.eexam.sl.ResultActivity"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        
+    </application>
+</manifest>

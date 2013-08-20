@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="completed_seekbar_colors">
+       <item>#FF0000</item><!-- Red -->
+       <item>#FFA500</item><!-- Orange -->
+       <item>#FFFF00</item><!-- Yellow -->
+       <item>#00ff00</item><!-- Green -->
+    </array>
+</resources>
