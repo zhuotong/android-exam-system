@@ -66,10 +66,9 @@ public class CandidateDetailAdapter extends BaseAdapter{
 			@Override
 			public void onClick(View v) {
 				switch (choosePostion) {
-					case 0:chooseResume();break;
-					case 1:chooseExamRpt();break;
-					case 2:checkInterviewHistory();break;
-					case 3:submitInterviewResult();break;
+					case 0:chooseExamRpt();break;
+					case 1:checkInterviewHistory();break;
+					case 2:submitInterviewResult();break;
 				}
 			}
 		});
@@ -84,13 +83,6 @@ public class CandidateDetailAdapter extends BaseAdapter{
 		TextView detailTV;
 	}
 	
-    public void chooseResume(){
-    	Intent intent = new Intent();
-		intent.setClass( mContext, ResumeTypeList.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		mContext.startActivity(intent);      	
-    }
-    
     public void chooseExamRpt(){
     	Intent intent = new Intent();
 		intent.setClass( mContext, ExamRptList.class);
