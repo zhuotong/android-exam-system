@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<candiates>
+	<candiate>
+		<time>2012-10-12 08:00</time>
+		<position>Java Engineer</position>
+		<name>Timothy Qi</name>
+	</candiate>
+    <candiate>
+		<time>2012-10-12 09:00</time>
+		<position>Java Designer</position>
+		<name>LiLei</name>
+	</candiate>
+    <candiate>
+		<time>2012-10-16 10:00</time>
+		<position>Java Engineer</position>
+		<name>Charlie</name>
+	</candiate>	
+</candiates>

@@ -1,0 +1,169 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.dream.ivpc"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="7"
+        android:targetSdkVersion="17" />
+    
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/> 
+	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/> 
+	
+    <application android:icon="@drawable/ic_launcher" 
+        		 android:label="@string/app_name"
+    			 android:name=".crash.CrashApplication"
+    			 android:theme="@style/AppTheme"
+    			 android:allowBackup="true">
+ 
+        <activity android:name=".BaseActivity"
+                  android:launchMode="singleTask">
+        </activity>
+        			 
+        <activity android:name="com.dream.ivpc.activity.LoginActivity"
+            	  android:theme="@android:style/Theme.Light.NoTitleBar"
+        	      android:screenOrientation="portrait"
+                  android:label="@string/app_name">
+             <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+  
+        <activity android:name="com.dream.ivpc.activity.SettingActivity"
+            	  android:theme="@android:style/Theme.Light.NoTitleBar"
+        	      android:screenOrientation="portrait">
+        </activity>
+        
+        <activity android:name="com.dream.ivpc.activity.CandidateList"
+            	  android:theme="@android:style/Theme.Light.NoTitleBar"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+
+        <activity android:name="com.dream.ivpc.activity.CandidateDetail2"
+                  android:theme="@android:style/Theme.Light.NoTitleBar"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        
+        <!-- User Resume Start -->
+        <activity android:name="com.dream.ivpc.activity.resume.ResumeTypeList"
+            	  android:theme="@style/CustomNoWindowTitleTheme"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        <activity android:name="com.dream.ivpc.activity.resume.ResumePicture"
+            	  android:theme="@style/CustomWindowTitleTheme"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        <!-- Deprecated -->
+        <activity android:name="com.dream.ivpc.activity.resume.ResumePdfLoad"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        <activity android:name="com.dream.ivpc.activity.resume.ResumeWebView"
+                  android:theme="@style/CustomWindowTitleTheme"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        <!-- User Resume End -->
+      
+        <!-- User Exam Report and Detail Start -->
+        <activity android:name="com.dream.ivpc.activity.report.ExamRptList"
+            	  android:theme="@style/CustomNoWindowTitleTheme"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        <activity android:name="com.dream.ivpc.activity.report.ExamRptPicture"
+            	  android:theme="@style/CustomWindowTitleTheme"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        
+        <activity android:name="com.dream.ivpc.activity.report.CandidateExamRpt"
+            	  android:theme="@android:style/Theme.Dialog"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        <activity android:name="com.dream.ivpc.activity.report.CandidateInfoExamDetail"
+                  android:theme="@android:style/Theme.Light.NoTitleBar"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        <activity android:name="com.dream.ivpc.activity.report.ChoiceList"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        <!-- User Exam Report and Detail End -->
+
+        <!-- PDF Activity Start -->
+        <activity
+            android:name="com.artifex.mupdfdemo.ChoosePDFActivity"
+            android:theme="@android:style/Theme.Light"
+            android:label="@string/app_name">
+        </activity>
+        
+        <activity
+            android:name="com.artifex.mupdfdemo.MuPDFActivity"
+            android:theme="@style/CustomWindowTitleTheme"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="application/vnd.ms-xpsdocument"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="application/pdf"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="application/x-cbz"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="file"/>
+                <data android:mimeType="*/*"/>
+                <data android:pathPattern=".*\\.xps"/>
+                <data android:host="*"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="file"/>
+                <data android:mimeType="*/*"/>
+                <data android:pathPattern=".*\\.pdf"/>
+                <data android:host="*"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="file"/>
+                <data android:mimeType="*/*"/>
+                <data android:pathPattern=".*\\.cbz"/>
+                <data android:host="*"/>
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:name="OutlineActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"
+            android:label="@string/outline_title">
+        </activity>
+        <!-- PDF Activity END -->
+    </application>
+
+</manifest>

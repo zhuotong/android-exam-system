@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="300dp"
+    android:orientation="vertical"
+    android:background="@drawable/login_bg_color">
+
+	<include layout="@layout/candidate_exam_list_header" /> 
+    	
+	<FrameLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent">
+		
+		<ListView
+		    android:id="@+id/android:list"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+		    android:fadingEdge="none" 
+		    android:layout_margin="1dp"/>
+			
+	    <!-- The "loading indicator" view. This view overlaps with
+	         the content, so the visibility of these two views
+	         should be mutually exclusive. -->
+	    <ProgressBar android:id="@+id/loading_spinner"
+	        style="?android:progressBarStyle"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center" />
+	</FrameLayout>
+
+
+	
+</LinearLayout>

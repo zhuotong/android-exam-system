@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_margin="1dip"
+    android:background="@drawable/login_bg_color">
+
+    <include layout="@layout/candidate_list_header" /> 
+    <include layout="@layout/candidate_list_title" /> 
+    	    
+<!-- 	<ListView
+     	android:id="@+id/candidate_list"
+     	android:layout_width="fill_parent"
+     	android:layout_height="fill_parent" 
+  		/> -->
+	
+	<FrameLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent">
+	    
+	    <com.markupartist.android.widget.PullToRefreshListView
+	        android:id="@+id/android:list"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"/>
+	
+	    <!-- The "loading indicator" view. This view overlaps with
+	         the content, so the visibility of these two views
+	         should be mutually exclusive. -->
+	    <ProgressBar android:id="@+id/loading_can_list"
+	        style="?android:progressBarStyle"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center" />
+	</FrameLayout>
+
+</LinearLayout>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants" >
+
+    <TextView
+        style="@style/can_list_title_style"
+        android:layout_width="60dp"
+        android:text="@string/label_candidate_title_index" />
+
+    <TableRow
+        android:id="@+id/timeSortTable"
+        style="@style/can_list_title_style"
+        android:layout_width="190dp"
+        android:onClick="sortEvent">
+    	<TextView
+			android:text="@string/label_candidate_title_time"
+			style="@style/can_list_title_tv_style" />
+    	<ImageView
+	        android:id="@+id/timeSortIcon"
+			style="@style/can_list_title_img_style"
+	        android:contentDescription="@string/msg_logo_desc"
+	        android:src="@drawable/down_32" >
+    	</ImageView>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/positionSortTable"
+        style="@style/can_list_title_style"
+        android:layout_width="160dp"
+        android:onClick="sortEvent">
+    	<TextView
+			android:text="@string/label_candidate_title_position"
+			style="@style/can_list_title_tv_style" />
+    	<ImageView
+	        android:id="@+id/positionSortIcon"
+			style="@style/can_list_title_img_style"
+	        android:contentDescription="@string/msg_logo_desc"
+	        android:src="@drawable/down_32" >
+    	</ImageView>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/nameSortTable"
+        style="@style/can_list_title_style"
+        android:layout_width="160dp"
+        android:onClick="sortEvent">
+    	<TextView
+			android:text="@string/label_candidate_title_name"
+			style="@style/can_list_title_tv_style" />
+    	<ImageView
+	        android:id="@+id/nameSortIcon"
+			style="@style/can_list_title_img_style"
+	        android:contentDescription="@string/msg_logo_desc"
+	        android:src="@drawable/down_32" >
+    	</ImageView>
+    </TableRow>
+  
+    <TableRow
+        android:id="@+id/phaseSortTable"
+        style="@style/can_list_title_style"
+        android:layout_width="match_parent"
+        android:onClick="sortEvent">
+    	<TextView
+			android:text="@string/label_candidate_title_phase"
+			style="@style/can_list_title_tv_style" />
+    	<ImageView
+	        android:id="@+id/phaseSortIcon"
+			style="@style/can_list_title_img_style"
+	        android:contentDescription="@string/msg_logo_desc"
+	        android:src="@drawable/down_32" >
+    	</ImageView>
+    </TableRow>
+</LinearLayout>

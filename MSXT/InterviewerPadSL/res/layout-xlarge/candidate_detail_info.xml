@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="185dp"
+    android:background="@drawable/candidate_list_header"
+    android:orientation="horizontal">
+  
+    <ImageView
+        android:id="@+id/canPhoto"
+        android:layout_width="0dp"
+        android:layout_height="180dp"
+        android:layout_weight="1"
+        android:layout_marginLeft="20dp"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@string/msg_logo_go_back"
+        android:src="@drawable/can_photo" >
+    </ImageView>
+    
+    <TableLayout 	        
+        android:layout_width="0dp"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="2"
+	    android:layout_marginLeft="50dp">
+	    <TableRow
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" >
+	        <TextView
+	            style="@style/can_detail_label_tv_style"
+	            android:text="@string/label_candidate_title_name" />
+	        <TextView
+	            android:id="@+id/nameTV"
+				style="@style/can_detail_value_tv_style"/>
+	    </TableRow>
+
+	    <TableRow
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" >
+	        <TextView
+				style="@style/can_detail_label_tv_style"
+	            android:text="@string/label_candidate_title_position" />
+	        <TextView
+	            android:id="@+id/positionTV"
+				style="@style/can_detail_value_tv_style" />
+	    </TableRow>
+
+	    <TableRow
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" >
+	        <TextView
+				style="@style/can_detail_label_tv_style"
+	            android:text="@string/label_candidate_title_phase" />
+	
+	        <TextView
+	            android:id="@+id/phaseTV"
+				style="@style/can_detail_value_tv_style"/>
+	    </TableRow>
+	</TableLayout>
+	
+    <ImageView
+        android:id="@+id/imgResume"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="20dp"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@string/msg_logo_go_back"
+        android:src="@drawable/detail_btn1_selector" >
+    </ImageView>
+</LinearLayout>

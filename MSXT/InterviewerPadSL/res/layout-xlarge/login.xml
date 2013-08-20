@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:id="@+id/layout1"
+	android:background="@drawable/login_bg_color" 
+	android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/logoImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginTop="120dp"
+        android:contentDescription="@string/system_logo_interview"
+        android:src="@drawable/interview_logo" />
+    
+	<TableLayout android:id="@+id/tableLayout1"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" 
+		android:padding="1dp"
+		android:layout_marginTop="30dp"
+		android:layout_marginLeft="80dp"
+		android:layout_marginRight="80dp"
+		android:background="@drawable/login_table">
+		
+		<TableRow android:id="@+id/tableRow1" 
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:background="#FFFFFF">
+			<TextView 
+			    android:text="@string/label_tv_username"
+			    style="@style/login_tv_style"/>
+			<EditText    
+			    android:id="@+id/idEt"
+				style="@style/login_et_style"
+				android:hint="@string/label_et_username_hint"
+				android:focusable="true">
+			</EditText>		
+		</TableRow>
+				
+		<TableRow android:id="@+id/tableRow2" 
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:layout_marginTop="1dp"
+			android:background="#FFFFFF">
+			<TextView 
+			    android:text="@string/label_tv_password"
+			    style="@style/login_tv_style"/>
+			<EditText    
+			    android:id="@+id/passwordET"
+				style="@style/login_et_style"
+				android:hint="@string/label_et_password_hint">
+			</EditText>		
+		</TableRow>
+
+	</TableLayout>
+
+	<!-- Login Button -->
+	<TableRow android:id="@+id/tableRow3" 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="30dp"
+		android:layout_marginLeft="80dp"
+		android:layout_marginRight="80dp">
+		
+		<Button android:text="@string/label_btn_login" 
+		    android:id="@+id/loginBtn"
+			style="@style/login_btn_style"
+			android:layout_marginRight="4dp">
+		</Button>
+		
+		<Button android:text="@string/label_btn_reset" 
+		    android:id="@+id/settingBtn"
+			style="@style/login_btn_style">
+		</Button>
+	</TableRow>
+
+
+</LinearLayout>
+
