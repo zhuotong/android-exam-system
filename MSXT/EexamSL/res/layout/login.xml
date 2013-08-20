@@ -7,18 +7,18 @@
 	android:orientation="vertical">
 	
 	<!-- header -->
-    <include
+<!--     <include
         android:id="@+id/baseHeader"
         layout="@layout/base_header" 
-        android:layout_gravity="top"/>
+        android:layout_gravity="top"/> -->
 	
 	<TableLayout android:id="@+id/tableLayout1"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content" 
 		android:padding="1dp"
-		android:layout_marginLeft="100dp"
-		android:layout_marginRight="100dp"
-		android:layout_marginTop="300dp">
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:layout_marginTop="100dp">
 
 		<TableRow android:id="@+id/tableRow1" 
 			android:layout_width="fill_parent"
@@ -54,8 +54,8 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="30dp"
-		android:layout_marginLeft="40dp"
-		android:layout_marginRight="40dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
 		android:padding="15dp">
 		
 		<Button android:id="@+id/loginBtn"

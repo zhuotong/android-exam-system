@@ -2,8 +2,6 @@ package com.dream.eexam.sl;
 
 import com.dream.eexam.sl.R;
 import com.dream.eexam.base.SettingMain;
-import com.dream.eexam.sl.R.id;
-import com.dream.eexam.sl.R.layout;
 import com.dream.eexam.util.SPUtil;
 import com.dream.eexam.util.StringUtil;
 import android.content.Intent;
@@ -35,11 +33,11 @@ public class LoginActivity extends BaseActivity {
 	String userHome = null;
 	
 
-	public void systemSetting(){
-		SPUtil.save2SP("tangqi1", "1234",sharedPreferences);
-		currentUserId = SPUtil.getFromSP(SPUtil.CURRENT_USER_ID, sharedPreferences);
-		currentUserPwd = SPUtil.getFromSP(SPUtil.CURRENT_USER_PWD, sharedPreferences);
-	}
+//	public void systemSetting(){
+//		SPUtil.save2SP("tangqi1", "1234",sharedPreferences);
+//		currentUserId = SPUtil.getFromSP(SPUtil.CURRENT_USER_ID, sharedPreferences);
+//		currentUserPwd = SPUtil.getFromSP(SPUtil.CURRENT_USER_PWD, sharedPreferences);
+//	}
 	
 	/** Called when the activity is first created. */
     @Override
@@ -48,31 +46,35 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         
-        systemSetting();
+//        systemSetting();
         
         idEt = (EditText) this.findViewById(R.id.idEt);
-        idEt.setText(currentUserId==null?"":currentUserId);
+//        idEt.setText(currentUserId==null?"":currentUserId);
 		
 		passwordET = (EditText) this.findViewById(R.id.passwordET);
-		passwordET.setText(currentUserPwd==null?"":currentUserPwd);
+//		passwordET.setText(currentUserPwd==null?"":currentUserPwd);
 		
 		loginBtn = (Button) this.findViewById(R.id.loginBtn);
 		loginBtn.setOnClickListener(new View.OnClickListener() {  
 	        @Override  
 	        public void onClick(View v) {
-	        	if(emptyValidate(idEt,passwordET)){
-	        		ShowDialog("Warning","UserId or password can not be empty! ");
-	        	}else{
-		        	if(passValidate(idEt.getText().toString(),passwordET.getText().toString())){
-			        	Intent intent = new Intent();
-						intent.setClass( LoginActivity.this, ExamStart.class);
-						startActivity(intent); 		   
-						SPUtil.save2SP(SPUtil.CURRENT_USER_ID, idEt.getText().toString(), sharedPreferences);
-						SPUtil.save2SP(SPUtil.CURRENT_USER_PWD, passwordET.getText().toString(), sharedPreferences);
-		        	}else{
-		        		ShowDialog("Warning","Wrong userId or password!");
-		        	}	        		
-	        	}
+//	        	if(emptyValidate(idEt,passwordET)){
+//	        		ShowDialog("Warning","UserId or password can not be empty! ");
+//	        	}else{
+//		        	if(passValidate(idEt.getText().toString(),passwordET.getText().toString())){
+//			        	Intent intent = new Intent();
+//						intent.setClass( LoginActivity.this, ExamStart.class);
+//						startActivity(intent); 		   
+//						SPUtil.save2SP(SPUtil.CURRENT_USER_ID, idEt.getText().toString(), sharedPreferences);
+//						SPUtil.save2SP(SPUtil.CURRENT_USER_PWD, passwordET.getText().toString(), sharedPreferences);
+//		        	}else{
+//		        		ShowDialog("Warning","Wrong userId or password!");
+//		        	}	        		
+//	        	}
+	        	
+	        	Intent intent = new Intent();
+				intent.setClass( LoginActivity.this, ExamStart.class);
+				startActivity(intent); 	
 	        }  
 	    });
 		

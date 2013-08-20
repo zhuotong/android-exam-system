@@ -9,48 +9,19 @@
   <include
         android:id="@+id/baseHeader"
         layout="@layout/base_header" /> 
-
-    <!-- User Information -->  
-    <TableRow
-         android:layout_width="fill_parent"
-		 android:layout_height="wrap_content"
-		 android:layout_marginLeft="20dp"
-		 android:layout_marginRight="20dp"
-		 android:layout_marginTop="20dp">
- 		<TextView 
- 		    android:text="@string/label_your_name"
-			style="@style/textview_label_style">
- 		</TextView>
-		<TextView android:id="@+id/nameTV"
-		    style="@style/textview_value_style">
-		</TextView>          
-   	</TableRow> 
-    <TableRow
-         android:layout_width="fill_parent"
-		 android:layout_height="wrap_content"
-		 android:layout_marginLeft="20dp"
-		 android:layout_marginRight="20dp">
- 		<TextView 
- 		    android:text="@string/label_your_job"
-			style="@style/textview_label_style">
- 		</TextView>
-		<TextView android:id="@+id/jobTitleTV"
-		    style="@style/textview_value_style">
-		</TextView>          
-   	</TableRow>
 	<!-- User Information End! -->
 
-	<TextView android:id="@+id/examDesc"
+<!-- 	<TextView android:id="@+id/examDesc"
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"
 		android:layout_marginTop="5dp"
-		android:layout_marginLeft="20dp"
-		android:layout_marginRight="20dp"
-		android:textSize="20sp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:textSize="18sp"
 		android:textColor="#000000"
 		android:background="@drawable/common_tv_value"
 		android:visibility="invisible">
-	</TextView>
+	</TextView> -->
 
 	<TableLayout
 	     android:layout_width="fill_parent"
@@ -68,7 +39,7 @@
 			 <TextView 
 	  			 android:layout_width="fill_parent" 
 	  			 android:layout_height="fill_parent"
-	  			 android:textSize="22sp"
+	  			 android:textSize="18sp"
 	  			 android:textColor="#000000"
 	  			 android:text="@string/label_tv_choose_exam">
  		 	</TextView>

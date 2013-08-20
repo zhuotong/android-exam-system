@@ -106,7 +106,7 @@
     <string name="label_tv_waiting">Pending</string>
     <string name="message_tv_no_question">No question Pending</string>
     <string name="label_tv_submit">Submit</string>
-    <string name="label_tv_time_remaning">Time Remaining:</string>
+    <string name="label_tv_time_remaning">Time</string>
     <string name="msg_submiting_warning">question(s) are not answered, still submit?</string>
     <string name="msg_submiting_warning_yes">Yes</string>
     <string name="msg_submiting_warning_cancel">Cancel</string>

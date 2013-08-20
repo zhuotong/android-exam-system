@@ -44,9 +44,8 @@ public class ExamStart extends BaseActivity {
 	
 	//declare components
 	ImageView imgHome = null;
-	TextView nameTV = null;
-	TextView jobTitleTV = null;
-	TextView examDesc = null;
+	
+//	TextView examDesc = null;
 	Spinner spinner;
 	Button startBtn;
 	
@@ -84,16 +83,10 @@ public class ExamStart extends BaseActivity {
 		userId = SPUtil.getFromSP(SPUtil.CURRENT_USER_ID, sharedPreferences);
 		
 		//load Exam List Information
-		loadExamList(appHomePath+File.separator+userId);
+		loadExamList(appHomePath+File.separator+"exam");
 		
 		//initial component
-		nameTV = (TextView) this.findViewById(R.id.nameTV);
-		nameTV.setText("test");
-		
-		jobTitleTV = (TextView) this.findViewById(R.id.jobTitleTV);
-		jobTitleTV.setText("test");
-		
-		examDesc = (TextView) this.findViewById(R.id.examDesc);
+//		examDesc = (TextView) this.findViewById(R.id.examDesc);
 		
 		startBtn = (Button) findViewById(R.id.startBtn);
 		startBtn.setOnClickListener(new Button.OnClickListener() {
@@ -106,11 +99,11 @@ public class ExamStart extends BaseActivity {
 //				saveStartTime();
 				
 				SPUtil.save2SP(SPUtil.CURRENT_APP_HOME, appHomePath, sharedPreferences);
-				SPUtil.save2SP(SPUtil.CURRENT_USER_ID, userId, sharedPreferences);
+//				SPUtil.save2SP(SPUtil.CURRENT_USER_ID, userId, sharedPreferences);
 				SPUtil.save2SP(SPUtil.CURRENT_EXAM_ID, examId, sharedPreferences);
-				
-				SPUtil.save2SP(SPUtil.CURRENT_CATALOG_ID, 1, sharedPreferences);
-				SPUtil.save2SP(SPUtil.CURRENT_QUESTON_ID, 1, sharedPreferences);
+//				
+//				SPUtil.save2SP(SPUtil.CURRENT_CATALOG_ID, 1, sharedPreferences);
+//				SPUtil.save2SP(SPUtil.CURRENT_QUESTON_ID, 1, sharedPreferences);
 			}			
 		});
 	}

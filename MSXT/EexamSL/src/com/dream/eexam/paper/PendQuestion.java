@@ -20,17 +20,12 @@ import android.widget.Button;
 import android.widget.GridView;
 import com.dream.eexam.sl.R;
 import com.dream.eexam.sl.BaseActivity;
-=======
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TableLayout;
 import android.widget.TextView;
-
 import com.dream.eexam.adapter.CatalogAdapter;
-import com.dream.eexam.base.BaseActivity;
-import com.dream.eexam.base.R;
->>>>>>> .r487
 import com.dream.eexam.model.CatalogInfo;
 import com.dream.eexam.util.DatabaseUtil;
 import com.dream.eexam.util.SPUtil;
@@ -188,7 +183,7 @@ public class PendQuestion extends BaseActivity {
     
     public void goBack(){
 		finish();
-		go2ChoiceQuestion(mContext);
+//		go2ChoiceQuestion(mContext);
     }
     
     protected PopupWindow popupWindow;

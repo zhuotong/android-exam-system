@@ -6,23 +6,17 @@
   android:background="#FFFFFF"
   android:descendantFocusability="blocksDescendants">
 
-<!-- 	  <CheckBox
-	     android:id="@+id/list.select"
-	     android:layout_width="wrap_content"
-	     android:layout_height="wrap_content"
-	     android:layout_marginLeft="4dp"/> -->
-
 	  <ImageView
 	      android:id="@+id/chooseIV"
 	      android:layout_width="wrap_content"
 	      android:layout_height="wrap_content"
 	      android:layout_gravity="center_vertical"
-	      android:layout_marginLeft="3dp"
-	      android:layout_marginRight="20dp"/>
+	      android:layout_marginLeft="1dp"
+	      android:layout_marginRight="5dp"/>
 
 	  <TextView
 	     android:id="@+id/label"
-	     android:layout_width="50dp"
+	     android:layout_width="10dp"
 	     android:layout_height="wrap_content"
 	     android:layout_gravity="center_vertical"
 	     android:layout_marginLeft="3dp"

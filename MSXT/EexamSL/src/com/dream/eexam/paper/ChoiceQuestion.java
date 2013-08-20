@@ -46,11 +46,11 @@ public class ChoiceQuestion extends BaseActivity {
 	public void loadExam(){
 		//get exam
     	String home = SPUtil.getFromSP(SPUtil.CURRENT_APP_HOME, sharedPreferences);
-    	String userId = SPUtil.getFromSP(SPUtil.CURRENT_USER_ID, sharedPreferences);
+//    	String userId = SPUtil.getFromSP(SPUtil.CURRENT_USER_ID, sharedPreferences);
     	String examId = SPUtil.getFromSP(SPUtil.CURRENT_EXAM_ID, sharedPreferences);
     	FileInputStream inputStream;
 		try {
-			inputStream = new FileInputStream(new File(home+ File.separator+userId+ File.separator+examId));
+			inputStream = new FileInputStream(new File(home+ File.separator+"exam"+ File.separator+examId));
 			exam = ExamXMLParse.parseExam(inputStream);
 		} catch (FileNotFoundException e) {
 			Log.e(LOG_TAG,e.getMessage());
@@ -135,7 +135,6 @@ public class ChoiceQuestion extends BaseActivity {
         questionTV.setMovementMethod(ScrollingMovementMethod.getInstance()); 
 
         listView = (ListView)findViewById(R.id.choicesListView);
-        
         listView.setOnItemClickListener(new OnItemClickListener(){
         	@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int arg2,
