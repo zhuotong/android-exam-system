@@ -163,7 +163,8 @@ public class CandidateList extends ListActivity {
 		switch(view.getId()){
 			case(R.id.timeSortTable): sortByTime(); break;
 			case(R.id.positionSortTable):sortByPosition();break;
-			case(R.id.nameSortTable):sortByName();
+			case(R.id.nameSortTable):sortByName();break;
+			case(R.id.phaseSortTable):sortByPhase();break;
 		}
 	    adapter = new CandidateListAdapter(candiateList,mContext);
 	    listView.setAdapter(adapter);
