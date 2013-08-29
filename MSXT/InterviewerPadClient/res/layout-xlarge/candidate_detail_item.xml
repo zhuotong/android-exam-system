@@ -2,33 +2,56 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="260dp"
-    android:orientation="horizontal"> 
-    
-<!--          <TextView android:id="@+id/date"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" 
-               android:layout_gravity="center_vertical"
-               android:gravity="center_vertical"
-               android:textSize="25sp" 
-               android:textColor="#0F5DFF"
-               android:text="2013-04-08"
-               android:background="#887733">
-         </TextView> -->
+    android:orientation="horizontal"
+    android:background="@drawable/candidate_item_style" >
          
          <ImageView
              android:id="@+id/detailImage"
-             android:layout_width="250dp"
-             android:layout_height="250dp"
+             android:layout_width="220dp"
+             android:layout_height="220dp"
+             android:layout_gravity="center_vertical"
+             android:layout_marginTop="12dp"
+             android:layout_marginLeft="15dp"
+             android:layout_marginBottom="12dp"
              android:contentDescription="@string/candiate_detail_image" >
          </ImageView>
- 
-         <TextView android:id="@+id/detailDesc"
-               android:layout_width="wrap_content" 
-               android:layout_height="wrap_content"
-               android:layout_gravity="center_vertical" 
-               android:gravity="center_vertical"
-               android:textSize="35sp" 
-               android:textColor="#0F5DFF">
-         </TextView>
+
+         <ImageView
+                 android:id="@+id/imageView1"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center_vertical"
+                 android:src="@drawable/arrow_96" />
+                      
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="horizontal">
+             
+         	<TextView
+         	    android:id="@+id/detailDesc"
+         	    android:layout_width="wrap_content"
+         	    android:layout_height="100dp"
+         	    android:layout_gravity="left|center_vertical"
+         	    android:layout_marginLeft="20dp"
+         	    android:layout_marginRight="35dp"
+         	    android:gravity="center_vertical"
+         	    android:text="Interview Phase"
+         	    android:textColor="#2D8BFE"
+         	    android:textSize="35sp" >
+         	</TextView>
+         	
+         	<TextView
+         	    android:id="@+id/date"
+         	    android:layout_width="wrap_content"
+         	    android:layout_height="50dp"
+         	    android:layout_gravity="bottom"
+         	    android:layout_marginBottom="10dp"
+         	    android:gravity="center_vertical"
+         	    android:text="2013-04-08"
+         	    android:textColor="#6D6D6D"
+         	    android:textSize="30sp" />
+
+         </LinearLayout>
          
 </LinearLayout>

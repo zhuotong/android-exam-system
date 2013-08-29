@@ -10,7 +10,7 @@
     
 	<include layout="@layout/candidate_detail_info" />
 
-	<LinearLayout
+<!-- 	<LinearLayout
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
 	    android:background="#E8E8E8"
@@ -20,27 +20,19 @@
 		    android:id="@+id/timelineView"
 		    android:layout_width="160dp"
 		    android:layout_height="fill_parent" />
-	    			
-<!-- 	 	<GridView 
-		    android:id="@+id/gridview"
-		    android:layout_width="fill_parent" 
-		    android:layout_height="fill_parent"
-		    android:layout_marginTop="25dp"
-		    android:numColumns="2"
-		    android:verticalSpacing="10dp"
-		    android:horizontalSpacing="10dp"
-		    android:columnWidth="90dp"
-		    android:stretchMode="columnWidth"
-		    android:gravity="center"
-		    android:background="#E8E8E8"/> -->
 	 	
 	 	<ListView 
 		    android:id="@+id/listview"
 		    android:layout_width="fill_parent" 
 		    android:layout_height="fill_parent"
 		    android:background="#E8E8E8"/>  
-	</LinearLayout>
+	</LinearLayout> -->
 
+	<ListView 
+		    android:id="@+id/listview"
+		    android:layout_width="fill_parent" 
+		    android:layout_height="fill_parent"
+		    android:background="#E8E8E8"/>  
 
 
 </LinearLayout>

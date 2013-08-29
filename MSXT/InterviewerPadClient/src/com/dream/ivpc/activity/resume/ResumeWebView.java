@@ -42,6 +42,7 @@ public class ResumeWebView extends CandidateBase {
 		resumeWV = (WebView) this.findViewById(R.id.resumeWV);
 		resumeWV.loadUrl(URL);
 		resumeWV.setVisibility(View.VISIBLE);
+//		resumeWV.getSettings().setJavaScriptEnabled(true); 
 		
 //        new LoadResume().execute();
 	}

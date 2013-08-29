@@ -6,6 +6,7 @@ import com.dream.ivpc.BaseActivity;
 import com.dream.ivpc.R;
 import com.dream.ivpc.activity.report.ExamRptList;
 import com.dream.ivpc.activity.resume.ResumeTypeList;
+import com.dream.ivpc.activity.resume.ResumeWebView;
 import com.dream.ivpc.adapter.CandidateDetailAdapter;
 import com.dream.ivpc.chart.Chart;
 import com.dream.ivpc.chart.Circle;
@@ -53,21 +54,21 @@ public class CandidateDetail2 extends BaseActivity {
 		});
 	}
 	
-	TimeLineView timelineView;
-	List<Chart> chartList;
-	Coordinate c1;
-	Coordinate c2;
-	public void loadTimeLineData(){
-		chartList = new ArrayList<Chart>();
-		c1 = new Coordinate(75,0);
-		c2 = new Coordinate(85,750);
-		Circle circle1 = new Circle("#00C66E",20,80,100);
-		Circle circle2 = new Circle("#00C66E",20,80,300);
-		Circle circle3 = new Circle("#FFE255",20,80,500);
-		chartList.add(circle1);
-		chartList.add(circle2);
-		chartList.add(circle3);
-	}
+//	TimeLineView timelineView;
+//	List<Chart> chartList;
+//	Coordinate c1;
+//	Coordinate c2;
+//	public void loadTimeLineData(){
+//		chartList = new ArrayList<Chart>();
+//		c1 = new Coordinate(75,0);
+//		c2 = new Coordinate(85,750);
+//		Circle circle1 = new Circle("#00C66E",20,80,100);
+//		Circle circle2 = new Circle("#00C66E",20,80,300);
+//		Circle circle3 = new Circle("#FFE255",20,80,500);
+//		chartList.add(circle1);
+//		chartList.add(circle2);
+//		chartList.add(circle3);
+//	}
 	
 	/** Called when the activity is first created. */
     @Override
@@ -87,12 +88,12 @@ public class CandidateDetail2 extends BaseActivity {
         loadCandidateDetail();
 		
 		//get bar2DVerView and set bar2DVerView
-		loadTimeLineData();
-		timelineView = (TimeLineView) this.findViewById(R.id.timelineView);
-		timelineView.setSaveEnabled(false);
-		timelineView.setBarC1(c1);
-		timelineView.setBarC2(c2);
-		timelineView.setChartList(chartList);
+//		loadTimeLineData();
+//		timelineView = (TimeLineView) this.findViewById(R.id.timelineView);
+//		timelineView.setSaveEnabled(false);
+//		timelineView.setBarC1(c1);
+//		timelineView.setBarC2(c2);
+//		timelineView.setChartList(chartList);
         
 		//load GridView
 //        GridView gridview = (GridView) findViewById(R.id.gridview);
@@ -136,11 +137,15 @@ public class CandidateDetail2 extends BaseActivity {
     }
 
     public void checkInterviewHistory(){
-    	
+    	Intent intent = new Intent();
+		intent.setClass( mContext, ResumeWebView.class);
+		startActivity(intent); 
     }
     
     public void submitInterviewResult(){
-    	
+    	Intent intent = new Intent();
+		intent.setClass( mContext, ResumeWebView.class);
+		startActivity(intent); 
     }
     
     

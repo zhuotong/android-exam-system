@@ -62,15 +62,13 @@ public class ResumePicture extends CandidateBase {
 		((ImageView) findViewById(R.id.customBack)).setOnClickListener(ocLister);
 		((ImageView) findViewById(R.id.imgLogout)).setOnClickListener(ocLister);
         
-//		setHeader(null,(ImageView) findViewById(R.id.imgGoBack));
-//		myDialog = ProgressDialog.show(ResumePicture.this, "Download File...","Please Wait!", true);
 		new LoadTask().execute(new String[] {});
 
 		viewFlow = (ViewFlow) findViewById(R.id.viewflow);
-		// viewFlow.setAdapter(new ResumeGroupAdapter(this), 5);
+//		 viewFlow.setAdapter(new ResumeGroupAdapter(this), 5);
 
 		indic = (CircleFlowIndicator) findViewById(R.id.viewflowindic);
-		// viewFlow.setFlowIndicator(indic);
+//		viewFlow.setFlowIndicator(indic);
 	}
 
 	/*
@@ -87,6 +85,7 @@ public class ResumePicture extends CandidateBase {
 		private List<Bitmap> bitmapList = new ArrayList<Bitmap>();
 		private String message;
 		private ProgressBar progressBar;
+		private boolean isSuccess;
 		
 		@Override
 		protected void onPreExecute() {
@@ -111,10 +110,10 @@ public class ResumePicture extends CandidateBase {
 					bitmapList.add(bitmap);
 				}
 
-				message = "success";
+				isSuccess = true;
 
 			} catch (Exception e) {
-				message = "fail";
+//				message = "fail";
 				Log.e(LOG_TAG, message + ":" + e.getMessage());
 			}
 			return null;
@@ -124,13 +123,13 @@ public class ResumePicture extends CandidateBase {
 		protected void onPostExecute(String result) {
 			progressBar.setVisibility(View.GONE);
 
-			// if("success".equals(message)&&bitmap!=null){
-			// imageView.setImageBitmap(bitmap);
-			// }
-			viewFlow.setAdapter(new ResumeGroupAdapter(mContext, bitmapList),bitmapList.size());
-			viewFlow.setFlowIndicator(indic);
-
-			Toast.makeText(ResumePicture.this, message, Toast.LENGTH_SHORT).show();
+			if(isSuccess){
+				viewFlow.setAdapter(new ResumeGroupAdapter(mContext, bitmapList),bitmapList.size());
+				viewFlow.setFlowIndicator(indic);				
+			}else{
+				Toast.makeText(ResumePicture.this, "Can not get data!", Toast.LENGTH_SHORT).show();
+			}
+			
 		}
 
 	}
