@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<result>
+	<failure>
+        	<error_code></error_code>
+        	<error_desc></error_desc>       		
+        </failure>
+</result>
+
+
+<result>
+	<success>
+		<user_id></user_id>
+	        <name></name>
+	        <token></token>
+	</success>
+</result>
+
+

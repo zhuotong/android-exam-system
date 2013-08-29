@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<result>
+	<success>
+		<candidate>
+                    <id></id>
+		    <name></name>		
+		</candidate>		
+                <apply_position></apply_position>
+		<done_rounds>
+			<done_round>
+			    <id></id>
+			    <type></type>
+                            <name></name>
+			</done_round>
+		</done_rounds>
+	</success>
+</result>
+
+

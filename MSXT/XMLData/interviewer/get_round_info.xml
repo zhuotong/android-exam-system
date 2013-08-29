@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<result>
+	<success>
+		<interview_round_examinations>
+			<interview_round_examination>
+			    <id></id>
+			    <examination_name></examination_name>
+                            <consume_time></consume_time>
+                            <score></score>
+			</interview_round_examination>
+                        ....
+		</interview_round_examinations>
+        </success>
+</result>
+
+<result>
+	<success>
+		<interview_round_users>
+			<interview_round_user>
+			    <user_name></user_name>
+			    <state></state>
+                            <finish_time></finish_time>
+                            <form_id></form_id>
+			</interview_round_user>
+                        ....
+		</interview_round_users>
+        </success>
+</result>
