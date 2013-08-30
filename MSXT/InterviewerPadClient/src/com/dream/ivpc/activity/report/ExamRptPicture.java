@@ -90,13 +90,13 @@ public class ExamRptPicture extends BaseActivity {
 	private class LoadTask extends AsyncTask<String, Void, String> {
 		private List<Bitmap> bitmapList = new ArrayList<Bitmap>();
 		private boolean succFlag = false;
-		private ProgressBar progressBar;
+//		private ProgressBar progressBar;
 
 		@Override
 		protected void onPreExecute() {
 			Log.i(LOG_TAG, "onPreExecute() called");
-			progressBar = (ProgressBar) findViewById(R.id.loading_resume);
-			progressBar.setVisibility(View.VISIBLE);
+//			progressBar = (ProgressBar) findViewById(R.id.loading_resume);
+//			progressBar.setVisibility(View.VISIBLE);
 		}
 
 		@Override
@@ -123,7 +123,7 @@ public class ExamRptPicture extends BaseActivity {
 
 		@Override
 		protected void onPostExecute(String result) {
-			progressBar.setVisibility(View.GONE);
+//			progressBar.setVisibility(View.GONE);
 			if (succFlag) {
 				viewFlow.setAdapter(new ExamResultRptAdapter(mContext, bitmapList),bitmapList.size());
 				viewFlow.setFlowIndicator(indic);

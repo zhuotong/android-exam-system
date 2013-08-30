@@ -62,13 +62,13 @@ public class ResumePicture extends CandidateBase {
 		((ImageView) findViewById(R.id.customBack)).setOnClickListener(ocLister);
 		((ImageView) findViewById(R.id.imgLogout)).setOnClickListener(ocLister);
         
-		new LoadTask().execute(new String[] {});
-
 		viewFlow = (ViewFlow) findViewById(R.id.viewflow);
 //		 viewFlow.setAdapter(new ResumeGroupAdapter(this), 5);
 
 		indic = (CircleFlowIndicator) findViewById(R.id.viewflowindic);
 //		viewFlow.setFlowIndicator(indic);
+		
+		new LoadTask().execute(new String[] {});
 	}
 
 	/*
@@ -84,14 +84,14 @@ public class ResumePicture extends CandidateBase {
 	private class LoadTask extends AsyncTask<String, Void, String> {
 		private List<Bitmap> bitmapList = new ArrayList<Bitmap>();
 		private String message;
-		private ProgressBar progressBar;
+//		private ProgressBar progressBar;
 		private boolean isSuccess;
 		
 		@Override
 		protected void onPreExecute() {
 			Log.i(LOG_TAG, "onPreExecute() called");
-			progressBar = (ProgressBar) findViewById(R.id.loading_resume);
-			progressBar.setVisibility(View.VISIBLE);
+//			progressBar = (ProgressBar) findViewById(R.id.loading_resume);
+//			progressBar.setVisibility(View.VISIBLE);
 		}
 
 		@Override
@@ -121,7 +121,7 @@ public class ResumePicture extends CandidateBase {
 
 		@Override
 		protected void onPostExecute(String result) {
-			progressBar.setVisibility(View.GONE);
+//			progressBar.setVisibility(View.GONE);
 
 			if(isSuccess){
 				viewFlow.setAdapter(new ResumeGroupAdapter(mContext, bitmapList),bitmapList.size());

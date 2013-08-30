@@ -10,13 +10,17 @@ import com.dream.ivpc.model.LoginResult;
 import com.dream.ivpc.util.FileUtil;
 import com.dream.ivpc.util.NetWorkUtil;
 import com.dream.ivpc.util.XMLParseUtil;
+
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -83,9 +87,35 @@ public class LoginActivity extends BaseActivity {
 		settingBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-		    	Intent intent = new Intent();
-				intent.setClass( mContext, SettingActivity.class);
-				startActivity(intent);  
+//		    	Intent intent = new Intent();
+//				intent.setClass( mContext, SettingActivity.class);
+//				startActivity(intent);  
+				
+				//start
+				LayoutInflater inflater = (LayoutInflater) LoginActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
+				final View view = inflater.inflate(R.layout.login_admin, null);
+				
+				new AlertDialog.Builder(LoginActivity.this)
+						.setTitle("Admin Login").setView(view)
+						.setPositiveButton("Login",new DialogInterface.OnClickListener() {
+					     @Override
+						public void onClick(DialogInterface arg0, int arg1) {
+							EditText nameEditText = (EditText) view.findViewById(R.id.editText1);
+							String username = nameEditText.getText().toString();
+							EditText passEditText = (EditText) view.findViewById(R.id.editText2);
+							String userpass = passEditText.getText().toString();
+							
+							Toast.makeText(LoginActivity.this, "Login:"+username+"&"+userpass, Toast.LENGTH_LONG).show();
+						}
+				}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						Toast.makeText(LoginActivity.this, "Login canceled!", Toast.LENGTH_LONG).show();
+					}
+				}).show();	
+				
+				//end
+				
 			}
 		});		
 

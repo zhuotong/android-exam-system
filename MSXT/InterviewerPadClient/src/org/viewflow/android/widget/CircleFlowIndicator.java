@@ -57,7 +57,7 @@ public class CircleFlowIndicator extends View implements FlowIndicator,
 	private static final int STYLE_STROKE = 0;
 	private static final int STYLE_FILL = 1;
 
-	private float radius = 4;
+	private float radius = 16;
 	private int fadeOutTime = 0;
 	private final Paint mPaintInactive = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint mPaintActive = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -372,8 +372,7 @@ public class CircleFlowIndicator extends View implements FlowIndicator,
 
 		@Override
 		protected void onPostExecute(Void result) {
-			animation = AnimationUtils.loadAnimation(getContext(),
-					android.R.anim.fade_out);
+			animation = AnimationUtils.loadAnimation(getContext(),android.R.anim.fade_out);
 			animation.setAnimationListener(animationListener);
 			startAnimation(animation);
 		}

@@ -23,20 +23,22 @@
 	     </org.viewflow.android.widget.ViewFlow>
 
 	 	<org.viewflow.android.widget.CircleFlowIndicator
-			android:padding="50dip"
+			android:padding="20dp"
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
 			android:id="@+id/viewflowindic"
 			android:layout_gravity="center_horizontal"
 			android:visibility="visible"
 			app:inactiveType="fill"
-			app:fadeOut="1000" />
+			app:inactiveColor="#999999"
+			app:activeColor="#111111"
+			app:fadeOut="3000" />
 	 		 		     
-	 	<ProgressBar android:id="@+id/loading_resume"
+<!-- 	 	<ProgressBar android:id="@+id/loading_resume"
 	        style="?android:progressBarStyle"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_gravity="center" />
+	        android:layout_gravity="center" /> -->
 	 		    
 <!-- 	</FrameLayout> -->
 	    
