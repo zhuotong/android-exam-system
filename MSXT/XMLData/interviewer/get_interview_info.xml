@@ -2,15 +2,17 @@
 <result>
 	<success>
 		<candidate>
-                    <id></id>
+            <id></id>
 		    <name></name>		
-		</candidate>		
-                <apply_position></apply_position>
+		</candidate>	
+		
+        <apply_position></apply_position>
+		
 		<done_rounds>
 			<done_round>
 			    <id></id>
 			    <type></type>
-                            <name></name>
+                <name></name>
 			</done_round>
 		</done_rounds>
 	</success>

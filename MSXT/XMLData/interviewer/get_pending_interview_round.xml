@@ -4,7 +4,7 @@
 		<rounds>
 			<round>
 				<id><id>
-                                <name></name>
+                <name></name>
 				<candidate></candidate>
 				<apply_position></apply_position>
 			</round>

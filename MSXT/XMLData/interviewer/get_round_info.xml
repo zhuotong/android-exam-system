@@ -5,12 +5,12 @@
 			<interview_round_examination>
 			    <id></id>
 			    <examination_name></examination_name>
-                            <consume_time></consume_time>
-                            <score></score>
+                <consume_time></consume_time>
+                <score></score>
 			</interview_round_examination>
                         ....
 		</interview_round_examinations>
-        </success>
+    </success>
 </result>
 
 <result>
