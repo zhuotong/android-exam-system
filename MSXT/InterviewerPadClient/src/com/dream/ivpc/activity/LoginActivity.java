@@ -2,7 +2,9 @@ package com.dream.ivpc.activity;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.URL;
 import com.dream.ivpc.BaseActivity;
 import com.dream.ivpc.R;
 import com.dream.ivpc.custom.CustomDialog;
@@ -10,7 +12,6 @@ import com.dream.ivpc.model.LoginResult;
 import com.dream.ivpc.util.FileUtil;
 import com.dream.ivpc.util.NetWorkUtil;
 import com.dream.ivpc.util.XMLParseUtil;
-
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
