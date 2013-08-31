@@ -1,28 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- Completed Exam List -->
 <result>
 	<success>
 		<interview_round_examinations>
 			<interview_round_examination>
-			    <id></id>
-			    <examination_name></examination_name>
-                <consume_time></consume_time>
-                <score></score>
+			    <id>0001</id>
+			    <examination_name>ExamA</examination_name>
+                <consume_time>60</consume_time>
+                <score>80</score>
 			</interview_round_examination>
-                        ....
+			<interview_round_examination>
+			    <id>0002</id>
+			    <examination_name>ExamB</examination_name>
+                <consume_time>100</consume_time>
+                <score>90</score>
+			</interview_round_examination>
 		</interview_round_examinations>
     </success>
 </result>
 
+<!-- Completed Interview List -->
 <result>
 	<success>
 		<interview_round_users>
 			<interview_round_user>
-			    <user_name></user_name>
-			    <state></state>
-                            <finish_time></finish_time>
-                            <form_id></form_id>
-			</interview_round_user>
-                        ....
+			    <user_name>Jack</user_name>
+			    <state>approve</state>
+                <finish_time>2012-10-01 08:00</finish_time>
+                <form_id>000000111</form_id>
+			</interview_round_user>		
 		</interview_round_users>
-        </success>
+    </success>
 </result>

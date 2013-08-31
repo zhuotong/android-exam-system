@@ -2,18 +2,29 @@
 <result>
 	<success>
 		<candidate>
-            <id></id>
-		    <name></name>		
+            <id>00001212</id>
+		    <name>TangQi</name>		
 		</candidate>	
-		
-        <apply_position></apply_position>
-		
+		<apply_position>Java Engineer</apply_position>      
+		<curr_round>
+			<id>0001</id>
+			<type>VIEW</type>
+			<name>ExamReport</name>
+			<plan_time>2012-10-01 08:00</plan_time>
+		</curr_round>		
 		<done_rounds>
 			<done_round>
-			    <id></id>
-			    <type></type>
-                <name></name>
-			</done_round>
+			    <id>0001</id>
+			    <type>EXAM</type>
+                <name>ExamReport</name>
+				<done_time>2012-10-01 08:00</done_time>
+			</done_round>		
+			<done_round>
+			    <id>0002</id>
+			    <type>VIEW</type>
+                <name>HRInterview</name>
+				<done_time>2012-10-01 08:00</done_time>
+			</done_round>		
 		</done_rounds>
 	</success>
 </result>

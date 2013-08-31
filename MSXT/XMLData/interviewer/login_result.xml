@@ -3,15 +3,15 @@
 	<failure>
         	<error_code></error_code>
         	<error_desc></error_desc>       		
-        </failure>
+    </failure>
 </result>
 
 
 <result>
 	<success>
 		<user_id></user_id>
-	        <name></name>
-	        <token></token>
+	    <name></name>
+	    <token></token>
 	</success>
 </result>
 
