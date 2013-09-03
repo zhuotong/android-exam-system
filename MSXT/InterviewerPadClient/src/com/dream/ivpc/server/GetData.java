@@ -1,17 +1,24 @@
 package com.dream.ivpc.server;
 
+import java.io.InputStream;
+import java.util.List;
+
+import com.dream.ivpc.bean.CandidateBean;
+import com.dream.ivpc.bean.PendRoundBean;
+import com.dream.ivpc.bean.XMLBean;
+
 public interface GetData {
 
-	public void login();
+	public XMLBean login(InputStream is);
 	
-	public void getCandidateList();
+	public List<PendRoundBean> getRoundList(InputStream is);
 	
-	public void getCandidateDetail();
+	public CandidateBean getCandidateDetail(InputStream is);
 	
-	public void getCandidateResume();
+	public XMLBean getCandidateResume(InputStream is);
 	
-	public void getCandiateExamRpt();
+	public XMLBean getCandiateExamRpt(InputStream is);
 	
-	public void getCandiateIntervew();
+	public XMLBean getCandiateIntervew(InputStream is);
 	
 }
