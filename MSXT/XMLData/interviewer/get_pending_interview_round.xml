@@ -9,6 +9,15 @@
 				<candidate></candidate>
 				<apply_position></apply_position>
 			</round>
+		
+			<round>
+				<id>0002<id>
+				<plan_time>2012-10-01 08:00</plan_time>
+                <name>Tech Interviewer</name>
+				<candidate></candidate>
+				<apply_position></apply_position>
+			</round>
+			
 		</rounds>
 	</success>
 </result>
