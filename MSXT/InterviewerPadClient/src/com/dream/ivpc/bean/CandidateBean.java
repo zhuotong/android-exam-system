@@ -7,7 +7,7 @@ public class CandidateBean {
 	private String candidateName;
 	private String candidatePosition;
 	private Round currRound;
-	private List<Round> pendRounds;
+	private List<Round> doneRounds;
 	
 	public String getCandidateId() {
 		return candidateId;
@@ -33,11 +33,11 @@ public class CandidateBean {
 	public void setCurrRound(Round currRound) {
 		this.currRound = currRound;
 	}
-	public List<Round> getPendRounds() {
-		return pendRounds;
+	public List<Round> getDoneRounds() {
+		return doneRounds;
 	}
-	public void setPendRounds(List<Round> pendRounds) {
-		this.pendRounds = pendRounds;
+	public void setDoneRounds(List<Round> doneRounds) {
+		this.doneRounds = doneRounds;
 	}
 	
 }

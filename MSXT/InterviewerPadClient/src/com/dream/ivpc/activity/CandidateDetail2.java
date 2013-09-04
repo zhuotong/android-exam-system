@@ -1,27 +1,33 @@
 package com.dream.ivpc.activity;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
+
 import com.dream.ivpc.BaseActivity;
 import com.dream.ivpc.R;
 import com.dream.ivpc.activity.report.ExamRptList;
 import com.dream.ivpc.activity.resume.ResumeTypeList;
 import com.dream.ivpc.activity.resume.ResumeWebView;
-import com.dream.ivpc.adapter.CandidateDetailAdapter;
-import com.dream.ivpc.chart.Chart;
-import com.dream.ivpc.chart.Circle;
-import com.dream.ivpc.chart.Coordinate;
-import com.dream.ivpc.chart.TimeLineView;
-import com.dream.ivpc.model.DetailBean;
+import com.dream.ivpc.adapter.CandidateRoundAdapter;
+import com.dream.ivpc.bean.CandidateBean;
+import com.dream.ivpc.bean.Round;
+import com.dream.ivpc.server.GetDateImp;
+import com.dream.ivpc.util.FileUtil;
+import com.dream.ivpc.util.NetWorkUtil;
+
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class CandidateDetail2 extends BaseActivity {
@@ -29,11 +35,16 @@ public class CandidateDetail2 extends BaseActivity {
 	
 	ImageView imgGoBack = null;
 	TextView canInfoTV;
-	CandidateDetailAdapter adapter;
-	List<DetailBean> detailList = new ArrayList<DetailBean>();
+	
+	CandidateBean canBean;
+	
+	ListView listview;
+	CandidateRoundAdapter adapter;
+	
+//	List<DetailBean> detailList = new ArrayList<DetailBean>();
 	Context mContext;
 	
-	public void loadCandidateDetail(){
+	public void loadCandidateBase(){
         //set candidate infor value
 		Bundle bundle = this.getIntent().getExtras();
 		String name  = bundle.getString("name");
@@ -54,22 +65,6 @@ public class CandidateDetail2 extends BaseActivity {
 		});
 	}
 	
-//	TimeLineView timelineView;
-//	List<Chart> chartList;
-//	Coordinate c1;
-//	Coordinate c2;
-//	public void loadTimeLineData(){
-//		chartList = new ArrayList<Chart>();
-//		c1 = new Coordinate(75,0);
-//		c2 = new Coordinate(85,750);
-//		Circle circle1 = new Circle("#00C66E",20,80,100);
-//		Circle circle2 = new Circle("#00C66E",20,80,300);
-//		Circle circle3 = new Circle("#FFE255",20,80,500);
-//		chartList.add(circle1);
-//		chartList.add(circle2);
-//		chartList.add(circle3);
-//	}
-	
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,29 +80,24 @@ public class CandidateDetail2 extends BaseActivity {
         canInfoTV.setText("Candidate Detail");
         
         //set candidate detail
-        loadCandidateDetail();
+        loadCandidateBase();
 		
-		//get bar2DVerView and set bar2DVerView
-//		loadTimeLineData();
-//		timelineView = (TimeLineView) this.findViewById(R.id.timelineView);
-//		timelineView.setSaveEnabled(false);
-//		timelineView.setBarC1(c1);
-//		timelineView.setBarC2(c2);
-//		timelineView.setChartList(chartList);
-        
-		//load GridView
-//        GridView gridview = (GridView) findViewById(R.id.gridview);
-        
-        ListView listview = (ListView) findViewById(R.id.listview);
-        String[] descs = this.getResources().getStringArray(R.array.candidate_detail_descs);
-        int[] imgIds = new int[]{R.drawable.detail_btn2_selector,R.drawable.detail_btn3_selector,R.drawable.detail_btn4_selector};
-        for(int i=0;i<descs.length;i++){
-        	detailList.add(new DetailBean(descs[i],imgIds[i]));
-        }
-        
-        adapter =  new CandidateDetailAdapter(detailList,mContext);
-        listview.setAdapter(adapter);
+        listview = (ListView) findViewById(R.id.listview);
+//        String[] descs = this.getResources().getStringArray(R.array.candidate_detail_descs);
+//        int[] imgIds = new int[]{R.drawable.detail_btn2_selector,R.drawable.detail_btn3_selector,R.drawable.detail_btn4_selector};
+//        for(int i=0;i<descs.length;i++){
+//        	detailList.add(new DetailBean(descs[i],imgIds[i]));
+//        }
+//        
+//        adapter =  new CandidateDetailAdapter(detailList,mContext);
+//        listview.setAdapter(adapter);
         listview.setOnItemClickListener(new ItemClickListener());
+        
+        if(NetWorkUtil.isNetworkAvailable(mContext)){
+        	new GetDataTask().execute();
+        }else{
+        	Toast.makeText(mContext, "Your network is not available!", Toast.LENGTH_LONG).show();
+        }
     }
 
     View.OnClickListener goBackListener = new View.OnClickListener() {  
@@ -128,6 +118,48 @@ public class CandidateDetail2 extends BaseActivity {
 				 case 2:submitInterviewResult();break;
 			}
 		}
+    }
+ 
+    private String getRptPath(String admin,String candiate) {
+		String basePath = Environment.getExternalStorageDirectory() + "/interviewer";
+		return basePath + File.separator + admin + File.separator + candiate + File.separator +  "get_interview_info.xml";
+	}
+	
+    private void loadCandidateDetail(){
+		FileInputStream inputStream = FileUtil.getFileInputStream(getRptPath("admin","tangqi"));
+		GetDateImp getData = new GetDateImp();
+		canBean = getData.getCandidateDetail(inputStream);
+    }
+    
+    private class GetDataTask extends AsyncTask<Void, Void, String[]> {
+    	
+        @Override
+        protected String[] doInBackground(Void... params) {
+            // Simulates a background job.
+            try {
+                Thread.sleep(500);
+                loadCandidateDetail();
+            } catch (InterruptedException e) {
+            }
+            return null;
+        }
+        
+        @Override
+        protected void onPostExecute(String[] result) {
+            super.onPostExecute(result);
+            List<Round> doneRounds = canBean.getDoneRounds();
+			if (doneRounds != null && doneRounds.size() > 0) {
+				if (adapter == null) {
+					adapter = new CandidateRoundAdapter(doneRounds, mContext);
+					listview.setAdapter(adapter);
+					listview.setOnItemClickListener(new ItemClickListener());
+				} else {
+					adapter.notifyDataSetChanged();
+				}
+			} else {
+				Toast.makeText(mContext, "Can not get any data!",Toast.LENGTH_LONG).show();
+			}
+        }
     }
     
     public void checkExamRpt(){

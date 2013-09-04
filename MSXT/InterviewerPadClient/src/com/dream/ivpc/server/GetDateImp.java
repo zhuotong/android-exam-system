@@ -9,6 +9,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import android.util.Log;
@@ -42,7 +44,20 @@ public class GetDateImp implements GetData {
 			conn.setRequestMethod( "POST" );
 			conn.connect();
 			OutputStream os = conn.getOutputStream();
+			
+			StringBuilder paramsSB = new StringBuilder();
+			for (Entry<String, String> entry : params.entrySet()) {
+				String key = entry.getKey().toString();
+				String value = entry.getValue().toString();
+				System.out.println("key=" + key + " value=" + value);
+				if(paramsSB.length() == 0){
+					paramsSB.append(key+"="+value);
+				}else{
+					paramsSB.append("&"+key+"="+value);
+				}
+			}
 //			os.write( ("loginName="+urls[0]+"&loginPassword=" + urls[1]).getBytes("utf-8") );
+			os.write( paramsSB.toString().getBytes("utf-8") );
 			os.close();
 			inputStream = conn.getInputStream();
 		} catch (MalformedURLException e) {
@@ -53,7 +68,6 @@ public class GetDateImp implements GetData {
 			e.printStackTrace();
 		}
 		return inputStream;
-		
 	}
 
 
@@ -177,7 +191,7 @@ public class GetDateImp implements GetData {
 						currRound.setPlanTime(parser.nextText());
 					} else if (parser.getName().equals("done_rounds") && bean!=null) {
 						doneRounds = new ArrayList<Round>();
-					} else if (parser.getName().equals("done_round") && bean!=null && doneRound!=null ) {
+					} else if (parser.getName().equals("done_round") && bean!=null && doneRounds!=null ) {
 						doneRound = new Round();
 						doneRound.setCompFlag(true);
 					} else if (parser.getName().equals("id") && bean!=null && doneRound!=null) {
@@ -191,9 +205,16 @@ public class GetDateImp implements GetData {
 					} 
 					break;
 				case XmlPullParser.END_TAG:
-					if (parser.getName().equals("done_rounds")) {
+					if (parser.getName().equals("done_round")) {
 						doneRounds.add(doneRound);
 						doneRound = null;
+						break;
+					}else if (parser.getName().equals("done_rounds")) {
+						bean.setDoneRounds(doneRounds);
+						doneRounds = null;
+						break;
+					}else if (parser.getName().equals("success")) {
+						break;
 					}
 				}
 			}

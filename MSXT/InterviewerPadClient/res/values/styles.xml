@@ -78,7 +78,7 @@
     </style>
     
     <style name="can_list_tv_style">
-        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_height">80dp</item>
         <item name="android:layout_marginRight">0dp</item>
         <item name="android:gravity">center_vertical|center_horizontal</item>
         <item name="android:textSize">20sp</item>

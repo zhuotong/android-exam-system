@@ -7,8 +7,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import com.dream.ivpc.BaseActivity;
 import com.dream.ivpc.R;
+import com.dream.ivpc.bean.LoginResultBean;
 import com.dream.ivpc.custom.CustomDialog;
 import com.dream.ivpc.model.LoginResult;
+import com.dream.ivpc.server.GetDateImp;
 import com.dream.ivpc.util.FileUtil;
 import com.dream.ivpc.util.NetWorkUtil;
 import com.dream.ivpc.util.XMLParseUtil;
@@ -171,12 +173,15 @@ public class LoginActivity extends BaseActivity {
 			cusDialog.dismiss();
 			
 			if(inputStream!=null){
-				LoginResult lResult = XMLParseUtil.parseLoginResult(inputStream);
-				if(lResult.isSuccess()){
+//				LoginResult lResult = XMLParseUtil.parseLoginResult(inputStream);
+				GetDateImp getData = new GetDateImp();
+				LoginResultBean loginResult = getData.login(inputStream);
+				
+				if(loginResult.isSuccess()){
 					go2CandiateList();
-					Toast.makeText(mContext, "Login Success! Name:"+  lResult.getUserName()+" token:"+lResult.getToken(), Toast.LENGTH_LONG).show();
+					Toast.makeText(mContext, "Login Success! Name:"+  loginResult.getUserName()+" token:"+loginResult.getToken(), Toast.LENGTH_LONG).show();
 				}else{
-					ShowDialog("Warning",lResult.getError_code()+":"+lResult.getError_desc());
+					ShowDialog("Warning",loginResult.getError_code()+":"+loginResult.getError_desc());
 				}
 			}else{
 				ShowDialog("Warning","Fail to login!");

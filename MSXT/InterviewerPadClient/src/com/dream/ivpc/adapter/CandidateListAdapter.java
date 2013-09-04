@@ -3,7 +3,8 @@ package com.dream.ivpc.adapter;
 import java.util.ArrayList;
 import java.util.List;
 import com.dream.ivpc.R;
-import com.dream.ivpc.model.CandiateBean;
+import com.dream.ivpc.bean.PendRoundBean;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,24 +13,25 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 public class CandidateListAdapter extends BaseAdapter {
-	List<CandiateBean> candiateList = new ArrayList<CandiateBean>();
+	List<PendRoundBean> roundList = new ArrayList<PendRoundBean>();
+	
 	Context mContext;
 	LayoutInflater mInflater;
 	
-	public CandidateListAdapter(List<CandiateBean> candiateList,Context mContext){
-		this.candiateList = candiateList;
+	public CandidateListAdapter(List<PendRoundBean> candiateList,Context mContext){
+		this.roundList = candiateList;
 		this.mContext = mContext;
 		this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
 	public int getCount() {
-		return candiateList.size();
+		return roundList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return candiateList.get(position);
+		return roundList.get(position);
 	}
 
 	@Override
@@ -57,13 +59,13 @@ public class CandidateListAdapter extends BaseAdapter {
 			holder = (ViewHolder)convertView.getTag();
 		}
 		
-		CandiateBean bean = candiateList.get(position);
+		PendRoundBean bean = roundList.get(position);
 		
 		holder.index.setText(String.valueOf(position+1));
-		holder.time.setText(bean.getTime());
-		holder.position.setText(bean.getPosition());
-		holder.name.setText(bean.getName());
-		holder.phase.setText(bean.getPhase());
+		holder.time.setText(bean.getrTime());
+		holder.position.setText(bean.getrAppPosition());
+		holder.name.setText(bean.getrCandidate());
+		holder.phase.setText(bean.getrName());
 		
 		return convertView;
 	}

@@ -6,14 +6,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
 import com.artifex.mupdfdemo.MuPDFActivity;
 import com.dream.ivpc.R;
 import com.dream.ivpc.adapter.CandidateListAdapter;
-import com.dream.ivpc.model.CandiateBean;
+import com.dream.ivpc.bean.PendRoundBean;
+import com.dream.ivpc.server.GetDateImp;
 import com.dream.ivpc.util.FileUtil;
 import com.dream.ivpc.util.NetWorkUtil;
-import com.dream.ivpc.util.XMLParseUtil;
 import com.markupartist.android.widget.PullToRefreshListView;
 import android.app.ListActivity;
 import android.content.Context;
@@ -32,7 +31,6 @@ import android.widget.AdapterView.OnItemClickListener;
 public class CandidateList extends ListActivity {
 	
 	ImageView imgGoHome = null;
-	
 	ImageView timeSortIcon = null;
 	ImageView positionSortIcon = null;
 	ImageView nameSortIcon = null;
@@ -46,7 +44,8 @@ public class CandidateList extends ListActivity {
 	Context mContext;
 	PullToRefreshListView listView;
 	CandidateListAdapter adapter;
-	List<CandiateBean> candiateList = new ArrayList<CandiateBean>();
+//	List<CandiateBean> roundList = new ArrayList<CandiateBean>();
+	List<PendRoundBean> roundList = new ArrayList<PendRoundBean>();
     ProgressBar progressBar;
     int mShortAnimationDuration = 200;
 	
@@ -80,11 +79,12 @@ public class CandidateList extends ListActivity {
         	@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int arg2,
 					long arg3) {
-        		CandiateBean bean = candiateList.get(arg2);
+        		PendRoundBean bean = roundList.get(arg2);
+        		
             	Intent intent = new Intent();
-    			intent.putExtra("name", bean.getName());
-    			intent.putExtra("position", bean.getPosition());
-    			intent.putExtra("phase", bean.getPhase());
+    			intent.putExtra("name", bean.getrCandidate());
+    			intent.putExtra("position", bean.getrAppPosition());
+    			intent.putExtra("phase", bean.getrName());
     			intent.setClass( mContext, CandidateDetail2.class);
     			startActivity(intent); 
 			}      	
@@ -116,15 +116,19 @@ public class CandidateList extends ListActivity {
 	
 	public String getRptPath(String name) {
 		String basePath = Environment.getExternalStorageDirectory() + "/interviewer";
-		return basePath + File.separator + name + File.separator + "candidates.xml";
+		return basePath + File.separator + name + File.separator + "get_pending_interview_round.xml";
 	}
 	
 	public void loadData(){
 		FileInputStream inputStream = FileUtil.getFileInputStream(getRptPath("admin"));
-		candiateList = XMLParseUtil.parseCandidates(inputStream);
-		Collections.sort(candiateList,new Comparator<CandiateBean>(){  
-            public int compare(CandiateBean arg0, CandiateBean arg1) {  
-                return arg0.getTime().compareTo(arg1.getTime());  
+		
+		GetDateImp getData = new GetDateImp();
+		roundList = getData.getRoundList(inputStream);
+//		roundList = XMLParseUtil.parseCandidates(inputStream);
+		
+		Collections.sort(roundList,new Comparator<PendRoundBean>(){  
+            public int compare(PendRoundBean arg0, PendRoundBean arg1) {  
+                return arg0.getrTime().compareTo(arg1.getrTime());  
             }  
         });
 	}
@@ -145,8 +149,8 @@ public class CandidateList extends ListActivity {
         @Override
         protected void onPostExecute(String[] result) {
             super.onPostExecute(result);
-            if(candiateList!=null&&candiateList.size()>0){
-            	adapter = new CandidateListAdapter(candiateList,mContext);
+            if(roundList!=null&&roundList.size()>0){
+            	adapter = new CandidateListAdapter(roundList,mContext);
                 setListAdapter(adapter); 
                 
                 // Call onRefreshComplete when the list has been refreshed.
@@ -166,25 +170,25 @@ public class CandidateList extends ListActivity {
 			case(R.id.nameSortTable):sortByName();break;
 			case(R.id.phaseSortTable):sortByPhase();break;
 		}
-	    adapter = new CandidateListAdapter(candiateList,mContext);
+	    adapter = new CandidateListAdapter(roundList,mContext);
 	    listView.setAdapter(adapter);
 	}
 	
 	public void sortByTime(){
 		switch(timeSortFlag){
 			case -1:
-				Collections.sort(candiateList,new Comparator<CandiateBean>(){  
-		            public int compare(CandiateBean arg0, CandiateBean arg1) {  
-		                return arg0.getTime().compareTo(arg1.getTime());  
+				Collections.sort(roundList,new Comparator<PendRoundBean>(){  
+		            public int compare(PendRoundBean arg0, PendRoundBean arg1) {  
+		                return arg0.getrTime().compareTo(arg1.getrTime());  
 		            }  
 		        });	
 				timeSortFlag = 1;	
 				timeSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.up_32));
 				break;
 			case 1:
-				Collections.sort(candiateList,new Comparator<CandiateBean>(){  
-		            public int compare(CandiateBean arg0, CandiateBean arg1) {  
-		                return arg1.getTime().compareTo(arg0.getTime());  
+				Collections.sort(roundList,new Comparator<PendRoundBean>(){  
+		            public int compare(PendRoundBean arg0, PendRoundBean arg1) {  
+		                return arg1.getrTime().compareTo(arg0.getrTime());  
 		            }  
 		        });
 				timeSortFlag = -1;
@@ -199,18 +203,18 @@ public class CandidateList extends ListActivity {
 	public void sortByPosition(){
 		switch(positionSortFlag){
 			case -1:
-				Collections.sort(candiateList,new Comparator<CandiateBean>(){  
-		            public int compare(CandiateBean arg0, CandiateBean arg1) {  
-		                return arg0.getPosition().compareTo(arg1.getPosition());  
+				Collections.sort(roundList,new Comparator<PendRoundBean>(){  
+		            public int compare(PendRoundBean arg0, PendRoundBean arg1) {  
+		                return arg0.getrAppPosition().compareTo(arg1.getrAppPosition());  
 		            }  
 		        });	
 				positionSortFlag = 1;	
 				positionSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.up_32));
 				break;
 			case 1:
-				Collections.sort(candiateList,new Comparator<CandiateBean>(){  
-		            public int compare(CandiateBean arg0, CandiateBean arg1) {  
-		                return arg1.getPosition().compareTo(arg0.getPosition());  
+				Collections.sort(roundList,new Comparator<PendRoundBean>(){  
+		            public int compare(PendRoundBean arg0, PendRoundBean arg1) {  
+		                return arg1.getrAppPosition().compareTo(arg0.getrAppPosition());  
 		            }  
 		        });
 				positionSortFlag = -1;
@@ -225,18 +229,18 @@ public class CandidateList extends ListActivity {
 	public void sortByName(){
 		switch(nameSortFlag){
 			case -1:
-				Collections.sort(candiateList,new Comparator<CandiateBean>(){  
-		            public int compare(CandiateBean arg0, CandiateBean arg1) {  
-		                return arg0.getName().compareTo(arg1.getName());  
+				Collections.sort(roundList,new Comparator<PendRoundBean>(){  
+		            public int compare(PendRoundBean arg0, PendRoundBean arg1) {  
+		                return arg0.getrCandidate().compareTo(arg1.getrCandidate());  
 		            }  
 		        });	
 				nameSortFlag = 1;	
 				nameSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.up_32));
 				break;
 			case 1:
-				Collections.sort(candiateList,new Comparator<CandiateBean>(){  
-		            public int compare(CandiateBean arg0, CandiateBean arg1) {  
-		                return arg1.getName().compareTo(arg0.getName());  
+				Collections.sort(roundList,new Comparator<PendRoundBean>(){  
+		            public int compare(PendRoundBean arg0, PendRoundBean arg1) {  
+		                return arg1.getrCandidate().compareTo(arg0.getrCandidate());  
 		            }  
 		        });
 				nameSortFlag = -1;
@@ -251,18 +255,18 @@ public class CandidateList extends ListActivity {
 	public void sortByPhase(){
 		switch(nameSortFlag){
 			case -1:
-				Collections.sort(candiateList,new Comparator<CandiateBean>(){  
-		            public int compare(CandiateBean arg0, CandiateBean arg1) {  
-		                return arg0.getPhase().compareTo(arg1.getPhase());  
+				Collections.sort(roundList,new Comparator<PendRoundBean>(){  
+		            public int compare(PendRoundBean arg0, PendRoundBean arg1) {  
+		                return arg0.getrName().compareTo(arg1.getrName());  
 		            }  
 		        });	
 				phaseSortFlag = 1;	
 				phaseSortIcon.setImageDrawable(getResources().getDrawable(R.drawable.up_32));
 				break;
 			case 1:
-				Collections.sort(candiateList,new Comparator<CandiateBean>(){  
-		            public int compare(CandiateBean arg0, CandiateBean arg1) {  
-		                return arg1.getPhase().compareTo(arg0.getPhase());  
+				Collections.sort(roundList,new Comparator<PendRoundBean>(){  
+		            public int compare(PendRoundBean arg0, PendRoundBean arg1) {  
+		                return arg1.getrName().compareTo(arg0.getrName());  
 		            }  
 		        });
 				phaseSortFlag = -1;

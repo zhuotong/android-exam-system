@@ -12,27 +12,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.dream.ivpc.R;
 import com.dream.ivpc.activity.report.ExamRptList;
-import com.dream.ivpc.model.DetailBean;
+import com.dream.ivpc.bean.Round;
 
-public class CandidateDetailAdapter extends BaseAdapter{
-	List<DetailBean> detailList = new ArrayList<DetailBean>();
+public class CandidateRoundAdapter extends BaseAdapter{
+	List<Round> roundList = new ArrayList<Round>();
 	Context mContext;
 	LayoutInflater mInflater;
 	
-	public CandidateDetailAdapter(List<DetailBean> detailList,Context mContext){
-		this.detailList = detailList;
+	public CandidateRoundAdapter(List<Round> detailList,Context mContext){
+		this.roundList = detailList;
 		this.mContext = mContext;
 		this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
 	public int getCount() {
-		return detailList.size();
+		return roundList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return detailList.get(position);
+		return roundList.get(position);
 	}
 
 	@Override
@@ -51,6 +51,7 @@ public class CandidateDetailAdapter extends BaseAdapter{
 			//set 3 component 
 			holder.detailIV = (ImageView)convertView.findViewById(R.id.detailImage);
 			holder.detailTV = (TextView)convertView.findViewById(R.id.detailDesc);
+			holder.dateTV = (TextView)convertView.findViewById(R.id.dateTV);
 			
 			convertView.setTag(holder);
 		}else{
@@ -58,9 +59,9 @@ public class CandidateDetailAdapter extends BaseAdapter{
 		}
 		
 		final int choosePostion = position;
-		DetailBean bean = detailList.get(position);
+		Round bean = roundList.get(position);
 		
-		holder.detailIV.setBackgroundResource(bean.getImageId());
+//		holder.detailIV.setBackgroundResource(bean.getImageId());
 		holder.detailIV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -73,6 +74,12 @@ public class CandidateDetailAdapter extends BaseAdapter{
 		});
 		
 		holder.detailTV.setText(bean.getName());
+		if(bean.isCompFlag()){
+			holder.dateTV.setText(bean.getDoneTime());
+		}else{
+			holder.dateTV.setText(bean.getPlanTime());
+		}
+		
 		return convertView;
 	}
 	
@@ -80,6 +87,7 @@ public class CandidateDetailAdapter extends BaseAdapter{
 	static class ViewHolder{
 		ImageView detailIV;
 		TextView detailTV;
+		TextView dateTV;
 	}
 	
     public void chooseExamRpt(){
