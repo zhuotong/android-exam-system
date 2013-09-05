@@ -37,12 +37,16 @@
     <string name="label_candidate_title_name">Name</string>
     <string name="label_candidate_title_phase">Phase</string>
     
+
     
     <string-array name="candidate_detail_descs">
         <item>Exam Report</item>
         <item>HR Interview</item>
         <item>Tech Interview </item>
     </string-array>
+
+    <string name="label_curr_phase">Phase</string>
+    <string name="label_curr_phase_time">Time</string>
     
     <string name="candidate_detail_resume">Resume</string>
     <string name="candidate_detail_report">Report</string>

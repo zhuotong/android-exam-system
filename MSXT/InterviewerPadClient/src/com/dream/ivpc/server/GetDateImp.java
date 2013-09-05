@@ -205,7 +205,10 @@ public class GetDateImp implements GetData {
 					} 
 					break;
 				case XmlPullParser.END_TAG:
-					if (parser.getName().equals("done_round")) {
+					if (parser.getName().equals("curr_round")) {
+						bean.setCurrRound(currRound);
+						break;
+					}else if (parser.getName().equals("done_round")) {
 						doneRounds.add(doneRound);
 						doneRound = null;
 						break;

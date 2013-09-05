@@ -41,8 +41,11 @@ public class CandidateDetail2 extends BaseActivity {
 	ListView listview;
 	CandidateRoundAdapter adapter;
 	
-//	List<DetailBean> detailList = new ArrayList<DetailBean>();
 	Context mContext;
+	
+//	ImageView imgCurrRound;
+	TextView currRoundTV;
+	TextView currRoundTimeTV;
 	
 	public void loadCandidateBase(){
         //set candidate infor value
@@ -83,15 +86,11 @@ public class CandidateDetail2 extends BaseActivity {
         loadCandidateBase();
 		
         listview = (ListView) findViewById(R.id.listview);
-//        String[] descs = this.getResources().getStringArray(R.array.candidate_detail_descs);
-//        int[] imgIds = new int[]{R.drawable.detail_btn2_selector,R.drawable.detail_btn3_selector,R.drawable.detail_btn4_selector};
-//        for(int i=0;i<descs.length;i++){
-//        	detailList.add(new DetailBean(descs[i],imgIds[i]));
-//        }
-//        
-//        adapter =  new CandidateDetailAdapter(detailList,mContext);
-//        listview.setAdapter(adapter);
         listview.setOnItemClickListener(new ItemClickListener());
+        
+//        imgCurrRound = ((ImageView) this.findViewById(R.id.imgCurrRound));
+        currRoundTV = (TextView) this.findViewById(R.id.currRoundTV);
+        currRoundTimeTV = (TextView) this.findViewById(R.id.currRoundTimeTV);	
         
         if(NetWorkUtil.isNetworkAvailable(mContext)){
         	new GetDataTask().execute();
@@ -156,6 +155,9 @@ public class CandidateDetail2 extends BaseActivity {
 				} else {
 					adapter.notifyDataSetChanged();
 				}
+				
+				currRoundTV.setText(canBean.getCurrRound().getName());
+				currRoundTimeTV.setText(canBean.getCurrRound().getPlanTime());
 			} else {
 				Toast.makeText(mContext, "Can not get any data!",Toast.LENGTH_LONG).show();
 			}

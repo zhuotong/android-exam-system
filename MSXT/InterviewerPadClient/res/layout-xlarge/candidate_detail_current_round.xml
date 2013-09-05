@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="260dp"
+    android:orientation="horizontal"
+    android:background="#A9CCE3" >
+ 
+    <TableLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="20dp"
+        android:layout_weight="4" >
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:gravity="center_vertical|left"
+                android:layout_weight="1"
+                android:text="Phase"
+                android:textSize="30sp" />
+            <TextView
+                android:id="@+id/currRoundTV"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:gravity="center_vertical|left"
+                android:layout_weight="2"
+                android:text="Tech Interview"
+                android:textSize="30sp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp" 
+            android:layout_marginTop="20dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical|left"
+                android:text="Time"
+                android:textSize="30sp"/>
+            <TextView
+                android:id="@+id/currRoundTimeTV"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:gravity="center_vertical|left"
+                android:layout_weight="2"
+                android:text="2013-09-15 08:00"
+                android:textSize="30sp" />
+        </TableRow>
+	</TableLayout>
+	
+    <ImageView
+        android:id="@+id/imgCurrRound"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="12dp"
+        android:contentDescription="@string/candiate_detail_image"
+        android:src="@drawable/detail_btn4_selector" >
+    </ImageView>
+
+</LinearLayout>

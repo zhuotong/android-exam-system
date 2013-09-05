@@ -73,6 +73,12 @@ public class CandidateRoundAdapter extends BaseAdapter{
 			}
 		});
 		
+		if("EXAM".equalsIgnoreCase(bean.getType())){
+			holder.detailIV.setBackgroundResource(R.drawable.detail_btn2_selector);
+		}else{
+			holder.detailIV.setBackgroundResource(R.drawable.detail_btn3_selector);
+		}
+		
 		holder.detailTV.setText(bean.getName());
 		if(bean.isCompFlag()){
 			holder.dateTV.setText(bean.getDoneTime());
