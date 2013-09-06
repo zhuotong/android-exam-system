@@ -101,6 +101,16 @@
                   android:launchMode="singleTask">
         </activity>
         <!-- User Exam Report and Detail End -->
+        
+        <!-- Submit User Interview and User Interview Result Start -->
+        
+        <activity android:name="com.dream.ivpc.activity.interview.InterviewResult"
+                  android:theme="@style/CustomWindowTitleTheme"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+         
+        <!-- Submit User Interview and User Interview Result Start -->
 
         <!-- PDF Activity Start -->
         <activity

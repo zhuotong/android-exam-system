@@ -19,8 +19,9 @@
     <TableLayout 	        
         android:layout_width="0dp"
 	    android:layout_height="wrap_content"
-	    android:layout_weight="2"
-	    android:layout_marginLeft="50dp">
+	    android:layout_weight="3"
+	    android:layout_gravity="center_vertical"
+	    android:layout_margin="10dp">
 	    <TableRow
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content" >
@@ -43,7 +44,7 @@
 				style="@style/can_detail_value_tv_style" />
 	    </TableRow>
 
-	    <TableRow
+<!-- 	    <TableRow
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content" >
 	        <TextView
@@ -53,10 +54,10 @@
 	        <TextView
 	            android:id="@+id/phaseTV"
 				style="@style/can_detail_value_tv_style"/>
-	    </TableRow>
+	    </TableRow> -->
 	</TableLayout>
 	
-    <ImageView
+<!--     <ImageView
         android:id="@+id/imgResume"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -65,5 +66,16 @@
         android:layout_gravity="center_vertical"
         android:contentDescription="@string/msg_logo_go_back"
         android:src="@drawable/detail_btn1_selector" >
-    </ImageView>
+    </ImageView> -->
+    
+    <Button
+        android:id="@+id/viewResume"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="10dp"
+        android:text="View Resume" 
+        android:textColor="#FFFFFF"
+        android:background="@drawable/btn_comm"/>
 </LinearLayout>

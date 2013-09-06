@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.dream.ivpc.BaseActivity;
 import com.dream.ivpc.PageChange;
@@ -52,7 +53,7 @@ public class ExamRptPicture extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-        setContentView(R.layout.candidate_resume_group);
+        setContentView(R.layout.exam_rpt);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title2);
         
 //        ImageButton closeIB = (ImageButton) findViewById(R.id.closeIB);
@@ -62,6 +63,12 @@ public class ExamRptPicture extends BaseActivity {
 //				finish();
 //			}
 //		});
+        
+		Bundle bundle = this.getIntent().getExtras();
+		String examname  = bundle.getString("examname");
+		
+        TextView titleTV = (TextView) findViewById(R.id.titleTV);
+        titleTV.setText("Exam Report"+"("+examname+")");
         
 		mContext = getApplicationContext();
 		((ImageView) findViewById(R.id.customBack)).setOnClickListener(ocLister);

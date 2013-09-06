@@ -45,11 +45,6 @@ public class ExamRptList extends ListActivity {
 	public void loadData() {
 		FileInputStream inputStream = FileUtil.getFileInputStream(getPath("admin","tangqi"));
 		examList = XMLParseUtil.parseExams(inputStream);
-		
-//		examList.add(new ExamBean("9df8df1fh12122","Exam A"));
-//		examList.add(new ExamBean("9df8df1ds72122","Exam B"));
-//		examList.add(new ExamBean("9df8df1dgf2842","Exam C"));
-//		examList.add(new ExamBean("g3422fsdgfdsfs","Exam D"));
 	}
 
 	@Override
@@ -80,6 +75,7 @@ public class ExamRptList extends ListActivity {
 
 		    	Intent intent = new Intent();
 		    	intent.putExtra("examid", bean.getExamId());
+		    	intent.putExtra("examname", bean.getExamName());
 				intent.setClass( mContext, ExamRptPicture.class);
 				startActivity(intent); 
 			}

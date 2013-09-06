@@ -12,12 +12,23 @@
 
     <include layout="@layout/candidate_detail_current_round" />
 
-	<ListView 
-		    android:id="@+id/listview"
-		    android:layout_width="fill_parent" 
-		    android:layout_height="fill_parent"
-		    android:background="#E8E8E8"/>  
-
-
+	<FrameLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent">
+	    	
+		<ListView 
+			    android:id="@+id/listview"
+			    android:layout_width="fill_parent" 
+			    android:layout_height="fill_parent"
+			    android:background="#E8E8E8"/>  
+	
+		<ProgressBar android:id="@+id/loading_can_list"
+		        style="?android:progressBarStyle"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="center" />
+		
+	</FrameLayout>
+	
 </LinearLayout>
 

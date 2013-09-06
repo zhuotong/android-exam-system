@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.dream.ivpc.BaseActivity;
 import com.dream.ivpc.R;
+import com.dream.ivpc.activity.interview.InterviewResult;
 import com.dream.ivpc.activity.report.ExamRptList;
 import com.dream.ivpc.activity.resume.ResumeTypeList;
 import com.dream.ivpc.activity.resume.ResumeWebView;
@@ -24,28 +25,29 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class CandidateDetail2 extends BaseActivity {
 	public final static String LOG_TAG = "CandidateDetail";
+	Context mContext;
 	
 	ImageView imgGoBack = null;
 	TextView canInfoTV;
 	
-	CandidateBean canBean;
-	
-	ListView listview;
-	CandidateRoundAdapter adapter;
-	
-	Context mContext;
-	
-//	ImageView imgCurrRound;
 	TextView currRoundTV;
 	TextView currRoundTimeTV;
+	
+	ProgressBar progressBar;
+
+	CandidateBean canBean;
+	ListView listview;
+	CandidateRoundAdapter adapter;
 	
 	public void loadCandidateBase(){
         //set candidate infor value
@@ -55,14 +57,26 @@ public class CandidateDetail2 extends BaseActivity {
 		String phase  = bundle.getString("phase");
 		((TextView) this.findViewById(R.id.nameTV)).setText(name);
 		((TextView) this.findViewById(R.id.positionTV)).setText(position);
-		((TextView) this.findViewById(R.id.phaseTV)).setText(phase);	
+//		((TextView) this.findViewById(R.id.phaseTV)).setText(phase);	
 		
-		ImageView imgResume = (ImageView) this.findViewById(R.id.imgResume);
-		imgResume.setOnClickListener(new View.OnClickListener() {
+//		ImageView imgResume = (ImageView) this.findViewById(R.id.imgResume);
+		
+		Button viewResume = (Button) this.findViewById(R.id.viewResume);
+		viewResume.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 		    	Intent intent = new Intent();
 				intent.setClass( mContext, ResumeTypeList.class);
+				startActivity(intent);  
+			}
+		});
+		
+		Button submitBtn = (Button) this.findViewById(R.id.submitBtn);
+		submitBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+		    	Intent intent = new Intent();
+				intent.setClass( mContext, InterviewResult.class);
 				startActivity(intent);  
 			}
 		});
@@ -82,13 +96,14 @@ public class CandidateDetail2 extends BaseActivity {
         canInfoTV = (TextView) this.findViewById(R.id.candidateInfo);
         canInfoTV.setText("Candidate Detail");
         
+        progressBar = (ProgressBar) findViewById(R.id.loading_can_list);
+        
         //set candidate detail
         loadCandidateBase();
 		
         listview = (ListView) findViewById(R.id.listview);
         listview.setOnItemClickListener(new ItemClickListener());
         
-//        imgCurrRound = ((ImageView) this.findViewById(R.id.imgCurrRound));
         currRoundTV = (TextView) this.findViewById(R.id.currRoundTV);
         currRoundTimeTV = (TextView) this.findViewById(R.id.currRoundTimeTV);	
         
@@ -108,16 +123,21 @@ public class CandidateDetail2 extends BaseActivity {
         }  
     };
     
-    class  ItemClickListener implements OnItemClickListener{
+	class ItemClickListener implements OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
-			switch(arg2){
-				 case 0:checkExamRpt();break;
-				 case 1:checkInterviewHistory();break;
-				 case 2:submitInterviewResult();break;
+			Log.i(LOG_TAG,"arg2:"+String.valueOf(arg2));
+			List<Round> doneRounds = canBean.getDoneRounds();
+			if (doneRounds != null && doneRounds.size() > 0) {
+				Round round = doneRounds.get(arg2);
+				if (round.getType().equalsIgnoreCase("EXAM")) {
+					openExamReport();
+				} else {
+					submitInterviewResult();
+				}
 			}
 		}
-    }
+	}
  
     private String getRptPath(String admin,String candiate) {
 		String basePath = Environment.getExternalStorageDirectory() + "/interviewer";
@@ -131,7 +151,6 @@ public class CandidateDetail2 extends BaseActivity {
     }
     
     private class GetDataTask extends AsyncTask<Void, Void, String[]> {
-    	
         @Override
         protected String[] doInBackground(Void... params) {
             // Simulates a background job.
@@ -142,12 +161,12 @@ public class CandidateDetail2 extends BaseActivity {
             }
             return null;
         }
-        
         @Override
         protected void onPostExecute(String[] result) {
             super.onPostExecute(result);
             List<Round> doneRounds = canBean.getDoneRounds();
 			if (doneRounds != null && doneRounds.size() > 0) {
+				progressBar.setVisibility(View.GONE);
 				if (adapter == null) {
 					adapter = new CandidateRoundAdapter(doneRounds, mContext);
 					listview.setAdapter(adapter);
@@ -155,7 +174,6 @@ public class CandidateDetail2 extends BaseActivity {
 				} else {
 					adapter.notifyDataSetChanged();
 				}
-				
 				currRoundTV.setText(canBean.getCurrRound().getName());
 				currRoundTimeTV.setText(canBean.getCurrRound().getPlanTime());
 			} else {
@@ -163,22 +181,22 @@ public class CandidateDetail2 extends BaseActivity {
 			}
         }
     }
-    
-    public void checkExamRpt(){
-    	Intent intent = new Intent();
-		intent.setClass( mContext, ExamRptList.class);
-		startActivity(intent);  
-    }
 
-    public void checkInterviewHistory(){
+    public void openInterviewResult(){
     	Intent intent = new Intent();
 		intent.setClass( mContext, ResumeWebView.class);
 		startActivity(intent); 
     }
     
+    public void openExamReport(){
+    	Intent intent = new Intent();
+		intent.setClass( mContext, ExamRptList.class);
+		startActivity(intent);  
+    }
+    
     public void submitInterviewResult(){
     	Intent intent = new Intent();
-		intent.setClass( mContext, ResumeWebView.class);
+		intent.setClass( mContext, InterviewResult.class);
 		startActivity(intent); 
     }
     

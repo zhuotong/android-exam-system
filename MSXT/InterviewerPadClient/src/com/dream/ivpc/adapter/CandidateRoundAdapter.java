@@ -62,16 +62,7 @@ public class CandidateRoundAdapter extends BaseAdapter{
 		Round bean = roundList.get(position);
 		
 //		holder.detailIV.setBackgroundResource(bean.getImageId());
-		holder.detailIV.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				switch (choosePostion) {
-					case 0:chooseExamRpt();break;
-					case 1:checkInterviewHistory();break;
-					case 2:submitInterviewResult();break;
-				}
-			}
-		});
+
 		
 		if("EXAM".equalsIgnoreCase(bean.getType())){
 			holder.detailIV.setBackgroundResource(R.drawable.detail_btn2_selector);
@@ -85,6 +76,17 @@ public class CandidateRoundAdapter extends BaseAdapter{
 		}else{
 			holder.dateTV.setText(bean.getPlanTime());
 		}
+		
+//		holder.detailIV.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				switch (choosePostion) {
+//					case 0:chooseExamRpt();break;
+//					case 1:checkInterviewHistory();break;
+//					case 2:submitInterviewResult();break;
+//				}
+//			}
+//		});
 		
 		return convertView;
 	}
@@ -103,11 +105,11 @@ public class CandidateRoundAdapter extends BaseAdapter{
 		mContext.startActivity(intent);  
     }
 
-    public void checkInterviewHistory(){
+    public void openExamReport(){
     	
     }
     
-    public void submitInterviewResult(){
+    public void openInterviewResult(){
     	
     }
 }
