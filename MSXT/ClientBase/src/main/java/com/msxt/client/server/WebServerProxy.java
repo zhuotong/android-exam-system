@@ -13,7 +13,7 @@ public class WebServerProxy implements ServerProxy{
 	private String server;
 	private int port;
 
-	private static final String LOGIN_URI = "/msxt2/RequestDispatchServlet/interviewRunAction/login";
+	private static final String LOGIN_URI = "/msxt2/RequestDispatchServlet/interviewExamRunAction/candidateLogin";
 	private static final String GET_EXAM_URI = "/msxt2/RequestDispatchServlet/interviewExamRunAction/getExam";
 	private static final String SUBMIT_ANSWER_URI = "/msxt2/RequestDispatchServlet/interviewExamRunAction/submitAnswer";
 	
