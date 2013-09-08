@@ -1,25 +1,18 @@
-Login:
-http://192.168.0.102:8080/msxt/runinterview/loginAction/login?loginName=test&loginPassword=test
-
-Download exam:
-http://192.168.0.102:8080/msxt/runinterview/examAction/getExam?conversation=7a8b8820-e5ea-4a77-a41e-b16d125c1099&examId=ff80818138d0a6ba0138d0a758bb0000
-
-
-interviewExamRunAction/candidateLogin
-interviewExamRunAction/getExam
-interviewExamRunAction/submitAnswer
+http://192.168.0.102:8080/msxt2/interviewExamRunAction/candidateLogin
+http://192.168.0.102:8080/msxt2/interviewExamRunAction/getExam
+http://192.168.0.102:8080/msxt2/interviewExamRunAction/submitAnswer
 
 面试官登录
-interviewRunAction/interviewerLogin?loginName=&loginPassword=
+http://192.168.0.102:8080/msxt2/interviewRunAction/interviewerLogin?loginName=&loginPassword=
 
 获得面试官等待面试列表
-interviewRunAction/getPendingInterviewRounds?userId=
+http://192.168.0.102:8080/msxt2/interviewRunAction/getPendingInterviewRounds?userId=
 
 获得面试信息
-interviewRunAction/getInterviewInfo?interviewRoundUserId=
+http://192.168.0.102:8080/msxt2/interviewRunAction/getInterviewInfo?interviewRoundUserId=
 
 获得面试轮信息
-interviewRunAction/getInterviewRoundInfo?interviewRoundId=
+http://192.168.0.102:8080/msxt2/interviewRunAction/getInterviewRoundInfo?interviewRoundId=
 
 获得候选人简历
-interviewRunAction/getCandidateResume?candidateId=
+http://192.168.0.102:8080/msxt2/interviewRunAction/getCandidateResume?candidateId=
