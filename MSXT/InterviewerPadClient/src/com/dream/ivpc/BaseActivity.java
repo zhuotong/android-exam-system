@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.dream.ivpc.activity.LoginActivity;
 import com.dream.ivpc.util.ActivityStackControlUtil;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,9 +15,6 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.Window;
-import android.widget.Toast;
 
 public class BaseActivity extends Activity {
 
@@ -37,7 +33,6 @@ public class BaseActivity extends Activity {
 		Log.i(LOG_TAG,"onCreate()...");
 		ActivityStackControlUtil.add(this);
 		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
-//		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 	}
 
 	@Override

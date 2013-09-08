@@ -10,7 +10,7 @@ import com.dream.ivpc.bean.XMLBean;
 
 public interface GetData {
 
-	public LoginResultBean login(InputStream is);
+	public LoginResultBean login(String userName,String password);
 	
 	public List<PendRoundBean> getRoundList(InputStream is);
 	

@@ -8,9 +8,9 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dream.ivpc.CandidateBase;
 import com.dream.ivpc.PageChange;
 import com.dream.ivpc.R;
-import com.dream.ivpc.activity.CandidateBase;
 
 public class InterviewResult extends CandidateBase {
 	

@@ -3,9 +3,6 @@ package com.dream.ivpc;
 import android.content.Context;
 import android.content.Intent;
 
-import com.dream.ivpc.activity.CandidateDetail2;
-import com.dream.ivpc.activity.CandidateList;
-import com.dream.ivpc.activity.LoginActivity;
 
 public class PageChange {
 

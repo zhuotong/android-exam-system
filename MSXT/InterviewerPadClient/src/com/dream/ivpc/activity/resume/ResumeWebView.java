@@ -1,8 +1,8 @@
 package com.dream.ivpc.activity.resume;
 
+import com.dream.ivpc.CandidateBase;
 import com.dream.ivpc.PageChange;
 import com.dream.ivpc.R;
-import com.dream.ivpc.activity.CandidateBase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;

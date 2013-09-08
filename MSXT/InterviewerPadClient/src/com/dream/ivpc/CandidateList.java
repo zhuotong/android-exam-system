@@ -1,4 +1,4 @@
-package com.dream.ivpc.activity;
+package com.dream.ivpc;
 
 import java.io.File;
 import java.io.FileInputStream;

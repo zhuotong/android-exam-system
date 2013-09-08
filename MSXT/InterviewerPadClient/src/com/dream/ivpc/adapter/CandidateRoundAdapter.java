@@ -11,7 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.dream.ivpc.R;
-import com.dream.ivpc.activity.report.ExamRptList;
+import com.dream.ivpc.activity.exam.ExamRptList;
 import com.dream.ivpc.bean.Round;
 
 public class CandidateRoundAdapter extends BaseAdapter{

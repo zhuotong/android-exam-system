@@ -34,18 +34,18 @@
             </intent-filter>
         </activity>
   
-        <activity android:name="com.dream.ivpc.activity.SettingActivity"
+        <activity android:name="com.dream.ivpc.SettingActivity"
             	  android:theme="@android:style/Theme.Light.NoTitleBar"
         	      android:screenOrientation="portrait">
         </activity>
         
-        <activity android:name="com.dream.ivpc.activity.CandidateList"
+        <activity android:name="com.dream.ivpc.CandidateList"
             	  android:theme="@android:style/Theme.Light.NoTitleBar"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
 
-        <activity android:name="com.dream.ivpc.activity.CandidateDetail2"
+        <activity android:name="com.dream.ivpc.CandidateDetail2"            
                   android:theme="@android:style/Theme.Light.NoTitleBar"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
@@ -75,28 +75,18 @@
         <!-- User Resume End -->
       
         <!-- User Exam Report and Detail Start -->
-        <activity android:name="com.dream.ivpc.activity.report.ExamRptList"
+        <activity android:name="com.dream.ivpc.activity.exam.ExamRptList"
             	  android:theme="@style/CustomNoWindowTitleTheme"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
-        <activity android:name="com.dream.ivpc.activity.report.ExamRptPicture"
+        <activity android:name="com.dream.ivpc.activity.exam.ExamRptPicture"
             	  android:theme="@style/CustomWindowTitleTheme"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
         
-        <activity android:name="com.dream.ivpc.activity.report.CandidateExamRpt"
-            	  android:theme="@android:style/Theme.Dialog"
-     	 	      android:screenOrientation="portrait"
-                  android:launchMode="singleTask">
-        </activity>
-        <activity android:name="com.dream.ivpc.activity.report.CandidateInfoExamDetail"
-                  android:theme="@android:style/Theme.Light.NoTitleBar"
-     	 	      android:screenOrientation="portrait"
-                  android:launchMode="singleTask">
-        </activity>
-        <activity android:name="com.dream.ivpc.activity.report.ChoiceList"
+        <activity android:name="com.dream.ivpc.activity.exam.ChoiceList"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>

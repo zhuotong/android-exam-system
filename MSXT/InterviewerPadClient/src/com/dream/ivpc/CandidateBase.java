@@ -1,8 +1,5 @@
-package com.dream.ivpc.activity;
+package com.dream.ivpc;
 
-import com.dream.ivpc.BaseActivity;
-import com.dream.ivpc.activity.report.CandidateInfoExamDetail;
-import com.dream.ivpc.activity.report.CandidateExamRpt;
 import com.dream.ivpc.activity.resume.ResumePicture;
 
 import android.content.Context;
@@ -55,22 +52,6 @@ public class CandidateBase extends BaseActivity {
 		intent.putExtra("name", name);
 		intent.putExtra("position", position);
 		intent.setClass( mContext, ResumePicture.class);
-		startActivity(intent); 
-	}
-	
-	public void go2Report(View view){
-		Intent intent = new Intent();
-		intent.putExtra("name", name);
-		intent.putExtra("position", position);
-		intent.setClass( mContext, CandidateExamRpt.class);
-		startActivity(intent); 
-	}
-	
-	public void go2Detail(View view){
-		Intent intent = new Intent();
-		intent.putExtra("name", name);
-		intent.putExtra("position", position);
-		intent.setClass( mContext, CandidateInfoExamDetail.class);
 		startActivity(intent); 
 	}
 	

@@ -1,7 +1,6 @@
-package com.dream.ivpc.activity;
+package com.dream.ivpc;
 
 import java.io.File;
-import com.dream.ivpc.BaseActivity;
 import com.dream.ivpc.R;
 import com.dream.ivpc.custom.CustomDialog;
 import android.app.ProgressDialog;

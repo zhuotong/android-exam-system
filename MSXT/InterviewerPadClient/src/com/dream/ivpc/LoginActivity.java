@@ -1,19 +1,13 @@
-package com.dream.ivpc.activity;
+package com.dream.ivpc;
 
 import java.io.File;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import com.dream.ivpc.BaseActivity;
 import com.dream.ivpc.R;
 import com.dream.ivpc.bean.LoginResultBean;
 import com.dream.ivpc.custom.CustomDialog;
-import com.dream.ivpc.model.LoginResult;
-import com.dream.ivpc.server.GetDateImp;
+import com.dream.ivpc.server.ParseResult;
 import com.dream.ivpc.util.FileUtil;
 import com.dream.ivpc.util.NetWorkUtil;
-import com.dream.ivpc.util.XMLParseUtil;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -33,10 +27,6 @@ import android.widget.Toast;
 
 public class LoginActivity extends BaseActivity {
 	public final static String LOG_TAG = "LoginActivity";
-	
-	private static final String SERVER = "192.168.1.105";
-	private static final String PORT = "8080";
-	private static final String LOGIN_URI = "/msxt2/RequestDispatchServlet/interviewRunAction/interviewerLogin";
 	
 	String saveHost = null;
 	EditText idEt = null;
@@ -79,7 +69,13 @@ public class LoginActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 		        if(NetWorkUtil.isNetworkAvailable(mContext)){
-		        	new LoginTask().execute(new String[]{"test","test"});
+		        	String idStr = idEt.getText().toString();
+		        	String passwordStr = passwordET.getText().toString();
+		        	if(idStr!=null && passwordStr!=null){
+		        		new LoginTask().execute(new String[]{idStr,passwordStr});
+		        	}else{
+		        		ShowDialog("Warning","Id or Password Can not be empty!");
+		        	}
 		        }else{
 		        	Toast.makeText(mContext, "Your network is not available!", Toast.LENGTH_LONG).show();
 		        }
@@ -90,10 +86,6 @@ public class LoginActivity extends BaseActivity {
 		settingBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-//		    	Intent intent = new Intent();
-//				intent.setClass( mContext, SettingActivity.class);
-//				startActivity(intent);  
-				
 				//start
 				LayoutInflater inflater = (LayoutInflater) LoginActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
 				final View view = inflater.inflate(R.layout.login_admin, null);
@@ -117,8 +109,6 @@ public class LoginActivity extends BaseActivity {
 					}
 				}).show();	
 				
-				//end
-				
 			}
 		});		
 
@@ -126,9 +116,8 @@ public class LoginActivity extends BaseActivity {
     }
  
 	private class LoginTask extends AsyncTask<String, Void, String> {
-		private boolean succFlag = false;
-		HttpURLConnection conn = null;
     	InputStream inputStream;
+    	LoginResultBean bean;
 		
 		@Override
 		protected void onPreExecute() {
@@ -146,21 +135,10 @@ public class LoginActivity extends BaseActivity {
 			try {
 				Thread.sleep(2000);
 				
-//				URL loginURL = new URL("http://" + SERVER + ":" + PORT + LOGIN_URI);
-//				conn = (HttpURLConnection)loginURL.openConnection();
-//				conn.setDoOutput(true);
-//				conn.setUseCaches(false);
-//				conn.setConnectTimeout(10000);
-//				conn.setRequestMethod( "POST" );
-//				conn.connect();
-//				OutputStream os = conn.getOutputStream();
-//				os.write( ("loginName="+urls[0]+"&loginPassword=" + urls[1]).getBytes("utf-8") );
-//				os.close();
-//				inputStream = conn.getInputStream();
+//				GetData getData = GetDateImp.getInstance();
+//				bean = getData.login(urls[0], urls[1]);
 				
 				inputStream = FileUtil.getFileInputStream(getPath("admin"));
-				succFlag = true;
-				
 				
 			} catch (Exception e) {
 				Log.e(LOG_TAG, "erro message:" + e.getMessage());
@@ -169,14 +147,11 @@ public class LoginActivity extends BaseActivity {
 		}
 		@Override
 		protected void onPostExecute(String result) {
-//			myDialog.dismiss();
 			cusDialog.dismiss();
 			
+			//get result from local disk
 			if(inputStream!=null){
-//				LoginResult lResult = XMLParseUtil.parseLoginResult(inputStream);
-				GetDateImp getData = new GetDateImp();
-				LoginResultBean loginResult = getData.login(inputStream);
-				
+				LoginResultBean loginResult = ParseResult.parseLoginResult(inputStream);
 				if(loginResult.isSuccess()){
 					go2CandiateList();
 					Toast.makeText(mContext, "Login Success! Name:"+  loginResult.getUserName()+" token:"+loginResult.getToken(), Toast.LENGTH_LONG).show();
@@ -186,6 +161,16 @@ public class LoginActivity extends BaseActivity {
 			}else{
 				ShowDialog("Warning","Fail to login!");
 			}
+			
+//			if(bean!=null){
+//				if(bean.isSuccess()){
+//					go2CandiateList();
+//				}else{
+//					ShowDialog("Warning","Fail to login!");
+//				}
+//			}else{
+//				ShowDialog("Warning","Fail to login!");
+//			}
 		}
 	}
 	

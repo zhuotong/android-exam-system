@@ -1,13 +1,12 @@
-package com.dream.ivpc.activity;
+package com.dream.ivpc;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
 
-import com.dream.ivpc.BaseActivity;
 import com.dream.ivpc.R;
+import com.dream.ivpc.activity.exam.ExamRptList;
 import com.dream.ivpc.activity.interview.InterviewResult;
-import com.dream.ivpc.activity.report.ExamRptList;
 import com.dream.ivpc.activity.resume.ResumeTypeList;
 import com.dream.ivpc.activity.resume.ResumeWebView;
 import com.dream.ivpc.adapter.CandidateRoundAdapter;

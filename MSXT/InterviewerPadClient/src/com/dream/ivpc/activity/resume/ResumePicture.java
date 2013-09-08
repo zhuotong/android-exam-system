@@ -7,9 +7,9 @@ import java.util.List;
 import org.viewflow.android.widget.CircleFlowIndicator;
 import org.viewflow.android.widget.ViewFlow;
 
+import com.dream.ivpc.CandidateBase;
 import com.dream.ivpc.PageChange;
 import com.dream.ivpc.R;
-import com.dream.ivpc.activity.CandidateBase;
 import com.dream.ivpc.adapter.ResumeGroupAdapter;
 import com.dream.ivpc.model.ResumeBean;
 import com.dream.ivpc.model.ResumePageBean;
