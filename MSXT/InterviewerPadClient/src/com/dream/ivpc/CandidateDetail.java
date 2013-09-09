@@ -8,9 +8,10 @@ import com.artifex.mupdfdemo.MuPDFActivity;
 import com.dream.ivpc.R;
 import com.dream.ivpc.activity.exam.ExamRptList;
 import com.dream.ivpc.activity.interview.InterviewResult;
+import com.dream.ivpc.activity.interview.InterviewResultSubmit;
 import com.dream.ivpc.activity.resume.ResumePicture;
 import com.dream.ivpc.activity.resume.ResumeWebView;
-import com.dream.ivpc.adapter.CandidateRoundAdapter;
+import com.dream.ivpc.adapter.PhaseHistoryAdapter;
 import com.dream.ivpc.bean.CandidateBean;
 import com.dream.ivpc.bean.Round;
 import com.dream.ivpc.server.ParseResult;
@@ -34,7 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class CandidateDetail2 extends BaseActivity {
+public class CandidateDetail extends BaseActivity {
 	public final static String LOG_TAG = "CandidateDetail";
 	Context mContext;
 	
@@ -48,7 +49,7 @@ public class CandidateDetail2 extends BaseActivity {
 
 	CandidateBean canBean;
 	ListView listview;
-	CandidateRoundAdapter adapter;
+	PhaseHistoryAdapter adapter;
 	
 	int resumeType = 1;
 	
@@ -79,6 +80,12 @@ public class CandidateDetail2 extends BaseActivity {
 		startActivity(intent); 
     }
     
+    public void submitResult(){
+    	Intent intent = new Intent();
+		intent.setClass( mContext, InterviewResultSubmit.class);
+		startActivity(intent); 
+    }
+    
 	public void loadCandidateBase(){
         //set candidate infor value
 		Bundle bundle = this.getIntent().getExtras();
@@ -92,9 +99,6 @@ public class CandidateDetail2 extends BaseActivity {
 		viewResume.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-//		    	Intent intent = new Intent();
-//				intent.setClass( mContext, ResumeTypeList.class);
-//				startActivity(intent);  
 				switch(resumeType){
 					case 1: loadPictureResume();break;
 					case 2: loadPdfResume("admin","tangqi");break;
@@ -108,9 +112,7 @@ public class CandidateDetail2 extends BaseActivity {
 		submitBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-		    	Intent intent = new Intent();
-				intent.setClass( mContext, InterviewResult.class);
-				startActivity(intent);  
+				submitResult();
 			}
 		});
 	}
@@ -166,7 +168,7 @@ public class CandidateDetail2 extends BaseActivity {
 				if (round.getType().equalsIgnoreCase("EXAM")) {
 					openExamReport();
 				} else {
-					submitInterviewResult();
+					openInterviewResult();
 				}
 			}
 		}
@@ -202,7 +204,7 @@ public class CandidateDetail2 extends BaseActivity {
 			if (doneRounds != null && doneRounds.size() > 0) {
 				progressBar.setVisibility(View.GONE);
 				if (adapter == null) {
-					adapter = new CandidateRoundAdapter(doneRounds, mContext);
+					adapter = new PhaseHistoryAdapter(doneRounds, mContext);
 					listview.setAdapter(adapter);
 					listview.setOnItemClickListener(new ItemClickListener());
 				} else {
@@ -218,7 +220,7 @@ public class CandidateDetail2 extends BaseActivity {
 
     public void openInterviewResult(){
     	Intent intent = new Intent();
-		intent.setClass( mContext, ResumeWebView.class);
+		intent.setClass( mContext, InterviewResult.class);
 		startActivity(intent); 
     }
     
@@ -227,12 +229,5 @@ public class CandidateDetail2 extends BaseActivity {
 		intent.setClass( mContext, ExamRptList.class);
 		startActivity(intent);  
     }
-    
-    public void submitInterviewResult(){
-    	Intent intent = new Intent();
-		intent.setClass( mContext, InterviewResult.class);
-		startActivity(intent); 
-    }
-    
     
 }

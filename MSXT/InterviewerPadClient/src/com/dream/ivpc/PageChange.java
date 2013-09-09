@@ -22,7 +22,7 @@ public class PageChange {
 	
 	public static void go2CandidateDeatil(Context context){
 		Intent intent = new Intent();
-		intent.setClass( context, CandidateDetail2.class);
+		intent.setClass( context, CandidateDetail.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
 	}

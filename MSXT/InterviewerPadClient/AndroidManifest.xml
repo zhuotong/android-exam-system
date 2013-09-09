@@ -39,31 +39,29 @@
         	      android:screenOrientation="portrait">
         </activity>
         
+        <!-- Candidate List Page -->
         <activity android:name=".CandidateList"
             	  android:theme="@android:style/Theme.Light.NoTitleBar"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
 
-        <activity android:name=".CandidateDetail2"            
+        <!-- Candidate Detail Page -->
+        <activity android:name=".CandidateDetail"            
                   android:theme="@android:style/Theme.Light.NoTitleBar"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
         
         <!-- User Resume Start -->
-        <activity android:name="com.dream.ivpc.activity.resume.ResumeTypeList"
+<!--         <activity android:name="com.dream.ivpc.activity.resume.ResumeTypeList"
             	  android:theme="@style/CustomNoWindowTitleTheme"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
-        </activity>
+        </activity> -->
+        
         <activity android:name="com.dream.ivpc.activity.resume.ResumePicture"
             	  android:theme="@style/CustomWindowTitleTheme"
-     	 	      android:screenOrientation="portrait"
-                  android:launchMode="singleTask">
-        </activity>
-        <!-- Deprecated -->
-        <activity android:name="com.dream.ivpc.activity.resume.ResumePdfLoad"
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
@@ -99,7 +97,13 @@
      	 	      android:screenOrientation="portrait"
                   android:launchMode="singleTask">
         </activity>
-         
+ 
+        <activity android:name="com.dream.ivpc.activity.interview.InterviewResultSubmit"
+                  android:theme="@style/CustomWindowTitleTheme"
+     	 	      android:screenOrientation="portrait"
+                  android:launchMode="singleTask">
+        </activity>
+        
         <!-- Submit User Interview and User Interview Result Start -->
 
         <!-- PDF Activity Start -->

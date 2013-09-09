@@ -7,18 +7,18 @@
          
          <ImageView
              android:id="@+id/detailImage"
-             android:layout_width="220dp"
-             android:layout_height="220dp"
+             android:layout_width="200dp"
+             android:layout_height="200dp"
              android:layout_gravity="center_vertical"
-             android:layout_marginLeft="10dp"
-             android:layout_weight="1"
+             android:layout_marginLeft="5dp"
              android:contentDescription="@string/candiate_detail_image"
              android:scaleType="centerInside" >
+
          </ImageView>
                       
          <LinearLayout
              android:layout_width="wrap_content"
-             android:layout_height="match_parent"
+             android:layout_height="wrap_content"
              android:layout_marginLeft="5dp"
              android:layout_marginTop="8dp"
              android:layout_marginBottom="5dp"
@@ -35,7 +35,7 @@
          	<TextView
          	    android:id="@+id/detailDesc"
          	    android:layout_width="match_parent"
-         	    android:layout_height="140dp"
+         	    android:layout_height="120dp"
          	    android:gravity="left|center_vertical"
          	    android:layout_marginLeft="5dp"
          	    android:text="HR Interview"
@@ -47,7 +47,7 @@
          	    android:layout_width="match_parent"
          	    android:layout_height="50dp"
          	    android:gravity="center_vertical|right"
-         	    android:text="Comp Time:"
+         	    android:text="Completed!"
          	    android:textColor="#6D6D6D"
          	    android:textSize="20sp" />
          </LinearLayout>

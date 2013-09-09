@@ -24,7 +24,7 @@ public class CandidateBase extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 	        	Intent intent = new Intent();
-				intent.setClass( mContext, CandidateDetail2.class);
+				intent.setClass( mContext, CandidateDetail.class);
 				startActivity(intent);  
 			}
 		});

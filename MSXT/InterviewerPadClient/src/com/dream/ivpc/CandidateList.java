@@ -86,7 +86,7 @@ public class CandidateList extends ListActivity {
     			intent.putExtra("name", bean.getrCandidate());
     			intent.putExtra("position", bean.getrAppPosition());
     			intent.putExtra("phase", bean.getrName());
-    			intent.setClass( mContext, CandidateDetail2.class);
+    			intent.setClass( mContext, CandidateDetail.class);
     			startActivity(intent); 
 			}      	
         });
