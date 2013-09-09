@@ -3,6 +3,7 @@
 	<item 
 	    android:state_pressed="true"
 		android:drawable="@drawable/btn_comm_sp" />
+		
 	<item 
 	    android:state_focused="true"
 		android:drawable="@drawable/btn_comm_sf" />

@@ -100,6 +100,12 @@ public class LoginActivity extends BaseActivity {
 							EditText passEditText = (EditText) view.findViewById(R.id.editText2);
 							String userpass = passEditText.getText().toString();
 							
+							if("admin".equalsIgnoreCase(nameEditText.getText().toString()) && "admin".equalsIgnoreCase(passEditText.getText().toString()) ){
+								go2SettingActivity();
+							}else{
+								ShowDialog("Warning","Fail to login!");
+							}
+							
 							Toast.makeText(LoginActivity.this, "Login:"+username+"&"+userpass, Toast.LENGTH_LONG).show();
 						}
 				}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -177,6 +183,12 @@ public class LoginActivity extends BaseActivity {
 	public void go2CandiateList(){
     	Intent intent = new Intent();
 		intent.setClass( mContext, CandidateList.class);
+		startActivity(intent);  		
+	}
+	
+	public void go2SettingActivity(){
+    	Intent intent = new Intent();
+		intent.setClass( mContext, SettingActivity.class);
 		startActivity(intent);  		
 	}
 	

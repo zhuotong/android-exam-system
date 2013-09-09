@@ -1,13 +1,11 @@
 package com.dream.ivpc;
 
-import java.io.File;
 import com.dream.ivpc.R;
 import com.dream.ivpc.custom.CustomDialog;
+import com.dream.ivpc.util.SPUtil;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,13 +14,15 @@ import android.widget.EditText;
 public class SettingActivity extends BaseActivity {
 	public final static String LOG_TAG = "LoginActivity";
 	
+	EditText hostEt = null;
 	String saveHost = null;
-	EditText idEt = null;
-	EditText passwordET = null;
-	String saveId = null;
-	String savePassword = null;
-	Button loginBtn = null;
-	Button settingBtn = null;
+	
+	EditText portET = null;
+	String savePort = null;
+	
+	Button saveBtn = null;
+	Button cancelBtn = null;
+	
 	String loginResultFile = null;
 	String loginResultFilePath = null;
 	Context mContext;
@@ -38,49 +38,43 @@ public class SettingActivity extends BaseActivity {
         setContentView(R.layout.setting);
         mContext = getApplicationContext();
         
-        saveHost = sharedPreferences.getString("host", null);
-        
-        idEt = (EditText) this.findViewById(R.id.idEt);
-		saveId = sharedPreferences.getString("id", null);
-		if(saveId!=null||!"".equals(saveId)){
-			idEt.setText(saveId);
+        hostEt = (EditText) this.findViewById(R.id.hostEt);
+        saveHost = SPUtil.getFromSP(SPUtil.SP_KEY_HOST,sharedPreferences);
+		if(saveHost!=null||!"".equals(saveHost)){
+			hostEt.setText(saveHost);
 		}
 		
-		passwordET = (EditText) this.findViewById(R.id.passwordET);
-		savePassword = sharedPreferences.getString("password", null);
-		if(savePassword!=null||!"".equals(savePassword)){
-			passwordET.setText(savePassword);
+		portET = (EditText) this.findViewById(R.id.portET);
+		savePort = SPUtil.getFromSP(SPUtil.SP_KEY_PORT,sharedPreferences);
+		if(savePort!=null||!"".equals(savePort)){
+			portET.setText(savePort);
 		}
 		
-		loginBtn = (Button) this.findViewById(R.id.loginBtn);
-		loginBtn.setOnClickListener(new View.OnClickListener() {
+		saveBtn = (Button) this.findViewById(R.id.saveBtn);
+		saveBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-		        
+				SPUtil.save2SP(SPUtil.SP_KEY_HOST, hostEt.getText().toString(), sharedPreferences);
+				SPUtil.save2SP(SPUtil.SP_KEY_PORT, portET.getText().toString(), sharedPreferences);
+				
+				ShowDialog("Message","Host and Port saved successfully!");
+				
+				PageChange.logout(mContext);
 			}
 		});
 		
-		settingBtn = (Button) this.findViewById(R.id.settingBtn);
-		settingBtn.setOnClickListener(new View.OnClickListener() {
+		cancelBtn = (Button) this.findViewById(R.id.cancelBtn);
+		cancelBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-		    	Intent intent = new Intent();
-				intent.setClass( mContext, LoginActivity.class);
-				startActivity(intent);  
+//		    	Intent intent = new Intent();
+//				intent.setClass( mContext, LoginActivity.class);
+//				startActivity(intent);  
+				
+				PageChange.logout(mContext);
 			}
 		});
 		
     }
-	
-	public void go2CandiateList(){
-    	Intent intent = new Intent();
-		intent.setClass( mContext, CandidateList.class);
-		startActivity(intent);  		
-	}
-	
-	public String getPath(String admin) {
-		String basePath = Environment.getExternalStorageDirectory() + "/interviewer";
-		return basePath + File.separator + admin  + File.separator + "login_result.xml";
-	}
 	
 }

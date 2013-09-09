@@ -1,7 +1,5 @@
 package com.dream.ivpc;
 
-import com.dream.ivpc.activity.resume.ResumePicture;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,14 +20,6 @@ public class CandidateBase extends BaseActivity {
 	}
 	
 	protected void setHeader(TextView candidateInfoTV,ImageView goBack){
-		//set candidateInfoTV
-//		Bundle bundle = this.getIntent().getExtras();
-//		name  = bundle.getString("name");
-//		position  = bundle.getString("position");
-//		if(name!=null&&position!=null){
-//			candidateInfoTV.setText(position +":" + name);
-//		}
-		
 		goBack.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(View v) {
@@ -37,23 +27,8 @@ public class CandidateBase extends BaseActivity {
 				intent.setClass( mContext, CandidateDetail2.class);
 				startActivity(intent);  
 			}
-			
 		});
-		
     }
-
-/*	protected void setFooter(Button button){
-		//set candidateInfoTV
-		button.setBackgroundColor(R.drawable.bg_footer_button_select);
-    }*/
-	
-	public void go2Resume(View view){
-		Intent intent = new Intent();
-		intent.putExtra("name", name);
-		intent.putExtra("position", position);
-		intent.setClass( mContext, ResumePicture.class);
-		startActivity(intent); 
-	}
 	
     protected View.OnClickListener goBackListener = new View.OnClickListener() {  
         @Override  

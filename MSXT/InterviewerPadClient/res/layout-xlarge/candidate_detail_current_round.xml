@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_margin="10dp"
-        android:layout_weight="6" >
+        android:layout_weight="3" >
 
         <TableRow
             android:id="@+id/tableRow1"
@@ -61,20 +61,6 @@
         </TableRow>
 	</TableLayout>
 
-	
-<!--     <ImageView
-        android:id="@+id/imgCurrRound"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_weight="1"
-        android:layout_gravity="center_vertical"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginTop="5dp"
-        android:contentDescription="@string/candiate_detail_image"
-        android:src="@drawable/detail_btn4_selector" >
-    </ImageView> -->
-
     <Button
         android:id="@+id/submitBtn"
         android:layout_width="wrap_content"
@@ -84,6 +70,7 @@
         android:layout_marginRight="10dp"
         android:text="Submit" 
         android:textColor="#FFFFFF"
-        android:background="@drawable/btn_comm"/>
+        android:textSize="25sp"
+        android:background="@drawable/btn_style"/>
 
 </LinearLayout>

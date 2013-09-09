@@ -31,13 +31,11 @@
         
     <!-- candidate_list_title -->
     <string name="candidate_list_header_text">Candidate List</string>
-<!--     <string name="label_candidate_title_index">Index</string> -->
     <string name="label_candidate_title_time">Time</string>
     <string name="label_candidate_title_position">Position</string>
     <string name="label_candidate_title_name">Name</string>
     <string name="label_candidate_title_phase">Phase</string>
-    
-
+    <string name="label_view_candidate_resume">View Resume</string>
     
     <string-array name="candidate_detail_descs">
         <item>Exam Report</item>

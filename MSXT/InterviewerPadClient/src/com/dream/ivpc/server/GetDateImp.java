@@ -22,6 +22,8 @@ public class GetDateImp implements GetData {
 	private static final String SERVER = "192.168.1.100";
 	private static final String PORT = "8080";
 	private static final String LOGIN_URI = "msxt2/interviewRunAction/interviewerLogin";
+	private static final String PENDING_ROUND_URL = "msxt2/interviewRunAction/getPendingInterviewRounds";
+	
 	private static GetData getData = null;
 	
 	public static GetData getInstance(){
@@ -59,10 +61,8 @@ public class GetDateImp implements GetData {
 			os.close();
 			inputStream = conn.getInputStream();
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return inputStream;

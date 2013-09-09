@@ -23,9 +23,8 @@
 			    android:text="@string/label_tv_host"
 			    style="@style/login_tv_style"/>
 			<EditText    
-			    android:id="@+id/idEt"
+			    android:id="@+id/hostEt"
 				style="@style/login_et_style"
-				android:hint="@string/label_et_host_hint"
 				android:focusable="true">
 			</EditText>		
 		</TableRow>
@@ -39,9 +38,8 @@
 			    android:text="@string/label_tv_port"
 			    style="@style/login_tv_style"/>
 			<EditText    
-			    android:id="@+id/passwordET"
-				style="@style/login_et_style"
-				android:hint="@string/label_et_port_hint">
+			    android:id="@+id/portET"
+				style="@style/login_et_style">
 			</EditText>		
 		</TableRow>
 
@@ -56,13 +54,13 @@
 		android:layout_marginRight="80dp">
 		
 		<Button android:text="@string/label_btn_save" 
-		    android:id="@+id/loginBtn"
+		    android:id="@+id/saveBtn"
 			style="@style/login_btn_style"
 			android:layout_marginRight="4dp">
 		</Button>
 		
 		<Button android:text="@string/label_btn_cancel" 
-		    android:id="@+id/settingBtn"
+		    android:id="@+id/cancelBtn"
 			style="@style/login_btn_style">
 		</Button>
 	</TableRow>

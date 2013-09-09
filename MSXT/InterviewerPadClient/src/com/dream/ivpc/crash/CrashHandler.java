@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.dream.ivpc.util.ActivityStackControlUtil;
+import com.dream.ivpc.ActivityManage;
 
 import android.content.Context;
 import android.content.Intent;
@@ -92,7 +92,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 			android.os.Process.killProcess(android.os.Process.myPid());
 			System.exit(1);
 			
-			ActivityStackControlUtil.finishProgram();
+			ActivityManage.finishProgram();
 		}
 	}
 

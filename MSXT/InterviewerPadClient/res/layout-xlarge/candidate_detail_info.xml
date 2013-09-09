@@ -3,79 +3,60 @@
     android:layout_width="fill_parent"
     android:layout_height="185dp"
     android:background="@drawable/candidate_list_header"
-    android:orientation="horizontal">
-  
+    android:orientation="horizontal" >
+
     <ImageView
         android:id="@+id/canPhoto"
         android:layout_width="0dp"
         android:layout_height="180dp"
-        android:layout_weight="1"
-        android:layout_marginLeft="20dp"
         android:layout_gravity="center_vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_weight="1"
         android:contentDescription="@string/msg_logo_go_back"
         android:src="@drawable/can_photo" >
     </ImageView>
-    
-    <TableLayout 	        
-        android:layout_width="0dp"
-	    android:layout_height="wrap_content"
-	    android:layout_weight="3"
-	    android:layout_gravity="center_vertical"
-	    android:layout_margin="10dp">
-	    <TableRow
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content" >
-	        <TextView
-	            style="@style/can_detail_label_tv_style"
-	            android:text="@string/label_candidate_title_name" />
-	        <TextView
-	            android:id="@+id/nameTV"
-				style="@style/can_detail_value_tv_style"/>
-	    </TableRow>
 
-	    <TableRow
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content" >
-	        <TextView
-				style="@style/can_detail_label_tv_style"
-	            android:text="@string/label_candidate_title_position" />
-	        <TextView
-	            android:id="@+id/positionTV"
-				style="@style/can_detail_value_tv_style" />
-	    </TableRow>
-
-<!-- 	    <TableRow
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content" >
-	        <TextView
-				style="@style/can_detail_label_tv_style"
-	            android:text="@string/label_candidate_title_phase" />
-	
-	        <TextView
-	            android:id="@+id/phaseTV"
-				style="@style/can_detail_value_tv_style"/>
-	    </TableRow> -->
-	</TableLayout>
-	
-<!--     <ImageView
-        android:id="@+id/imgResume"
+    <TableLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginLeft="20dp"
         android:layout_gravity="center_vertical"
-        android:contentDescription="@string/msg_logo_go_back"
-        android:src="@drawable/detail_btn1_selector" >
-    </ImageView> -->
-    
+        android:layout_margin="10dp"
+        android:layout_weight="3" >
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            <TextView
+                style="@style/can_detail_label_tv_style"
+                android:text="@string/label_candidate_title_name" />
+
+            <TextView
+                android:id="@+id/nameTV"
+                style="@style/can_detail_value_tv_style" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            <TextView
+                style="@style/can_detail_label_tv_style"
+                android:text="@string/label_candidate_title_position" />
+            <TextView
+                android:id="@+id/positionTV"
+                style="@style/can_detail_value_tv_style" />
+        </TableRow>
+    </TableLayout>
+
     <Button
         android:id="@+id/viewResume"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:layout_weight="1"
         android:layout_gravity="center_vertical"
         android:layout_marginRight="10dp"
-        android:text="View Resume" 
-        android:textColor="#FFFFFF"
-        android:background="@drawable/btn_comm"/>
+        android:layout_weight="1"
+        android:background="@drawable/btn_style"
+        android:text="@string/label_view_candidate_resume"
+        android:textSize="25sp"
+        android:textColor="#FFFFFF" />
+
 </LinearLayout>

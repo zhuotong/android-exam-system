@@ -11,6 +11,7 @@ import com.dream.ivpc.R;
 import com.dream.ivpc.adapter.CandidateListAdapter;
 import com.dream.ivpc.bean.PendRoundBean;
 import com.dream.ivpc.server.GetDateImp;
+import com.dream.ivpc.server.ParseResult;
 import com.dream.ivpc.util.FileUtil;
 import com.dream.ivpc.util.NetWorkUtil;
 import com.markupartist.android.widget.PullToRefreshListView;
@@ -122,9 +123,11 @@ public class CandidateList extends ListActivity {
 	public void loadData(){
 		FileInputStream inputStream = FileUtil.getFileInputStream(getRptPath("admin"));
 		
-		GetDateImp getData = new GetDateImp();
-		roundList = getData.getRoundList(inputStream);
-//		roundList = XMLParseUtil.parseCandidates(inputStream);
+//		GetDateImp getData = new GetDateImp();
+//		roundList = getData.getRoundList(inputStream);
+		
+		ParseResult pr = new ParseResult();
+		roundList = pr.getRoundList(inputStream);
 		
 		Collections.sort(roundList,new Comparator<PendRoundBean>(){  
             public int compare(PendRoundBean arg0, PendRoundBean arg1) {  

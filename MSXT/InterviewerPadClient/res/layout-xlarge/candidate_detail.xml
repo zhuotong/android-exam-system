@@ -12,6 +12,8 @@
 
     <include layout="@layout/candidate_detail_current_round" />
 
+    <include layout="@layout/candidate_detail_history_interview_title" />
+    
 	<FrameLayout 
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent">

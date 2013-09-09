@@ -4,20 +4,24 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
 
+import com.artifex.mupdfdemo.MuPDFActivity;
 import com.dream.ivpc.R;
 import com.dream.ivpc.activity.exam.ExamRptList;
 import com.dream.ivpc.activity.interview.InterviewResult;
+import com.dream.ivpc.activity.resume.ResumePicture;
 import com.dream.ivpc.activity.resume.ResumeTypeList;
 import com.dream.ivpc.activity.resume.ResumeWebView;
 import com.dream.ivpc.adapter.CandidateRoundAdapter;
 import com.dream.ivpc.bean.CandidateBean;
 import com.dream.ivpc.bean.Round;
 import com.dream.ivpc.server.GetDateImp;
+import com.dream.ivpc.server.ParseResult;
 import com.dream.ivpc.util.FileUtil;
 import com.dream.ivpc.util.NetWorkUtil;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -48,6 +52,35 @@ public class CandidateDetail2 extends BaseActivity {
 	ListView listview;
 	CandidateRoundAdapter adapter;
 	
+	int resumeType = 1;
+	
+    public void loadPictureResume(){
+    	Intent intent = new Intent();
+		intent.setClass( mContext, ResumePicture.class);
+		startActivity(intent);     	
+    }
+    
+    public void loadPdfResume(String adminFolder, String candidateFolder){
+		String basePath = Environment.getExternalStorageDirectory()
+				.getPath();
+		String pdfPath = basePath + File.separator + "interviewer"
+				+ File.separator + adminFolder 
+				+ File.separator + candidateFolder 
+				+ File.separator+ "resume.pdf";
+		
+		Uri uri = Uri.parse(pdfPath);
+		Intent intent = new Intent(mContext, MuPDFActivity.class);
+		intent.setAction(Intent.ACTION_VIEW);
+		intent.setData(uri);
+		startActivity(intent);
+    }
+    
+    public void loadHtmlResume(){
+    	Intent intent = new Intent();
+		intent.setClass( mContext, ResumeWebView.class);
+		startActivity(intent); 
+    }
+    
 	public void loadCandidateBase(){
         //set candidate infor value
 		Bundle bundle = this.getIntent().getExtras();
@@ -56,17 +89,20 @@ public class CandidateDetail2 extends BaseActivity {
 		String phase  = bundle.getString("phase");
 		((TextView) this.findViewById(R.id.nameTV)).setText(name);
 		((TextView) this.findViewById(R.id.positionTV)).setText(position);
-//		((TextView) this.findViewById(R.id.phaseTV)).setText(phase);	
-		
-//		ImageView imgResume = (ImageView) this.findViewById(R.id.imgResume);
 		
 		Button viewResume = (Button) this.findViewById(R.id.viewResume);
 		viewResume.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-		    	Intent intent = new Intent();
-				intent.setClass( mContext, ResumeTypeList.class);
-				startActivity(intent);  
+//		    	Intent intent = new Intent();
+//				intent.setClass( mContext, ResumeTypeList.class);
+//				startActivity(intent);  
+				switch(resumeType){
+					case 1: loadPictureResume();break;
+					case 2: loadPdfResume("admin","tangqi");break;
+					case 3: loadHtmlResume();break;
+				}
+				
 			}
 		});
 		
@@ -145,8 +181,9 @@ public class CandidateDetail2 extends BaseActivity {
 	
     private void loadCandidateDetail(){
 		FileInputStream inputStream = FileUtil.getFileInputStream(getRptPath("admin","tangqi"));
-		GetDateImp getData = new GetDateImp();
-		canBean = getData.getCandidateDetail(inputStream);
+//		GetDateImp getData = new GetDateImp();
+		ParseResult pr = new ParseResult();
+		canBean = pr.getCandidateDetail(inputStream);
     }
     
     private class GetDataTask extends AsyncTask<Void, Void, String[]> {

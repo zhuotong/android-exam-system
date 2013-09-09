@@ -1,5 +1,6 @@
 package com.dream.ivpc.util;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -115,6 +116,16 @@ public class FileUtil {
 		}
 		Log.i(LOG_TAG, "getExamStream() end.");
 		return inputStream;
+	}
+	
+	public static String inputStream2String(InputStream is) throws IOException {
+		Log.i(LOG_TAG,"inputStream2String...");
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		int i = -1;
+		while ((i = is.read()) != -1) {
+			baos.write(i);
+		}
+		return baos.toString();
 	}
 
 }
