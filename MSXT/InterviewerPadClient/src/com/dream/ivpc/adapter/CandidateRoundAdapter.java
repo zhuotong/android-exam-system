@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 import com.dream.ivpc.R;
 import com.dream.ivpc.activity.exam.ExamRptList;
@@ -50,6 +51,8 @@ public class CandidateRoundAdapter extends BaseAdapter{
 			holder = new ViewHolder();
 			//set 3 component 
 			holder.detailIV = (ImageView)convertView.findViewById(R.id.detailImage);
+			
+			holder.phaseIndexTV = (TextView)convertView.findViewById(R.id.phaseIndexTV);
 			holder.detailTV = (TextView)convertView.findViewById(R.id.detailDesc);
 			holder.dateTV = (TextView)convertView.findViewById(R.id.dateTV);
 			
@@ -61,14 +64,15 @@ public class CandidateRoundAdapter extends BaseAdapter{
 		final int choosePostion = position;
 		Round bean = roundList.get(position);
 		
-//		holder.detailIV.setBackgroundResource(bean.getImageId());
-
+		holder.phaseIndexTV.setText("Phase " + String.valueOf(choosePostion+1));
 		
 		if("EXAM".equalsIgnoreCase(bean.getType())){
 			holder.detailIV.setBackgroundResource(R.drawable.detail_btn2_selector);
 		}else{
 			holder.detailIV.setBackgroundResource(R.drawable.detail_btn3_selector);
 		}
+		
+		holder.detailIV.setScaleType(ScaleType.CENTER_INSIDE);
 		
 		holder.detailTV.setText(bean.getName());
 		if(bean.isCompFlag()){
@@ -94,6 +98,7 @@ public class CandidateRoundAdapter extends BaseAdapter{
 
 	static class ViewHolder{
 		ImageView detailIV;
+		TextView phaseIndexTV;
 		TextView detailTV;
 		TextView dateTV;
 	}

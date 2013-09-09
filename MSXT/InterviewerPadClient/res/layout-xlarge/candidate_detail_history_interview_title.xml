@@ -3,16 +3,16 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@drawable/candidate_list_header">
+    android:background="#686868">
  
-            <TextView
-                android:id="@+id/currRoundTimeTV"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:gravity="center_vertical|left"
-                android:layout_marginLeft="10dp"
-                android:text="Interview History"
-                android:textSize="28sp" 
-                android:textColor="#FFFFFF"/>
+     <TextView
+         android:id="@+id/currRoundTimeTV"
+         android:layout_width="wrap_content"
+         android:layout_height="50dp"
+         android:gravity="center_vertical|left"
+         android:layout_marginLeft="10dp"
+         android:text="Phase History"
+         android:textSize="28sp" 
+         android:textColor="#FFFFFF"/>
 
 </LinearLayout>
