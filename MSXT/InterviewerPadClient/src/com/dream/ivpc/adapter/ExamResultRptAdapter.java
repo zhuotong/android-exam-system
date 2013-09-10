@@ -45,7 +45,7 @@ public class ExamResultRptAdapter extends BaseAdapter{
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.exam_rpt_item, null);
+			convertView = mInflater.inflate(R.layout.exam_rpt_picture_item, null);
 		}
 		((ImageView) convertView.findViewById(R.id.imgView)).setImageBitmap(bitmapList.get(position));
 		

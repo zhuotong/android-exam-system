@@ -37,7 +37,7 @@ public class ExamRptList extends ListActivity {
 		super.onCreate(savedInstanceState);
 		
 //		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-		setContentView(R.layout.candidate_exam_list);
+		setContentView(R.layout.exam_rpt_list);
 //		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title);
 		
 		mContext = getApplicationContext();

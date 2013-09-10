@@ -54,7 +54,7 @@ public class ResumePicture extends CandidateBase {
 		// setTitle(R.string.circle_title);
 		
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-        setContentView(R.layout.candidate_resume_group);
+        setContentView(R.layout.resume_picture);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title2);
         
 		mContext = getApplicationContext();

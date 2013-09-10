@@ -42,7 +42,7 @@ public class ExamListAdapter extends BaseAdapter {
 		ViewHolder holder = null;
 		
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.candidate_exam_list_item, null);
+			convertView = mInflater.inflate(R.layout.exam_rpt_list_item, null);
 			holder = new ViewHolder();
 			
 			holder.index = (TextView)convertView.findViewById(R.id.index);

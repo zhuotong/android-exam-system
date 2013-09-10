@@ -48,7 +48,7 @@ public class ResumeGroupAdapter extends BaseAdapter{
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.candidate_resume_group_item, null);
+			convertView = mInflater.inflate(R.layout.resume_picture_group, null);
 		}
 //		((ImageView) convertView.findViewById(R.id.imgView)).setImageResource(ids[position]);
 		((ImageView) convertView.findViewById(R.id.imgView)).setImageBitmap(bitmapList.get(position));

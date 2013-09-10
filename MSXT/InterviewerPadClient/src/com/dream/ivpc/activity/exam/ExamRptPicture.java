@@ -53,7 +53,7 @@ public class ExamRptPicture extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-        setContentView(R.layout.exam_rpt);
+        setContentView(R.layout.exam_rpt_picure);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title2);
         
 //        ImageButton closeIB = (ImageButton) findViewById(R.id.closeIB);
