@@ -14,6 +14,8 @@ public final static String LOG_TAG = "SPUtil";
 	public final static String SP_KEY_HOST = "host";
 	public final static String SP_KEY_PORT = "port";
 
+	public final static String SP_KEY_USER = "user";
+	public final static String SP_KEY_TOKEN = "token";
 	//save String to SP
 	public static void save2SP(String key,String value,SharedPreferences sp){
 		SharedPreferences.Editor edit = sp.edit();

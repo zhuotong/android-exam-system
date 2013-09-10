@@ -1,7 +1,6 @@
 package com.dream.ivpc;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,14 +9,15 @@ import com.artifex.mupdfdemo.MuPDFActivity;
 import com.dream.ivpc.R;
 import com.dream.ivpc.adapter.CandidateListAdapter;
 import com.dream.ivpc.bean.PendRoundBean;
-import com.dream.ivpc.server.GetDateImp;
-import com.dream.ivpc.server.ParseResult;
-import com.dream.ivpc.util.FileUtil;
+import com.dream.ivpc.server.DAOProxy;
+import com.dream.ivpc.server.DAOProxyLocalImp;
 import com.dream.ivpc.util.NetWorkUtil;
+import com.dream.ivpc.util.SPUtil;
 import com.markupartist.android.widget.PullToRefreshListView;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -49,6 +49,8 @@ public class CandidateList extends ListActivity {
 	List<PendRoundBean> roundList = new ArrayList<PendRoundBean>();
     ProgressBar progressBar;
     int mShortAnimationDuration = 200;
+    
+    String userId; 
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,9 @@ public class CandidateList extends ListActivity {
         setContentView(R.layout.candidate_list);
         mContext = getApplicationContext();
 
+        SharedPreferences sp = this.getSharedPreferences(getString(R.string.app_name),MODE_PRIVATE);
+        userId = SPUtil.getFromSP(SPUtil.SP_KEY_USER, sp);
+        
         imgGoHome = (ImageView) findViewById(R.id.imgGoHome);
         imgGoHome.setOnClickListener(goHomeListener);
         
@@ -72,7 +77,7 @@ public class CandidateList extends ListActivity {
 		listView.setOnRefreshListener(new PullToRefreshListView.OnRefreshListener() {
 			@Override
 			public void onRefresh() {
-				new GetDataTask().execute();
+				new GetDataTask().execute(new String[]{userId});
 			}
 		});
 		
@@ -92,7 +97,7 @@ public class CandidateList extends ListActivity {
         });
         
         if(NetWorkUtil.isNetworkAvailable(mContext)){
-        	new GetDataTask().execute();
+        	new GetDataTask().execute(userId);
         }else{
         	Toast.makeText(mContext, "Your network is not available!", Toast.LENGTH_LONG).show();
         }
@@ -120,39 +125,31 @@ public class CandidateList extends ListActivity {
 		return basePath + File.separator + name + File.separator + "get_pending_interview_round.xml";
 	}
 	
-	public void loadData(){
-		FileInputStream inputStream = FileUtil.getFileInputStream(getRptPath("admin"));
-		
-//		GetDateImp getData = new GetDateImp();
-//		roundList = getData.getRoundList(inputStream);
-		
-		ParseResult pr = new ParseResult();
-		roundList = pr.getRoundList(inputStream);
-		
-		Collections.sort(roundList,new Comparator<PendRoundBean>(){  
-            public int compare(PendRoundBean arg0, PendRoundBean arg1) {  
-                return arg0.getrTime().compareTo(arg1.getrTime());  
-            }  
-        });
-	}
-	
-	private class GetDataTask extends AsyncTask<Void, Void, String[]> {
+	private class GetDataTask extends AsyncTask<String, Void, String> {
+//		List<PendRoundBean> roundList;
 		
         @Override
-        protected String[] doInBackground(Void... params) {
+        protected String doInBackground(String... urls) {
             // Simulates a background job.
             try {
-                Thread.sleep(500);
-                loadData();
+                Thread.sleep(2000);
+        		DAOProxy proxy = DAOProxyLocalImp.getInstance();
+        		roundList = proxy.getRoundList(urls[0]);
             } catch (InterruptedException e) {
             }
             return null;
         }
         
         @Override
-        protected void onPostExecute(String[] result) {
+        protected void onPostExecute(String result) {
             super.onPostExecute(result);
             if(roundList!=null&&roundList.size()>0){
+        		Collections.sort(roundList,new Comparator<PendRoundBean>(){  
+                    public int compare(PendRoundBean arg0, PendRoundBean arg1) {  
+                        return arg0.getrTime().compareTo(arg1.getrTime());  
+                    }  
+                });
+        		
             	adapter = new CandidateListAdapter(roundList,mContext);
                 setListAdapter(adapter); 
                 

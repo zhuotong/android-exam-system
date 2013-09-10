@@ -1,9 +1,7 @@
 package com.dream.ivpc;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.List;
-
 import com.artifex.mupdfdemo.MuPDFActivity;
 import com.dream.ivpc.R;
 import com.dream.ivpc.activity.exam.ExamRptList;
@@ -14,10 +12,10 @@ import com.dream.ivpc.activity.resume.ResumeWebView;
 import com.dream.ivpc.adapter.PhaseHistoryAdapter;
 import com.dream.ivpc.bean.CandidateBean;
 import com.dream.ivpc.bean.Round;
-import com.dream.ivpc.server.ParseResult;
-import com.dream.ivpc.util.FileUtil;
+import com.dream.ivpc.server.DAOProxy;
+import com.dream.ivpc.server.DAOProxyLocalImp;
 import com.dream.ivpc.util.NetWorkUtil;
-
+import com.dream.ivpc.util.SPUtil;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -53,6 +51,8 @@ public class CandidateDetail extends BaseActivity {
 	
 	int resumeType = 1;
 	
+//	String candidateId;
+	
     public void loadPictureResume(){
     	Intent intent = new Intent();
 		intent.setClass( mContext, ResumePicture.class);
@@ -87,11 +87,13 @@ public class CandidateDetail extends BaseActivity {
     }
     
 	public void loadCandidateBase(){
-        //set candidate infor value
+        //set candidate information value
 		Bundle bundle = this.getIntent().getExtras();
 		String name  = bundle.getString("name");
 		String position  = bundle.getString("position");
-		String phase  = bundle.getString("phase");
+//		String phase  = bundle.getString("phase");
+//		candidateId = bundle.getString("candidateId");
+		
 		((TextView) this.findViewById(R.id.nameTV)).setText(name);
 		((TextView) this.findViewById(R.id.positionTV)).setText(position);
 		
@@ -142,8 +144,10 @@ public class CandidateDetail extends BaseActivity {
         currRoundTV = (TextView) this.findViewById(R.id.currRoundTV);
         currRoundTimeTV = (TextView) this.findViewById(R.id.currRoundTimeTV);	
         
+        String adminId = SPUtil.getFromSP(SPUtil.SP_KEY_USER, sharedPreferences);
+        String candidateId = "tangqi";
         if(NetWorkUtil.isNetworkAvailable(mContext)){
-        	new GetDataTask().execute();
+        	new GetDataTask().execute(new String[]{adminId,candidateId});
         }else{
         	Toast.makeText(mContext, "Your network is not available!", Toast.LENGTH_LONG).show();
         }
@@ -174,31 +178,21 @@ public class CandidateDetail extends BaseActivity {
 		}
 	}
  
-    private String getRptPath(String admin,String candiate) {
-		String basePath = Environment.getExternalStorageDirectory() + "/interviewer";
-		return basePath + File.separator + admin + File.separator + candiate + File.separator +  "get_interview_info.xml";
-	}
-	
-    private void loadCandidateDetail(){
-		FileInputStream inputStream = FileUtil.getFileInputStream(getRptPath("admin","tangqi"));
-//		GetDateImp getData = new GetDateImp();
-		ParseResult pr = new ParseResult();
-		canBean = pr.getCandidateDetail(inputStream);
-    }
-    
-    private class GetDataTask extends AsyncTask<Void, Void, String[]> {
+    private class GetDataTask extends AsyncTask<String, Void, String> {
         @Override
-        protected String[] doInBackground(Void... params) {
+        protected String doInBackground(String... urls) {
             // Simulates a background job.
             try {
                 Thread.sleep(500);
-                loadCandidateDetail();
+        		DAOProxy proxy = new DAOProxyLocalImp();
+        		canBean = proxy.getCandidateDetail(urls[0], urls[1]);
             } catch (InterruptedException e) {
             }
             return null;
         }
+        
         @Override
-        protected void onPostExecute(String[] result) {
+        protected void onPostExecute(String result) {
             super.onPostExecute(result);
             List<Round> doneRounds = canBean.getDoneRounds();
 			if (doneRounds != null && doneRounds.size() > 0) {

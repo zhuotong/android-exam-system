@@ -1,13 +1,14 @@
 package com.dream.ivpc;
 
 import java.io.File;
-import java.io.InputStream;
 import com.dream.ivpc.R;
 import com.dream.ivpc.bean.LoginResultBean;
 import com.dream.ivpc.custom.CustomDialog;
-import com.dream.ivpc.server.ParseResult;
-import com.dream.ivpc.util.FileUtil;
+import com.dream.ivpc.server.DAOProxy;
+import com.dream.ivpc.server.DAOProxyLocalImp;
 import com.dream.ivpc.util.NetWorkUtil;
+import com.dream.ivpc.util.SPUtil;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -50,10 +51,10 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.login);
         mContext = getApplicationContext();
         
-        saveHost = sharedPreferences.getString("host", null);
+        saveHost = SPUtil.getFromSP(SPUtil.SP_KEY_HOST, sharedPreferences);
         
         idEt = (EditText) this.findViewById(R.id.idEt);
-		saveId = sharedPreferences.getString("id", null);
+		saveId = SPUtil.getFromSP(SPUtil.SP_KEY_USER, sharedPreferences);
 		if(saveId!=null||!"".equals(saveId)){
 			idEt.setText(saveId);
 		}
@@ -122,7 +123,6 @@ public class LoginActivity extends BaseActivity {
     }
  
 	private class LoginTask extends AsyncTask<String, Void, String> {
-    	InputStream inputStream;
     	LoginResultBean bean;
 		
 		@Override
@@ -141,10 +141,8 @@ public class LoginActivity extends BaseActivity {
 			try {
 				Thread.sleep(2000);
 				
-//				GetData getData = GetDateImp.getInstance();
-//				bean = getData.login(urls[0], urls[1]);
-				
-				inputStream = FileUtil.getFileInputStream(getPath("admin"));
+				DAOProxy proxy = DAOProxyLocalImp.getInstance();
+				bean = proxy.login(urls[0], urls[1]);
 				
 			} catch (Exception e) {
 				Log.e(LOG_TAG, "erro message:" + e.getMessage());
@@ -156,27 +154,30 @@ public class LoginActivity extends BaseActivity {
 			cusDialog.dismiss();
 			
 			//get result from local disk
-			if(inputStream!=null){
-				LoginResultBean loginResult = ParseResult.parseLoginResult(inputStream);
-				if(loginResult.isSuccess()){
-					go2CandiateList();
-					Toast.makeText(mContext, "Login Success! Name:"+  loginResult.getUserName()+" token:"+loginResult.getToken(), Toast.LENGTH_LONG).show();
-				}else{
-					ShowDialog("Warning",loginResult.getError_code()+":"+loginResult.getError_desc());
-				}
-			}else{
-				ShowDialog("Warning","Fail to login!");
-			}
-			
-//			if(bean!=null){
-//				if(bean.isSuccess()){
+//			if(inputStream!=null){
+//				LoginResultBean loginResult = ParseResult.parseLoginResult(inputStream);
+//				if(loginResult.isSuccess()){
 //					go2CandiateList();
+//					Toast.makeText(mContext, "Login Success! Name:"+  loginResult.getUserName()+" token:"+loginResult.getToken(), Toast.LENGTH_LONG).show();
 //				}else{
-//					ShowDialog("Warning","Fail to login!");
+//					ShowDialog("Warning",loginResult.getError_code()+":"+loginResult.getError_desc());
 //				}
 //			}else{
 //				ShowDialog("Warning","Fail to login!");
 //			}
+			
+			if(bean!=null){
+				if(bean.isSuccess()){
+					SPUtil.save2SP(SPUtil.SP_KEY_USER, bean.getUserId(), sharedPreferences);
+					SPUtil.save2SP(SPUtil.SP_KEY_TOKEN, bean.getToken(), sharedPreferences);
+					
+					go2CandiateList();
+				}else{
+					ShowDialog("Warning","Fail to login!");
+				}
+			}else{
+				ShowDialog("Warning","Fail to login!");
+			}
 		}
 	}
 	

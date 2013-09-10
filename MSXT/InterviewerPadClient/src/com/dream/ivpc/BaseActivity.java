@@ -16,7 +16,7 @@ public class BaseActivity extends Activity {
 
 	public final static String LOG_TAG = "BaseActivity";
 	protected SharedPreferences sharedPreferences;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -24,7 +24,8 @@ public class BaseActivity extends Activity {
 		
 		ActivityManage.add(this);
 		
-		sharedPreferences = this.getSharedPreferences("eexam",MODE_PRIVATE);
+		String appName = this.getString(R.string.app_name);
+		sharedPreferences = this.getSharedPreferences(appName,MODE_PRIVATE);
 	}
 
 	public void ShowDialog(String title,String msg) {

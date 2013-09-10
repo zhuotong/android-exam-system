@@ -15,6 +15,7 @@ import com.dream.ivpc.bean.CandidateBean;
 import com.dream.ivpc.bean.LoginResultBean;
 import com.dream.ivpc.bean.PendRoundBean;
 import com.dream.ivpc.bean.Round;
+import com.dream.ivpc.model.ExamBean;
 
 public class ParseResult {
 
@@ -61,7 +62,7 @@ public class ParseResult {
 		return bean;
 	}
 
-	public List<PendRoundBean> getRoundList(InputStream is) {
+	public static List<PendRoundBean> getRoundList(InputStream is) {
 		List<PendRoundBean> beanList = new ArrayList<PendRoundBean>();
 		PendRoundBean bean = null;
 		XmlPullParser parser = Xml.newPullParser();
@@ -105,7 +106,7 @@ public class ParseResult {
 		return beanList;
 	}
 
-	public CandidateBean getCandidateDetail(InputStream is) {
+	public static CandidateBean getCandidateDetail(InputStream is) {
 		CandidateBean bean = null;
 		Round currRound = null;
 		List<Round> doneRounds = null;
@@ -173,5 +174,42 @@ public class ParseResult {
 		}
 
 		return bean;
+	}
+	
+	public static List<ExamBean> parseExams(InputStream is) {
+		List<ExamBean> beanList = new ArrayList<ExamBean>();
+		ExamBean bean = null;
+		XmlPullParser parser = Xml.newPullParser();
+		try {
+			parser.setInput(is, "UTF-8");
+			int eventType = parser.getEventType();
+			while ((eventType = parser.next()) != XmlPullParser.END_DOCUMENT) {
+				switch (eventType) {
+				case XmlPullParser.START_TAG:
+					if (parser.getName().equals("exam")) {
+						bean = new ExamBean();
+					} else if (parser.getName().equals("examid") && bean!=null ) {
+						bean.setExamId(parser.nextText());
+					} else if (parser.getName().equals("examname") && bean!=null) {
+						bean.setExamName(parser.nextText());
+					} 
+					break;
+				case XmlPullParser.END_TAG:
+					if (parser.getName().equals("exam")) {
+						beanList.add(bean);
+						bean = null;
+					}
+					break;
+				}
+			}
+		} catch (XmlPullParserException e) {
+			Log.e(LOG_TAG, e.getMessage());
+		} catch (NumberFormatException e) {
+			Log.e(LOG_TAG, e.getMessage());
+		} catch (IOException e) {
+			Log.e(LOG_TAG, e.getMessage());
+		}
+
+		return beanList;
 	}
 }

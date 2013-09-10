@@ -1,16 +1,12 @@
 package com.dream.ivpc.activity.exam;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -21,31 +17,19 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.dream.ivpc.R;
 import com.dream.ivpc.adapter.ExamListAdapter;
 import com.dream.ivpc.model.ExamBean;
-import com.dream.ivpc.util.FileUtil;
+import com.dream.ivpc.server.DAOProxy;
+import com.dream.ivpc.server.DAOProxyLocalImp;
 import com.dream.ivpc.util.NetWorkUtil;
-import com.dream.ivpc.util.XMLParseUtil;
 
 public class ExamRptList extends ListActivity {
 
 	public final static String LOG_TAG = "CandidateExamList";
 	Context mContext;
-
-	
 	ListView listView;
 	ProgressBar progressBar;
 	
 	ExamListAdapter adapter;
 	List<ExamBean> examList = new ArrayList<ExamBean>();
-
-	public String getPath(String admin,String candidate) {
-		String basePath = Environment.getExternalStorageDirectory() + "/interviewer";
-		return basePath + File.separator + admin + File.separator + candidate + File.separator + "exams.xml";
-	}
-	
-	public void loadData() {
-		FileInputStream inputStream = FileUtil.getFileInputStream(getPath("admin","tangqi"));
-		examList = XMLParseUtil.parseExams(inputStream);
-	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,19 +72,21 @@ public class ExamRptList extends ListActivity {
         }
 	}
 
-	private class GetDataTask extends AsyncTask<Void, Void, String[]> {
+	private class GetDataTask extends AsyncTask<String, Void, String> {
         @Override
-        protected String[] doInBackground(Void... params) {
+        protected String doInBackground(String... urls) {
             // Simulates a background job.
             try {
                 Thread.sleep(2000);
-                loadData();
+        		DAOProxy proxy = new DAOProxyLocalImp();
+        		examList = proxy.getCandiateExamRptList(urls[0], urls[1]);
+        		
             } catch (InterruptedException e) {
             }
             return null;
         }
         @Override
-        protected void onPostExecute(String[] result) {
+        protected void onPostExecute(String result) {
             super.onPostExecute(result);
             if(examList!=null&&examList.size()>0){
             	progressBar.setVisibility(View.GONE);
